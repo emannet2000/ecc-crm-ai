@@ -1,6 +1,5 @@
 module Api exposing (..)
 
-import Dict
 import Http
 import Json.Decode as D
 import Json.Encode as E
@@ -9,6 +8,997 @@ import Url
 
 
 -- DECODERS ----------------------------------------------------------------
+
+-- ========== CASES ==========
+
+caseDecoder : D.Decoder Case
+caseDecoder =
+    D.succeed Case
+        |> andMap (D.field "id" D.string)
+        |> andMap (optString "caseNumber")
+        |> andMap (optString "clientId")
+        |> andMap (optString "clientName")
+        |> andMap (optString "studentId")
+        |> andMap (optString "studentName")
+        |> andMap (optString "serviceCategory")
+        |> andMap (optString "destinationCountry")
+        |> andMap (optString "visaType")
+        |> andMap (optString "schoolOrEmployer")
+        |> andMap (optString "assignedOfficer")
+        |> andMap (optString "externalAdviser")
+        |> andMap (optString "dateOpened")
+        |> andMap (optString "targetSubmission")
+        |> andMap (optString "actualSubmission")
+        |> andMap (optString "governmentRef")
+        |> andMap (D.oneOf [ D.field "currentStage" D.string, D.succeed "Assessment" ])
+        |> andMap (D.oneOf [ D.field "priority" D.string, D.succeed "Medium" ])
+        |> andMap (optString "nextAction")
+        |> andMap (optString "nextDeadline")
+        |> andMap (optString "result")
+        |> andMap (optString "closureDate")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+documentDecoder : D.Decoder Document
+documentDecoder =
+    D.succeed Document
+        |> andMap (D.field "id" D.string)
+        |> andMap (optString "caseId")
+        |> andMap (optString "caseNumber")
+        |> andMap (D.field "docName" D.string)
+        |> andMap (D.oneOf [ D.field "required" D.bool, D.succeed False ])
+        |> andMap (optString "dateRequested")
+        |> andMap (optString "dateReceived")
+        |> andMap (optString "expiryDate")
+        |> andMap (optString "verifiedBy")
+        |> andMap (optString "verificationDate")
+        |> andMap (D.oneOf [ D.field "status" D.string, D.succeed "Not Requested" ])
+        |> andMap (optString "rejectionReason")
+        |> andMap (D.oneOf [ D.field "latestVersion" D.int, D.succeed 1 ])
+        |> andMap (D.oneOf [ D.field "translationRequired" D.bool, D.succeed False ])
+        |> andMap (D.oneOf [ D.field "legalizationRequired" D.bool, D.succeed False ])
+        |> andMap (optString "filePath")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+documentsDecoder : D.Decoder (List Document)
+documentsDecoder =
+    D.field "documents" (D.list documentDecoder)
+
+
+invoiceDecoder : D.Decoder Invoice
+invoiceDecoder =
+    D.succeed Invoice
+        |> andMap (D.field "id" D.string)
+        |> andMap (optString "invoiceNumber")
+        |> andMap (optString "clientId")
+        |> andMap (optString "clientName")
+        |> andMap (optString "caseId")
+        |> andMap (optString "caseNumber")
+        |> andMap (D.oneOf [ D.field "totalFee" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "governmentFee" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "schoolPartnerFee" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "amountReceived" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "balance" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "paymentMilestone" D.string, D.succeed "Quotation Issued" ])
+        |> andMap (optString "paymentMethod")
+        |> andMap (optString "officialReceiptNumber")
+        |> andMap (optString "refundStatus")
+        |> andMap (D.oneOf [ D.field "referralCommission" D.float, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "partnerPayable" D.float, D.succeed 0 ])
+        |> andMap (optString "paymentApproval")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+paymentDecoder : D.Decoder Payment
+paymentDecoder =
+    D.succeed Payment
+        |> andMap (D.field "id" D.string)
+        |> andMap (optString "invoiceId")
+        |> andMap (D.oneOf [ D.field "amount" D.float, D.succeed 0 ])
+        |> andMap (optString "paidOn")
+        |> andMap (optString "method")
+        |> andMap (optString "reference")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+paymentsDecoder : D.Decoder (List Payment)
+paymentsDecoder =
+    D.field "payments" (D.list paymentDecoder)
+
+
+partnerDecoder : D.Decoder Partner
+partnerDecoder =
+    D.succeed Partner
+        |> andMap (D.field "id" D.string)
+        |> andMap (D.oneOf [ D.field "type" D.string, D.succeed "School" ])
+        |> andMap (D.field "legalCompanyName" D.string)
+        |> andMap (optString "country")
+        |> andMap (optString "licenseNumber")
+        |> andMap (optString "licenseExpiry")
+        |> andMap (optString "verificationSource")
+        |> andMap (optString "contactPerson")
+        |> andMap (optString "contactEmail")
+        |> andMap (optString "contactPhone")
+        |> andMap (optString "agreementStart")
+        |> andMap (optString "agreementExpiry")
+        |> andMap (optString "servicesPermitted")
+        |> andMap (optString "commissionStructure")
+        |> andMap (optString "paymentTerms")
+        |> andMap (D.oneOf [ D.field "casesReferred" D.int, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "casesConverted" D.int, D.succeed 0 ])
+        |> andMap (D.oneOf [ D.field "amountPayable" D.float, D.succeed 0 ])
+        |> andMap (optString "complianceNotes")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+caseFormPayload : CaseForm -> E.Value
+caseFormPayload cf =
+    E.object
+        [ ( "caseNumber", E.string cf.caseNumber )
+        , ( "clientId", E.string cf.clientId )
+        , ( "studentId", E.string cf.studentId )
+        , ( "serviceCategory", E.string cf.serviceCategory )
+        , ( "destinationCountry", E.string cf.destinationCountry )
+        , ( "visaType", E.string cf.visaType )
+        , ( "schoolOrEmployer", E.string cf.schoolOrEmployer )
+        , ( "assignedOfficer", E.string cf.assignedOfficer )
+        , ( "externalAdviser", E.string cf.externalAdviser )
+        , ( "dateOpened", E.string cf.dateOpened )
+        , ( "targetSubmission", E.string cf.targetSubmission )
+        , ( "actualSubmission", E.string cf.actualSubmission )
+        , ( "governmentRef", E.string cf.governmentRef )
+        , ( "currentStage", E.string cf.currentStage )
+        , ( "priority", E.string cf.priority )
+        , ( "nextAction", E.string cf.nextAction )
+        , ( "nextDeadline", E.string cf.nextDeadline )
+        , ( "result", E.string cf.result )
+        , ( "closureDate", E.string cf.closureDate )
+        , ( "notes", E.string cf.notes )
+        ]
+
+
+invoiceFormPayload : InvoiceForm -> E.Value
+invoiceFormPayload inv =
+    E.object
+        [ ( "invoiceNumber", E.string inv.invoiceNumber )
+        , ( "clientId", E.string inv.clientId )
+        , ( "caseId", E.string inv.caseId )
+        , ( "totalFee", E.float (Maybe.withDefault 0 (String.toFloat inv.totalFee)) )
+        , ( "governmentFee", E.float (Maybe.withDefault 0 (String.toFloat inv.governmentFee)) )
+        , ( "schoolPartnerFee", E.float (Maybe.withDefault 0 (String.toFloat inv.schoolPartnerFee)) )
+        , ( "amountReceived", E.float (Maybe.withDefault 0 (String.toFloat inv.amountReceived)) )
+        , ( "paymentMilestone", E.string inv.paymentMilestone )
+        , ( "paymentMethod", E.string inv.paymentMethod )
+        , ( "officialReceiptNumber", E.string inv.officialReceiptNumber )
+        , ( "refundStatus", E.string inv.refundStatus )
+        , ( "referralCommission", E.float (Maybe.withDefault 0 (String.toFloat inv.referralCommission)) )
+        , ( "partnerPayable", E.float (Maybe.withDefault 0 (String.toFloat inv.partnerPayable)) )
+        , ( "paymentApproval", E.string inv.paymentApproval )
+        , ( "notes", E.string inv.notes )
+        ]
+
+
+paymentFormPayload : String -> PaymentForm -> E.Value
+paymentFormPayload invoiceId pf =
+    E.object
+        [ ( "invoiceId", E.string invoiceId )
+        , ( "amount", E.float (Maybe.withDefault 0 (String.toFloat pf.amount)) )
+        , ( "paidOn", E.string pf.paidOn )
+        , ( "method", E.string pf.method )
+        , ( "reference", E.string pf.reference )
+        , ( "notes", E.string pf.notes )
+        ]
+
+
+partnerFormPayload : PartnerForm -> E.Value
+partnerFormPayload pf =
+    E.object
+        [ ( "type", E.string pf.type_ )
+        , ( "legalCompanyName", E.string pf.legalCompanyName )
+        , ( "country", E.string pf.country )
+        , ( "licenseNumber", E.string pf.licenseNumber )
+        , ( "licenseExpiry", E.string pf.licenseExpiry )
+        , ( "verificationSource", E.string pf.verificationSource )
+        , ( "contactPerson", E.string pf.contactPerson )
+        , ( "contactEmail", E.string pf.contactEmail )
+        , ( "contactPhone", E.string pf.contactPhone )
+        , ( "agreementStart", E.string pf.agreementStart )
+        , ( "agreementExpiry", E.string pf.agreementExpiry )
+        , ( "servicesPermitted", E.string pf.servicesPermitted )
+        , ( "commissionStructure", E.string pf.commissionStructure )
+        , ( "paymentTerms", E.string pf.paymentTerms )
+        , ( "casesReferred", E.int (Maybe.withDefault 0 (String.toInt pf.casesReferred)) )
+        , ( "casesConverted", E.int (Maybe.withDefault 0 (String.toInt pf.casesConverted)) )
+        , ( "amountPayable", E.float (Maybe.withDefault 0 (String.toFloat pf.amountPayable)) )
+        , ( "complianceNotes", E.string pf.complianceNotes )
+        , ( "notes", E.string pf.notes )
+        ]
+
+
+casesPageExpect : (Result String ( List Case, Int ) -> msg) -> Http.Expect msg
+casesPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err ("Could not load cases (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "cases" (D.list caseDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair -> Ok pair
+                        Err err -> Err ("Could not parse cases: " ++ D.errorToString err)
+
+
+documentsExpect : (Result String (List Document) -> msg) -> Http.Expect msg
+documentsExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not load documents."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString documentsDecoder body of
+                        Ok docs -> Ok docs
+                        Err err -> Err ("Could not parse documents: " ++ D.errorToString err)
+
+
+dossierDecoder : D.Decoder Dossier
+dossierDecoder =
+    D.map4 Dossier
+        (D.field "student" studentDecoder)
+        (D.field "cases" (D.list caseDecoder))
+        (D.field "documents" (D.list documentDecoder))
+        (D.field "invoices" (D.list invoiceDecoder))
+
+
+dossierExpect : (Result String Dossier -> msg) -> Http.Expect msg
+dossierExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load dossier."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString dossierDecoder body of
+                        Ok d ->
+                            Ok d
+
+                        Err err ->
+                            Err ("Could not parse dossier: " ++ D.errorToString err)
+
+
+invoicesPageExpect : (Result String ( List Invoice, Int ) -> msg) -> Http.Expect msg
+invoicesPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err ("Could not load invoices (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "invoices" (D.list invoiceDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair -> Ok pair
+                        Err err -> Err ("Could not parse invoices: " ++ D.errorToString err)
+
+
+paymentsExpect : (Result String (List Payment) -> msg) -> Http.Expect msg
+paymentsExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not load payments."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString paymentsDecoder body of
+                        Ok ps -> Ok ps
+                        Err err -> Err ("Could not parse payments: " ++ D.errorToString err)
+
+
+partnersPageExpect : (Result String ( List Partner, Int ) -> msg) -> Http.Expect msg
+partnersPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err ("Could not load partners (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "partners" (D.list partnerDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair -> Ok pair
+                        Err err -> Err ("Could not parse partners: " ++ D.errorToString err)
+
+
+savedCaseExpect : (Result ApiError Case -> msg) -> Http.Expect msg
+savedCaseExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err (GenericError ("Bad URL: " ++ url))
+                Http.Timeout_ -> Err (GenericError "Request timed out.")
+                Http.NetworkError_ -> Err (GenericError "Network error.")
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields -> Err (FieldErrors fields)
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg -> Err (GenericError msg)
+                                Err _ -> Err (GenericError "Could not save case.")
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "case" caseDecoder) body of
+                        Ok c -> Ok c
+                        Err err -> Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedCaseExpect : (Result String String -> msg) -> Http.Expect msg
+deletedCaseExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not delete case."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id -> Ok id
+                        Err err -> Err ("Could not parse response: " ++ D.errorToString err)
+
+
+caseFetchExpect : (Result String Case -> msg) -> Http.Expect msg
+caseFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not load case."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "case" caseDecoder) body of
+                        Ok c -> Ok c
+                        Err err -> Err ("Could not parse case: " ++ D.errorToString err)
+
+
+savedDocumentExpect : (Result ApiError Document -> msg) -> Http.Expect msg
+savedDocumentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err (GenericError ("Bad URL: " ++ url))
+                Http.Timeout_ -> Err (GenericError "Request timed out.")
+                Http.NetworkError_ -> Err (GenericError "Network error.")
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields -> Err (FieldErrors fields)
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg -> Err (GenericError msg)
+                                Err _ -> Err (GenericError "Could not save document.")
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "document" documentDecoder) body of
+                        Ok d -> Ok d
+                        Err err -> Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedDocumentExpect : (Result String String -> msg) -> Http.Expect msg
+deletedDocumentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not delete document."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id -> Ok id
+                        Err err -> Err ("Could not parse response: " ++ D.errorToString err)
+
+
+savedInvoiceExpect : (Result ApiError Invoice -> msg) -> Http.Expect msg
+savedInvoiceExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err (GenericError ("Bad URL: " ++ url))
+                Http.Timeout_ -> Err (GenericError "Request timed out.")
+                Http.NetworkError_ -> Err (GenericError "Network error.")
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields -> Err (FieldErrors fields)
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg -> Err (GenericError msg)
+                                Err _ -> Err (GenericError "Could not save invoice.")
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "invoice" invoiceDecoder) body of
+                        Ok inv -> Ok inv
+                        Err err -> Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedInvoiceExpect : (Result String String -> msg) -> Http.Expect msg
+deletedInvoiceExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not delete invoice."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id -> Ok id
+                        Err err -> Err ("Could not parse response: " ++ D.errorToString err)
+
+
+invoiceFetchExpect : (Result String Invoice -> msg) -> Http.Expect msg
+invoiceFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not load invoice."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "invoice" invoiceDecoder) body of
+                        Ok inv -> Ok inv
+                        Err err -> Err ("Could not parse invoice: " ++ D.errorToString err)
+
+
+savedPaymentExpect : (Result ApiError Payment -> msg) -> Http.Expect msg
+savedPaymentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err (GenericError ("Bad URL: " ++ url))
+                Http.Timeout_ -> Err (GenericError "Request timed out.")
+                Http.NetworkError_ -> Err (GenericError "Network error.")
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields -> Err (FieldErrors fields)
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg -> Err (GenericError msg)
+                                Err _ -> Err (GenericError "Could not save payment.")
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "payment" paymentDecoder) body of
+                        Ok p -> Ok p
+                        Err err -> Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedPaymentExpect : (Result String String -> msg) -> Http.Expect msg
+deletedPaymentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not delete payment."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id -> Ok id
+                        Err err -> Err ("Could not parse response: " ++ D.errorToString err)
+
+
+savedPartnerExpect : (Result ApiError Partner -> msg) -> Http.Expect msg
+savedPartnerExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err (GenericError ("Bad URL: " ++ url))
+                Http.Timeout_ -> Err (GenericError "Request timed out.")
+                Http.NetworkError_ -> Err (GenericError "Network error.")
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields -> Err (FieldErrors fields)
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg -> Err (GenericError msg)
+                                Err _ -> Err (GenericError "Could not save partner.")
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "partner" partnerDecoder) body of
+                        Ok p -> Ok p
+                        Err err -> Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedPartnerExpect : (Result String String -> msg) -> Http.Expect msg
+deletedPartnerExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not delete partner."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id -> Ok id
+                        Err err -> Err ("Could not parse response: " ++ D.errorToString err)
+
+
+partnerFetchExpect : (Result String Partner -> msg) -> Http.Expect msg
+partnerFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url -> Err ("Bad URL: " ++ url)
+                Http.Timeout_ -> Err "Request timed out."
+                Http.NetworkError_ -> Err "Network error."
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg -> Err msg
+                        Err _ -> Err "Could not load partner."
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "partner" partnerDecoder) body of
+                        Ok p -> Ok p
+                        Err err -> Err ("Could not parse partner: " ++ D.errorToString err)
+
+
+fetchCases : String -> String -> String -> Int -> Int -> (Result String ( List Case, Int ) -> msg) -> Cmd msg
+fetchCases token query stage limit offset toMsg =
+    let
+        parts =
+            List.filter (\part -> not (String.isEmpty part))
+                [ "q=" ++ Url.percentEncode query
+                , if String.isEmpty stage then "" else "stage=" ++ Url.percentEncode stage
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/cases?" ++ String.join "&" parts
+        , body = Http.emptyBody
+        , expect = casesPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchCase : String -> String -> (Result String Case -> msg) -> Cmd msg
+fetchCase token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/cases/" ++ id
+        , body = Http.emptyBody
+        , expect = caseFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createCase : String -> CaseForm -> (Result ApiError Case -> msg) -> Cmd msg
+createCase token cf toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/cases"
+        , body = Http.jsonBody (caseFormPayload cf)
+        , expect = savedCaseExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateCase : String -> String -> CaseForm -> (Result ApiError Case -> msg) -> Cmd msg
+updateCase token id cf toMsg =
+    Http.request
+        { method = "PUT"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/cases/" ++ id
+        , body = Http.jsonBody (caseFormPayload cf)
+        , expect = savedCaseExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteCase : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteCase token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/cases/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedCaseExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchCaseDocuments : String -> String -> (Result String (List Document) -> msg) -> Cmd msg
+fetchCaseDocuments token caseId toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/documents?caseId=" ++ Url.percentEncode caseId ++ "&limit=200"
+        , body = Http.emptyBody
+        , expect = documentsExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createDocument : String -> String -> DocumentForm -> (Result ApiError Document -> msg) -> Cmd msg
+createDocument token caseId df toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/documents"
+        , body =
+            Http.jsonBody
+                (E.object
+                    [ ( "caseId", E.string caseId )
+                    , ( "docName", E.string df.docName )
+                    , ( "required", E.bool df.required )
+                    , ( "dateRequested", E.string df.dateRequested )
+                    , ( "dateReceived", E.string df.dateReceived )
+                    , ( "expiryDate", E.string df.expiryDate )
+                    , ( "verifiedBy", E.string df.verifiedBy )
+                    , ( "verificationDate", E.string df.verificationDate )
+                    , ( "status", E.string df.status )
+                    , ( "rejectionReason", E.string df.rejectionReason )
+                    , ( "translationRequired", E.bool df.translationRequired )
+                    , ( "legalizationRequired", E.bool df.legalizationRequired )
+                    , ( "filePath", E.string df.filePath )
+                    , ( "notes", E.string df.notes )
+                    ]
+                )
+        , expect = savedDocumentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateDocument : String -> String -> String -> DocumentForm -> (Result ApiError Document -> msg) -> Cmd msg
+updateDocument token caseId id df toMsg =
+    Http.request
+        { method = "PUT"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/documents/" ++ id
+        , body =
+            Http.jsonBody
+                (E.object
+                    [ ( "caseId", E.string caseId )
+                    , ( "docName", E.string df.docName )
+                    , ( "required", E.bool df.required )
+                    , ( "dateRequested", E.string df.dateRequested )
+                    , ( "dateReceived", E.string df.dateReceived )
+                    , ( "expiryDate", E.string df.expiryDate )
+                    , ( "verifiedBy", E.string df.verifiedBy )
+                    , ( "verificationDate", E.string df.verificationDate )
+                    , ( "status", E.string df.status )
+                    , ( "rejectionReason", E.string df.rejectionReason )
+                    , ( "translationRequired", E.bool df.translationRequired )
+                    , ( "legalizationRequired", E.bool df.legalizationRequired )
+                    , ( "filePath", E.string df.filePath )
+                    , ( "notes", E.string df.notes )
+                    ]
+                )
+        , expect = savedDocumentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateDocumentStatus : String -> String -> String -> (Result ApiError Document -> msg) -> Cmd msg
+updateDocumentStatus token id newStatus toMsg =
+    Http.request
+        { method = "PATCH"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/documents/" ++ id ++ "/status"
+        , body = Http.jsonBody (E.object [ ( "status", E.string newStatus ), ( "rejectionReason", E.string "" ) ])
+        , expect = savedDocumentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteDocument : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteDocument token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/documents/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedDocumentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchInvoices : String -> String -> Int -> Int -> (Result String ( List Invoice, Int ) -> msg) -> Cmd msg
+fetchInvoices token query limit offset toMsg =
+    let
+        qs =
+            String.join "&"
+                [ "q=" ++ Url.percentEncode query
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/invoices?" ++ qs
+        , body = Http.emptyBody
+        , expect = invoicesPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchInvoice : String -> String -> (Result String Invoice -> msg) -> Cmd msg
+fetchInvoice token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/invoices/" ++ id
+        , body = Http.emptyBody
+        , expect = invoiceFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createInvoice : String -> InvoiceForm -> (Result ApiError Invoice -> msg) -> Cmd msg
+createInvoice token inv toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/invoices"
+        , body = Http.jsonBody (invoiceFormPayload inv)
+        , expect = savedInvoiceExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateInvoice : String -> String -> InvoiceForm -> (Result ApiError Invoice -> msg) -> Cmd msg
+updateInvoice token id inv toMsg =
+    Http.request
+        { method = "PUT"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/invoices/" ++ id
+        , body = Http.jsonBody (invoiceFormPayload inv)
+        , expect = savedInvoiceExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+refundInvoice : String -> String -> String -> (Result ApiError Invoice -> msg) -> Cmd msg
+refundInvoice token id reason toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/invoices/" ++ id ++ "/refund"
+        , body = Http.jsonBody (E.object [ ( "reason", E.string reason ) ])
+        , expect = savedInvoiceExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteInvoice : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteInvoice token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/invoices/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedInvoiceExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchInvoicePayments : String -> String -> (Result String (List Payment) -> msg) -> Cmd msg
+fetchInvoicePayments token invoiceId toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/payments?invoiceId=" ++ Url.percentEncode invoiceId ++ "&limit=200"
+        , body = Http.emptyBody
+        , expect = paymentsExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createPayment : String -> String -> PaymentForm -> (Result ApiError Payment -> msg) -> Cmd msg
+createPayment token invoiceId pf toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/payments"
+        , body = Http.jsonBody (paymentFormPayload invoiceId pf)
+        , expect = savedPaymentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deletePayment : String -> String -> (Result String String -> msg) -> Cmd msg
+deletePayment token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/payments/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedPaymentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchPartners : String -> String -> String -> String -> Int -> Int -> (Result String ( List Partner, Int ) -> msg) -> Cmd msg
+fetchPartners token query ptype country limit offset toMsg =
+    let
+        parts =
+            List.filter (\part -> not (String.isEmpty part))
+                [ "q=" ++ Url.percentEncode query
+                , if String.isEmpty ptype then "" else "type=" ++ Url.percentEncode ptype
+                , if String.isEmpty country then "" else "country=" ++ Url.percentEncode country
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/partners?" ++ String.join "&" parts
+        , body = Http.emptyBody
+        , expect = partnersPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchPartner : String -> String -> (Result String Partner -> msg) -> Cmd msg
+fetchPartner token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/partners/" ++ id
+        , body = Http.emptyBody
+        , expect = partnerFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createPartner : String -> PartnerForm -> (Result ApiError Partner -> msg) -> Cmd msg
+createPartner token pf toMsg =
+    Http.request
+        { method = "POST"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/partners"
+        , body = Http.jsonBody (partnerFormPayload pf)
+        , expect = savedPartnerExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updatePartner : String -> String -> PartnerForm -> (Result ApiError Partner -> msg) -> Cmd msg
+updatePartner token id pf toMsg =
+    Http.request
+        { method = "PUT"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token), Http.header "Content-Type" "application/json" ]
+        , url = "/api/partners/" ++ id
+        , body = Http.jsonBody (partnerFormPayload pf)
+        , expect = savedPartnerExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deletePartner : String -> String -> (Result String String -> msg) -> Cmd msg
+deletePartner token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/partners/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedPartnerExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
 
 
 userDecoder : D.Decoder User
@@ -112,6 +1102,78 @@ contactsDecoder =
     D.field "contacts" (D.list contactDecoder)
 
 
+schoolDecoder : D.Decoder School
+schoolDecoder =
+    D.succeed School
+        |> andMap (D.field "id" D.string)
+        |> andMap (D.field "name" D.string)
+        |> andMap (optString "countryCode")
+        |> andMap (optString "commissionRate")
+        |> andMap (D.oneOf [ D.field "contractStatus" D.string, D.succeed "Pending" ])
+        |> andMap (D.oneOf [ D.field "studentsEnrolled" D.int, D.succeed 0 ])
+        |> andMap (optString "contactPerson")
+        |> andMap (optString "website")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+studentDecoder : D.Decoder Student
+studentDecoder =
+    D.succeed Student
+        |> andMap (D.field "id" D.string)
+        |> andMap (D.field "name" D.string)
+        |> andMap (optString "studentCode")
+        |> andMap (optString "countryCode")
+        |> andMap (optString "schoolId")
+        |> andMap (optString "schoolName")
+        |> andMap (optString "agentId")
+        |> andMap (optString "agentName")
+        |> andMap (optString "program")
+        |> andMap (D.oneOf [ D.field "acceptanceStatus" D.string, D.succeed "Pending" ])
+        |> andMap (D.oneOf [ D.field "visaStatus" D.string, D.succeed "Not Started" ])
+        |> andMap (D.oneOf [ D.field "invoiceStatus" D.string, D.succeed "Not Issued" ])
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+agentDecoder : D.Decoder Agent
+agentDecoder =
+    D.succeed Agent
+        |> andMap (D.field "id" D.string)
+        |> andMap (D.field "name" D.string)
+        |> andMap (optString "agentCode")
+        |> andMap (optString "countryCode")
+        |> andMap (D.oneOf [ D.field "contractStatus" D.string, D.succeed "Pending" ])
+        |> andMap (D.oneOf [ D.field "agentStatus" D.string, D.succeed "Active" ])
+        |> andMap (D.oneOf [ D.field "studentsReferred" D.int, D.succeed 0 ])
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
+leadDecoder : D.Decoder Lead
+leadDecoder =
+    D.succeed Lead
+        |> andMap (D.field "id" D.string)
+        |> andMap (optString "leadNumber")
+        |> andMap (D.field "name" D.string)
+        |> andMap (optString "email")
+        |> andMap (optString "phone")
+        |> andMap (optString "nationality")
+        |> andMap (optString "currentCountry")
+        |> andMap (optString "interestedCountry")
+        |> andMap (optString "interestedService")
+        |> andMap (D.oneOf [ D.field "source" D.string, D.succeed "Website" ])
+        |> andMap (optString "assignedTo")
+        |> andMap (D.oneOf [ D.field "status" D.string, D.succeed "New" ])
+        |> andMap (optString "followUpDate")
+        |> andMap (optString "notes")
+        |> andMap (optString "createdBy")
+        |> andMap (optString "createdAt")
+
+
 activityDecoder : D.Decoder Activity
 activityDecoder =
     D.map Activity
@@ -152,7 +1214,7 @@ errorDecoder =
 
 fieldErrorDecoder : D.Decoder (List ( String, String ))
 fieldErrorDecoder =
-    D.map Dict.toList (D.field "fields" (D.dict D.string))
+    D.field "fields" (D.keyValuePairs D.string)
 
 
 -- ENCODERS ----------------------------------------------------------------
@@ -196,10 +1258,77 @@ dealFormPayload df =
         [ ( "title", E.string df.title )
         , ( "contactId", E.string df.contactId )
         , ( "value", E.float (Maybe.withDefault 0 (String.toFloat df.value)) )
+        , ( "currency", E.string df.currency )
         , ( "stage", E.string df.stage )
         , ( "closeDate", E.string df.closeDate )
         , ( "owner", E.string df.owner )
         , ( "notes", E.string df.notes )
+        ]
+
+
+schoolFormPayload : SchoolForm -> E.Value
+schoolFormPayload sf =
+    E.object
+        [ ( "name", E.string sf.name )
+        , ( "countryCode", E.string sf.countryCode )
+        , ( "commissionRate", E.string sf.commissionRate )
+        , ( "contractStatus", E.string sf.contractStatus )
+        , ( "studentsEnrolled"
+          , E.int (Maybe.withDefault 0 (String.toInt sf.studentsEnrolled))
+          )
+        , ( "contactPerson", E.string sf.contactPerson )
+        , ( "website", E.string sf.website )
+        , ( "notes", E.string sf.notes )
+        ]
+
+
+studentFormPayload : StudentForm -> E.Value
+studentFormPayload sf =
+    E.object
+        [ ( "name", E.string sf.name )
+        , ( "studentCode", E.string sf.studentCode )
+        , ( "countryCode", E.string sf.countryCode )
+        , ( "schoolId", E.string sf.schoolId )
+        , ( "agentId", E.string sf.agentId )
+        , ( "program", E.string sf.program )
+        , ( "acceptanceStatus", E.string sf.acceptanceStatus )
+        , ( "visaStatus", E.string sf.visaStatus )
+        , ( "invoiceStatus", E.string sf.invoiceStatus )
+        , ( "notes", E.string sf.notes )
+        ]
+
+
+agentFormPayload : AgentForm -> E.Value
+agentFormPayload af =
+    E.object
+        [ ( "name", E.string af.name )
+        , ( "agentCode", E.string af.agentCode )
+        , ( "countryCode", E.string af.countryCode )
+        , ( "contractStatus", E.string af.contractStatus )
+        , ( "agentStatus", E.string af.agentStatus )
+        , ( "studentsReferred"
+          , E.int (Maybe.withDefault 0 (String.toInt af.studentsReferred))
+          )
+        , ( "notes", E.string af.notes )
+        ]
+
+
+leadFormPayload : LeadForm -> E.Value
+leadFormPayload lf =
+    E.object
+        [ ( "leadNumber", E.string lf.leadNumber )
+        , ( "name", E.string lf.name )
+        , ( "email", E.string lf.email )
+        , ( "phone", E.string lf.phone )
+        , ( "nationality", E.string lf.nationality )
+        , ( "currentCountry", E.string lf.currentCountry )
+        , ( "interestedCountry", E.string lf.interestedCountry )
+        , ( "interestedService", E.string lf.interestedService )
+        , ( "source", E.string lf.source )
+        , ( "assignedTo", E.string lf.assignedTo )
+        , ( "status", E.string lf.status )
+        , ( "followUpDate", E.string lf.followUpDate )
+        , ( "notes", E.string lf.notes )
         ]
 
 
@@ -220,6 +1349,7 @@ type alias DealCore =
     , contactId : String
     , contactName : String
     , value : Float
+    , currency : String
     }
 
 
@@ -234,12 +1364,13 @@ type alias DealExtras =
 
 dealCoreDecoder : D.Decoder DealCore
 dealCoreDecoder =
-    D.map5 DealCore
+    D.map6 DealCore
         (D.field "id" D.string)
         (D.field "title" D.string)
         (optString "contactId")
         (optString "contactName")
         (D.oneOf [ D.field "value" D.float, D.succeed 0 ])
+        (D.oneOf [ D.field "currency" D.string, D.succeed "USD" ])
 
 
 dealExtrasDecoder : D.Decoder DealExtras
@@ -262,6 +1393,7 @@ dealDecoder =
                 core.contactId
                 core.contactName
                 core.value
+                core.currency
                 extras.stage
                 extras.closeDate
                 extras.owner
@@ -340,37 +1472,6 @@ userExpect toMsg =
 
                         Err err ->
                             Err ("Could not parse response: " ++ D.errorToString err)
-
-
-contactsExpect : (Result String (List Contact) -> msg) -> Http.Expect msg
-contactsExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ _ body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err "Could not load contacts."
-
-                Http.GoodStatus_ _ body ->
-                    case D.decodeString contactsDecoder body of
-                        Ok cs ->
-                            Ok cs
-
-                        Err err ->
-                            Err ("Could not parse contacts: " ++ D.errorToString err)
 
 
 activitiesExpect : (Result String (List Activity) -> msg) -> Http.Expect msg
@@ -469,41 +1570,6 @@ deletedExpect toMsg =
 
                         Err err ->
                             Err ("Could not parse response: " ++ D.errorToString err)
-
-
-dealsExpect : (Result String (List Deal) -> msg) -> Http.Expect msg
-dealsExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ metadata body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err
-                                ("Could not load deals (HTTP "
-                                    ++ String.fromInt metadata.statusCode
-                                    ++ "). Is /api/deals implemented on the backend?"
-                                )
-
-                Http.GoodStatus_ _ body ->
-                    case D.decodeString dealsDecoder body of
-                        Ok ds ->
-                            Ok ds
-
-                        Err err ->
-                            Err ("Could not parse deals: " ++ D.errorToString err)
 
 
 savedDealExpect : (Result ApiError Deal -> msg) -> Http.Expect msg
@@ -717,6 +1783,821 @@ statusExpect toMsg =
                             Err ("Could not parse response: " ++ D.errorToString err)
 
 
+contactsPageExpect : (Result String ( List Contact, Int ) -> msg) -> Http.Expect msg
+contactsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load contacts."
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "contacts" (D.list contactDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse contacts: " ++ D.errorToString err)
+
+
+dealsPageExpect : (Result String ( List Deal, Int ) -> msg) -> Http.Expect msg
+dealsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load deals (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "deals" (D.list dealDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse deals: " ++ D.errorToString err)
+
+
+schoolsPageExpect : (Result String ( List School, Int ) -> msg) -> Http.Expect msg
+schoolsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load schools (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "schools" (D.list schoolDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse schools: " ++ D.errorToString err)
+
+
+studentsPageExpect : (Result String ( List Student, Int ) -> msg) -> Http.Expect msg
+studentsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load students (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "students" (D.list studentDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse students: " ++ D.errorToString err)
+
+
+agentsPageExpect : (Result String ( List Agent, Int ) -> msg) -> Http.Expect msg
+agentsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load agents (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "agents" (D.list agentDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse agents: " ++ D.errorToString err)
+
+
+leadsPageExpect : (Result String ( List Lead, Int ) -> msg) -> Http.Expect msg
+leadsPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load leads (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "leads" (D.list leadDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse leads: " ++ D.errorToString err)
+
+
+savedSchoolExpect : (Result ApiError School -> msg) -> Http.Expect msg
+savedSchoolExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err (GenericError ("Bad URL: " ++ url))
+
+                Http.Timeout_ ->
+                    Err (GenericError "Request timed out.")
+
+                Http.NetworkError_ ->
+                    Err (GenericError "Network error.")
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields ->
+                            Err (FieldErrors fields)
+
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg ->
+                                    Err (GenericError msg)
+
+                                Err _ ->
+                                    Err (GenericError "Could not save school.")
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "school" schoolDecoder) body of
+                        Ok s ->
+                            Ok s
+
+                        Err err ->
+                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedSchoolExpect : (Result String String -> msg) -> Http.Expect msg
+deletedSchoolExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not delete school."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id ->
+                            Ok id
+
+                        Err err ->
+                            Err ("Could not parse response: " ++ D.errorToString err)
+
+
+savedStudentExpect : (Result ApiError Student -> msg) -> Http.Expect msg
+savedStudentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err (GenericError ("Bad URL: " ++ url))
+
+                Http.Timeout_ ->
+                    Err (GenericError "Request timed out.")
+
+                Http.NetworkError_ ->
+                    Err (GenericError "Network error.")
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields ->
+                            Err (FieldErrors fields)
+
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg ->
+                                    Err (GenericError msg)
+
+                                Err _ ->
+                                    Err (GenericError "Could not save student.")
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "student" studentDecoder) body of
+                        Ok s ->
+                            Ok s
+
+                        Err err ->
+                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedStudentExpect : (Result String String -> msg) -> Http.Expect msg
+deletedStudentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not delete student."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id ->
+                            Ok id
+
+                        Err err ->
+                            Err ("Could not parse response: " ++ D.errorToString err)
+
+
+savedAgentExpect : (Result ApiError Agent -> msg) -> Http.Expect msg
+savedAgentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err (GenericError ("Bad URL: " ++ url))
+
+                Http.Timeout_ ->
+                    Err (GenericError "Request timed out.")
+
+                Http.NetworkError_ ->
+                    Err (GenericError "Network error.")
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields ->
+                            Err (FieldErrors fields)
+
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg ->
+                                    Err (GenericError msg)
+
+                                Err _ ->
+                                    Err (GenericError "Could not save agent.")
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "agent" agentDecoder) body of
+                        Ok a ->
+                            Ok a
+
+                        Err err ->
+                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedAgentExpect : (Result String String -> msg) -> Http.Expect msg
+deletedAgentExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not delete agent."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id ->
+                            Ok id
+
+                        Err err ->
+                            Err ("Could not parse response: " ++ D.errorToString err)
+
+
+savedLeadExpect : (Result ApiError Lead -> msg) -> Http.Expect msg
+savedLeadExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err (GenericError ("Bad URL: " ++ url))
+
+                Http.Timeout_ ->
+                    Err (GenericError "Request timed out.")
+
+                Http.NetworkError_ ->
+                    Err (GenericError "Network error.")
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields ->
+                            Err (FieldErrors fields)
+
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg ->
+                                    Err (GenericError msg)
+
+                                Err _ ->
+                                    Err (GenericError "Could not save lead.")
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "lead" leadDecoder) body of
+                        Ok l ->
+                            Ok l
+
+                        Err err ->
+                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedLeadExpect : (Result String String -> msg) -> Http.Expect msg
+deletedLeadExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not delete lead."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id ->
+                            Ok id
+
+                        Err err ->
+                            Err ("Could not parse response: " ++ D.errorToString err)
+
+
+taskDecoder : D.Decoder Task
+taskDecoder =
+    D.map Task (D.field "id" D.string)
+        |> andMap (D.field "title" D.string)
+        |> andMap (optString "description")
+        |> andMap (D.oneOf [ D.field "status" D.string, D.succeed "todo" ])
+        |> andMap (optString "dueDate")
+        |> andMap (optString "contactId")
+        |> andMap (optString "contactName")
+        |> andMap (optString "owner")
+        |> andMap (optString "createdAt")
+
+
+taskFormPayload : TaskForm -> E.Value
+taskFormPayload tf =
+    E.object
+        [ ( "title", E.string tf.title )
+        , ( "description", E.string tf.description )
+        , ( "status", E.string tf.status )
+        , ( "dueDate", E.string tf.dueDate )
+        , ( "contactId", E.string tf.contactId )
+        , ( "owner", E.string tf.owner )
+        ]
+
+
+tasksPageExpect : (Result String ( List Task, Int ) -> msg) -> Http.Expect msg
+tasksPageExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ metadata body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err ("Could not load tasks (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
+
+                Http.GoodStatus_ _ body ->
+                    case
+                        D.decodeString
+                            (D.map2 Tuple.pair
+                                (D.field "tasks" (D.list taskDecoder))
+                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
+                            )
+                            body
+                    of
+                        Ok pair ->
+                            Ok pair
+
+                        Err err ->
+                            Err ("Could not parse tasks: " ++ D.errorToString err)
+
+
+savedTaskExpect : (Result ApiError Task -> msg) -> Http.Expect msg
+savedTaskExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err (GenericError ("Bad URL: " ++ url))
+
+                Http.Timeout_ ->
+                    Err (GenericError "Request timed out.")
+
+                Http.NetworkError_ ->
+                    Err (GenericError "Network error.")
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString fieldErrorDecoder body of
+                        Ok fields ->
+                            Err (FieldErrors fields)
+
+                        Err _ ->
+                            case D.decodeString errorDecoder body of
+                                Ok msg ->
+                                    Err (GenericError msg)
+
+                                Err _ ->
+                                    Err (GenericError "Could not save task.")
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "task" taskDecoder) body of
+                        Ok task ->
+                            Ok task
+
+                        Err err ->
+                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
+
+
+deletedTaskExpect : (Result String String -> msg) -> Http.Expect msg
+deletedTaskExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not delete task."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deleted" D.string) body of
+                        Ok id ->
+                            Ok id
+
+                        Err err ->
+                            Err ("Could not parse response: " ++ D.errorToString err)
+
+
+-- SINGLE-RECORD FETCH EXPECTS --------------------------------------------
+
+
+contactFetchExpect : (Result String Contact -> msg) -> Http.Expect msg
+contactFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load contact."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "contact" contactDecoder) body of
+                        Ok c ->
+                            Ok c
+
+                        Err err ->
+                            Err ("Could not parse contact: " ++ D.errorToString err)
+
+
+dealFetchExpect : (Result String Deal -> msg) -> Http.Expect msg
+dealFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load deal."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "deal" dealDecoder) body of
+                        Ok d ->
+                            Ok d
+
+                        Err err ->
+                            Err ("Could not parse deal: " ++ D.errorToString err)
+
+
+schoolFetchExpect : (Result String School -> msg) -> Http.Expect msg
+schoolFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load school."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "school" schoolDecoder) body of
+                        Ok s ->
+                            Ok s
+
+                        Err err ->
+                            Err ("Could not parse school: " ++ D.errorToString err)
+
+
+studentFetchExpect : (Result String Student -> msg) -> Http.Expect msg
+studentFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load student."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "student" studentDecoder) body of
+                        Ok s ->
+                            Ok s
+
+                        Err err ->
+                            Err ("Could not parse student: " ++ D.errorToString err)
+
+
+agentFetchExpect : (Result String Agent -> msg) -> Http.Expect msg
+agentFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load agent."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "agent" agentDecoder) body of
+                        Ok a ->
+                            Ok a
+
+                        Err err ->
+                            Err ("Could not parse agent: " ++ D.errorToString err)
+
+
+leadFetchExpect : (Result String Lead -> msg) -> Http.Expect msg
+leadFetchExpect toMsg =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Err ("Bad URL: " ++ url)
+
+                Http.Timeout_ ->
+                    Err "Request timed out."
+
+                Http.NetworkError_ ->
+                    Err "Network error."
+
+                Http.BadStatus_ _ body ->
+                    case D.decodeString errorDecoder body of
+                        Ok msg ->
+                            Err msg
+
+                        Err _ ->
+                            Err "Could not load lead."
+
+                Http.GoodStatus_ _ body ->
+                    case D.decodeString (D.field "lead" leadDecoder) body of
+                        Ok l ->
+                            Ok l
+
+                        Err err ->
+                            Err ("Could not parse lead: " ++ D.errorToString err)
+
+
 -- REQUESTS ----------------------------------------------------------------
 
 
@@ -746,6 +2627,97 @@ me token toMsg =
         , url = "/api/me"
         , body = Http.emptyBody
         , expect = userExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchContact : String -> String -> (Result String Contact -> msg) -> Cmd msg
+fetchContact token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/contacts/" ++ id
+        , body = Http.emptyBody
+        , expect = contactFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchDeal : String -> String -> (Result String Deal -> msg) -> Cmd msg
+fetchDeal token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/deals/" ++ id
+        , body = Http.emptyBody
+        , expect = dealFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchSchool : String -> String -> (Result String School -> msg) -> Cmd msg
+fetchSchool token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/schools/" ++ id
+        , body = Http.emptyBody
+        , expect = schoolFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchStudent : String -> String -> (Result String Student -> msg) -> Cmd msg
+fetchStudent token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/students/" ++ id
+        , body = Http.emptyBody
+        , expect = studentFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchStudentDossier : String -> String -> (Result String Dossier -> msg) -> Cmd msg
+fetchStudentDossier token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/students/" ++ id ++ "/dossier"
+        , body = Http.emptyBody
+        , expect = dossierExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchAgent : String -> String -> (Result String Agent -> msg) -> Cmd msg
+fetchAgent token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/agents/" ++ id
+        , body = Http.emptyBody
+        , expect = agentFetchExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchLead : String -> String -> (Result String Lead -> msg) -> Cmd msg
+fetchLead token id toMsg =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/leads/" ++ id
+        , body = Http.emptyBody
+        , expect = leadFetchExpect toMsg
         , timeout = Nothing
         , tracker = Nothing
         }
@@ -941,6 +2913,270 @@ deleteDeal token id toMsg =
         }
 
 
+fetchSchools : String -> String -> Int -> Int -> (Result String ( List School, Int ) -> msg) -> Cmd msg
+fetchSchools token query limit offset toMsg =
+    let
+        qs =
+            String.join "&"
+                [ "q=" ++ Url.percentEncode query
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/schools?" ++ qs
+        , body = Http.emptyBody
+        , expect = schoolsPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createSchool : String -> SchoolForm -> (Result ApiError School -> msg) -> Cmd msg
+createSchool token sf toMsg =
+    Http.request
+        { method = "POST"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/schools"
+        , body = Http.jsonBody (schoolFormPayload sf)
+        , expect = savedSchoolExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateSchool : String -> String -> SchoolForm -> (Result ApiError School -> msg) -> Cmd msg
+updateSchool token id sf toMsg =
+    Http.request
+        { method = "PUT"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/schools/" ++ id
+        , body = Http.jsonBody (schoolFormPayload sf)
+        , expect = savedSchoolExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteSchool : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteSchool token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/schools/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedSchoolExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchStudents : String -> String -> Int -> Int -> (Result String ( List Student, Int ) -> msg) -> Cmd msg
+fetchStudents token query limit offset toMsg =
+    let
+        qs =
+            String.join "&"
+                [ "q=" ++ Url.percentEncode query
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/students?" ++ qs
+        , body = Http.emptyBody
+        , expect = studentsPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createStudent : String -> StudentForm -> (Result ApiError Student -> msg) -> Cmd msg
+createStudent token sf toMsg =
+    Http.request
+        { method = "POST"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/students"
+        , body = Http.jsonBody (studentFormPayload sf)
+        , expect = savedStudentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateStudent : String -> String -> StudentForm -> (Result ApiError Student -> msg) -> Cmd msg
+updateStudent token id sf toMsg =
+    Http.request
+        { method = "PUT"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/students/" ++ id
+        , body = Http.jsonBody (studentFormPayload sf)
+        , expect = savedStudentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteStudent : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteStudent token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/students/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedStudentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchAgents : String -> String -> Int -> Int -> (Result String ( List Agent, Int ) -> msg) -> Cmd msg
+fetchAgents token query limit offset toMsg =
+    let
+        qs =
+            String.join "&"
+                [ "q=" ++ Url.percentEncode query
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/agents?" ++ qs
+        , body = Http.emptyBody
+        , expect = agentsPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createAgent : String -> AgentForm -> (Result ApiError Agent -> msg) -> Cmd msg
+createAgent token af toMsg =
+    Http.request
+        { method = "POST"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/agents"
+        , body = Http.jsonBody (agentFormPayload af)
+        , expect = savedAgentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateAgent : String -> String -> AgentForm -> (Result ApiError Agent -> msg) -> Cmd msg
+updateAgent token id af toMsg =
+    Http.request
+        { method = "PUT"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/agents/" ++ id
+        , body = Http.jsonBody (agentFormPayload af)
+        , expect = savedAgentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteAgent : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteAgent token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/agents/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedAgentExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+fetchLeads : String -> String -> Int -> Int -> (Result String ( List Lead, Int ) -> msg) -> Cmd msg
+fetchLeads token query limit offset toMsg =
+    let
+        qs =
+            String.join "&"
+                [ "q=" ++ Url.percentEncode query
+                , "limit=" ++ String.fromInt limit
+                , "offset=" ++ String.fromInt offset
+                ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/leads?" ++ qs
+        , body = Http.emptyBody
+        , expect = leadsPageExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+createLead : String -> LeadForm -> (Result ApiError Lead -> msg) -> Cmd msg
+createLead token lf toMsg =
+    Http.request
+        { method = "POST"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/leads"
+        , body = Http.jsonBody (leadFormPayload lf)
+        , expect = savedLeadExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+updateLead : String -> String -> LeadForm -> (Result ApiError Lead -> msg) -> Cmd msg
+updateLead token id lf toMsg =
+    Http.request
+        { method = "PUT"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/leads/" ++ id
+        , body = Http.jsonBody (leadFormPayload lf)
+        , expect = savedLeadExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteLead : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteLead token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/leads/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedLeadExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
 updateMe : String -> String -> String -> (Result ApiError ProfileUpdateResponse -> msg) -> Cmd msg
 updateMe token name email toMsg =
     Http.request
@@ -996,212 +3232,6 @@ logoutAll token toMsg =
         , timeout = Nothing
         , tracker = Nothing
         }
-
-
-contactsPageExpect : (Result String ( List Contact, Int ) -> msg) -> Http.Expect msg
-contactsPageExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ _ body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err "Could not load contacts."
-
-                Http.GoodStatus_ _ body ->
-                    case
-                        D.decodeString
-                            (D.map2 Tuple.pair
-                                (D.field "contacts" (D.list contactDecoder))
-                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
-                            )
-                            body
-                    of
-                        Ok pair ->
-                            Ok pair
-
-                        Err err ->
-                            Err ("Could not parse contacts: " ++ D.errorToString err)
-
-
-dealsPageExpect : (Result String ( List Deal, Int ) -> msg) -> Http.Expect msg
-dealsPageExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ metadata body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err ("Could not load deals (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
-
-                Http.GoodStatus_ _ body ->
-                    case
-                        D.decodeString
-                            (D.map2 Tuple.pair
-                                (D.field "deals" (D.list dealDecoder))
-                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
-                            )
-                            body
-                    of
-                        Ok pair ->
-                            Ok pair
-
-                        Err err ->
-                            Err ("Could not parse deals: " ++ D.errorToString err)
-
-
-taskDecoder : D.Decoder Task
-taskDecoder =
-    D.map Task (D.field "id" D.string)
-        |> andMap (D.field "title" D.string)
-        |> andMap (optString "description")
-        |> andMap (D.oneOf [ D.field "status" D.string, D.succeed "todo" ])
-        |> andMap (optString "dueDate")
-        |> andMap (optString "contactId")
-        |> andMap (optString "contactName")
-        |> andMap (optString "owner")
-        |> andMap (optString "createdAt")
-
-
-taskFormPayload : TaskForm -> E.Value
-taskFormPayload tf =
-    E.object
-        [ ( "title", E.string tf.title )
-        , ( "description", E.string tf.description )
-        , ( "status", E.string tf.status )
-        , ( "dueDate", E.string tf.dueDate )
-        , ( "contactId", E.string tf.contactId )
-        , ( "owner", E.string tf.owner )
-        ]
-
-
-tasksPageExpect : (Result String ( List Task, Int ) -> msg) -> Http.Expect msg
-tasksPageExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ metadata body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err ("Could not load tasks (HTTP " ++ String.fromInt metadata.statusCode ++ ").")
-
-                Http.GoodStatus_ _ body ->
-                    case
-                        D.decodeString
-                            (D.map2 Tuple.pair
-                                (D.field "tasks" (D.list taskDecoder))
-                                (D.oneOf [ D.field "total" D.int, D.succeed 0 ])
-                            )
-                            body
-                    of
-                        Ok pair ->
-                            Ok pair
-
-                        Err err ->
-                            Err ("Could not parse tasks: " ++ D.errorToString err)
-
-
-savedTaskExpect : (Result ApiError Task -> msg) -> Http.Expect msg
-savedTaskExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err (GenericError ("Bad URL: " ++ url))
-
-                Http.Timeout_ ->
-                    Err (GenericError "Request timed out.")
-
-                Http.NetworkError_ ->
-                    Err (GenericError "Network error.")
-
-                Http.BadStatus_ _ body ->
-                    case D.decodeString fieldErrorDecoder body of
-                        Ok fields ->
-                            Err (FieldErrors fields)
-
-                        Err _ ->
-                            case D.decodeString errorDecoder body of
-                                Ok msg ->
-                                    Err (GenericError msg)
-
-                                Err _ ->
-                                    Err (GenericError "Could not save task.")
-
-                Http.GoodStatus_ _ body ->
-                    case D.decodeString (D.field "task" taskDecoder) body of
-                        Ok task ->
-                            Ok task
-
-                        Err err ->
-                            Err (GenericError ("Could not parse response: " ++ D.errorToString err))
-
-
-deletedTaskExpect : (Result String String -> msg) -> Http.Expect msg
-deletedTaskExpect toMsg =
-    Http.expectStringResponse toMsg <|
-        \response ->
-            case response of
-                Http.BadUrl_ url ->
-                    Err ("Bad URL: " ++ url)
-
-                Http.Timeout_ ->
-                    Err "Request timed out."
-
-                Http.NetworkError_ ->
-                    Err "Network error."
-
-                Http.BadStatus_ _ body ->
-                    case D.decodeString errorDecoder body of
-                        Ok msg ->
-                            Err msg
-
-                        Err _ ->
-                            Err "Could not delete task."
-
-                Http.GoodStatus_ _ body ->
-                    case D.decodeString (D.field "deleted" D.string) body of
-                        Ok id ->
-                            Ok id
-
-                        Err err ->
-                            Err ("Could not parse response: " ++ D.errorToString err)
 
 
 fetchTasks : String -> String -> String -> (Result String ( List Task, Int ) -> msg) -> Cmd msg
@@ -1284,6 +3314,38 @@ deleteTask token id toMsg =
         , url = "/api/tasks/" ++ id
         , body = Http.emptyBody
         , expect = deletedTaskExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+-- BULK / PARTIAL UPDATES --------------------------------------------------
+
+
+updateDealStageOnly : String -> String -> String -> (Result ApiError Deal -> msg) -> Cmd msg
+updateDealStageOnly token id newStage toMsg =
+    Http.request
+        { method = "PATCH"
+        , headers =
+            [ Http.header "Authorization" ("Bearer " ++ token)
+            , Http.header "Content-Type" "application/json"
+            ]
+        , url = "/api/deals/" ++ id ++ "/stage"
+        , body = Http.jsonBody (E.object [ ( "stage", E.string newStage ) ])
+        , expect = savedDealExpect toMsg
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+deleteDealRaw : String -> String -> (Result String String -> msg) -> Cmd msg
+deleteDealRaw token id toMsg =
+    Http.request
+        { method = "DELETE"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/deals/" ++ id
+        , body = Http.emptyBody
+        , expect = deletedDealExpect toMsg
         , timeout = Nothing
         , tracker = Nothing
         }

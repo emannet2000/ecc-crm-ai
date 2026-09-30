@@ -1,2 +1,31 @@
-node_modules/
-server/node_modules/
+# Elm
+elm-stuff/
+elm.js
+
+# Build outputs
+build/
+dist/
+target/
+
+# Go
+*.exe
+*.test
+coverage.out
+
+# Haskell
+dist-newstyle/
+.stack-work/
+
+# Logs
+*.log
+err.txt
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
