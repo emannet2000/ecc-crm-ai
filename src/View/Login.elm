@@ -81,14 +81,18 @@ loginCard model =
                 "Set up your account in under a minute."
 
         submitLabel =
-            if model.submitting then
-                "Signing in…"
+            case ( model.mode, model.submitting ) of
+                ( Login, True ) ->
+                    "Signing in…"
 
-            else if model.mode == Login then
-                "Sign in"
+                ( Login, False ) ->
+                    "Sign in"
 
-            else
-                "Create account"
+                ( Register, True ) ->
+                    "Creating account…"
+
+                ( Register, False ) ->
+                    "Create account"
 
         switchLabel =
             if model.mode == Login then

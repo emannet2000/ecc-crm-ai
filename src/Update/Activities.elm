@@ -29,8 +29,33 @@ update msg model =
             )
 
 
-        ClosedActivityForm ->
+        RequestedCloseActivityForm ->
+            case ( model.activityForm, model.deletingActivity ) of
+                ( _, Just _ ) ->
+                    ( { model | deletingActivity = Nothing }, Cmd.none )
+
+                ( Just af, _ ) ->
+                    if af.dirty && not af.submitting then
+                        ( { model | activityForm = Just { af | confirmDiscard = True } }, Cmd.none )
+
+                    else
+                        ( { model | activityForm = Nothing }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
+
+        ConfirmedCloseActivityForm ->
             ( { model | activityForm = Nothing }, Cmd.none )
+
+
+        CancelledCloseActivityForm ->
+            case model.activityForm of
+                Just af ->
+                    ( { model | activityForm = Just { af | confirmDiscard = False } }, Cmd.none )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
 
         UpdatedActivityFormField field value ->
@@ -58,7 +83,8 @@ update msg model =
                         | activityForm =
                             Just
                                 { updated
-                                    | errors =
+                                    | dirty = True
+                                    , errors =
                                         List.filter (\( f, _ ) -> f /= field) updated.errors
                                 }
                       }

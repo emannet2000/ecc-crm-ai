@@ -215,7 +215,7 @@ activityFormView af =
             [ button
                 [ type_ "button"
                 , class "ecc-btn ecc-btn--ghost ecc-btn--inline"
-                , onClick ClosedActivityForm
+                , onClick RequestedCloseActivityForm
                 , disabled af.submitting
                 ]
                 [ text "Cancel" ]
@@ -229,23 +229,45 @@ activityFormView af =
         ]
 
 
+discardActivityConfirmView : Html Msg
+discardActivityConfirmView =
+    div [ class "modal__confirm" ]
+        [ p [ class "modal__confirm-text" ]
+            [ text "Discard your changes? They won't be saved." ]
+        , div [ class "modal__actions" ]
+            [ button
+                [ type_ "button"
+                , class "ecc-btn ecc-btn--ghost ecc-btn--inline"
+                , onClick CancelledCloseActivityForm
+                ]
+                [ text "Keep editing" ]
+            , button
+                [ type_ "button"
+                , class "ecc-btn ecc-btn--danger ecc-btn--inline"
+                , onClick ConfirmedCloseActivityForm
+                ]
+                [ text "Discard" ]
+            ]
+        ]
+
+
 activityFormModal : ActivityForm -> Html Msg
 activityFormModal af =
-    div [ class "modal-backdrop", onClick ClosedActivityForm ]
+    div [ class "modal-backdrop", onClick RequestedCloseActivityForm ]
         [ div
             [ class "modal modal--wide"
             , Attr.attribute "role" "dialog"
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Log activity"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Log activity" ]
                 , button
                     [ class "modal__close"
                     , type_ "button"
-                    , onClick ClosedActivityForm
+                    , onClick RequestedCloseActivityForm
                     , Attr.attribute "aria-label" "Close"
                     ]
                     [ svgIcon
@@ -263,7 +285,11 @@ activityFormModal af =
                         ]
                     ]
                 ]
-            , activityFormView af
+            , if af.confirmDiscard then
+                discardActivityConfirmView
+
+              else
+                activityFormView af
             ]
         ]
 
@@ -277,7 +303,7 @@ deleteActivityConfirmModal a =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete activity"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete activity" ]

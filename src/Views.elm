@@ -4,6 +4,7 @@ module Views exposing (view)
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class)
+import Html.Events
 import Set
 import Types exposing (..)
 import View.Activity exposing (activityFormModal, deleteActivityConfirmModal)
@@ -190,11 +191,12 @@ pageContent model user =
 
           else
             text ""
-        , if not (String.isEmpty model.bulkMoveStage) then
-            bulkMoveConfirmModal model.bulkMoveStage (Set.size model.selectedDeals)
+        , case model.bulkMoveStage of
+            Just stageName ->
+                bulkMoveConfirmModal stageName (Set.size model.selectedDeals)
 
-          else
-            text ""
+            Nothing ->
+                text ""
         , case model.activityForm of
             Just af ->
                 activityFormModal af
@@ -350,7 +352,16 @@ pageContent model user =
 appShell : Model -> User -> Html Msg
 appShell model user =
     div [ class "app-shell" ]
-        [ sidebar model user
+        [ if model.sidebarOpen then
+            div
+                [ class "sidebar-backdrop"
+                , Html.Events.onClick ToggledSideBar
+                ]
+                []
+
+          else
+            text ""
+        , sidebar model user
         , div [ class "app-main" ]
             [ topbar model user
             , main_ [ class "content" ]
@@ -375,20 +386,30 @@ loadingView =
         ]
 
 
+motifs : List (Html msg)
+motifs =
+    [ div [ class "motif-line", Attr.attribute "aria-hidden" "true" ] []
+    , div [ class "motif-orb", Attr.attribute "aria-hidden" "true" ] []
+    , div [ class "motif-dots", Attr.attribute "aria-hidden" "true" ] []
+    ]
+
+
 view : Model -> Html Msg
 view model =
     main_ [ class "ecc-shell" ]
-        [ if model.bootstrapping then
-            loadingView
+        (motifs
+            ++ [ if model.bootstrapping then
+                    loadingView
 
-          else
-            case model.user of
-                Just user ->
-                    appShell model user
+                 else
+                    case model.user of
+                        Just user ->
+                            appShell model user
 
-                Nothing ->
-                    div [ class "ecc-split" ]
-                        [ brandPanel
-                        , loginCard model
-                        ]
-        ]
+                        Nothing ->
+                            div [ class "ecc-split" ]
+                                [ brandPanel
+                                , loginCard model
+                                ]
+               ]
+        )

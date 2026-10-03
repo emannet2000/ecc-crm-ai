@@ -110,10 +110,18 @@ stageNeighbors stage =
                 |> List.head
                 |> Maybe.map Tuple.first
                 |> Maybe.withDefault 0
+
+        prev =
+            if idx == 0 then
+                Nothing
+
+            else
+                List.drop (idx - 1) dealStageOptions |> List.head
+
+        next =
+            List.drop (idx + 1) dealStageOptions |> List.head
     in
-    ( List.drop (idx - 1) dealStageOptions |> List.head
-    , List.drop (idx + 1) dealStageOptions |> List.head
-    )
+    ( prev, next )
 
 
 dealStageClass : String -> String
@@ -222,7 +230,7 @@ dealCard model contacts movingId d =
                     MovedDeal d s
 
                 Nothing ->
-                    DismissedToast
+                    NoOp
 
         moveForwardMsg =
             case nextStage of
@@ -230,7 +238,7 @@ dealCard model contacts movingId d =
                     MovedDeal d s
 
                 Nothing ->
-                    DismissedToast
+                    NoOp
 
         onCardKeyDown =
             Html.Events.preventDefaultOn "keydown"
@@ -272,13 +280,15 @@ dealCard model contacts movingId d =
                     "deal-card__checkbox"
                 )
             , type_ "button"
-            , Attr.attribute "aria-label"
+            , Attr.attribute "role" "checkbox"
+            , Attr.attribute "aria-checked"
                 (if isSelected then
-                    "Deselect " ++ d.title
+                    "true"
 
                  else
-                    "Select " ++ d.title
+                    "false"
                 )
+            , Attr.attribute "aria-label" d.title
             , Html.Events.stopPropagationOn "click"
                 (D.succeed ( ToggledDealSelection d.id, True ))
             ]
@@ -775,7 +785,7 @@ dealsView model =
                             [ button
                                 [ class "deals-bulk-bar__btn"
                                 , type_ "button"
-                                , onClick (RequestedBulkMove "Qualified")
+                                , onClick (RequestedBulkMove "")
                                 ]
                                 [ text "Move to stage…" ]
                             , button

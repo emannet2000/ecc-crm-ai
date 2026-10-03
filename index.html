@@ -1,36 +1,24 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sign in · ECC-CRM</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/public/styles.css" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="elm.js"></script>
-    <script>
-      var app = Elm.Main.init({
-        node: document.getElementById("app"),
-        flags: {
-          token: localStorage.getItem("northwind_token"),
-          today: new Date().toISOString().slice(0, 10),
-        },
-      });
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECC CRM</title>
 
-      app.ports.storeToken.subscribe(function (maybeToken) {
-        if (maybeToken === null) {
-          localStorage.removeItem("northwind_token");
-        } else {
-          localStorage.setItem("northwind_token", maybeToken);
-        }
-      });
-    </script>
-  </body>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <script src="/elm.js"></script>
+  <script>
+    Elm.Main.init({ node: document.getElementById("app") });
+  </script>
+</body>
 </html>

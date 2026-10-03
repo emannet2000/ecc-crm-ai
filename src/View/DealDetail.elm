@@ -7,10 +7,12 @@ import Html.Attributes as Attr exposing (class, type_, disabled)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import View.Contacts exposing (contactById, contactList, stageBadge)
+import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, closingSoonAlert, dealEntry, overdueTaskAlert, staleDealAlert)
 import View.Deals exposing (dealStageOptions)
-import View.Format exposing (dealAgeDays, dealAgeLabel, formatCurrencyWith)
+import View.Format exposing (dateToDays, dealAgeDays, dealAgeLabel, formatCurrencyWith)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials)
 import View.Icons exposing (iconBack, iconCalendar, iconDeals, iconEdit, iconTasks, iconTrash, iconUserTiny)
+import View.Workflow exposing (workflowView)
 
 
 dealStagePillsDetail : Bool -> Deal -> Html Msg
@@ -36,6 +38,77 @@ dealStagePillsDetail isMoving d =
             )
             dealStageOptions
         )
+
+
+dealAlerts : Model -> Deal -> List PriorityAlert
+dealAlerts model d =
+    let
+        isOpen =
+            d.stage /= "Won" && d.stage /= "Lost"
+
+        staleAlert =
+            if isOpen then
+                let
+                    age =
+                        dealAgeDays model.today d.createdAt
+                            |> Maybe.withDefault 0
+                in
+                if age >= 45 then
+                    [ staleDealAlert model.today d ]
+
+                else
+                    []
+
+            else
+                []
+
+        closingAlert =
+            if isOpen && not (String.isEmpty d.closeDate) then
+                case ( dateToDays model.today, dateToDays d.closeDate ) of
+                    ( Just t, Just c ) ->
+                        if c - t <= 30 && c >= t then
+                            [ closingSoonAlert d ]
+
+                        else
+                            []
+
+                    _ ->
+                        []
+
+            else
+                []
+
+        fromTasks =
+            case ( model.tasks, d.contactId ) of
+                ( Success data, cid ) ->
+                    if String.isEmpty cid then
+                        []
+
+                    else
+                        data.items
+                            |> List.filter (\t -> t.contactId == cid && t.status /= "done")
+                            |> List.map overdueTaskAlert
+
+                _ ->
+                    []
+    in
+    fromTasks ++ staleAlert ++ closingAlert
+
+
+dealActivity : Model -> Deal -> List ActivityEntry
+dealActivity model d =
+    case model.deals of
+        Success data ->
+            if String.isEmpty d.contactId then
+                []
+
+            else
+                data.items
+                    |> List.filter (\x -> x.contactId == d.contactId && x.id /= d.id)
+                    |> List.map dealEntry
+
+        _ ->
+            []
 
 
 dealDetailView : Model -> Deal -> Html Msg
@@ -181,7 +254,10 @@ dealDetailView model d =
                                 p [ class "detail-muted" ]
                                     [ text d.contactName ]
                     )
-                , detailCard "Stage"
+                , detailCard "Workflow Progress"
+                    Nothing
+                    (workflowView dealStageOptions d.stage)
+                , detailCard "Change stage"
                     Nothing
                     (dealStagePillsDetail isMoving d)
                 , detailCard "Deal info"
@@ -221,5 +297,9 @@ dealDetailView model d =
                         "Activity on this deal will appear here once it's linked to a contact."
                     )
                 ]
+            ]
+        , div [ class "bottom-row" ]
+            [ alertsPanel (dealAlerts model d)
+            , activityPanel (dealActivity model d)
             ]
         ]

@@ -307,6 +307,8 @@ type alias ActivityForm =
     , occurredAt : String
     , errors : List ( String, String )
     , submitting : Bool
+    , dirty : Bool
+    , confirmDiscard : Bool
     }
 
 
@@ -318,6 +320,8 @@ emptyActivityForm =
     , occurredAt = ""
     , errors = []
     , submitting = False
+    , dirty = False
+    , confirmDiscard = False
     }
 
 
@@ -1339,7 +1343,7 @@ type alias Model =
     , dateFromFilter : String
     , dateToFilter : String
     , today : String
-    , bulkMoveStage : String
+    , bulkMoveStage : Maybe String
     , bulkDeleteConfirm : Bool
     , activities : RemoteData (List Activity)
     , activityForm : Maybe ActivityForm
@@ -1405,6 +1409,7 @@ type alias Model =
     , editingPartnerId : Maybe String
     , deletingPartner : Maybe Partner
     , pendingPartnersQuery : Maybe String
+    , sidebarOpen : Bool
     , navKey : Nav.Key
     }
 
@@ -1487,7 +1492,9 @@ type Msg
     | GotBulkDeleted (List String) (Result String String)
     | GotActivities (Result String (List Activity))
     | OpenedActivityForm
-    | ClosedActivityForm
+    | RequestedCloseActivityForm
+    | ConfirmedCloseActivityForm
+    | CancelledCloseActivityForm
     | UpdatedActivityFormField String String
     | SubmittedActivityForm
     | GotSavedActivity (Result ApiError Activity)
@@ -1694,3 +1701,5 @@ type Msg
     | UrlChanged Url.Url
     | DismissedToast
     | EscapePressed
+    | ToggledSideBar
+    | NoOp

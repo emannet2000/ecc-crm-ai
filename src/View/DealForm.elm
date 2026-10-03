@@ -297,7 +297,7 @@ dealFormModal model df =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" titleText
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text titleText ]
@@ -340,7 +340,7 @@ deleteDealConfirmModal deal =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete deal"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete deal" ]
@@ -397,7 +397,7 @@ bulkDeleteConfirmModal n =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete selected deals"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete selected deals" ]
@@ -436,7 +436,7 @@ bulkMoveConfirmModal currentStage n =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Move selected deals"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Move selected deals" ]
@@ -478,6 +478,7 @@ bulkMoveConfirmModal currentStage n =
                         [ type_ "button"
                         , class "ecc-btn ecc-btn--inline"
                         , onClick ConfirmedBulkMove
+                        , disabled (String.isEmpty currentStage)
                         ]
                         [ text "Move" ]
                     ]

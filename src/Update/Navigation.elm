@@ -13,6 +13,9 @@ import Url
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ToggledSideBar ->
+            ( { model | sidebarOpen = not model.sidebarOpen }, Cmd.none )
+
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
@@ -123,6 +126,7 @@ update msg model =
                 clearedModel =
                     { model
                         | route = route
+                        , sidebarOpen = False
                         , contactForm = Nothing
                         , deletingContact = Nothing
                         , viewingContact = preservedContact
@@ -151,7 +155,7 @@ update msg model =
                         , passwordForm = emptyPasswordForm
                         , logoutAllConfirm = False
                         , bulkDeleteConfirm = False
-                        , bulkMoveStage = ""
+                        , bulkMoveStage = Nothing
                         , caseForm = Nothing
                         , deletingCase = Nothing
                         , viewingCase = preservedCase
@@ -190,16 +194,14 @@ update msg model =
                             False
 
                 needsContacts =
-                    onHome
-                        || ((route == Contacts || route == Tasks)
-                                && clearedModel.contacts == NotAsked
-                           )
+                    (route == Contacts || route == Tasks)
+                        && clearedModel.contacts
+                        == NotAsked
 
                 needsDeals =
-                    onHome
-                        || ((route == Deals || onContactDetail)
-                                && clearedModel.deals == NotAsked
-                           )
+                    (route == Deals || onContactDetail)
+                        && clearedModel.deals
+                        == NotAsked
 
                 needsTasks =
                     (route == Tasks || onContactDetail)
@@ -229,20 +231,17 @@ update msg model =
                         || (route == Leads && clearedModel.leads == NotAsked)
 
                 needsCases =
-                    onHome
-                        || ((route == Cases || onStudentDetail)
-                                && clearedModel.cases == NotAsked
-                           )
+                    (route == Cases || onStudentDetail)
+                        && clearedModel.cases
+                        == NotAsked
 
                 needsInvoices =
-                    onHome
-                        || ((route == Invoices || onStudentDetail)
-                                && clearedModel.invoices == NotAsked
-                           )
+                    (route == Invoices || onStudentDetail)
+                        && clearedModel.invoices
+                        == NotAsked
 
                 needsPartners =
-                    onHome
-                        || (route == Partners && clearedModel.partners == NotAsked)
+                    route == Partners && clearedModel.partners == NotAsked
 
                 contactsCmd =
                     if needsContacts then Tuple.second (loadContacts clearedModel) else Cmd.none
@@ -343,13 +342,6 @@ update msg model =
                         _ ->
                             Cmd.none
 
-                pushCmd =
-                    if model.route == route then
-                        Cmd.none
-
-                    else
-                        Nav.pushUrl model.navKey (routeToPath route)
-
                 finalModel =
                     { clearedModel
                         | contacts = if needsContacts then Loading else clearedModel.contacts
@@ -366,8 +358,7 @@ update msg model =
             in
             ( finalModel
             , Cmd.batch
-                [ pushCmd
-                , contactsCmd
+                [ contactsCmd
                 , dealsCmd
                 , tasksCmd
                 , activityCmd

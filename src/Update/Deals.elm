@@ -497,34 +497,38 @@ update msg model =
 
 
         RequestedBulkMove stageName ->
-            ( { model | bulkMoveStage = stageName }, Cmd.none )
+            ( { model | bulkMoveStage = Just stageName }, Cmd.none )
 
 
         CancelledBulkMove ->
-            ( { model | bulkMoveStage = "" }, Cmd.none )
+            ( { model | bulkMoveStage = Nothing }, Cmd.none )
 
 
         ConfirmedBulkMove ->
-            case model.token of
-                Just token ->
-                    let
-                        ids =
-                            Set.toList model.selectedDeals
+            case ( model.token, model.bulkMoveStage ) of
+                ( Just token, Just stageName ) ->
+                    if String.isEmpty stageName then
+                        ( model, Cmd.none )
 
-                        cmds =
-                            List.map
-                                (\dealId ->
-                                    Api.updateDealStageOnly token dealId model.bulkMoveStage
-                                        (GotBulkMoved ids)
-                                )
-                                ids
-                    in
-                    ( { model | bulkMoveStage = "" }
-                    , Cmd.batch cmds
-                    )
+                    else
+                        let
+                            ids =
+                                Set.toList model.selectedDeals
 
-                Nothing ->
-                    ( model, Cmd.none )
+                            cmds =
+                                List.map
+                                    (\dealId ->
+                                        Api.updateDealStageOnly token dealId stageName
+                                            (GotBulkMoved ids)
+                                    )
+                                    ids
+                        in
+                        ( { model | bulkMoveStage = Nothing }
+                        , Cmd.batch cmds
+                        )
+
+                _ ->
+                    ( { model | bulkMoveStage = Nothing }, Cmd.none )
 
 
         RequestedBulkDelete ->

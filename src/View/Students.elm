@@ -7,6 +7,7 @@ import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, d
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
+import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, caseEntry, documentCorrectionAlert, documentEntry, expiredDocumentAlert, invoiceEntry, outstandingInvoiceAlert)
 import View.Format exposing (formatCurrency)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconMail, iconPin, iconSchool, iconStudent, iconTasks, iconTrash, iconUserTiny)
@@ -406,6 +407,44 @@ invoiceDossierRow inv =
         ]
 
 
+studentAlerts : Model -> List PriorityAlert
+studentAlerts model =
+    case model.studentDossier of
+        Success dossier ->
+            let
+                corrections =
+                    dossier.documents
+                        |> List.filter (\d -> d.status == "Correction Required")
+                        |> List.map documentCorrectionAlert
+
+                expired =
+                    dossier.documents
+                        |> List.filter (\d -> d.status == "Expired")
+                        |> List.map expiredDocumentAlert
+
+                unpaid =
+                    dossier.invoices
+                        |> List.filter (\inv -> inv.balance > 0)
+                        |> List.map outstandingInvoiceAlert
+            in
+            corrections ++ expired ++ unpaid
+
+        _ ->
+            []
+
+
+studentActivity : Model -> List ActivityEntry
+studentActivity model =
+    case model.studentDossier of
+        Success dossier ->
+            List.map caseEntry dossier.cases
+                ++ List.map documentEntry dossier.documents
+                ++ List.map invoiceEntry dossier.invoices
+
+        _ ->
+            []
+
+
 studentDetailView : Model -> Student -> Html Msg
 studentDetailView model s =
     let
@@ -588,6 +627,10 @@ studentDetailView model s =
                             (List.map invoiceDossierRow dossierData.invoices)
                     )
                 ]
+            ]
+        , div [ class "bottom-row" ]
+            [ alertsPanel (studentAlerts model)
+            , activityPanel (studentActivity model)
             ]
         ]
 
@@ -878,7 +921,7 @@ studentFormModal model sf =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" titleText
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text titleText ]
@@ -938,7 +981,7 @@ deleteStudentConfirmModal student =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete student"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete student" ]

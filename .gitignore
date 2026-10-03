@@ -1,31 +1,32 @@
-# Elm
-elm-stuff/
+# Elm build output
 elm.js
+elm.min.js
+elm-stuff/
+*.elm.js
 
-# Build outputs
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Netlify
+.netlify/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
 build/
 dist/
-target/
-
-# Go
-*.exe
-*.test
-coverage.out
-
-# Haskell
-dist-newstyle/
-.stack-work/
-
-# Logs
-*.log
-err.txt
-
-# Environment and secrets
-.env
-.env.*
-!.env.example
-
-# Editors and OS
-.vscode/
-.idea/
-.DS_Store
+public/elm.js

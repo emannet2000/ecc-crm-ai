@@ -7,8 +7,10 @@ import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, d
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
+import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, documentCorrectionAlert, documentEntry, expiredDocumentAlert, urgentCaseAlert)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, onCheck, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconPin, iconTasks, iconTrash, iconUserTiny)
+import View.Workflow exposing (workflowView)
 
 
 priorityBadge : String -> Html Msg
@@ -348,6 +350,48 @@ documentsPanel model _ =
                 (List.map documentItem docs)
 
 
+caseAlerts : Model -> Case -> List PriorityAlert
+caseAlerts model c =
+    let
+        fromDocs =
+            case model.caseDocuments of
+                Success docs ->
+                    let
+                        corrections =
+                            docs
+                                |> List.filter (\d -> d.status == "Correction Required")
+                                |> List.map documentCorrectionAlert
+
+                        expired =
+                            docs
+                                |> List.filter (\d -> d.status == "Expired")
+                                |> List.map expiredDocumentAlert
+                    in
+                    corrections ++ expired
+
+                _ ->
+                    []
+
+        selfAlert =
+            if c.priority == "Urgent" then
+                [ urgentCaseAlert c ]
+
+            else
+                []
+    in
+    fromDocs ++ selfAlert
+
+
+caseActivity : Model -> Case -> List ActivityEntry
+caseActivity model _ =
+    case model.caseDocuments of
+        Success docs ->
+            List.map documentEntry docs
+
+        _ ->
+            []
+
+
 caseDetailView : Model -> Case -> Html Msg
 caseDetailView model c =
     let
@@ -421,7 +465,10 @@ caseDetailView model c =
                         , infoRow iconTasks "Gov reference" (display c.governmentRef)
                         ]
                     )
-                , detailCard "Stage"
+                , detailCard "Workflow Progress"
+                    Nothing
+                    (workflowView caseStages c.currentStage)
+                , detailCard "Change stage"
                     Nothing
                     (div [ class "stage-pills stage-pills--detail" ]
                         (List.map
@@ -475,6 +522,10 @@ caseDetailView model c =
                             ]
                     )
                 ]
+            ]
+        , div [ class "bottom-row" ]
+            [ alertsPanel (caseAlerts model c)
+            , activityPanel (caseActivity model c)
             ]
         ]
 
@@ -801,7 +852,7 @@ caseFormModal model cf =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" titleText
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text titleText ]
@@ -861,7 +912,7 @@ deleteCaseConfirmModal c =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete case"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete case" ]
@@ -1133,7 +1184,7 @@ documentFormModal model df =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" titleText
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text titleText ]
@@ -1193,7 +1244,7 @@ deleteDocumentConfirmModal d =
             , Attr.attribute "aria-modal" "true"
             , Attr.attribute "aria-label" "Delete document"
             , Html.Events.stopPropagationOn "click"
-                (D.succeed ( DismissedToast, True ))
+                (D.succeed ( NoOp, True ))
             ]
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Delete document" ] ]

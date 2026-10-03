@@ -70,7 +70,7 @@ init flags url key =
             , dateFromFilter = ""
             , dateToFilter = ""
             , today = flags.today
-            , bulkMoveStage = ""
+            , bulkMoveStage = Nothing
             , bulkDeleteConfirm = False
             , activities = NotAsked
             , activityForm = Nothing
@@ -136,6 +136,7 @@ init flags url key =
             , editingPartnerId = Nothing
             , deletingPartner = Nothing
             , pendingPartnersQuery = Nothing
+            , sidebarOpen = False
             , navKey = key
             }
     in
@@ -151,17 +152,20 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         EscapePressed ->
-            if model.logoutAllConfirm then
+            if model.sidebarOpen then
+                ( { model | sidebarOpen = False }, Cmd.none )
+
+            else if model.logoutAllConfirm then
                 ( { model | logoutAllConfirm = False }, Cmd.none )
 
             else if model.bulkDeleteConfirm then
                 ( { model | bulkDeleteConfirm = False }, Cmd.none )
 
-            else if not (String.isEmpty model.bulkMoveStage) then
-                ( { model | bulkMoveStage = "" }, Cmd.none )
+            else if model.bulkMoveStage /= Nothing then
+                update CancelledBulkMove model
 
             else if model.activityForm /= Nothing || model.deletingActivity /= Nothing then
-                update ClosedActivityForm model
+                update RequestedCloseActivityForm model
 
             else if model.contactForm /= Nothing || model.deletingContact /= Nothing then
                 update RequestedCloseContactForm model
@@ -208,6 +212,9 @@ update msg model =
         DismissedToast ->
             ( { model | toast = Nothing }, Cmd.none )
 
+        NoOp ->
+            ( model, Cmd.none )
+
         _ ->
             let
                 oldRoute =
@@ -216,18 +223,15 @@ update msg model =
                 ( newModel, newCmds ) =
                     updateDomains msg model
 
-                alreadyNavigated =
+                alreadySynced =
                     case msg of
-                        NavigatedTo _ ->
-                            True
-
                         UrlChanged _ ->
                             True
 
                         _ ->
                             False
             in
-            if not alreadyNavigated && newModel.route /= oldRoute then
+            if not alreadySynced && newModel.route /= oldRoute then
                 ( newModel
                 , Cmd.batch
                     [ newCmds
@@ -286,6 +290,12 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Browser.Events.onKeyDown escapeDecoder
+        , case model.toast of
+            Just _ ->
+                Time.every 3500 (\_ -> DismissedToast)
+
+            Nothing ->
+                Sub.none
         , if model.pendingContactsQuery /= Nothing then
             Time.every 300 (\_ -> FlushContactsSearch)
 

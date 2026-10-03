@@ -1,6 +1,6 @@
-module View.Helpers exposing (alertView, detailCard, detailEmpty, detailStat, formField, infoRow, initials, onCheck, onEnter, paginationBar, svgIcon, svgPath, toastView)
+module View.Helpers exposing (alertView, detailCard, detailEmpty, detailStat, emptyIllustration, formField, infoRow, initials, onCheck, onEnter, paginationBar, sparkline, svgIcon, svgPath, toastView)
 
-{-| Shared view helpers: svg/event helpers, form fields, alerts, pagination, toasts, detail-card pieces. -}
+{-| Shared view helpers: svg/event helpers, form fields, alerts, pagination, toasts, detail-card pieces, sparkline, empty illustration. -}
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
@@ -304,4 +304,94 @@ detailEmpty icon titleText desc =
         [ div [ class "detail-empty__icon" ] [ icon ]
         , h4 [ class "detail-empty__title" ] [ text titleText ]
         , p [ class "detail-empty__desc" ] [ text desc ]
+        ]
+
+
+-- ── Sparkline ────────────────────────────────────────────────
+
+
+sparkline : List Int -> Html msg
+sparkline values =
+    let
+        maxV =
+            List.maximum values |> Maybe.withDefault 1
+
+        n =
+            List.length values
+
+        barWidth =
+            100 / toFloat (max 1 n)
+
+        gap =
+            barWidth * 0.28
+
+        w =
+            barWidth - gap
+
+        bar i v =
+            let
+                h =
+                    (toFloat v / toFloat (max 1 maxV)) * 100
+
+                x =
+                    toFloat i * barWidth + gap / 2
+
+                y =
+                    100 - h
+            in
+            Html.node "rect"
+                [ Attr.attribute "x" (String.fromFloat x)
+                , Attr.attribute "y" (String.fromFloat y)
+                , Attr.attribute "width" (String.fromFloat w)
+                , Attr.attribute "height" (String.fromFloat h)
+                , Attr.attribute "rx" "1"
+                ]
+                []
+    in
+    Html.node "svg"
+        [ Attr.attribute "viewBox" "0 0 100 100"
+        , Attr.attribute "preserveAspectRatio" "none"
+        , Attr.class "sparkline"
+        , Attr.attribute "aria-hidden" "true"
+        ]
+        (List.indexedMap bar values)
+
+
+-- ── Empty illustration ───────────────────────────────────────
+
+
+emptyIllustration : Html msg -> Html msg
+emptyIllustration icon =
+    div [ class "empty-illus" ]
+        [ Html.node "svg"
+            [ Attr.attribute "viewBox" "0 0 120 120"
+            , Attr.attribute "fill" "none"
+            , Attr.attribute "aria-hidden" "true"
+            ]
+            [ Html.node "circle"
+                [ Attr.attribute "cx" "60"
+                , Attr.attribute "cy" "60"
+                , Attr.attribute "r" "52"
+                , Attr.attribute "stroke" "rgba(226,185,77,0.15)"
+                , Attr.attribute "stroke-width" "1"
+                , Attr.attribute "stroke-dasharray" "3 6"
+                ]
+                []
+            , Html.node "circle"
+                [ Attr.attribute "cx" "60"
+                , Attr.attribute "cy" "60"
+                , Attr.attribute "r" "38"
+                , Attr.attribute "stroke" "rgba(226,185,77,0.25)"
+                , Attr.attribute "stroke-width" "1"
+                ]
+                []
+            , Html.node "circle"
+                [ Attr.attribute "cx" "60"
+                , Attr.attribute "cy" "60"
+                , Attr.attribute "r" "26"
+                , Attr.attribute "fill" "rgba(226,185,77,0.06)"
+                ]
+                []
+            ]
+        , div [ class "empty-illus__icon" ] [ icon ]
         ]
