@@ -1,24 +1,28 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECC CRM</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="stylesheet" href="/styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northwind5</title>
+  <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
   <div id="app"></div>
-  <script src="/elm.js"></script>
+
+  <script src="elm.js"></script>
   <script>
-    Elm.Main.init({ node: document.getElementById("app") });
+    (function () {
+      var token = localStorage.getItem("token");
+      var today = new Date().toISOString().slice(0, 10);
+
+      var app = Elm.Main.init({
+        node: document.getElementById("app"),
+        flags: {
+          token: token,
+          today: today
+        }
+      });
+    })();
   </script>
 </body>
 </html>
