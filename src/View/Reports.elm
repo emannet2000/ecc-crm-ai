@@ -41,6 +41,7 @@ reportsView model =
 
             _ ->
                 p [ class "content__empty-block" ] [ text "Loading reports…" ]
+        , Html.node "crm-insights" [] []
         , div [ class "reports-panels" ]
             [ exportsView model, auditView model ]
         ]

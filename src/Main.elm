@@ -345,7 +345,8 @@ escapeDecoder =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Browser.Events.onKeyDown escapeDecoder
+        [ Ports.recordChanged (\_ -> NavigatedTo model.route)
+        , Browser.Events.onKeyDown escapeDecoder
         , if model.user /= Nothing then
             Sub.batch [ Time.every 600000 (\_ -> RefreshSession), Time.every 60000 (\_ -> PollWorkspaceClock) ]
 

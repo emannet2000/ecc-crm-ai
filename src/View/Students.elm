@@ -502,7 +502,7 @@ studentDetailView model s =
             [ iconBack
             , span [] [ text "Back to students" ]
             ]
-        , a [ Attr.href ("/workspace?tab=workflows&entity=students&id=" ++ s.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Application tools & create case" ]
+        , a [ Attr.href "#record-tools?tab=workflows", Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Application tools & create case" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar" ] [ text (initials s.name) ]
             , div [ class "detail-hero__body" ]

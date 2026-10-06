@@ -1,4 +1,4 @@
-module View.Layout exposing (pageDescription, pageTitle, sidebar, topbar)
+module View.Layout exposing (mobileNavigation, pageDescription, pageTitle, sidebar, topbar)
 
 {-| App chrome: sidebar, topbar, page title.
 -}
@@ -164,6 +164,9 @@ sidebar model user =
                 [ strong [ class "sidebar__name" ] [ text "ECC" ]
                 , span [ class "sidebar__product" ] [ text "Client workspace" ]
                 ]
+            , button
+                [ class "sidebar__close", type_ "button", onClick ToggledSideBar, Attr.attribute "aria-label" "Close navigation" ]
+                [ text "×" ]
             ]
         , nav [ class "sidebar__nav", Attr.attribute "aria-label" "CRM modules" ]
             [ span [ class "sidebar__section-label" ] [ text "Workspace" ]
@@ -184,6 +187,11 @@ sidebar model user =
             ]
         , nav [ class "sidebar__nav sidebar__nav--bottom" ]
             [ navItem effectiveRoute Workspace "Workspace tools" iconSettings
+            , if user.role == "admin" then
+                navItem effectiveRoute Administration "System administration" iconSettings
+
+              else
+                text ""
             , navItem effectiveRoute Settings "Settings" iconSettings
             ]
         , div [ class "sidebar__user" ]
@@ -201,6 +209,42 @@ sidebar model user =
             ]
             [ iconSignOut
             , span [] [ text "Sign out" ]
+            ]
+        ]
+
+
+mobileNavigation : Model -> Html Msg
+mobileNavigation model =
+    let
+        selected =
+            case model.route of
+                ContactDetail _ ->
+                    Contacts
+
+                CaseDetail _ ->
+                    Cases
+
+                route ->
+                    route
+
+        moreSelected =
+            model.sidebarOpen || not (List.member selected [ Home, Contacts, Cases, Tasks ])
+    in
+    nav [ class "mobile-nav", Attr.attribute "aria-label" "Mobile navigation" ]
+        [ navItem selected Home "Home" iconHome
+        , navItem selected Contacts "Clients" iconContacts
+        , navItem selected Cases "Cases" iconTasks
+        , navItem selected Tasks "Tasks" iconTasks
+        , button
+            [ class ("nav-item" ++ (if moreSelected then " nav-item--active" else ""))
+            , type_ "button"
+            , onClick ToggledSideBar
+            , Attr.attribute "aria-controls" "workspace-navigation"
+            , Attr.attribute "aria-expanded" (if model.sidebarOpen then "true" else "false")
+            , Attr.attribute "aria-label" "More navigation options"
+            ]
+            [ span [ class "nav-item__icon" ] [ hamburgerIcon ]
+            , span [ class "nav-item__label" ] [ text "More" ]
             ]
         ]
 
@@ -321,6 +365,9 @@ pageTitle model =
         Workspace ->
             "Workspace tools"
 
+        Administration ->
+            "System administration"
+
         Reports ->
             "Reports"
 
@@ -408,6 +455,9 @@ pageDescription model =
 
         Workspace ->
             "Manage your team, security, communication, and daily workflows."
+
+        Administration ->
+            "Manage user accounts, access levels, teams, and workspace security."
 
         Reports ->
             "Understand performance, export records, and review changes."

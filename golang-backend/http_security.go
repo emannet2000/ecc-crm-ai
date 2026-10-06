@@ -26,7 +26,7 @@ func protectHTTP(next http.Handler) http.Handler {
 			w.Header().Set("Cache-Control", "no-store")
 			limit := 600
 			key := requestIP(r)
-			if r.URL.Path == "/api/login" || r.URL.Path == "/api/register" || r.URL.Path == "/api/forgot-password" || r.URL.Path == "/api/reset-password" || r.URL.Path == "/api/sso/finish" {
+			if r.URL.Path == "/api/portal/session" || r.URL.Path == "/api/login" || r.URL.Path == "/api/register" || r.URL.Path == "/api/forgot-password" || r.URL.Path == "/api/reset-password" || r.URL.Path == "/api/sso/finish" {
 				limit = 20
 				key = "auth:" + key
 			}

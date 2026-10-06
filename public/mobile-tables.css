@@ -1,0 +1,24 @@
+/* Applied to simple tables only; complex report tables retain horizontal scrolling. */
+@media(max-width:600px){
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]{display:block;width:100%;min-width:0;max-width:100%;border-collapse:separate}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]>thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards][data-mobile-controls]>thead{position:static;display:block;width:auto;height:auto;clip-path:none;white-space:normal;margin-bottom:10px;overflow:visible}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards][data-mobile-controls]>thead>tr{display:flex;gap:8px;overflow-x:auto;align-items:center;padding:2px 0}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards][data-mobile-controls]>thead>tr>th{padding:0;border:0;background:transparent;flex-shrink:0}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards][data-mobile-controls] th:not([data-mobile-control]){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]>tbody{display:grid;gap:12px;width:100%}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]>tbody>tr{display:block;min-width:0;border:1px solid var(--border,#dce3ee);border-radius:10px;padding:10px 14px;background:var(--surface,var(--panel,#fff))}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]>tbody>tr>td{display:grid;grid-template-columns:minmax(75px,30%) minmax(0,1fr);gap:10px;align-items:start;min-width:0;max-width:none;width:auto;padding:9px 0;border:0;border-bottom:1px solid var(--border-soft,var(--border,#dce3ee));font-size:13px;white-space:normal;overflow-wrap:anywhere;text-align:left}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards]>tbody>tr>td:last-child{border-bottom:0}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td::before{content:attr(data-label);color:var(--text-muted,var(--muted,#68768c));font-size:12px;font-weight:500;line-height:1.6}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td:first-child{display:block;padding-top:4px}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td:first-child::before{display:block;margin-bottom:6px}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td[data-mobile-actions]{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td[data-mobile-actions]::before{flex:0 0 100%}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] td>*{min-width:0;max-width:100%}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] :is(button,select,a.button){min-height:44px;touch-action:manipulation}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] :is(.contact-name,.contact-email,.cell-secondary){white-space:normal;overflow:visible;overflow-wrap:anywhere;max-width:none}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] .contact-name-cell{min-width:0;align-items:flex-start}
+  :is(.app-shell,.tools,.portal-body) table[data-mobile-cards] .contact-avatar{flex-shrink:0}
+  .app-shell .table-wrap:has(>table[data-mobile-cards]){background:transparent;border:0;box-shadow:none;overflow:visible}
+}

@@ -32,6 +32,10 @@ Requires Elm 0.19.2, Go 1.26 or newer, and a C compiler (such as GCC) for the
 Open http://localhost:7000. The first launch seeds demo records and an account:
 `demo@northwind.dev` / `Demo1234`.
 
+The same app supports phones and tablets with bottom navigation, record cards,
+larger touch controls and mobile forms. See [docs/MOBILE.md](docs/MOBILE.md) for
+phone access and verification details.
+
 The maintained application is `src/`, `public/`, and `golang-backend/`.
 Other backend folders and `ecc-crm/` are earlier prototypes.
 
@@ -98,6 +102,10 @@ The login branding remains in `public/styles.css`. Icons and charts use Elm SVG.
 
 ## Real-use workspace tools
 
+Administrators can open **System administration** in the sidebar to manage users,
+access levels, teams, invitations, account recovery and workspace security.
+See [docs/ADMINISTRATION.md](docs/ADMINISTRATION.md) for the role matrix and steps.
+
 Open **Workspace tools** in the sidebar for user invitations, roles/teams, record
 visibility, sessions and 2FA, document versions, SMTP/outbox, imports, saved views,
 calendar, workflows, commissions, and integration delivery history. Existing detail
@@ -111,3 +119,12 @@ Back up `uploads/` beside the database and the generated `auth-secret` (or prese
 `JWT_SECRET`) along with SQLite. Losing the encryption secret makes saved SMTP and
 TOTP secrets unreadable. Restore these together. External SMTP, Stripe, VAPID,
 OIDC and SAML integrations require configuration before live use.
+
+## Daily workflow expansion
+
+Record pages now embed native tools, with a separate client portal, cohort reports,
+inbound conversations, optional AI drafts, version conflicts, and recoverable deletion.
+Docker/Compose, CI, metrics and backup/restore scripts are included.
+See [docs/EXPANSION.md](docs/EXPANSION.md) for setup, verification and remaining
+provider/scaling limits. The older implementation checklist describes the previous
+feature set; it is not a production acceptance record for this expansion.

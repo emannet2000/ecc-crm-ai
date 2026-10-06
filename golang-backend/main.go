@@ -2,16 +2,21 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 )
 
 func main() {
+	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
 	initSecret()
 	path := os.Getenv("DATABASE_PATH")
 	if path == "" {
@@ -26,7 +31,10 @@ func main() {
 	}
 
 	defer database.Close()
-	startWorkers(context.Background())
+	workerContext, cancelWorkers := context.WithCancel(context.Background())
+	defer cancelWorkers()
+	stopLegacy := startWorkers(workerContext)
+	stopExpansion := startExpansionWorkers(workerContext)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -34,6 +42,7 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /api/admin/metrics", authMiddleware(handleMetrics))
 
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
 		if err := database.PingContext(r.Context()); err != nil {
@@ -160,8 +169,32 @@ func main() {
 
 	addr := ":" + port
 	fmt.Printf("Go server listening on http://localhost%s\n", addr)
-	server := &http.Server{Addr: addr, Handler: protectHTTP(persistMutations(mux)), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
-	log.Fatal(server.ListenAndServe())
+	server := &http.Server{Addr: addr, Handler: observeHTTP(protectHTTP(persistMutations(mux))), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
+	signalContext, stopSignals := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stopSignals()
+	serverFailed := false
+	serverResult := make(chan error, 1)
+	go func() { serverResult <- server.ListenAndServe() }()
+	select {
+	case <-signalContext.Done():
+		shutdownContext, cancel := context.WithTimeout(context.Background(), 40*time.Second)
+		defer cancel()
+		if err := server.Shutdown(shutdownContext); err != nil {
+			slog.Error("server_shutdown", "error", err)
+		}
+	case err := <-serverResult:
+		if !errors.Is(err, http.ErrServerClosed) {
+			serverFailed = true
+			slog.Error("server_failed", "error", err)
+		}
+	}
+	cancelWorkers()
+	stopExpansion()
+	stopLegacy()
+	if serverFailed {
+		database.Close()
+		os.Exit(1)
+	}
 }
 
 func mountStatic(mux *http.ServeMux) {

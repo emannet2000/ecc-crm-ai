@@ -15,6 +15,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -240,8 +241,11 @@ func wrapBase64(data []byte) string {
 	out.WriteString(encoded + "\r\n")
 	return out.String()
 }
-func startWorkers(ctx context.Context) {
+func startWorkers(ctx context.Context) func() {
+	var workers sync.WaitGroup
+	workers.Add(1)
 	go func() {
+		defer workers.Done()
 		ticker := time.NewTicker(15 * time.Second)
 		defer ticker.Stop()
 		for {
@@ -256,6 +260,7 @@ func startWorkers(ctx context.Context) {
 			}
 		}
 	}()
+	return workers.Wait
 }
 func deliverMailOutbox() {
 	rows, err := database.Query(`SELECT id,org_id,recipient,subject,body,invoice_id,attempts FROM mail_outbox WHERE status IN ('queued','waiting_configuration') AND (next_attempt='' OR next_attempt<=?) ORDER BY created_at LIMIT 10`, utcNow())
@@ -354,6 +359,10 @@ func integrationStatusFor(r *http.Request) map[string]any {
 		json.Unmarshal([]byte(data), &conf)
 		features["smtp"] = conf.Host != ""
 	}
+	features["ai"] = assistantEnabled(r)
+	features["whatsapp"] = currentUser(r).OrgID == os.Getenv("WHATSAPP_ORG_ID") && os.Getenv("WHATSAPP_ACCESS_TOKEN") != ""
+	features["inboundEmail"] = os.Getenv("INBOUND_EMAIL_SECRET") != ""
+	features["mailboxSync"] = currentUser(r).OrgID == os.Getenv("GRAPH_ORG_ID")
 	features["vapidPublicKey"] = os.Getenv("VAPID_PUBLIC_KEY")
 	return features
 }

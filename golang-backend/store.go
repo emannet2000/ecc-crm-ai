@@ -108,6 +108,7 @@ type School struct {
 }
 
 type Student struct {
+	Intake           string          `json:"intake"`
 	TestType         string          `json:"testType"`
 	TestScore        float64         `json:"testScore"`
 	Accommodation    string          `json:"accommodation"`

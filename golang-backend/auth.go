@@ -72,6 +72,7 @@ const (
 )
 
 func writeJSON(w http.ResponseWriter, status int, payload any) {
+	payload = withRecordVersions(payload)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(payload)
@@ -124,6 +125,7 @@ func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		jti, _ := claims["jti"].(string)
 
 		user, exists := findUserByEmail(email)
+		if independentRead(r) { user,exists=committedUser(r,"email",email) }
 		version, _ := claims["ver"].(float64)
 		if !exists || user.ID != id || user.Disabled || int(version) != user.SessionVersion {
 			writeError(w, http.StatusUnauthorized, "Session has expired")

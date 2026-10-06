@@ -38,3 +38,8 @@ data/
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm
+
+# Verification artifacts
+tests/artifacts/
+__pycache__/
+*.tar.gz

@@ -19,6 +19,7 @@ routeParser =
         , Parser.map Tasks (s "tasks")
         , Parser.map Reports (s "reports")
         , Parser.map Workspace (s "workspace")
+        , Parser.map Administration (s "administration")
         , Parser.map Settings (s "settings")
         , Parser.map Schools (s "schools")
         , Parser.map SchoolDetail (s "schools" </> string)
@@ -65,6 +66,9 @@ routeToPath route =
 
         Workspace ->
             "/workspace"
+
+        Administration ->
+            "/administration"
 
         Reports ->
             "/reports"

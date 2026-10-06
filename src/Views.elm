@@ -20,7 +20,7 @@ import View.Deals exposing (dealsView)
 import View.Helpers exposing (toastView)
 import View.Home exposing (homeView)
 import View.Invoices exposing (deleteInvoiceConfirmModal, deletePaymentConfirmModal, invoiceDetailView, invoiceFormModal, invoicesView, paymentFormModal, refundConfirmModal)
-import View.Layout exposing (pageDescription, pageTitle, sidebar, topbar)
+import View.Layout exposing (mobileNavigation, pageDescription, pageTitle, sidebar, topbar)
 import View.Leads exposing (deleteLeadConfirmModal, leadDetailView, leadFormModal, leadsView)
 import View.Login exposing (brandPanel, loginCard)
 import View.Partners exposing (deletePartnerConfirmModal, partnerDetailView, partnerFormModal, partnersView)
@@ -29,6 +29,25 @@ import View.Schools exposing (deleteSchoolConfirmModal, schoolDetailView, school
 import View.Settings exposing (logoutAllConfirmModal, settingsView)
 import View.Students exposing (deleteStudentConfirmModal, studentDetailView, studentFormModal, studentsView)
 import View.Tasks exposing (deleteTaskConfirmModal, taskFormModal, tasksView)
+
+
+recordTools : Route -> Html Msg
+recordTools route =
+    let
+        record entity id =
+            Html.node "crm-record-tools" [ Attr.id "record-tools", Attr.attribute "entity" entity, Attr.attribute "record-id" id ] []
+    in
+    case route of
+        ContactDetail id -> record "contacts" id
+        DealDetail id -> record "deals" id
+        SchoolDetail id -> record "schools" id
+        StudentDetail id -> record "students" id
+        AgentDetail id -> record "agents" id
+        LeadDetail id -> record "leads" id
+        CaseDetail id -> record "cases" id
+        InvoiceDetail id -> record "invoices" id
+        PartnerDetail id -> record "partners" id
+        _ -> text ""
 
 
 pageContent : Model -> User -> Html Msg
@@ -66,7 +85,14 @@ pageContent model user =
                 tasksView model
 
             Workspace ->
-                iframe [ Attr.src "/public/center.html", Attr.title "Workspace tools", class "workspace-tools" ] []
+                Html.node "crm-workspace" [ class "workspace-tools" ] []
+
+            Administration ->
+                if user.role == "admin" then
+                    Html.node "crm-administration" [] []
+
+                else
+                    div [ class "content__empty-block" ] [ text "System administration requires Administrator access. Contact your workspace administrator to change your access level." ]
 
             Reports ->
                 reportsView model
@@ -341,6 +367,7 @@ pageContent model user =
 
             Nothing ->
                 text ""
+        , recordTools model.route
         ]
 
 
@@ -384,6 +411,8 @@ appShell model user =
                 , pageContent model user
                 ]
             ]
+        , mobileNavigation model
+        , Html.node "crm-connection-status" [] []
         ]
 
 

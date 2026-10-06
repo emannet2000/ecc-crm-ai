@@ -9,26 +9,43 @@ import (
 )
 
 type reportSummary struct {
-	PipelineLabel      string   `json:"pipelineLabel"`
-	WonLabel           string   `json:"wonLabel"`
-	BalanceLabel       string   `json:"balanceLabel"`
-	ReportingCurrency  string   `json:"reportingCurrency"`
-	MissingRates       []string `json:"missingRates"`
-	Contacts           int      `json:"contacts"`
-	Students           int      `json:"students"`
-	Leads              int      `json:"leads"`
-	ActiveCases        int      `json:"activeCases"`
-	OpenTasks          int      `json:"openTasks"`
-	PipelineValue      float64  `json:"pipelineValue"`
-	WonValue           float64  `json:"wonValue"`
-	OutstandingBalance float64  `json:"outstandingBalance"`
+	NewLeads           int                `json:"newLeads"`
+	ApprovedStudents   int                `json:"approvedStudents"`
+	TotalCases         int                `json:"totalCases"`
+	StageCounts        map[string]int     `json:"stageCounts"`
+	StageValues        map[string]float64 `json:"stageValues"`
+	CreatedCounts      map[string]int     `json:"createdCounts"`
+	PipelineLabel      string             `json:"pipelineLabel"`
+	WonLabel           string             `json:"wonLabel"`
+	BalanceLabel       string             `json:"balanceLabel"`
+	ReportingCurrency  string             `json:"reportingCurrency"`
+	MissingRates       []string           `json:"missingRates"`
+	Contacts           int                `json:"contacts"`
+	Students           int                `json:"students"`
+	Leads              int                `json:"leads"`
+	ActiveCases        int                `json:"activeCases"`
+	OpenTasks          int                `json:"openTasks"`
+	PipelineValue      float64            `json:"pipelineValue"`
+	WonValue           float64            `json:"wonValue"`
+	OutstandingBalance float64            `json:"outstandingBalance"`
 }
 
 func handleReports(w http.ResponseWriter, r *http.Request) {
-	mu.RLock()
-	defer mu.RUnlock()
+	saved := snapshot()
+	contacts, students, leads, cases, tasks, deals, invoices := saved.Contacts, saved.Students, saved.Leads, saved.Cases, saved.Tasks, saved.Deals, saved.Invoices
 	pipeline, won, balance := map[string]float64{}, map[string]float64{}, map[string]float64{}
-	report := reportSummary{Contacts: len(contacts), Students: len(students), Leads: len(leads)}
+	report := reportSummary{StageCounts: map[string]int{}, StageValues: map[string]float64{}, CreatedCounts: map[string]int{}, Contacts: len(contacts), Students: len(students), Leads: len(leads)}
+	report.TotalCases = len(cases)
+	for _, l := range leads {
+		if l.Status == "New" {
+			report.NewLeads++
+		}
+	}
+	for _, s := range students {
+		if s.VisaStatus == "Approved" {
+			report.ApprovedStudents++
+		}
+	}
 	for _, c := range cases {
 		if c.CurrentStage != "Closed" && c.CurrentStage != "Approved" && c.CurrentStage != "Refused" {
 			report.ActiveCases++
@@ -40,6 +57,10 @@ func handleReports(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	for _, deal := range deals {
+		report.StageCounts[deal.Stage]++
+		if currencyOf(deal.Currency) == "USD" {
+			report.StageValues[deal.Stage] += deal.Value
+		}
 		if deal.Stage == "Won" {
 			won[currencyOf(deal.Currency)] += deal.Value
 		} else if deal.Stage != "Lost" {
@@ -49,6 +70,24 @@ func handleReports(w http.ResponseWriter, r *http.Request) {
 	for _, invoice := range invoices {
 		if invoice.Balance > 0 {
 			balance[currencyOf(invoice.Currency)] += invoice.Balance
+		}
+	}
+	for entity, items := range recordsOf(saved) {
+		if entity != "leads" && entity != "students" && entity != "cases" && entity != "deals" && entity != "schools" && entity != "agents" {
+			continue
+		}
+		for _, payload := range items {
+			var record struct {
+				CreatedAt string `json:"createdAt"`
+			}
+			json.Unmarshal([]byte(payload), &record)
+			date := record.CreatedAt
+			if len(date) > 10 {
+				date = date[:10]
+			}
+			if date != "" {
+				report.CreatedCounts[date]++
+			}
 		}
 	}
 	target := "USD"

@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Browser
+import Dict exposing (Dict)
 import Browser.Navigation as Nav
 import Set exposing (Set)
 import Url
@@ -20,6 +21,7 @@ type Route
     | Tasks
     | Reports
     | Workspace
+    | Administration
     | Settings
     | Schools
     | SchoolDetail String
@@ -1406,6 +1408,12 @@ type alias ReportSummary =
     , pipelineValue : Float
     , wonValue : Float
     , outstandingBalance : Float
+    , stageCounts : Dict String Int
+    , stageValues : Dict String Float
+    , createdCounts : Dict String Int
+    , newLeads : Int
+    , approvedStudents : Int
+    , totalCases : Int
     }
 
 

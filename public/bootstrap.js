@@ -17,7 +17,8 @@
         localStorage.removeItem("token");
         if (!token) fetch("/api/session/logout", {method:"POST",credentials:"same-origin"});
       });
-      app.ports.storeTheme.subscribe(function (theme) { localStorage.setItem("theme", theme); });
+      app.ports.storeTheme.subscribe(function (theme) { localStorage.setItem("theme", theme); window.dispatchEvent(new Event("crm:theme-changed")); });
+      window.addEventListener("crm:record-changed", function(event) { app.ports.recordChanged.send(event.detail || ""); });
       app.ports.downloadFile.subscribe(function (file) {
         var url = URL.createObjectURL(new Blob([file.content], { type: file.mime }));
         var link = document.createElement("a");

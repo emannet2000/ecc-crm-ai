@@ -1,0 +1,37 @@
+services:
+  crm:
+    build: .
+    ports:
+      - "127.0.0.1:7000:7000"
+    environment:
+      APP_URL: ${APP_URL:-http://localhost:7000}
+      JWT_SECRET: ${JWT_SECRET:-}
+      ALLOW_SIGNUP: "false"
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_TLS_MODE: ${SMTP_TLS_MODE:-starttls}
+      WHATSAPP_ORG_ID: ${WHATSAPP_ORG_ID:-}
+      WHATSAPP_API_VERSION: ${WHATSAPP_API_VERSION:-}
+      WHATSAPP_PHONE_NUMBER_ID: ${WHATSAPP_PHONE_NUMBER_ID:-}
+      WHATSAPP_ACCESS_TOKEN: ${WHATSAPP_ACCESS_TOKEN:-}
+      WHATSAPP_APP_SECRET: ${WHATSAPP_APP_SECRET:-}
+      WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN:-}
+      GRAPH_ORG_ID: ${GRAPH_ORG_ID:-}
+      GRAPH_ACCESS_TOKEN: ${GRAPH_ACCESS_TOKEN:-}
+      GRAPH_TENANT_ID: ${GRAPH_TENANT_ID:-}
+      GRAPH_CLIENT_ID: ${GRAPH_CLIENT_ID:-}
+      GRAPH_CLIENT_SECRET: ${GRAPH_CLIENT_SECRET:-}
+      GRAPH_REFRESH_TOKEN: ${GRAPH_REFRESH_TOKEN:-}
+      INBOUND_EMAIL_SECRET: ${INBOUND_EMAIL_SECRET:-}
+    volumes:
+      - crm-data:/app/data
+    restart: unless-stopped
+    stop_grace_period: 90s
+volumes:
+  crm-data:

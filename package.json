@@ -1,0 +1,13 @@
+{
+  "name": "ecc-crm-verification",
+  "private": true,
+  "scripts": {
+    "test": "node --test --test-isolation=none tests/dom.test.cjs tests/administration.test.cjs tests/mobile.test.cjs",
+    "test:live": "ECC_BROWSER_LIVE=true node --test --test-isolation=none tests/browser.test.cjs",
+    "test:browser": "node --test --test-isolation=none tests/browser.test.cjs"
+  },
+  "devDependencies": {
+    "puppeteer": "25.10.0",
+    "linkedom": "0.18.12"
+  }
+}

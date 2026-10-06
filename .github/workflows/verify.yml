@@ -1,0 +1,30 @@
+name: Verify CRM
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: golang-backend/go.mod
+          cache: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install -g elm@0.19.2-0
+      - run: npm install
+      - run: ./build.sh
+      - run: go test -race ./... && go vet ./...
+        working-directory: golang-backend
+      - run: python3 -m unittest discover -s tests -p '*_test.py'
+      - run: npm test
+      - run: npm run test:browser
+      - run: npm run test:live
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-artifacts
+          path: tests/artifacts

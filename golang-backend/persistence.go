@@ -97,7 +97,7 @@ func (w *bufferedResponse) Write(p []byte) (int, error) {
 
 func persistMutations(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !strings.HasPrefix(r.URL.Path, "/api/") {
+		if !strings.HasPrefix(r.URL.Path, "/api/") || independentRead(r) {
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -133,7 +133,10 @@ func persistMutations(next http.Handler) http.Handler {
 				actor = requestActor(r)
 			}
 			events := changesBetween(before, snapshot(), actor)
-			err = saveDatabaseTx(tx, events)
+			err = archiveDeleted(r, before, snapshot(), actor)
+			if err == nil {
+				err = saveDatabaseTx(tx, events)
+			}
 			if err == nil {
 				err = queueChangeEvents(r, events)
 			}

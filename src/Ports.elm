@@ -1,4 +1,4 @@
-port module Ports exposing (downloadFile, storeTheme, storeToken)
+port module Ports exposing (downloadFile, storeTheme, storeToken, recordChanged)
 
 {-| JavaScript interop.
 -}
@@ -11,3 +11,6 @@ port downloadFile : { filename : String, content : String, mime : String } -> Cm
 
 
 port storeTheme : String -> Cmd msg
+
+
+port recordChanged : (String -> msg) -> Sub msg

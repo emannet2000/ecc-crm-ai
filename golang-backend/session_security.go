@@ -192,6 +192,7 @@ func cookieIdentity(r *http.Request) (User, string, error) {
 		return User{}, "", fmt.Errorf("session expired")
 	}
 	user, exists := findUserByID(userID)
+	if independentRead(r) { user,exists=committedUser(r,"id",userID) }
 	if !exists || user.Disabled || user.SessionVersion != version {
 		return User{}, "", fmt.Errorf("session revoked")
 	}

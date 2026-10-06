@@ -11,6 +11,7 @@ import (
 )
 
 func registerWorkspaceRoutes(mux *http.ServeMux) {
+	registerAdministrationRoutes(mux)
 	mux.HandleFunc("GET /api/clock", authMiddleware(handleWorkspaceClock))
 	mux.HandleFunc("GET /api/control-center", authMiddleware(handleControlCenter))
 	mux.HandleFunc("POST /api/admin/users", authMiddleware(handleCreateWorkspaceUser))
@@ -41,6 +42,7 @@ func registerWorkspaceRoutes(mux *http.ServeMux) {
 	registerWorkflowRoutes(mux)
 	registerPaymentRoutes(mux)
 	registerIdentityRoutes(mux)
+	registerExpansionRoutes(mux)
 }
 func queryObjects(r *http.Request, query string, args ...any) ([]map[string]any, error) {
 	rows, err := storeDB(r).Query(query, args...)
@@ -86,7 +88,7 @@ func handleControlCenter(w http.ResponseWriter, r *http.Request) {
 		"sessions":      {"SELECT id,created_at AS createdAt,last_seen AS lastSeen,expires_at AS expiresAt,refresh_expires_at AS refreshExpiresAt,ip,user_agent AS userAgent FROM sessions WHERE user_id=? AND revoked_at IS NULL AND version=? AND refresh_expires_at>? ORDER BY last_seen DESC", []any{user.ID, user.SessionVersion, utcNow()}},
 		"notifications": {"SELECT id,kind,title,body,path,created_at AS createdAt,read_at AS readAt FROM notifications WHERE user_id=? ORDER BY created_at DESC LIMIT 100", []any{user.ID}},
 		"mail":          {"SELECT id,kind,recipient,subject,status,attempts,last_error AS lastError,created_at AS createdAt,sent_at AS sentAt,contact_id AS contactId,invoice_id AS invoiceId FROM mail_outbox WHERE org_id=? AND (user_id=? OR ? IN ('admin','manager')) AND kind NOT IN ('password_reset','invite') ORDER BY created_at DESC LIMIT 100", []any{user.OrgID, user.ID, user.Role}},
-		"entries":       {"SELECT id,category,record_id AS recordId,data,created_at AS createdAt FROM workspace_entries WHERE org_id=? AND (user_id=? OR (user_id='' AND category NOT IN ('integration_secret','webhook'))) ORDER BY created_at DESC", []any{user.OrgID, user.ID}},
+		"entries":       {"SELECT id,category,record_id AS recordId,data,created_at AS createdAt FROM workspace_entries WHERE org_id=? AND category<>'ai_job' AND (user_id=? OR (user_id='' AND category NOT IN ('integration_secret','webhook'))) ORDER BY created_at DESC", []any{user.OrgID, user.ID}},
 	}
 	if isAdmin(user) {
 		queries["webhooks"] = struct {
@@ -192,7 +194,7 @@ func handleCreateWorkspaceUser(w http.ResponseWriter, r *http.Request) {
 	if req.TeamID == "" {
 		req.TeamID = currentUser(r).TeamID
 	}
-	if req.Name == "" || !validEmail(req.Email) || !validRole(req.Role) || !teamInOrganization(r, req.TeamID) {
+	if req.Name == "" || len(req.Name) > 100 || !validEmail(req.Email) || !validRole(req.Role) || !teamInOrganization(r, req.TeamID) {
 		writeError(w, 400, "Enter a name, valid email, role, and team")
 		return
 	}
@@ -235,28 +237,45 @@ func handleCreateWorkspaceUser(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 201, result)
 }
 func handleManageWorkspaceUser(w http.ResponseWriter, r *http.Request) {
-	if !requireAdmin(w, r) {
-		return
-	}
-	target, exists := findUserByID(r.PathValue("user"))
-	if !exists || target.OrgID != currentUser(r).OrgID {
-		writeError(w, 404, "User not found")
+	target, ok := adminTarget(w, r)
+	if !ok {
 		return
 	}
 	var req struct {
-		Role, TeamID   string
+		Name           *string
+		Role           string
+		TeamID         *string
 		Disabled       *bool
 		ResetTwoFactor bool
 	}
 	if !decodeRequest(w, r, &req) {
 		return
 	}
-	if req.Role != "" && !validRole(req.Role) || !teamInOrganization(r, req.TeamID) {
+	if req.Role != "" && !validRole(req.Role) || (req.TeamID != nil && !teamInOrganization(r, *req.TeamID)) {
 		writeError(w, 400, "Invalid role or team")
 		return
 	}
+	if req.Name != nil {
+		name := strings.TrimSpace(*req.Name)
+		if name == "" || len(name) > 100 {
+			writeError(w, 400, "Enter a name of up to 100 characters")
+			return
+		}
+		target.Name = name
+	}
+	if target.Disabled && req.Disabled != nil && !*req.Disabled {
+		pending, err := pendingUserInvitation(r, target)
+		if err != nil {
+			writeError(w, 500, "Could not check invitation")
+			return
+		}
+		if pending {
+			writeError(w, 409, "This user must accept their invitation before activation")
+			return
+		}
+	}
 	removingAdmin := (req.Role != "" && req.Role != "admin") || (req.Disabled != nil && *req.Disabled)
-	if target.Role == "admin" && removingAdmin {
+	if target.Role == "admin" && !target.Disabled && removingAdmin {
 		count := 0
 		mu.RLock()
 		for _, user := range users {
@@ -273,22 +292,31 @@ func handleManageWorkspaceUser(w http.ResponseWriter, r *http.Request) {
 	if req.Role != "" {
 		target.Role = req.Role
 	}
-	if req.TeamID != "" {
-		target.TeamID = req.TeamID
+	if req.TeamID != nil {
+		target.TeamID = *req.TeamID
 	}
 	if req.Disabled != nil {
 		target.Disabled = *req.Disabled
+		if *req.Disabled {
+			if _, err := storeDB(r).Exec("UPDATE auth_tokens SET used_at=? WHERE user_id=? AND used_at IS NULL", utcNow(), target.ID); err != nil {
+				writeError(w, 500, "Could not revoke account access links")
+				return
+			}
+		}
 	}
 	if req.ResetTwoFactor {
 		target.TwoFactorEnabled = false
 		target.TOTPSecret = ""
 		target.RecoveryHashes = nil
 	}
-	target.SessionVersion++
-	mu.Lock()
-	users[strings.ToLower(target.Email)] = target
-	mu.Unlock()
-	securityEvent(r, target, "admin.user_updated")
+	if err := invalidateUserSessions(r, &target); err != nil {
+		writeError(w, 500, "Could not revoke previous sessions")
+		return
+	}
+	if err := securityEvent(r, currentUser(r), "admin.user_updated:"+target.ID); err != nil {
+		writeError(w, 500, "Could not record account update")
+		return
+	}
 	writeJSON(w, 200, map[string]any{"user": target})
 }
 func handleAcceptInvite(w http.ResponseWriter, r *http.Request) {

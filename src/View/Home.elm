@@ -5,13 +5,14 @@ donut, win-rate gauge, pipeline-value bar chart, contribution
 heatmap, priority alerts, and board activity.
 -}
 
+import Dict
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes as Attr exposing (class)
 import Types exposing (..)
 import View.Charts exposing (BarDatum, barChart, gauge)
 import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, caseEntry, dealEntry, leadEntry, outstandingInvoiceAlert, overdueTaskAlert, pendingAgentAlert, pendingSchoolAlert, studentEntry, urgentCaseAlert)
 import View.Donut exposing (donutWithLegend)
-import View.Format exposing (currencyTotals, dateToDays, formatCurrency)
+import View.Format exposing (dateToDays)
 import View.Heatmap exposing (activityHeatmap)
 
 
@@ -38,36 +39,24 @@ isPast today dateStr =
 -- ─── Derived deal numbers ────────────────────────────────────
 
 
-dealsOf : Model -> List Deal
-dealsOf model =
-    case model.deals of
-        Success d ->
-            d.items
-
-        _ ->
-            []
-
-
-totalDealValue : Model -> Float
-totalDealValue model =
-    dealsOf model
-        |> List.filter (\x -> x.stage /= "Lost" && x.stage /= "Won")
-        |> List.map .value
-        |> List.sum
-
-
 stageCount : Model -> String -> Int
 stageCount model stage =
-    List.length (List.filter (\x -> x.stage == stage) (dealsOf model))
+    case model.reports of
+        Success report ->
+            Dict.get stage report.stageCounts |> Maybe.withDefault 0
+
+        _ ->
+            0
 
 
 stageValue : Model -> String -> Float
 stageValue model stage =
-    dealsOf model
-        |> List.filter (\x -> x.stage == stage)
-        |> List.filter (\d -> d.currency == "" || d.currency == "USD")
-        |> List.map .value
-        |> List.sum
+    case model.reports of
+        Success report ->
+            Dict.get stage report.stageValues |> Maybe.withDefault 0
+
+        _ ->
+            0
 
 
 wonCount : Model -> Int
@@ -144,57 +133,12 @@ barData model =
 
 allCreatedAt : Model -> List ( String, Int )
 allCreatedAt model =
-    let
-        fromLeads =
-            case model.leads of
-                Success d ->
-                    List.map (\l -> ( l.createdAt, 1 )) d.items
+    case model.reports of
+        Success report ->
+            Dict.toList report.createdCounts
 
-                _ ->
-                    []
-
-        fromStudents =
-            case model.students of
-                Success d ->
-                    List.map (\s -> ( s.createdAt, 1 )) d.items
-
-                _ ->
-                    []
-
-        fromCases =
-            case model.cases of
-                Success d ->
-                    List.map (\c -> ( c.createdAt, 1 )) d.items
-
-                _ ->
-                    []
-
-        fromDeals =
-            case model.deals of
-                Success d ->
-                    List.map (\x -> ( x.createdAt, 1 )) d.items
-
-                _ ->
-                    []
-
-        fromSchools =
-            case model.schools of
-                Success d ->
-                    List.map (\s -> ( s.createdAt, 1 )) d.items
-
-                _ ->
-                    []
-
-        fromAgents =
-            case model.agents of
-                Success d ->
-                    List.map (\a -> ( a.createdAt, 1 )) d.items
-
-                _ ->
-                    []
-    in
-    fromLeads ++ fromStudents ++ fromCases ++ fromDeals ++ fromSchools ++ fromAgents
-
+        _ ->
+            []
 
 
 -- ─── Priority alerts ──────────────────────────────────────────
@@ -302,6 +246,19 @@ recentEntries model =
 -- ─── Home view ────────────────────────────────────────────────
 
 
+summaryText : Model -> (ReportSummary -> String) -> String
+summaryText model format =
+    case model.reports of
+        Success report ->
+            format report
+
+        Failure _ ->
+            "Unavailable"
+
+        _ ->
+            "Loading…"
+
+
 homeView : Model -> User -> Html Msg
 homeView model user =
     div []
@@ -318,86 +275,20 @@ homeView model user =
             ]
         , div [ class "stats" ]
             [ statCard "Deals"
-                (case model.deals of
-                    Success d ->
-                        String.fromInt d.total
-
-                    _ ->
-                        "—"
-                )
-                (case model.deals of
-                    Success d ->
-                        let
-                            active =
-                                List.length
-                                    (List.filter (\x -> x.stage /= "Won" && x.stage /= "Lost") d.items)
-                        in
-                        String.fromInt active ++ " active"
-
-                    _ ->
-                        "Loading…"
-                )
-            , statCard "Pipeline (USD)"
-                (currencyTotals (dealsOf model |> List.filter (\d -> d.stage /= "Won" && d.stage /= "Lost") |> List.map (\d -> ( d.currency, d.value ))))
-                "Open opportunities"
+                (summaryText model (\report -> String.fromInt (List.sum (Dict.values report.stageCounts))))
+                (summaryText model (\report -> String.fromInt (List.sum (Dict.values report.stageCounts) - (Dict.get "Won" report.stageCounts |> Maybe.withDefault 0) - (Dict.get "Lost" report.stageCounts |> Maybe.withDefault 0)) ++ " active"))
+            , statCard "Open pipeline"
+                (summaryText model .pipelineLabel)
+                "All accessible opportunities"
             , statCard "Leads"
-                (case model.leads of
-                    Success d ->
-                        String.fromInt d.total
-
-                    _ ->
-                        "—"
-                )
-                (case model.leads of
-                    Success d ->
-                        let
-                            fresh =
-                                List.length (List.filter (\l -> l.status == "New") d.items)
-                        in
-                        String.fromInt fresh ++ " new"
-
-                    _ ->
-                        "Loading…"
-                )
+                (summaryText model (\report -> String.fromInt report.leads))
+                (summaryText model (\report -> String.fromInt report.newLeads ++ " new"))
             , statCard "Students"
-                (case model.students of
-                    Success d ->
-                        String.fromInt d.total
-
-                    _ ->
-                        "—"
-                )
-                (case model.students of
-                    Success d ->
-                        let
-                            approved =
-                                List.length (List.filter (\s -> s.visaStatus == "Approved") d.items)
-                        in
-                        String.fromInt approved ++ " approved"
-
-                    _ ->
-                        "Loading…"
-                )
+                (summaryText model (\report -> String.fromInt report.students))
+                (summaryText model (\report -> String.fromInt report.approvedStudents ++ " approved"))
             , statCard "Cases"
-                (case model.cases of
-                    Success d ->
-                        String.fromInt d.total
-
-                    _ ->
-                        "—"
-                )
-                (case model.cases of
-                    Success d ->
-                        let
-                            open =
-                                List.length
-                                    (List.filter (\c -> c.currentStage /= "Closed" && c.currentStage /= "Refused" && c.currentStage /= "Approved") d.items)
-                        in
-                        String.fromInt open ++ " open"
-
-                    _ ->
-                        "Loading…"
-                )
+                (summaryText model (\report -> String.fromInt report.totalCases))
+                (summaryText model (\report -> String.fromInt report.activeCases ++ " open"))
             ]
         , div [ class "chart-row" ]
             [ div [ class "chart-card" ]
@@ -406,7 +297,7 @@ homeView model user =
                     [ text "Deals by stage · current snapshot" ]
                 , donutWithLegend
                     (donutSlices model)
-                    (String.fromInt (List.length (dealsOf model)))
+                    (String.fromInt (List.sum (List.map (\( stage, _ ) -> stageCount model stage) stageColors)))
                     "Deals"
                 ]
             , div [ class "chart-card" ]
@@ -434,6 +325,8 @@ homeView model user =
             , barChart (barData model)
             ]
         , activityHeatmap model.today (allCreatedAt model)
+        , Html.node "crm-insights" [ Attr.attribute "mode" "dashboard" ] []
+        , p [ class "chart-card__subtitle" ] [ text "The activity and alert previews below show loaded records. The action queue above covers all accessible records." ]
         , div [ class "bottom-row" ]
             [ alertsPanel (priorityAlerts model)
             , activityPanel (recentEntries model)

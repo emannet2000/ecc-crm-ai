@@ -282,7 +282,7 @@ documentItem d =
                         [ text ("· Verified " ++ d.verificationDate) ]
                 ]
             , div [ class "activity-item__title-row" ]
-                [ a [ Attr.href ("/workspace?tab=documents&entity=documents&id=" ++ d.id), Attr.target "_self" ] [ text "Upload / versions" ]
+                [ a [ Attr.href ("#record-tools?tab=documents&document=" ++ d.id), Attr.target "_self" ] [ text "Upload / versions" ]
                 , h4 [ class "activity-item__title" ] [ text d.docName ]
                 , div [ class "row-action-group" ]
                     [ button
@@ -413,7 +413,7 @@ caseDetailView model c =
             [ iconBack
             , span [] [ text "Back to cases" ]
             ]
-        , a [ Attr.href ("/workspace?tab=workflows&entity=cases&id=" ++ c.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Checklist, SLA & linked cases" ]
+        , a [ Attr.href "#record-tools?tab=workflows", Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Checklist, SLA & linked cases" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar" ] [ text (initials c.studentName) ]
             , div [ class "detail-hero__body" ]

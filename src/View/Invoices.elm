@@ -247,7 +247,7 @@ invoiceDetailView model inv =
             [ iconBack
             , span [] [ text "Back to invoices" ]
             ]
-        , a [ Attr.href ("/workspace?tab=workflows&entity=invoices&id=" ++ inv.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Tax, refunds & reminders" ]
+        , a [ Attr.href "#record-tools?tab=workflows", Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Tax, refunds & reminders" ]
         , a [ Attr.href ("/api/invoices/" ++ inv.id ++ "/pdf"), Attr.attribute "download" "invoice.pdf", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Download PDF" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar detail-hero__avatar--deal" ]

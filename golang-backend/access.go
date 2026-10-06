@@ -200,6 +200,10 @@ func recordOrg(payload string) string {
 // Every API request is serialized by persistMutations. Existing CRM handlers
 // receive a private projection; only that projection's changes can be merged.
 func scopedHandler(next http.HandlerFunc, w http.ResponseWriter, r *http.Request, user User) {
+	if independentRead(r) {
+		next(w, r)
+		return
+	}
 	original := cloneStore()
 	projected := projectedStore(original, user)
 	if r.Method == "GET" && r.URL.Query().Get("filterStatus") != "" {
@@ -238,6 +242,9 @@ func scopedHandler(next http.HandlerFunc, w http.ResponseWriter, r *http.Request
 	}
 	r = r.WithContext(context.WithValue(r.Context(), relatedScopeKey, scopeForRelatedRequest(r, projected)))
 	if !normalizeRequest(w, r) {
+		return
+	}
+	if !checkRecordVersion(w, r, projected) {
 		return
 	}
 	restoreStore(projected)

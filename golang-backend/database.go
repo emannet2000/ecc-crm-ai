@@ -42,7 +42,7 @@ func openDatabase(path string) (*sql.DB, error) {
 	if err = db.QueryRow("PRAGMA user_version").Scan(&version); err != nil {
 		return fail(err)
 	}
-	if version > 3 {
+	if version > 4 {
 		return fail(fmt.Errorf("database schema %d is newer than this app", version))
 	}
 	tx, err := db.Begin()
@@ -65,10 +65,13 @@ func openDatabase(path string) (*sql.DB, error) {
 			return fail(err)
 		}
 	}
-	if _, err = tx.Exec("PRAGMA user_version=3"); err != nil {
+	if _, err = tx.Exec("PRAGMA user_version=4"); err != nil {
 		return fail(err)
 	}
 	if err = migrateWorkspace(tx, version); err != nil {
+		return fail(err)
+	}
+	if err = migrateExpansion(tx); err != nil {
 		return fail(err)
 	}
 	if err = tx.Commit(); err != nil {
@@ -331,6 +334,9 @@ func saveDatabase(events []AuditEvent) error {
 
 func saveDatabaseTx(tx *sql.Tx, events []AuditEvent) error {
 	saved := snapshot()
+	if err := trackCaseStages(tx, saved); err != nil {
+		return err
+	}
 	var err error
 	for _, stored := range saved.Users {
 		u := stored.User

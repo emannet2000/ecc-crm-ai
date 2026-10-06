@@ -3646,6 +3646,12 @@ fetchReports token toMsg =
                     |> andMap (D.field "pipelineValue" D.float)
                     |> andMap (D.field "wonValue" D.float)
                     |> andMap (D.field "outstandingBalance" D.float)
+                    |> andMap (D.field "stageCounts" (D.dict D.int))
+                    |> andMap (D.field "stageValues" (D.dict D.float))
+                    |> andMap (D.field "createdCounts" (D.dict D.int))
+                    |> andMap (D.field "newLeads" D.int)
+                    |> andMap (D.field "approvedStudents" D.int)
+                    |> andMap (D.field "totalCases" D.int)
                 )
         , timeout = Just 15000
         , tracker = Nothing
@@ -3732,6 +3738,9 @@ httpErrorMessage error =
 
             else if status == 401 then
                 "Your session expired. Please sign in again."
+
+            else if status == 409 then
+                "The record changed or has related records. Reload it and check before retrying."
 
             else if status == 403 then
                 "Your role does not have permission for this action."

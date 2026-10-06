@@ -188,8 +188,19 @@ func handleWorkflow(w http.ResponseWriter, r *http.Request) {
 				}
 				total += line.Quantity * line.UnitPrice
 			}
-			if _,provided:=req["lineItems"];provided {d.LineItems=lines}
- if len(lines)>0 {d.Value=money(total)} else if _,provided:=req["value"];provided {value:=number("value");if value<0 {fail("Deal amount cannot be negative");return};d.Value=money(value)}
+			if _, provided := req["lineItems"]; provided {
+				d.LineItems = lines
+			}
+			if len(lines) > 0 {
+				d.Value = money(total)
+			} else if _, provided := req["value"]; provided {
+				value := number("value")
+				if value < 0 {
+					fail("Deal amount cannot be negative")
+					return
+				}
+				d.Value = money(value)
+			}
 			deals[i] = d
 			writeJSON(w, 200, d)
 			return
@@ -300,6 +311,11 @@ func handleWorkflow(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 				s.ApplicationStage = stage
+				s.Intake = text("intake")
+				if len(s.Intake) > 100 {
+					fail("Intake must be 100 characters or fewer")
+					return
+				}
 				if kind != "" && kind != "IELTS" && kind != "TOEFL" {
 					fail("Choose IELTS or TOEFL")
 					return
