@@ -1,6 +1,7 @@
 module Update.Deals exposing (update)
 
-{-| Deal messages (pipeline, drag/drop, bulk actions). -}
+{-| Deal messages (pipeline, drag/drop, bulk actions).
+-}
 
 import Api
 import Set
@@ -41,7 +42,6 @@ update msg model =
                 Err message ->
                     ( { model | deals = Failure message }, Cmd.none )
 
-
         UpdatedDealsQuery q ->
             let
                 nextDeals =
@@ -56,7 +56,6 @@ update msg model =
             , Cmd.none
             )
 
-
         FlushDealsSearch ->
             case ( model.token, model.pendingDealsQuery ) of
                 ( Just t, Just q ) ->
@@ -67,7 +66,6 @@ update msg model =
                 _ ->
                     ( { model | pendingDealsQuery = Nothing }, Cmd.none )
 
-
         OpenedAddDeal ->
             ( { model
                 | dealForm = Just emptyDealForm
@@ -76,7 +74,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         OpenedAddDealWithStage stage ->
             ( { model
@@ -87,7 +84,6 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedEditDeal deal ->
             ( { model
                 | dealForm = Just (dealToForm deal)
@@ -97,11 +93,9 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedDealDetail deal ->
             Update.Navigation.update (NavigatedTo (DealDetail deal.id))
                 { model | viewingDeal = Just deal, toast = Nothing }
-
 
         RequestedCloseDealForm ->
             case ( model.dealForm, model.deletingDeal ) of
@@ -120,10 +114,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseDealForm ->
             ( { model | dealForm = Nothing, editingDealId = Nothing }, Cmd.none )
-
 
         CancelledCloseDealForm ->
             case model.dealForm of
@@ -134,7 +126,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedDealFormField field value ->
             case model.dealForm of
@@ -184,7 +175,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedDealForm ->
             case ( model.dealForm, model.token ) of
                 ( Just df, Just token ) ->
@@ -213,7 +203,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedDeal result ->
             let
@@ -276,7 +265,6 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         MovedDeal deal newStage ->
             case model.token of
                 Just token ->
@@ -286,7 +274,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         GotMovedDeal result ->
             case result of
@@ -319,14 +306,11 @@ update msg model =
                     in
                     ( { model | movingDealId = Nothing, toast = Just message }, Cmd.none )
 
-
         RequestedDeleteDeal deal ->
             ( { model | deletingDeal = Just deal }, Cmd.none )
 
-
         CancelledDeleteDeal ->
             ( { model | deletingDeal = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteDeal ->
             case ( model.deletingDeal, model.token ) of
@@ -335,7 +319,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedDeal result ->
             case result of
@@ -387,10 +370,8 @@ update msg model =
                     , Cmd.none
                     )
 
-
         DraggingDealStarted id ->
             ( { model | draggingDealId = Just id }, Cmd.none )
-
 
         DraggingDealEnded ->
             ( { model
@@ -400,14 +381,11 @@ update msg model =
             , Cmd.none
             )
 
-
         DropTargetEntered stageName ->
             ( { model | dropTargetStage = Just stageName }, Cmd.none )
 
-
         DropTargetLeft ->
             ( { model | dropTargetStage = Nothing }, Cmd.none )
-
 
         DealDroppedOnStage stageName ->
             case ( model.draggingDealId, model.token, model.deals ) of
@@ -437,7 +415,6 @@ update msg model =
                 _ ->
                     ( { model | draggingDealId = Nothing, dropTargetStage = Nothing }, Cmd.none )
 
-
         ToggledDealSelection dealId ->
             let
                 newSelection =
@@ -448,7 +425,6 @@ update msg model =
                         Set.insert dealId model.selectedDeals
             in
             ( { model | selectedDeals = newSelection }, Cmd.none )
-
 
         ToggledSelectAllDeals ->
             case model.deals of
@@ -469,22 +445,17 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ClearedDealSelection ->
             ( { model | selectedDeals = Set.empty }, Cmd.none )
-
 
         UpdatedOwnerFilter owner ->
             ( { model | ownerFilter = owner }, Cmd.none )
 
-
         UpdatedDateFromFilter date ->
             ( { model | dateFromFilter = date }, Cmd.none )
 
-
         UpdatedDateToFilter date ->
             ( { model | dateToFilter = date }, Cmd.none )
-
 
         ClearedDealFilters ->
             ( { model
@@ -495,14 +466,22 @@ update msg model =
             , Cmd.none
             )
 
-
         RequestedBulkMove stageName ->
-            ( { model | bulkMoveStage = Just stageName }, Cmd.none )
+            ( { model
+                | bulkMoveStage =
+                    Just
+                        (if String.isEmpty stageName then
+                            "Qualified"
 
+                         else
+                            stageName
+                        )
+              }
+            , Cmd.none
+            )
 
         CancelledBulkMove ->
             ( { model | bulkMoveStage = Nothing }, Cmd.none )
-
 
         ConfirmedBulkMove ->
             case ( model.token, model.bulkMoveStage ) of
@@ -518,7 +497,9 @@ update msg model =
                             cmds =
                                 List.map
                                     (\dealId ->
-                                        Api.updateDealStageOnly token dealId stageName
+                                        Api.updateDealStageOnly token
+                                            dealId
+                                            stageName
                                             (GotBulkMoved ids)
                                     )
                                     ids
@@ -530,14 +511,11 @@ update msg model =
                 _ ->
                     ( { model | bulkMoveStage = Nothing }, Cmd.none )
 
-
         RequestedBulkDelete ->
             ( { model | bulkDeleteConfirm = True }, Cmd.none )
 
-
         CancelledBulkDelete ->
             ( { model | bulkDeleteConfirm = False }, Cmd.none )
-
 
         ConfirmedBulkDelete ->
             case model.token of
@@ -560,7 +538,6 @@ update msg model =
                 Nothing ->
                     ( { model | bulkDeleteConfirm = False }, Cmd.none )
 
-
         GotBulkMoved ids result ->
             let
                 n =
@@ -572,7 +549,12 @@ update msg model =
                             "Moved "
                                 ++ String.fromInt n
                                 ++ " deal"
-                                ++ (if n == 1 then "" else "s")
+                                ++ (if n == 1 then
+                                        ""
+
+                                    else
+                                        "s"
+                                   )
 
                         Err _ ->
                             "Some moves failed"
@@ -586,7 +568,6 @@ update msg model =
             in
             ( freshModel, Tuple.second (loadDeals freshModel) )
 
-
         GotBulkDeleted ids result ->
             let
                 n =
@@ -598,7 +579,12 @@ update msg model =
                             "Deleted "
                                 ++ String.fromInt n
                                 ++ " deal"
-                                ++ (if n == 1 then "" else "s")
+                                ++ (if n == 1 then
+                                        ""
+
+                                    else
+                                        "s"
+                                   )
 
                         Err _ ->
                             "Some deletes failed"

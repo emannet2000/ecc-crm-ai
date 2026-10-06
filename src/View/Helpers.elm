@@ -1,22 +1,24 @@
 module View.Helpers exposing (alertView, detailCard, detailEmpty, detailStat, emptyIllustration, formField, infoRow, initials, onCheck, onEnter, paginationBar, sparkline, svgIcon, svgPath, toastView)
 
-{-| Shared view helpers: svg/event helpers, form fields, alerts, pagination, toasts, detail-card pieces, sparkline, empty illustration. -}
+{-| Shared view helpers: svg/event helpers, form fields, alerts, pagination, toasts, detail-card pieces, sparkline, empty illustration.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as D
+import Svg
 import Types exposing (..)
 
 
 svgIcon : List (Html.Attribute msg) -> List (Html msg) -> Html msg
-svgIcon =
-    Html.node "svg"
+svgIcon attributes children =
+    Svg.svg (Attr.attribute "aria-hidden" "true" :: attributes) children
 
 
 svgPath : String -> Html msg
 svgPath d =
-    Html.node "path" [ Attr.attribute "d" d ] []
+    Svg.path [ Attr.attribute "d" d ] []
 
 
 onCheck : (Bool -> msg) -> Html.Attribute msg
@@ -175,7 +177,7 @@ formField model cfg =
                                 , Attr.attribute "stroke-linejoin" "round"
                                 ]
                                 [ svgPath "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"
-                                , Html.node "circle"
+                                , Svg.node "circle"
                                     [ Attr.attribute "cx" "12"
                                     , Attr.attribute "cy" "12"
                                     , Attr.attribute "r" "3"
@@ -219,7 +221,17 @@ paginationBar total offset limit toMsg =
     in
     if total <= limit then
         p [ class "page-toolbar__summary" ]
-            [ text (String.fromInt total ++ " result" ++ (if total == 1 then "" else "s")) ]
+            [ text
+                (String.fromInt total
+                    ++ " result"
+                    ++ (if total == 1 then
+                            ""
+
+                        else
+                            "s"
+                       )
+                )
+            ]
 
     else
         div [ class "pagination" ]
@@ -307,6 +319,7 @@ detailEmpty icon titleText desc =
         ]
 
 
+
 -- ── Sparkline ────────────────────────────────────────────────
 
 
@@ -339,7 +352,7 @@ sparkline values =
                 y =
                     100 - h
             in
-            Html.node "rect"
+            Svg.node "rect"
                 [ Attr.attribute "x" (String.fromFloat x)
                 , Attr.attribute "y" (String.fromFloat y)
                 , Attr.attribute "width" (String.fromFloat w)
@@ -348,13 +361,14 @@ sparkline values =
                 ]
                 []
     in
-    Html.node "svg"
+    Svg.node "svg"
         [ Attr.attribute "viewBox" "0 0 100 100"
         , Attr.attribute "preserveAspectRatio" "none"
-        , Attr.class "sparkline"
+        , Attr.attribute "class" "sparkline"
         , Attr.attribute "aria-hidden" "true"
         ]
         (List.indexedMap bar values)
+
 
 
 -- ── Empty illustration ───────────────────────────────────────
@@ -363,12 +377,12 @@ sparkline values =
 emptyIllustration : Html msg -> Html msg
 emptyIllustration icon =
     div [ class "empty-illus" ]
-        [ Html.node "svg"
+        [ Svg.node "svg"
             [ Attr.attribute "viewBox" "0 0 120 120"
             , Attr.attribute "fill" "none"
             , Attr.attribute "aria-hidden" "true"
             ]
-            [ Html.node "circle"
+            [ Svg.node "circle"
                 [ Attr.attribute "cx" "60"
                 , Attr.attribute "cy" "60"
                 , Attr.attribute "r" "52"
@@ -377,7 +391,7 @@ emptyIllustration icon =
                 , Attr.attribute "stroke-dasharray" "3 6"
                 ]
                 []
-            , Html.node "circle"
+            , Svg.node "circle"
                 [ Attr.attribute "cx" "60"
                 , Attr.attribute "cy" "60"
                 , Attr.attribute "r" "38"
@@ -385,7 +399,7 @@ emptyIllustration icon =
                 , Attr.attribute "stroke-width" "1"
                 ]
                 []
-            , Html.node "circle"
+            , Svg.node "circle"
                 [ Attr.attribute "cx" "60"
                 , Attr.attribute "cy" "60"
                 , Attr.attribute "r" "26"

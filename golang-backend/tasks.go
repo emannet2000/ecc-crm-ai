@@ -71,6 +71,7 @@ func listTasks(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, t)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"tasks": slicePage(filtered, offset, limit), "total": total, "limit": limit, "offset": offset,
@@ -115,7 +116,8 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	}
 	now := time.Now().Format("2006-01-02")
 	newTask := Task{
-		ID: newID("t"), Title: strings.TrimSpace(req.Title), Description: req.Description,
+		RecordScope: newRecordScope(r),
+		ID:          newID("t"), Title: strings.TrimSpace(req.Title), Description: req.Description,
 		Status: status, DueDate: strings.TrimSpace(req.DueDate),
 		ContactID: contactID, ContactName: contactName,
 		Owner: strings.TrimSpace(req.Owner), CreatedAt: now,

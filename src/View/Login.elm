@@ -1,10 +1,12 @@
 module View.Login exposing (brandPanel, loginCard)
 
-{-| Login screen (brand panel + card). -}
+{-| Login screen (brand panel + card).
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, disabled, checked)
+import Html.Attributes as Attr exposing (checked, class, disabled, id, type_)
 import Html.Events exposing (onClick, onSubmit)
+import Svg
 import Types exposing (..)
 import View.Helpers exposing (alertView, formField, onCheck, svgIcon, svgPath)
 import View.Icons exposing (eccMark)
@@ -30,12 +32,12 @@ brandPanel =
                         [ text "secured." ]
                     ]
                 , p [ class "brand-panel__lede" ]
-                    [ text "The unified workspace for your team to manage accounts, deals, and conversations — with enterprise-grade protection built in." ]
+                    [ text "The unified workspace for your team to manage accounts, deals, and conversations — with access controls and an auditable history." ]
                 ]
             , ul [ class "trust-list" ]
-                [ trustItem "SOC 2 Type II certified"
-                , trustItem "256-bit AES encryption at rest"
-                , trustItem "GDPR & CCPA compliant"
+                [ trustItem "Organization and role permissions"
+                , trustItem "Private document storage"
+                , trustItem "Secure sessions and two-factor sign-in"
                 ]
             , footer [ class "brand-panel__footer" ]
                 [ text "© 2026 ECC. All rights reserved." ]
@@ -148,6 +150,24 @@ loginCard model =
                                 else
                                     "new-password"
                             }
+                       , if model.mode == Login then
+                            label [ class "ecc-field" ]
+                                [ span [] [ text "Authenticator or recovery code (if enabled)" ]
+                                , input [ type_ "text", Attr.value model.form.otp, Html.Events.onInput UpdatedOTP, Attr.attribute "autocomplete" "one-time-code", Attr.attribute "aria-label" "Authenticator or recovery code" ] []
+                                , a [ Attr.href "/account/forgot", Attr.target "_self" ] [ text "Forgot password?" ]
+                                , a [ Attr.href "/api/sso/start", Attr.target "_self" ] [ text "Sign in with your organization" ]
+                                ]
+
+                         else
+                            div [ class "password-strength" ]
+                                [ text
+                                    (if String.length model.form.password >= 12 then
+                                        "Length requirement met"
+
+                                     else
+                                        "Use at least 12 characters"
+                                    )
+                                ]
                        , div [ class "ecc-row" ]
                             [ label [ class "ecc-checkbox" ]
                                 [ input
@@ -208,7 +228,7 @@ loginCard model =
                         , Attr.attribute "stroke-linecap" "round"
                         , Attr.attribute "stroke-linejoin" "round"
                         ]
-                        [ Html.node "rect"
+                        [ Svg.node "rect"
                             [ Attr.attribute "x" "3"
                             , Attr.attribute "y" "11"
                             , Attr.attribute "width" "18"

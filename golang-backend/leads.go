@@ -95,6 +95,7 @@ func listLeadsHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, l)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"leads":  slicePage(filtered, offset, limit),
@@ -135,6 +136,7 @@ func createLeadHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newLead := Lead{
+		RecordScope:       newRecordScope(r),
 		ID:                newID("l"),
 		LeadNumber:        strings.TrimSpace(req.LeadNumber),
 		Name:              strings.TrimSpace(req.Name),

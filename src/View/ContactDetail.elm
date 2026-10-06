@@ -1,9 +1,10 @@
 module View.ContactDetail exposing (contactDetailView)
 
-{-| Contact detail page. -}
+{-| Contact detail page.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, type_, disabled)
+import Html.Attributes as Attr exposing (class, disabled, type_)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import View.Activity exposing (activityFeed)

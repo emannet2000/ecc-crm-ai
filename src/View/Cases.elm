@@ -1,9 +1,10 @@
 module View.Cases exposing (caseDetailView, caseFormModal, casesView, deleteCaseConfirmModal, deleteDocumentConfirmModal, documentFormModal)
 
-{-| Cases: list, detail (with documents panel), form. -}
+{-| Cases: list, detail (with documents panel), form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for, checked)
+import Html.Attributes as Attr exposing (checked, class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -162,7 +163,7 @@ casesView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load cases: " ++ msg) ]
+                [ text ("Could not load cases: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -281,7 +282,8 @@ documentItem d =
                         [ text ("· Verified " ++ d.verificationDate) ]
                 ]
             , div [ class "activity-item__title-row" ]
-                [ h4 [ class "activity-item__title" ] [ text d.docName ]
+                [ a [ Attr.href ("/workspace?tab=documents&entity=documents&id=" ++ d.id), Attr.target "_self" ] [ text "Upload / versions" ]
+                , h4 [ class "activity-item__title" ] [ text d.docName ]
                 , div [ class "row-action-group" ]
                     [ button
                         [ class "row-action"
@@ -337,7 +339,7 @@ documentsPanel model _ =
 
         Failure msg ->
             div [ class "activity-loading" ]
-                [ text ("Could not load documents: " ++ msg) ]
+                [ text ("Could not load documents: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success [] ->
             detailEmpty
@@ -411,6 +413,7 @@ caseDetailView model c =
             [ iconBack
             , span [] [ text "Back to cases" ]
             ]
+        , a [ Attr.href ("/workspace?tab=workflows&entity=cases&id=" ++ c.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Checklist, SLA & linked cases" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar" ] [ text (initials c.studentName) ]
             , div [ class "detail-hero__body" ]
@@ -774,13 +777,12 @@ caseFormView model cf isEdit =
                 "Save case"
     in
     form [ onSubmit SubmittedCaseForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ caseRichField cf "caseNumber" "Case number (auto if empty)" "text"
             , caseStudentSelect model cf
@@ -1076,13 +1078,12 @@ documentFormView df isEdit =
                 "Save document"
     in
     form [ onSubmit SubmittedDocumentForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ documentRichField df "docName" "Document name" "text"
             , documentRichField df "dateRequested" "Date requested" "date"

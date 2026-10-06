@@ -1,11 +1,14 @@
 module View.Contacts exposing (contactById, contactList, contactsView, stageBadge)
 
-{-| Contacts list page. -}
+{-| Contacts list page.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled)
+import Html.Attributes as Attr exposing (class, disabled, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as D
+import Router exposing (routeToPath)
+import Svg
 import Types exposing (..)
 import View.Helpers exposing (initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconEdit, iconTrash)
@@ -45,12 +48,12 @@ stageBadge stage =
 
 contactRow : Contact -> Html Msg
 contactRow c =
-    tr [ class "contact-row", onClick (OpenedContactDetail c) ]
+    tr [ class "contact-row" ]
         [ td []
             [ div [ class "contact-name-cell" ]
                 [ div [ class "contact-avatar" ] [ text (initials c.name) ]
                 , div [ class "contact-name-info" ]
-                    [ span [ class "contact-name" ] [ text c.name ]
+                    [ a [ class "contact-name record-link", Attr.href (routeToPath (ContactDetail c.id)) ] [ text c.name ]
                     , span [ class "contact-email" ] [ text c.email ]
                     ]
                 ]
@@ -111,7 +114,7 @@ contactsView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load contacts: " ++ msg) ]
+                [ text ("Could not load contacts: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -134,7 +137,7 @@ contactsView model =
                             , Attr.attribute "stroke-linecap" "round"
                             , Attr.attribute "stroke-linejoin" "round"
                             ]
-                            [ Html.node "circle"
+                            [ Svg.node "circle"
                                 [ Attr.attribute "cx" "11"
                                 , Attr.attribute "cy" "11"
                                 , Attr.attribute "r" "8"
@@ -171,7 +174,7 @@ contactsView model =
                                 , Attr.attribute "stroke-linejoin" "round"
                                 ]
                                 [ svgPath "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-                                , Html.node "circle"
+                                , Svg.node "circle"
                                     [ Attr.attribute "cx" "9"
                                     , Attr.attribute "cy" "7"
                                     , Attr.attribute "r" "4"

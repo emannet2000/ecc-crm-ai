@@ -98,6 +98,7 @@ func listPartnersHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, p)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"partners": slicePage(filtered, offset, limit),
@@ -142,6 +143,7 @@ func createPartnerHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newPartner := Partner{
+		RecordScope:         newRecordScope(r),
 		ID:                  newID("p"),
 		Type:                strings.TrimSpace(req.Type),
 		LegalCompanyName:    strings.TrimSpace(req.LegalCompanyName),

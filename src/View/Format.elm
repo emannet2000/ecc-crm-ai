@@ -1,7 +1,9 @@
-module View.Format exposing (dateToDays, dealAgeClass, dealAgeDays, dealAgeLabel, formatCurrency, formatCurrencyWith)
+module View.Format exposing (currencyTotals, dateToDays, dealAgeClass, dealAgeDays, dealAgeLabel, formatCurrency, formatCurrencyWith)
 
-{-| Date arithmetic, deal-age labels and currency formatting. -}
+{-| Date arithmetic, deal-age labels and currency formatting.
+-}
 
+import Dict
 import Html exposing (..)
 import Types exposing (..)
 
@@ -187,3 +189,24 @@ formatCurrencyWith currency v =
 formatCurrency : Float -> String
 formatCurrency =
     formatCurrencyWith "USD"
+
+
+currencyTotals : List ( String, Float ) -> String
+currencyTotals items =
+    items
+        |> List.foldl
+            (\( currency, amount ) totals ->
+                Dict.update
+                    (if currency == "" then
+                        "USD"
+
+                     else
+                        currency
+                    )
+                    (\previous -> Just (Maybe.withDefault 0 previous + amount))
+                    totals
+            )
+            Dict.empty
+        |> Dict.toList
+        |> List.map (\( currency, amount ) -> formatCurrencyWith currency amount)
+        |> String.join " · "

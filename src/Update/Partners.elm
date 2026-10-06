@@ -39,7 +39,6 @@ update msg model =
                 Err message ->
                     ( { model | partners = Failure message }, Cmd.none )
 
-
         UpdatedPartnersQuery q ->
             let
                 next =
@@ -51,7 +50,6 @@ update msg model =
                             Success { items = [], query = q, typeFilter = "", countryFilter = "", total = 0, offset = 0, limit = pageSize }
             in
             ( { model | partners = next, pendingPartnersQuery = Just q }, Cmd.none )
-
 
         UpdatedPartnersTypeFilter t ->
             case model.token of
@@ -72,7 +70,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         UpdatedPartnersCountryFilter c ->
             case model.token of
                 Just tok ->
@@ -91,7 +88,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         FlushPartnersSearch ->
             case ( model.token, model.pendingPartnersQuery ) of
@@ -112,7 +108,6 @@ update msg model =
                 _ ->
                     ( { model | pendingPartnersQuery = Nothing }, Cmd.none )
 
-
         PartnersPageChanged newOffset ->
             case ( model.token, model.partners ) of
                 ( Just t, Success data ) ->
@@ -123,19 +118,15 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddPartner ->
             ( { model | partnerForm = Just emptyPartnerForm, editingPartnerId = Nothing, toast = Nothing }, Cmd.none )
-
 
         OpenedEditPartner p ->
             ( { model | partnerForm = Just (partnerToForm p), editingPartnerId = Just p.id, toast = Nothing }, Cmd.none )
 
-
         OpenedPartnerDetail p ->
             Update.Navigation.update (NavigatedTo (PartnerDetail p.id))
                 { model | viewingPartner = Just p, toast = Nothing }
-
 
         RequestedClosePartnerForm ->
             case ( model.partnerForm, model.deletingPartner ) of
@@ -152,10 +143,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedClosePartnerForm ->
             ( { model | partnerForm = Nothing, editingPartnerId = Nothing }, Cmd.none )
-
 
         CancelledClosePartnerForm ->
             case model.partnerForm of
@@ -164,7 +153,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedPartnerFormField field value ->
             case model.partnerForm of
@@ -246,7 +234,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedPartnerForm ->
             case ( model.partnerForm, model.token ) of
                 ( Just pf, Just token ) ->
@@ -275,7 +262,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedPartner result ->
             case result of
@@ -325,14 +311,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeletePartner p ->
             ( { model | deletingPartner = Just p }, Cmd.none )
 
-
         CancelledDeletePartner ->
             ( { model | deletingPartner = Nothing }, Cmd.none )
-
 
         ConfirmedDeletePartner ->
             case ( model.deletingPartner, model.token ) of
@@ -341,7 +324,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedPartner result ->
             case result of

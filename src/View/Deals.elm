@@ -1,12 +1,15 @@
 module View.Deals exposing (dealStageOptions, dealsView)
 
-{-| Deals pipeline board. -}
+{-| Deals pipeline board.
+-}
 
+import Dict
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, type_, placeholder, value, disabled)
+import Html.Attributes as Attr exposing (class, disabled, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as D
 import Set
+import Svg
 import Types exposing (..)
 import View.Contacts exposing (contactById, contactList)
 import View.Filters exposing (distinctOwners, isStale, passesFilters)
@@ -64,13 +67,13 @@ stageProbability : String -> Float
 stageProbability stage =
     case stage of
         "Lead" ->
-            0.10
+            0.1
 
         "Qualified" ->
             0.25
 
         "Proposal" ->
-            0.50
+            0.5
 
         "Negotiation" ->
             0.75
@@ -88,7 +91,7 @@ stageProbability stage =
 weightedValue : List Deal -> Float
 weightedValue deals =
     deals
-        |> List.map (\d -> d.value * stageProbability d.stage)
+        |> List.map (\d -> d.value * Maybe.withDefault (stageProbability d.stage) d.probability)
         |> List.sum
 
 
@@ -209,7 +212,6 @@ dealCard model contacts movingId d =
                             , text d.closeDate
                             ]
                         )
-
                 , if String.isEmpty d.owner then
                     Nothing
 
@@ -435,7 +437,7 @@ dealColumn model contacts movingId stageName deals =
 
         totalTitle =
             if isMixed then
-                "Mixed currencies; shown in USD at face value"
+                "Separate totals by currency; no exchange rate is assumed"
 
             else
                 ""
@@ -530,7 +532,7 @@ dealColumn model contacts movingId stageName deals =
                         "—"
 
                      else
-                        formatCurrencyWith displayCurrency total
+                        currencyTotals .value deals
                     )
                 ]
             , if isEmpty then
@@ -539,7 +541,7 @@ dealColumn model contacts movingId stageName deals =
               else
                 span [ class "pipeline-col__weighted" ]
                     [ text "weighted "
-                    , strong [] [ text (formatCurrencyWith displayCurrency weighted) ]
+                    , strong [] [ text (currencyTotals (\d -> d.value * Maybe.withDefault (stageProbability d.stage) d.probability) deals) ]
                     ]
             ]
         , div [ class "pipeline-col__bar" ]
@@ -581,7 +583,8 @@ pipelineBoard model contacts movingId deals =
         (dealStageOptions
             |> List.map
                 (\stageName ->
-                    dealColumn model contacts
+                    dealColumn model
+                        contacts
                         movingId
                         stageName
                         (List.filter (\d -> d.stage == stageName) deals)
@@ -608,7 +611,7 @@ dealsView model =
             dealsSkeleton
 
         Failure msg ->
-            div [ class "content__empty-block" ] [ text ("Could not load deals: " ++ msg) ]
+            div [ class "content__empty-block" ] [ text ("Could not load deals: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -681,7 +684,7 @@ dealsView model =
                             , Attr.attribute "stroke-linecap" "round"
                             , Attr.attribute "stroke-linejoin" "round"
                             ]
-                            [ Html.node "circle"
+                            [ Svg.node "circle"
                                 [ Attr.attribute "cx" "11"
                                 , Attr.attribute "cy" "11"
                                 , Attr.attribute "r" "8"
@@ -711,13 +714,15 @@ dealsView model =
                     ]
                 , div [ class "deals-filters" ]
                     [ div [ class "deals-filters__group" ]
-                        [ span [ class "deals-filters__label" ] [ text "Owner" ]
+                        [ button [ class "ecc-btn ecc-btn--ghost", onClick (UpdatedOwnerFilter "__mine__") ] [ text "My deals" ]
+                        , span [ class "deals-filters__label" ] [ text "Owner" ]
                         , select
                             [ onInput UpdatedOwnerFilter
                             , value model.ownerFilter
                             ]
                             (option [ value "" ]
                                 [ text "All owners" ]
+                                :: option [ value "__mine__" ] [ text "My deals" ]
                                 :: List.map
                                     (\o ->
                                         option
@@ -758,7 +763,12 @@ dealsView model =
                              else
                                 String.fromInt data.total
                                     ++ " deal"
-                                    ++ (if data.total == 1 then "" else "s")
+                                    ++ (if data.total == 1 then
+                                            ""
+
+                                        else
+                                            "s"
+                                       )
                             )
                         ]
                     , if hasActiveFilters then
@@ -808,19 +818,34 @@ dealsView model =
                     text ""
                 , div [ class summaryClass ]
                     [ kpiCard "Total pipeline (USD)"
-                        (formatCurrency totalValue)
+                        (currencyTotals .value visibleDeals)
                         "deals-summary__kpi--total"
-                        [ text (String.fromInt count ++ " active deal" ++ (if count == 1 then "" else "s")) ]
+                        [ text
+                            (String.fromInt count
+                                ++ " active deal"
+                                ++ (if count == 1 then
+                                        ""
+
+                                    else
+                                        "s"
+                                   )
+                            )
+                        ]
                     , kpiCard "Weighted forecast (USD)"
-                        (formatCurrency weighted)
+                        (currencyTotals (\d -> d.value * Maybe.withDefault (stageProbability d.stage) d.probability) visibleDeals)
                         "deals-summary__kpi--weighted"
                         [ text "Stage-adjusted" ]
                     , kpiCard "Won (USD)"
-                        (formatCurrency wonTotal)
+                        (currencyTotals .value (List.filter (\d -> d.stage == "Won") visibleDeals))
                         "deals-summary__kpi--won"
                         [ text (String.fromInt wonCount ++ " closed") ]
                     , kpiCard "Average deal (USD)"
-                        (formatCurrency avgValue)
+                        (if Tuple.second (columnDisplayCurrency visibleDeals) then
+                            "Multiple currencies"
+
+                         else
+                            formatCurrencyWith (Tuple.first (columnDisplayCurrency visibleDeals)) avgValue
+                        )
                         "deals-summary__kpi--avg"
                         [ text "Per deal" ]
                     , kpiCard "Conversion"
@@ -865,3 +890,24 @@ dealsView model =
                   else
                     pipelineBoard model (contactList model) model.movingDealId visibleDeals
                 ]
+
+
+currencyTotals : (Deal -> Float) -> List Deal -> String
+currencyTotals amount deals =
+    deals
+        |> List.foldl
+            (\deal totals ->
+                Dict.update
+                    (if String.isEmpty deal.currency then
+                        "USD"
+
+                     else
+                        deal.currency
+                    )
+                    (\current -> Just (Maybe.withDefault 0 current + amount deal))
+                    totals
+            )
+            Dict.empty
+        |> Dict.toList
+        |> List.map (\( currency, total ) -> formatCurrencyWith currency total)
+        |> String.join " · "

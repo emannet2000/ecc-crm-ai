@@ -131,6 +131,7 @@ func listCasesHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, c)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"cases":  slicePage(filtered, offset, limit),
@@ -190,6 +191,7 @@ func createCaseHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newCase := Case{
+		RecordScope:        newRecordScope(r),
 		ID:                 newID("case"),
 		CaseNumber:         caseNumber,
 		ClientID:           clientID,

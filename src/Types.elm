@@ -19,6 +19,7 @@ type Route
     | DealDetail String
     | Tasks
     | Reports
+    | Workspace
     | Settings
     | Schools
     | SchoolDetail String
@@ -48,7 +49,8 @@ type alias Alert =
 
 
 type alias User =
-    { id : String
+    { role : String
+    , id : String
     , name : String
     , email : String
     }
@@ -149,9 +151,11 @@ type alias Deal =
     , contactId : String
     , contactName : String
     , value : Float
+    , probability : Maybe Float
     , currency : String
     , stage : String
     , closeDate : String
+    , ownerId : String
     , owner : String
     , notes : String
     , createdAt : String
@@ -396,6 +400,7 @@ type alias Form =
     , email : String
     , password : String
     , remember : Bool
+    , otp : String
     }
 
 
@@ -411,7 +416,9 @@ type Field
     | PasswordField
 
 
+
 -- ========== SCHOOLS ==========
+
 
 type alias School =
     { id : String
@@ -487,7 +494,9 @@ schoolToForm s =
     }
 
 
+
 -- ========== STUDENTS ==========
+
 
 type alias Student =
     { id : String
@@ -588,7 +597,9 @@ invoiceStatuses =
     [ "Not Issued", "Issued", "Paid", "Overdue" ]
 
 
+
 -- ========== AGENTS ==========
+
 
 type alias Agent =
     { id : String
@@ -670,7 +681,9 @@ agentStatuses =
     [ "Active", "Inactive" ]
 
 
+
 -- ========== LEADS ==========
+
 
 type alias Lead =
     { id : String
@@ -768,19 +781,33 @@ leadToForm l =
 
 leadSources : List String
 leadSources =
-    [ "Website", "Facebook", "Instagram", "WhatsApp"
-    , "Referral", "School Partner", "Event", "Walk-in", "Other"
+    [ "Website"
+    , "Facebook"
+    , "Instagram"
+    , "WhatsApp"
+    , "Referral"
+    , "School Partner"
+    , "Event"
+    , "Walk-in"
+    , "Other"
     ]
 
 
 leadStatuses : List String
 leadStatuses =
-    [ "New", "Contacted", "Qualified", "Consultation Booked"
-    , "Proposal Sent", "Converted", "Closed/Lost"
+    [ "New"
+    , "Contacted"
+    , "Qualified"
+    , "Consultation Booked"
+    , "Proposal Sent"
+    , "Converted"
+    , "Closed/Lost"
     ]
 
 
+
 -- ========== CASES ==========
+
 
 type alias Case =
     { id : String
@@ -909,11 +936,20 @@ caseToForm c =
 
 caseStages : List String
 caseStages =
-    [ "Assessment", "Eligibility Review", "Agreement Pending"
-    , "Documents Pending", "Documents Under Review", "Application Preparation"
-    , "Partner Review", "Ready for Submission", "Submitted"
-    , "Additional Documents Requested", "Decision Pending", "Approved"
-    , "Refused", "Closed"
+    [ "Assessment"
+    , "Eligibility Review"
+    , "Agreement Pending"
+    , "Documents Pending"
+    , "Documents Under Review"
+    , "Application Preparation"
+    , "Partner Review"
+    , "Ready for Submission"
+    , "Submitted"
+    , "Additional Documents Requested"
+    , "Decision Pending"
+    , "Approved"
+    , "Refused"
+    , "Closed"
     ]
 
 
@@ -922,7 +958,9 @@ casePriorities =
     [ "Low", "Medium", "High", "Urgent" ]
 
 
+
 -- ========== DOCUMENTS ==========
+
 
 type alias Document =
     { id : String
@@ -1014,15 +1052,23 @@ documentToForm d =
 
 documentStatuses : List String
 documentStatuses =
-    [ "Not Requested", "Requested", "Received"
-    , "Under Review", "Correction Required", "Verified", "Expired"
+    [ "Not Requested"
+    , "Requested"
+    , "Received"
+    , "Under Review"
+    , "Correction Required"
+    , "Verified"
+    , "Expired"
     ]
+
 
 
 -- ========== INVOICES ==========
 
+
 type alias Invoice =
-    { id : String
+    { currency : String
+    , id : String
     , invoiceNumber : String
     , clientId : String
     , clientName : String
@@ -1128,15 +1174,23 @@ invoiceToForm inv =
 
 paymentMilestones : List String
 paymentMilestones =
-    [ "Quotation Issued", "Deposit Due", "Deposit Paid"
-    , "Instalment Due", "Fully Paid", "Refund Review", "Refunded"
+    [ "Quotation Issued"
+    , "Deposit Due"
+    , "Deposit Paid"
+    , "Instalment Due"
+    , "Fully Paid"
+    , "Refund Review"
+    , "Refunded"
     ]
+
 
 
 -- ========== PAYMENTS ==========
 
+
 type alias Payment =
-    { id : String
+    { currency : String
+    , id : String
     , invoiceId : String
     , amount : Float
     , paidOn : String
@@ -1171,7 +1225,9 @@ emptyPaymentForm =
     }
 
 
+
 -- ========== PARTNERS ==========
+
 
 type alias Partner =
     { id : String
@@ -1295,13 +1351,20 @@ partnerToForm p =
 
 partnerTypes : List String
 partnerTypes =
-    [ "School", "Immigration Lawyer", "Licensed Consultant"
-    , "Recruitment Agency", "Employer", "Travel Agency"
-    , "Referral Agent", "Language Provider"
+    [ "School"
+    , "Immigration Lawyer"
+    , "Licensed Consultant"
+    , "Recruitment Agency"
+    , "Employer"
+    , "Travel Agency"
+    , "Referral Agent"
+    , "Language Provider"
     ]
 
 
+
 -- ========== DOSSIER ==========
+
 
 type alias Dossier =
     { student : Student
@@ -1311,10 +1374,56 @@ type alias Dossier =
     }
 
 
+
 -- ========== MODEL ==========
+
+
+type alias SearchResult =
+    { entity : String, id : String, title : String, subtitle : String }
+
+
+type alias SearchData =
+    { results : List SearchResult, truncated : Bool }
+
+
+type alias AuditEvent =
+    { id : Int, actor : String, action : String, entity : String, recordId : String, label : String, occurredAt : String }
+
+
+type alias AuditData =
+    { events : List AuditEvent, total : Int }
+
+
+type alias ReportSummary =
+    { pipelineLabel : String
+    , wonLabel : String
+    , balanceLabel : String
+    , contacts : Int
+    , students : Int
+    , leads : Int
+    , activeCases : Int
+    , openTasks : Int
+    , pipelineValue : Float
+    , wonValue : Float
+    , outstandingBalance : Float
+    }
+
+
+type Theme
+    = LightTheme
+    | DarkTheme
+
 
 type alias Model =
     { mode : Mode
+    , theme : Theme
+    , reports : RemoteData ReportSummary
+    , globalQuery : String
+    , globalResults : RemoteData SearchData
+    , audit : RemoteData AuditData
+    , auditOffset : Int
+    , exportEntity : String
+    , exporting : Maybe String
     , form : Form
     , errors : List ( Field, String )
     , alert : Maybe Alert
@@ -1342,12 +1451,14 @@ type alias Model =
     , ownerFilter : String
     , dateFromFilter : String
     , dateToFilter : String
+    , unreadNotifications : Int
     , today : String
     , bulkMoveStage : Maybe String
     , bulkDeleteConfirm : Bool
     , activities : RemoteData (List Activity)
     , activityForm : Maybe ActivityForm
     , deletingActivity : Maybe Activity
+    , taskOffset : Int
     , tasks : RemoteData TasksData
     , taskForm : Maybe TaskForm
     , editingTaskId : Maybe String
@@ -1420,18 +1531,37 @@ emptyForm =
     , email = ""
     , password = ""
     , remember = True
+    , otp = ""
     }
+
 
 
 -- ========== MSG ==========
 
+
 type Msg
     = UpdatedField Field String
+    | ToggledTheme
     | ToggledRemember Bool
     | ToggledShowPassword
     | Submitted
     | SwitchedMode Mode
+    | UpdatedGlobalQuery String
+    | GlobalSearchReady String
+    | GotGlobalSearch String (Result String SearchData)
+    | ClosedGlobalSearch
+    | RequestedAuditPage Int
+    | GotAudit Int (Result String AuditData)
+    | SelectedExportEntity String
+    | RequestedExport
+    | GotExport String (Result String String)
+    | GotReports (Result String ReportSummary)
     | GotAuth (Result String AuthResponse)
+    | PollWorkspaceClock
+    | RefreshedWorkspaceClock (Result String ( String, Int ))
+    | RefreshSession
+    | RefreshedSession (Result String AuthResponse)
+    | UpdatedOTP String
     | GotUser (Result String User)
     | LoggedOut
     | NavigatedTo Route
@@ -1512,6 +1642,7 @@ type Msg
     | CancelledLogoutAll
     | ConfirmedLogoutAll
     | GotLogoutAll (Result String String)
+    | ChangedTasksPage Int
     | GotTasks (Result String ( List Task, Int ))
     | UpdatedTasksQuery String
     | UpdatedTasksStatusFilter String

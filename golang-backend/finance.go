@@ -36,7 +36,8 @@ type paymentRequest struct {
 }
 
 type refundRequest struct {
-	Reason string `json:"reason"`
+	Amount float64 `json:"amount"`
+	Reason string  `json:"reason"`
 }
 
 var validPaymentMilestones = []string{
@@ -112,6 +113,7 @@ func listInvoicesHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, inv)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"invoices": slicePage(filtered, offset, limit),
@@ -180,6 +182,7 @@ func createInvoiceHandler(w http.ResponseWriter, r *http.Request) {
 	balance := totalDue - req.AmountReceived
 
 	newInv := Invoice{
+		RecordScope:           newRecordScope(r),
 		ID:                    newID("inv"),
 		InvoiceNumber:         invNumber,
 		ClientID:              clientID,
@@ -260,18 +263,22 @@ func updateInvoiceHandler(w http.ResponseWriter, r *http.Request) {
 	updated.TotalFee = req.TotalFee
 	updated.GovernmentFee = req.GovernmentFee
 	updated.SchoolPartnerFee = req.SchoolPartnerFee
-	updated.AmountReceived = req.AmountReceived
+	// Receipt amounts are controlled by the ledger.
+	updated.AmountReceived = invoices[idx].AmountReceived
 	updated.Balance = balance
 	updated.PaymentMilestone = strings.TrimSpace(req.PaymentMilestone)
 	updated.PaymentMethod = strings.TrimSpace(req.PaymentMethod)
 	updated.OfficialReceiptNumber = strings.TrimSpace(req.OfficialReceiptNumber)
-	updated.RefundStatus = strings.TrimSpace(req.RefundStatus)
+	// Refund state is managed by the approval and processing workflow.
+ updated.RefundStatus = invoices[idx].RefundStatus
 	updated.ReferralCommission = req.ReferralCommission
 	updated.PartnerPayable = req.PartnerPayable
 	updated.PaymentApproval = strings.TrimSpace(req.PaymentApproval)
 	updated.Notes = req.Notes
 
 	invoices[idx] = updated
+	recomputeInvoiceLocked(idx)
+	updated = invoices[idx]
 	writeJSON(w, http.StatusOK, map[string]any{"invoice": updated})
 }
 
@@ -305,6 +312,18 @@ func requestRefundHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	amount := req.Amount
+	if amount == 0 {
+		amount = invoices[idx].AmountReceived
+	}
+	if amount <= 0 || amount > invoices[idx].AmountReceived {
+		writeError(w, 400, "Refund cannot exceed the amount received")
+		return
+	}
+	if _, err := entry(r, "refund", id, map[string]any{"amount": money(amount), "currency": currencyOf(invoices[idx].Currency), "reason": reason, "status": "requested", "requestedBy": currentUser(r).ID}, false); err != nil {
+		writeError(w, 500, "Could not save refund request")
+		return
+	}
 	invoices[idx].RefundStatus = "Requested"
 	invoices[idx].PaymentMilestone = "Refund Review"
 	invoices[idx].Notes = invoices[idx].Notes + "\n[Refund requested] " + reason
@@ -330,6 +349,12 @@ func deleteInvoiceHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for _, p := range payments {
+		if p.InvoiceID == id {
+			writeError(w, 409, "Invoices with payments must be retained for the ledger")
+			return
+		}
+	}
 	invoices = append(invoices[:idx], invoices[idx+1:]...)
 	writeJSON(w, http.StatusOK, map[string]any{"deleted": id})
 }
@@ -348,6 +373,7 @@ func listPaymentsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		filtered = append(filtered, p)
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"payments": slicePage(filtered, offset, limit),
@@ -400,29 +426,26 @@ func createPaymentHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newPayment := Payment{
-		ID:        newID("pay"),
-		InvoiceID: invoiceID,
-		Amount:    req.Amount,
-		PaidOn:    normalizeDate(req.PaidOn),
-		Method:    strings.TrimSpace(req.Method),
-		Reference: strings.TrimSpace(req.Reference),
-		Notes:     req.Notes,
-		CreatedBy: createdBy,
-		CreatedAt: now,
+		RecordScope: newRecordScope(r),
+		ID:          newID("pay"),
+		InvoiceID:   invoiceID,
+		Amount:      req.Amount,
+		PaidOn:      normalizeDate(req.PaidOn),
+		Method:      strings.TrimSpace(req.Method),
+		Reference:   strings.TrimSpace(req.Reference),
+		Notes:       req.Notes,
+		CreatedBy:   createdBy,
+		CreatedAt:   now,
 	}
 
+	recomputeInvoiceLocked(invIdx)
+	newPayment.RecordScope = invoices[invIdx].RecordScope
+	newPayment.Currency = currencyOf(invoices[invIdx].Currency)
+	newPayment.Status = "posted"
 	payments = append(payments, newPayment)
 
+	recomputeInvoiceLocked(invIdx)
 	inv := invoices[invIdx]
-	inv.AmountReceived = inv.AmountReceived + req.Amount
-	totalDue := inv.TotalFee + inv.GovernmentFee + inv.SchoolPartnerFee
-	inv.Balance = totalDue - inv.AmountReceived
-	if inv.Balance <= 0 {
-		inv.PaymentMilestone = "Fully Paid"
-	} else if inv.AmountReceived > 0 {
-		inv.PaymentMilestone = "Instalment Due"
-	}
-	invoices[invIdx] = inv
 
 	writeJSON(w, http.StatusCreated, map[string]any{
 		"payment": newPayment,
@@ -448,6 +471,21 @@ func deletePaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if payments[idx].Status == "refund" || payments[idx].Status == "refund_reversal" || strings.HasPrefix(payments[idx].Method, "Stripe") {
+		writeError(w, 409, "Use the refund workflow to reverse this payment")
+		return
+	}
+	invoiceID := payments[idx].InvoiceID
+	for i := range invoices {
+		if invoices[i].ID == invoiceID {
+			recomputeInvoiceLocked(i)
+		}
+	}
 	payments = append(payments[:idx], payments[idx+1:]...)
+	for i := range invoices {
+		if invoices[i].ID == invoiceID {
+			recomputeInvoiceLocked(i)
+		}
+	}
 	writeJSON(w, http.StatusOK, map[string]any{"deleted": id})
 }

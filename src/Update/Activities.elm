@@ -1,6 +1,7 @@
 module Update.Activities exposing (update)
 
-{-| Activity messages. -}
+{-| Activity messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -19,7 +20,6 @@ update msg model =
                 Err message ->
                     ( { model | activities = Failure message }, Cmd.none )
 
-
         OpenedActivityForm ->
             ( { model
                 | activityForm = Just emptyActivityForm
@@ -27,7 +27,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         RequestedCloseActivityForm ->
             case ( model.activityForm, model.deletingActivity ) of
@@ -44,10 +43,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseActivityForm ->
             ( { model | activityForm = Nothing }, Cmd.none )
-
 
         CancelledCloseActivityForm ->
             case model.activityForm of
@@ -56,7 +53,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedActivityFormField field value ->
             case model.activityForm of
@@ -94,7 +90,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedActivityForm ->
             case ( model.activityForm, model.token, model.viewingContact ) of
                 ( Just af, Just token, Just contact ) ->
@@ -114,7 +109,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedActivity result ->
             case result of
@@ -175,14 +169,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteActivity activity ->
             ( { model | deletingActivity = Just activity }, Cmd.none )
 
-
         CancelledDeleteActivity ->
             ( { model | deletingActivity = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteActivity ->
             case ( model.deletingActivity, model.token ) of
@@ -191,7 +182,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedActivity result ->
             case result of

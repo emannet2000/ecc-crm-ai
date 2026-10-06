@@ -1,6 +1,7 @@
 module Router exposing (parseRoute, routeToPath)
 
-{-| URL parsing and route <-> path conversion. -}
+{-| URL parsing and route <-> path conversion.
+-}
 
 import Types exposing (..)
 import Url
@@ -17,6 +18,7 @@ routeParser =
         , Parser.map DealDetail (s "deals" </> string)
         , Parser.map Tasks (s "tasks")
         , Parser.map Reports (s "reports")
+        , Parser.map Workspace (s "workspace")
         , Parser.map Settings (s "settings")
         , Parser.map Schools (s "schools")
         , Parser.map SchoolDetail (s "schools" </> string)
@@ -61,6 +63,9 @@ routeToPath route =
         Tasks ->
             "/tasks"
 
+        Workspace ->
+            "/workspace"
+
         Reports ->
             "/reports"
 
@@ -92,15 +97,19 @@ routeToPath route =
             "/leads/" ++ id
 
         Cases ->
-              "/cases"
-        CaseDetail id ->
-                "/cases/" ++ id
-        Invoices ->
-                "/invoices"
-        InvoiceDetail id ->
-                "/invoices/" ++ id
-        Partners ->
-                "/partners"
-        PartnerDetail id ->
-                "/partners/" ++ id
+            "/cases"
 
+        CaseDetail id ->
+            "/cases/" ++ id
+
+        Invoices ->
+            "/invoices"
+
+        InvoiceDetail id ->
+            "/invoices/" ++ id
+
+        Partners ->
+            "/partners"
+
+        PartnerDetail id ->
+            "/partners/" ++ id

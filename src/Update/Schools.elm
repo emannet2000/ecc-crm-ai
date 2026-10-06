@@ -1,6 +1,7 @@
 module Update.Schools exposing (update)
 
-{-| School messages. -}
+{-| School messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -40,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | schools = Failure message }, Cmd.none )
 
-
         UpdatedSchoolsQuery q ->
             let
                 next =
@@ -53,7 +53,6 @@ update msg model =
             in
             ( { model | schools = next, pendingSchoolsQuery = Just q }, Cmd.none )
 
-
         FlushSchoolsSearch ->
             case ( model.token, model.pendingSchoolsQuery ) of
                 ( Just t, Just q ) ->
@@ -63,7 +62,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingSchoolsQuery = Nothing }, Cmd.none )
-
 
         SchoolsPageChanged newOffset ->
             case ( model.token, model.schools ) of
@@ -75,7 +73,6 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddSchool ->
             ( { model
                 | schoolForm = Just emptySchoolForm
@@ -84,7 +81,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         OpenedEditSchool school ->
             ( { model
@@ -95,11 +91,9 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedSchoolDetail school ->
             Update.Navigation.update (NavigatedTo (SchoolDetail school.id))
                 { model | viewingSchool = Just school, toast = Nothing }
-
 
         RequestedCloseSchoolForm ->
             case ( model.schoolForm, model.deletingSchool ) of
@@ -116,10 +110,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseSchoolForm ->
             ( { model | schoolForm = Nothing, editingSchoolId = Nothing }, Cmd.none )
-
 
         CancelledCloseSchoolForm ->
             case model.schoolForm of
@@ -128,7 +120,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedSchoolFormField field value ->
             case model.schoolForm of
@@ -178,7 +169,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedSchoolForm ->
             case ( model.schoolForm, model.token ) of
                 ( Just sf, Just token ) ->
@@ -203,7 +193,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedSchool result ->
             case result of
@@ -253,14 +242,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteSchool school ->
             ( { model | deletingSchool = Just school }, Cmd.none )
 
-
         CancelledDeleteSchool ->
             ( { model | deletingSchool = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteSchool ->
             case ( model.deletingSchool, model.token ) of
@@ -269,7 +255,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedSchool result ->
             case result of

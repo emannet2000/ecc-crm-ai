@@ -1,11 +1,13 @@
 module View.Schools exposing (deleteSchoolConfirmModal, schoolDetailView, schoolFormModal, schoolsView)
 
-{-| Schools: list, detail, form. -}
+{-| Schools: list, detail, form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Svg
 import Types exposing (..)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconPin, iconTrash, iconUserTiny)
@@ -107,7 +109,7 @@ schoolsView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load schools: " ++ msg) ]
+                [ text ("Could not load schools: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -130,7 +132,7 @@ schoolsView model =
                             , Attr.attribute "stroke-linecap" "round"
                             , Attr.attribute "stroke-linejoin" "round"
                             ]
-                            [ Html.node "circle"
+                            [ Svg.node "circle"
                                 [ Attr.attribute "cx" "11"
                                 , Attr.attribute "cy" "11"
                                 , Attr.attribute "r" "8"
@@ -448,13 +450,12 @@ schoolFormView sf isEdit =
                 "Save school"
     in
     form [ onSubmit SubmittedSchoolForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ schoolRichField sf "name" "School name" "text"
             , schoolRichField sf "countryCode" "Country code (e.g. CA)" "text"

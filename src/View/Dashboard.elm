@@ -22,13 +22,15 @@ module View.Dashboard exposing
     , urgentCaseAlert
     )
 
-{-| Shared Priority Alerts + Board Activity panel components. -}
+{-| Shared Priority Alerts + Board Activity panel components.
+-}
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import View.Format exposing (dateToDays)
+import View.Helpers exposing (onEnter)
 
 
 type alias PriorityAlert =
@@ -68,6 +70,7 @@ alertItemView alert =
         [ class ("alert-item " ++ alert.severity)
         , Attr.attribute "role" "button"
         , Attr.attribute "tabindex" "0"
+        , onEnter alert.action
         , onClick alert.action
         ]
         [ div [ class "alert-icon" ] [ text alert.icon ]
@@ -87,6 +90,7 @@ activityRow badgeText msg kindText timeText titleText =
         [ class "activity-item"
         , Attr.attribute "role" "button"
         , Attr.attribute "tabindex" "0"
+        , onEnter msg
         , onClick msg
         ]
         [ div [ class "activity-item__marker" ] []
@@ -106,7 +110,7 @@ activityRow badgeText msg kindText timeText titleText =
 alertsPanel : List PriorityAlert -> Html Msg
 alertsPanel alerts =
     div [ class "side-card" ]
-        [ h3 [] [ text "Priority Alerts" ]
+        [ h3 [] [ text "Priority alerts" ]
         , if List.isEmpty alerts then
             p [ class "detail-muted" ]
                 [ text "Nothing urgent. The board is clear." ]
@@ -128,7 +132,7 @@ activityPanel entries =
                 |> List.map .view
     in
     div [ class "side-card" ]
-        [ h3 [] [ text "Board Activity" ]
+        [ h3 [] [ text "Recent activity" ]
         , if List.isEmpty sorted then
             p [ class "detail-muted" ]
                 [ text "No recent records yet." ]
@@ -294,7 +298,14 @@ dealEntry d =
     , view =
         activityRow "Deal"
             (OpenedDealDetail d)
-            (d.stage ++ (if String.isEmpty d.owner then "" else " · " ++ d.owner))
+            (d.stage
+                ++ (if String.isEmpty d.owner then
+                        ""
+
+                    else
+                        " · " ++ d.owner
+                   )
+            )
             (String.left 10 d.createdAt)
             d.title
     }
@@ -306,7 +317,14 @@ taskEntry t =
     , view =
         activityRow "Task"
             (NavigatedTo Tasks)
-            (t.status ++ (if String.isEmpty t.dueDate then "" else " · due " ++ t.dueDate))
+            (t.status
+                ++ (if String.isEmpty t.dueDate then
+                        ""
+
+                    else
+                        " · due " ++ t.dueDate
+                   )
+            )
             (String.left 10 t.createdAt)
             t.title
     }
@@ -318,7 +336,14 @@ documentEntry d =
     , view =
         activityRow "Document"
             (NavigatedTo Cases)
-            (d.status ++ (if String.isEmpty d.caseNumber then "" else " · " ++ d.caseNumber))
+            (d.status
+                ++ (if String.isEmpty d.caseNumber then
+                        ""
+
+                    else
+                        " · " ++ d.caseNumber
+                   )
+            )
             (String.left 10 d.createdAt)
             d.docName
     }
@@ -330,7 +355,14 @@ invoiceEntry inv =
     , view =
         activityRow "Invoice"
             (OpenedInvoiceDetail inv)
-            (inv.paymentMilestone ++ (if String.isEmpty inv.clientName then "" else " · " ++ inv.clientName))
+            (inv.paymentMilestone
+                ++ (if String.isEmpty inv.clientName then
+                        ""
+
+                    else
+                        " · " ++ inv.clientName
+                   )
+            )
             (String.left 10 inv.createdAt)
             inv.invoiceNumber
     }
@@ -342,7 +374,14 @@ paymentEntry p =
     , view =
         activityRow "Payment"
             (NavigatedTo Invoices)
-            (p.method ++ (if String.isEmpty p.paidOn then "" else " · " ++ p.paidOn))
+            (p.method
+                ++ (if String.isEmpty p.paidOn then
+                        ""
+
+                    else
+                        " · " ++ p.paidOn
+                   )
+            )
             (String.left 10 p.createdAt)
             (String.fromFloat p.amount ++ " " ++ p.reference)
     }

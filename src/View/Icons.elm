@@ -1,9 +1,11 @@
-module View.Icons exposing (eccMark, iconAgent, iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconHome, iconLead, iconMail, iconPhone, iconPin, iconReports, iconSchool, iconSettings, iconSignOut, iconStudent, iconTasks, iconTrash, iconUserTiny)
+module View.Icons exposing (eccMark, iconAgent, iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconHome, iconLead, iconMail, iconMoon, iconPhone, iconPin, iconRefresh, iconReports, iconSchool, iconSearch, iconSettings, iconSignOut, iconStudent, iconSun, iconTasks, iconTrash, iconUserTiny)
 
-{-| Brand mark and all SVG icons. -}
+{-| Brand mark and all SVG icons.
+-}
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class)
+import Svg
 import Types exposing (..)
 import View.Helpers exposing (svgIcon, svgPath)
 
@@ -17,7 +19,7 @@ eccMark =
             , Attr.attribute "height" "40"
             , Attr.attribute "fill" "none"
             ]
-            [ Html.node "rect"
+            [ Svg.node "rect"
                 [ Attr.attribute "x" "0"
                 , Attr.attribute "y" "0"
                 , Attr.attribute "width" "40"
@@ -26,7 +28,7 @@ eccMark =
                 , Attr.attribute "fill" "url(#eccGrad)"
                 ]
                 []
-            , Html.node "text"
+            , Svg.node "text"
                 [ Attr.attribute "x" "20"
                 , Attr.attribute "y" "26"
                 , Attr.attribute "text-anchor" "middle"
@@ -37,9 +39,9 @@ eccMark =
                 , Attr.attribute "letter-spacing" "0.5"
                 ]
                 [ text "ECC" ]
-            , Html.node "defs"
+            , Svg.node "defs"
                 []
-                [ Html.node "linearGradient"
+                [ Svg.node "linearGradient"
                     [ Attr.attribute "id" "eccGrad"
                     , Attr.attribute "x1" "0"
                     , Attr.attribute "y1" "0"
@@ -47,12 +49,12 @@ eccMark =
                     , Attr.attribute "y2" "40"
                     , Attr.attribute "gradientUnits" "userSpaceOnUse"
                     ]
-                    [ Html.node "stop"
+                    [ Svg.node "stop"
                         [ Attr.attribute "offset" "0"
                         , Attr.attribute "stop-color" "#6366F1"
                         ]
                         []
-                    , Html.node "stop"
+                    , Svg.node "stop"
                         [ Attr.attribute "offset" "1"
                         , Attr.attribute "stop-color" "#06B6D4"
                         ]
@@ -93,7 +95,7 @@ iconContacts =
         , Attr.attribute "stroke-linejoin" "round"
         ]
         [ svgPath "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-        , Html.node "circle"
+        , Svg.node "circle"
             [ Attr.attribute "cx" "9"
             , Attr.attribute "cy" "7"
             , Attr.attribute "r" "4"
@@ -165,7 +167,7 @@ iconSettings =
         , Attr.attribute "stroke-linecap" "round"
         , Attr.attribute "stroke-linejoin" "round"
         ]
-        [ Html.node "circle"
+        [ Svg.node "circle"
             [ Attr.attribute "cx" "12"
             , Attr.attribute "cy" "12"
             , Attr.attribute "r" "3"
@@ -223,7 +225,7 @@ iconAgent =
         , Attr.attribute "stroke-linejoin" "round"
         ]
         [ svgPath "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-        , Html.node "circle"
+        , Svg.node "circle"
             [ Attr.attribute "cx" "8.5"
             , Attr.attribute "cy" "7"
             , Attr.attribute "r" "4"
@@ -364,7 +366,7 @@ iconCalendar =
         , Attr.attribute "stroke-linecap" "round"
         , Attr.attribute "stroke-linejoin" "round"
         ]
-        [ Html.node "rect"
+        [ Svg.node "rect"
             [ Attr.attribute "x" "3"
             , Attr.attribute "y" "4"
             , Attr.attribute "width" "18"
@@ -389,7 +391,7 @@ iconPin =
         , Attr.attribute "stroke-linejoin" "round"
         ]
         [ svgPath "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
-        , Html.node "circle"
+        , Svg.node "circle"
             [ Attr.attribute "cx" "12"
             , Attr.attribute "cy" "10"
             , Attr.attribute "r" "3"
@@ -411,7 +413,7 @@ iconUserTiny =
         , Attr.attribute "stroke-linejoin" "round"
         ]
         [ svgPath "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-        , Html.node "circle"
+        , Svg.node "circle"
             [ Attr.attribute "cx" "12"
             , Attr.attribute "cy" "7"
             , Attr.attribute "r" "4"
@@ -432,7 +434,7 @@ iconLock =
         , Attr.attribute "stroke-linecap" "round"
         , Attr.attribute "stroke-linejoin" "round"
         ]
-        [ Html.node "rect"
+        [ Svg.node "rect"
             [ Attr.attribute "x" "3"
             , Attr.attribute "y" "11"
             , Attr.attribute "width" "18"
@@ -442,3 +444,39 @@ iconLock =
             []
         , svgPath "M7 11V7a5 5 0 0 1 10 0v4"
         ]
+
+
+outlineIcon : List String -> Html Msg
+outlineIcon paths =
+    svgIcon
+        [ Attr.attribute "viewBox" "0 0 24 24"
+        , Attr.attribute "width" "18"
+        , Attr.attribute "height" "18"
+        , Attr.attribute "fill" "none"
+        , Attr.attribute "stroke" "currentColor"
+        , Attr.attribute "stroke-width" "1.8"
+        , Attr.attribute "stroke-linecap" "round"
+        , Attr.attribute "stroke-linejoin" "round"
+        , Attr.attribute "aria-hidden" "true"
+        ]
+        (List.map svgPath paths)
+
+
+iconMoon : Html Msg
+iconMoon =
+    outlineIcon [ "M21 12.8A9 9 0 0 1 11.2 3 9 9 0 1 0 21 12.8Z" ]
+
+
+iconSun : Html Msg
+iconSun =
+    outlineIcon [ "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0", "M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" ]
+
+
+iconSearch : Html Msg
+iconSearch =
+    outlineIcon [ "M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0", "m21 21-4.4-4.4" ]
+
+
+iconRefresh : Html Msg
+iconRefresh =
+    outlineIcon [ "M20 7v5h-5", "M4 17v-5h5", "M6.1 6.1A8 8 0 0 1 19.3 9L20 12M4 12l.7 3A8 8 0 0 0 17.9 17.9" ]

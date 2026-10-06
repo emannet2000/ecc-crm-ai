@@ -1,9 +1,10 @@
 module View.Partners exposing (deletePartnerConfirmModal, partnerDetailView, partnerFormModal, partnersView)
 
-{-| Partners: list, detail, form. -}
+{-| Partners: list, detail, form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -92,7 +93,7 @@ partnersView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load partners: " ++ msg) ]
+                [ text ("Could not load partners: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -427,13 +428,12 @@ partnerFormView pf isEdit =
                 "Save partner"
     in
     form [ onSubmit SubmittedPartnerForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ partnerRichField pf "legalCompanyName" "Legal company name" "text"
             , partnerRichField pf "country" "Country (e.g. AE)" "text"

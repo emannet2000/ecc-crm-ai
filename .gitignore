@@ -30,3 +30,11 @@ yarn.lock
 build/
 dist/
 public/elm.js
+
+# Runtime CRM data
+data/
+
+# SQLite databases and journal files
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

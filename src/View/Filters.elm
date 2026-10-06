@@ -1,6 +1,7 @@
 module View.Filters exposing (distinctOwners, isStale, passesFilters)
 
-{-| Deal filtering helpers. -}
+{-| Deal filtering helpers.
+-}
 
 import Html exposing (..)
 import Types exposing (..)
@@ -40,6 +41,9 @@ passesFilters model d =
         ownerOk =
             if String.isEmpty model.ownerFilter then
                 True
+
+            else if model.ownerFilter == "__mine__" then
+                Just d.ownerId == Maybe.map .id model.user
 
             else
                 d.owner == model.ownerFilter

@@ -1,6 +1,7 @@
 module Update.Fetched exposing (update)
 
-{-| Single-record fetch results for detail routes. -}
+{-| Single-record fetch results for detail routes.
+-}
 
 import Api
 import Types exposing (..)
@@ -26,7 +27,6 @@ update msg model =
                 Err _ ->
                     ( { model | viewingContact = Nothing }, Cmd.none )
 
-
         FetchedDeal result ->
             case result of
                 Ok deal ->
@@ -35,7 +35,6 @@ update msg model =
                 Err _ ->
                     ( { model | viewingDeal = Nothing }, Cmd.none )
 
-
         FetchedSchool result ->
             case result of
                 Ok school ->
@@ -43,7 +42,6 @@ update msg model =
 
                 Err _ ->
                     ( { model | viewingSchool = Nothing }, Cmd.none )
-
 
         FetchedStudent result ->
             case result of
@@ -67,7 +65,6 @@ update msg model =
                     , Cmd.none
                     )
 
-
         GotStudentDossier result ->
             case result of
                 Ok dossier ->
@@ -75,7 +72,6 @@ update msg model =
 
                 Err message ->
                     ( { model | studentDossier = Failure message }, Cmd.none )
-
 
         FetchedAgent result ->
             case result of
@@ -85,7 +81,6 @@ update msg model =
                 Err _ ->
                     ( { model | viewingAgent = Nothing }, Cmd.none )
 
-
         FetchedLead result ->
             case result of
                 Ok lead ->
@@ -93,7 +88,6 @@ update msg model =
 
                 Err _ ->
                     ( { model | viewingLead = Nothing }, Cmd.none )
-
 
         FetchedCase result ->
             case result of
@@ -112,7 +106,6 @@ update msg model =
                 Err _ ->
                     ( { model | viewingCase = Nothing }, Cmd.none )
 
-
         FetchedInvoice result ->
             case result of
                 Ok inv ->
@@ -130,7 +123,6 @@ update msg model =
                 Err _ ->
                     ( { model | viewingInvoice = Nothing }, Cmd.none )
 
-
         FetchedPartner result ->
             case result of
                 Ok p ->
@@ -138,7 +130,6 @@ update msg model =
 
                 Err _ ->
                     ( { model | viewingPartner = Nothing }, Cmd.none )
-
 
         FetchFailed message ->
             ( { model | toast = Just message }, Cmd.none )

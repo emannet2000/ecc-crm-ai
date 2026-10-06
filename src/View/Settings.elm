@@ -1,9 +1,10 @@
 module View.Settings exposing (logoutAllConfirmModal, settingsView)
 
-{-| Settings page. -}
+{-| Settings page.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as D
 import Types exposing (..)

@@ -1,7 +1,9 @@
 module Update.Navigation exposing (update)
 
-{-| URL and navigation messages. -}
+{-| URL and navigation messages.
+-}
 
+import Api
 import Browser
 import Browser.Navigation as Nav
 import Router exposing (parseRoute, routeToPath)
@@ -24,10 +26,8 @@ update msg model =
                 Browser.External href ->
                     ( model, Nav.load href )
 
-
         UrlChanged url ->
             update (NavigatedTo (parseRoute url)) model
-
 
         NavigatedTo route ->
             let
@@ -46,7 +46,11 @@ update msg model =
                 preservedContact =
                     case ( route, model.viewingContact ) of
                         ( ContactDetail id, Just c ) ->
-                            if c.id == id then Just c else Nothing
+                            if c.id == id then
+                                Just c
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -54,7 +58,11 @@ update msg model =
                 preservedDeal =
                     case ( route, model.viewingDeal ) of
                         ( DealDetail id, Just d ) ->
-                            if d.id == id then Just d else Nothing
+                            if d.id == id then
+                                Just d
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -62,7 +70,11 @@ update msg model =
                 preservedSchool =
                     case ( route, model.viewingSchool ) of
                         ( SchoolDetail id, Just s ) ->
-                            if s.id == id then Just s else Nothing
+                            if s.id == id then
+                                Just s
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -70,7 +82,11 @@ update msg model =
                 preservedStudent =
                     case ( route, model.viewingStudent ) of
                         ( StudentDetail id, Just s ) ->
-                            if s.id == id then Just s else Nothing
+                            if s.id == id then
+                                Just s
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -78,7 +94,11 @@ update msg model =
                 preservedAgent =
                     case ( route, model.viewingAgent ) of
                         ( AgentDetail id, Just a ) ->
-                            if a.id == id then Just a else Nothing
+                            if a.id == id then
+                                Just a
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -86,7 +106,11 @@ update msg model =
                 preservedLead =
                     case ( route, model.viewingLead ) of
                         ( LeadDetail id, Just l ) ->
-                            if l.id == id then Just l else Nothing
+                            if l.id == id then
+                                Just l
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -94,7 +118,11 @@ update msg model =
                 preservedCase =
                     case ( route, model.viewingCase ) of
                         ( CaseDetail id, Just c ) ->
-                            if c.id == id then Just c else Nothing
+                            if c.id == id then
+                                Just c
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -102,7 +130,11 @@ update msg model =
                 preservedInvoice =
                     case ( route, model.viewingInvoice ) of
                         ( InvoiceDetail id, Just inv ) ->
-                            if inv.id == id then Just inv else Nothing
+                            if inv.id == id then
+                                Just inv
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -110,7 +142,11 @@ update msg model =
                 preservedPartner =
                     case ( route, model.viewingPartner ) of
                         ( PartnerDetail id, Just p ) ->
-                            if p.id == id then Just p else Nothing
+                            if p.id == id then
+                                Just p
+
+                            else
+                                Nothing
 
                         _ ->
                             Nothing
@@ -194,36 +230,39 @@ update msg model =
                             False
 
                 needsContacts =
-                    (route == Contacts || route == Tasks)
+                    (onHome || route == Contacts || route == Tasks)
                         && clearedModel.contacts
                         == NotAsked
 
                 needsDeals =
-                    (route == Deals || onContactDetail)
+                    (onHome || route == Deals || onContactDetail)
                         && clearedModel.deals
                         == NotAsked
 
                 needsTasks =
-                    (route == Tasks || onContactDetail)
+                    (onHome || route == Tasks || onContactDetail)
                         && clearedModel.tasks
                         == NotAsked
 
                 needsSchools =
                     onHome
                         || ((route == Schools || route == Students)
-                                && clearedModel.schools == NotAsked
+                                && clearedModel.schools
+                                == NotAsked
                            )
 
                 needsStudents =
                     onHome
                         || ((route == Students || onStudentDetail)
-                                && clearedModel.students == NotAsked
+                                && clearedModel.students
+                                == NotAsked
                            )
 
                 needsAgents =
                     onHome
                         || ((route == Agents || route == Students)
-                                && clearedModel.agents == NotAsked
+                                && clearedModel.agents
+                                == NotAsked
                            )
 
                 needsLeads =
@@ -231,12 +270,12 @@ update msg model =
                         || (route == Leads && clearedModel.leads == NotAsked)
 
                 needsCases =
-                    (route == Cases || onStudentDetail)
+                    (onHome || route == Cases || onStudentDetail)
                         && clearedModel.cases
                         == NotAsked
 
                 needsInvoices =
-                    (route == Invoices || onStudentDetail)
+                    (onHome || route == Invoices || onStudentDetail)
                         && clearedModel.invoices
                         == NotAsked
 
@@ -244,34 +283,74 @@ update msg model =
                     route == Partners && clearedModel.partners == NotAsked
 
                 contactsCmd =
-                    if needsContacts then Tuple.second (loadContacts clearedModel) else Cmd.none
+                    if needsContacts then
+                        Tuple.second (loadContacts clearedModel)
+
+                    else
+                        Cmd.none
 
                 dealsCmd =
-                    if needsDeals then Tuple.second (loadDeals clearedModel) else Cmd.none
+                    if needsDeals then
+                        Tuple.second (loadDeals clearedModel)
+
+                    else
+                        Cmd.none
 
                 tasksCmd =
-                    if needsTasks then Tuple.second (loadTasks clearedModel) else Cmd.none
+                    if needsTasks then
+                        Tuple.second (loadTasks clearedModel)
+
+                    else
+                        Cmd.none
 
                 schoolsCmd =
-                    if needsSchools then Tuple.second (loadSchools clearedModel) else Cmd.none
+                    if needsSchools then
+                        Tuple.second (loadSchools clearedModel)
+
+                    else
+                        Cmd.none
 
                 studentsCmd =
-                    if needsStudents then Tuple.second (loadStudents clearedModel) else Cmd.none
+                    if needsStudents then
+                        Tuple.second (loadStudents clearedModel)
+
+                    else
+                        Cmd.none
 
                 agentsCmd =
-                    if needsAgents then Tuple.second (loadAgents clearedModel) else Cmd.none
+                    if needsAgents then
+                        Tuple.second (loadAgents clearedModel)
+
+                    else
+                        Cmd.none
 
                 leadsCmd =
-                    if needsLeads then Tuple.second (loadLeads clearedModel) else Cmd.none
+                    if needsLeads then
+                        Tuple.second (loadLeads clearedModel)
+
+                    else
+                        Cmd.none
 
                 casesCmd =
-                    if needsCases then Tuple.second (loadCases clearedModel) else Cmd.none
+                    if needsCases then
+                        Tuple.second (loadCases clearedModel)
+
+                    else
+                        Cmd.none
 
                 invoicesCmd =
-                    if needsInvoices then Tuple.second (loadInvoices clearedModel) else Cmd.none
+                    if needsInvoices then
+                        Tuple.second (loadInvoices clearedModel)
+
+                    else
+                        Cmd.none
 
                 partnersCmd =
-                    if needsPartners then Tuple.second (loadPartners clearedModel) else Cmd.none
+                    if needsPartners then
+                        Tuple.second (loadPartners clearedModel)
+
+                    else
+                        Cmd.none
 
                 activityCmd =
                     case ( route, preservedContact ) of
@@ -344,21 +423,101 @@ update msg model =
 
                 finalModel =
                     { clearedModel
-                        | contacts = if needsContacts then Loading else clearedModel.contacts
-                        , deals = if needsDeals then Loading else clearedModel.deals
-                        , tasks = if needsTasks then Loading else clearedModel.tasks
-                        , schools = if needsSchools then Loading else clearedModel.schools
-                        , students = if needsStudents then Loading else clearedModel.students
-                        , agents = if needsAgents then Loading else clearedModel.agents
-                        , leads = if needsLeads then Loading else clearedModel.leads
-                        , cases = if needsCases then Loading else clearedModel.cases
-                        , invoices = if needsInvoices then Loading else clearedModel.invoices
-                        , partners = if needsPartners then Loading else clearedModel.partners
+                        | globalQuery = ""
+                        , globalResults = NotAsked
+                        , auditOffset =
+                            if route == Reports then
+                                0
+
+                            else
+                                clearedModel.auditOffset
+                        , audit =
+                            if route == Reports then
+                                Loading
+
+                            else
+                                clearedModel.audit
+                        , reports =
+                            if route == Reports then
+                                Loading
+
+                            else
+                                clearedModel.reports
+                        , contacts =
+                            if needsContacts then
+                                Loading
+
+                            else
+                                clearedModel.contacts
+                        , deals =
+                            if needsDeals then
+                                Loading
+
+                            else
+                                clearedModel.deals
+                        , tasks =
+                            if needsTasks then
+                                Loading
+
+                            else
+                                clearedModel.tasks
+                        , schools =
+                            if needsSchools then
+                                Loading
+
+                            else
+                                clearedModel.schools
+                        , students =
+                            if needsStudents then
+                                Loading
+
+                            else
+                                clearedModel.students
+                        , agents =
+                            if needsAgents then
+                                Loading
+
+                            else
+                                clearedModel.agents
+                        , leads =
+                            if needsLeads then
+                                Loading
+
+                            else
+                                clearedModel.leads
+                        , cases =
+                            if needsCases then
+                                Loading
+
+                            else
+                                clearedModel.cases
+                        , invoices =
+                            if needsInvoices then
+                                Loading
+
+                            else
+                                clearedModel.invoices
+                        , partners =
+                            if needsPartners then
+                                Loading
+
+                            else
+                                clearedModel.partners
                     }
             in
             ( finalModel
             , Cmd.batch
-                [ contactsCmd
+                [ if route == Reports then
+                    case clearedModel.token of
+                        Just token ->
+                            Cmd.batch [ Api.fetchReports token GotReports, Api.fetchAudit token 0 (GotAudit 0) ]
+
+                        Nothing ->
+                            Cmd.none
+
+                  else
+                    Cmd.none
+                , contactsCmd
                 , dealsCmd
                 , tasksCmd
                 , activityCmd

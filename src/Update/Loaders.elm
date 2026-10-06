@@ -1,6 +1,7 @@
 module Update.Loaders exposing (fetchForAgentRoute, fetchForCaseRoute, fetchForContactRoute, fetchForDealRoute, fetchForInvoiceRoute, fetchForLeadRoute, fetchForPartnerRoute, fetchForSchoolRoute, fetchForStudentRoute, loadActivities, loadAgents, loadCaseDocuments, loadCases, loadContacts, loadDeals, loadInvoicePayments, loadInvoices, loadLeads, loadPartners, loadSchools, loadStudentDossier, loadStudents, loadTasks, pageSize)
 
-{-| Data-loading commands and route-driven fetches. -}
+{-| Data-loading commands and route-driven fetches.
+-}
 
 import Api
 import Types exposing (..)
@@ -84,7 +85,7 @@ loadTasks model =
                             ( "", "" )
             in
             ( { model | tasks = Loading }
-            , Api.fetchTasks t q st GotTasks
+            , Api.fetchTasksPage t q st model.taskOffset GotTasks
             )
 
         Nothing ->

@@ -1,6 +1,7 @@
 module Update.Auth exposing (update)
 
-{-| Login, session and logout messages. -}
+{-| Login, session and logout messages.
+-}
 
 import Api
 import Ports exposing (storeToken)
@@ -13,6 +14,24 @@ import Update.Validate exposing (validate)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        RefreshSession ->
+            ( model, Api.refreshSession RefreshedSession )
+
+        RefreshedSession result ->
+            case result of
+                Ok response ->
+                    if model.bootstrapping then
+                        update (GotUser (Ok response.user)) { model | token = Just response.token }
+
+                    else
+                        ( { model | token = Just response.token, user = Just response.user }, Cmd.none )
+
+                Err message ->
+                    update (GotUser (Err message)) model
+
+        UpdatedOTP value ->
+            ( { model | form = (\f -> { f | otp = value }) model.form }, Cmd.none )
+
         UpdatedField field value ->
             let
                 current =
@@ -36,14 +55,11 @@ update msg model =
             , Cmd.none
             )
 
-
         ToggledRemember value ->
             ( { model | form = (\f -> { f | remember = value }) model.form }, Cmd.none )
 
-
         ToggledShowPassword ->
             ( { model | showPassword = not model.showPassword }, Cmd.none )
-
 
         SwitchedMode newMode ->
             ( { model
@@ -54,7 +70,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         Submitted ->
             let
@@ -69,7 +84,7 @@ update msg model =
                     cmd =
                         case model.mode of
                             Login ->
-                                Api.login model.form.email model.form.password GotAuth
+                                Api.login model.form.email model.form.password model.form.otp model.form.remember GotAuth
 
                             Register ->
                                 Api.register model.form.name model.form.email model.form.password GotAuth
@@ -82,24 +97,25 @@ update msg model =
                 , cmd
                 )
 
-
         GotAuth result ->
             case result of
                 Ok { token, user } ->
                     let
                         storeCmd =
-                            if model.form.remember then
-                                storeToken (Just token)
-
-                            else
-                                storeToken Nothing
+                            storeToken (Just token)
 
                         modelWithAuth =
                             { model
                                 | submitting = False
                                 , token = Just token
                                 , user = Just user
-                                , route = Home
+                                , route = model.route
+                                , reports = NotAsked
+                                , globalQuery = ""
+                                , globalResults = NotAsked
+                                , audit = NotAsked
+                                , auditOffset = 0
+                                , exporting = Nothing
                                 , contacts = NotAsked
                                 , deals = NotAsked
                                 , cases = NotAsked
@@ -114,9 +130,9 @@ update msg model =
                             }
 
                         ( routedModel, routeCmds ) =
-                            Update.Navigation.update (NavigatedTo Home) modelWithAuth
+                            Update.Navigation.update (NavigatedTo model.route) modelWithAuth
                     in
-                    ( routedModel, Cmd.batch [ storeCmd, routeCmds ] )
+                    ( routedModel, Cmd.batch [ storeCmd, routeCmds, Api.fetchWorkspaceClock token RefreshedWorkspaceClock ] )
 
                 Err message ->
                     ( { model
@@ -125,7 +141,6 @@ update msg model =
                       }
                     , Cmd.none
                     )
-
 
         GotUser result ->
             case result of
@@ -137,7 +152,7 @@ update msg model =
                         ( routedModel, routeCmds ) =
                             Update.Navigation.update (NavigatedTo model.route) modelWithUser
                     in
-                    ( routedModel, routeCmds )
+                    ( routedModel, Cmd.batch [ routeCmds, Api.fetchWorkspaceClock (Maybe.withDefault "cookie-session" model.token) RefreshedWorkspaceClock ] )
 
                 Err _ ->
                     ( { model
@@ -148,7 +163,6 @@ update msg model =
                     , storeToken Nothing
                     )
 
-
         LoggedOut ->
             ( { model
                 | token = Nothing
@@ -156,6 +170,12 @@ update msg model =
                 , form = emptyForm
                 , mode = Login
                 , route = Home
+                , reports = NotAsked
+                , globalQuery = ""
+                , globalResults = NotAsked
+                , audit = NotAsked
+                , auditOffset = 0
+                , exporting = Nothing
                 , contacts = NotAsked
                 , viewingContact = Nothing
                 , contactForm = Nothing

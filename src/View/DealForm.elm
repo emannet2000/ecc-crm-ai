@@ -1,9 +1,10 @@
 module View.DealForm exposing (bulkDeleteConfirmModal, bulkMoveConfirmModal, contactsForSelect, dealFormModal, deleteDealConfirmModal)
 
-{-| Deal create/edit form, confirmations, bulk actions. -}
+{-| Deal create/edit form, confirmations, bulk actions.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -242,13 +243,12 @@ dealFormView model df isEdit =
                 "Save deal"
     in
     form [ onSubmit SubmittedDealForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ dealRichField df "title" "Deal title" "text" True
             , dealContactSelect model df
@@ -406,7 +406,13 @@ bulkDeleteConfirmModal n =
                 [ text "Delete "
                 , strong [] [ text (String.fromInt n) ]
                 , text " deal"
-                , text (if n == 1 then "" else "s")
+                , text
+                    (if n == 1 then
+                        ""
+
+                     else
+                        "s"
+                    )
                 , text "? This cannot be undone."
                 ]
             , div [ class "modal__actions" ]
@@ -446,7 +452,13 @@ bulkMoveConfirmModal currentStage n =
                     [ text "Move "
                     , strong [] [ text (String.fromInt n) ]
                     , text " deal"
-                    , text (if n == 1 then "" else "s")
+                    , text
+                        (if n == 1 then
+                            ""
+
+                         else
+                            "s"
+                        )
                     , text " to:"
                     ]
                 , div [ class "stage-pills" ]

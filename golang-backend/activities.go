@@ -142,17 +142,23 @@ func createActivity(w http.ResponseWriter, r *http.Request) {
 	now := time.Now().Format("2006-01-02")
 
 	newActivity := Activity{
-		ID:         newID("a"),
-		ContactID:  contactID,
-		DealID:     dealID,
-		Kind:       strings.TrimSpace(req.Kind),
-		Title:      strings.TrimSpace(req.Title),
-		Body:       req.Body,
-		OccurredAt: occurredAt,
-		CreatedBy:  "Demo User",
-		CreatedAt:  now,
+		RecordScope: newRecordScope(r),
+		ID:          newID("a"),
+		ContactID:   contactID,
+		DealID:      dealID,
+		Kind:        strings.TrimSpace(req.Kind),
+		Title:       strings.TrimSpace(req.Title),
+		Body:        req.Body,
+		OccurredAt:  occurredAt,
+		CreatedBy:   "Demo User",
+		CreatedAt:   now,
 	}
 	activities = append(activities, newActivity)
+	for i := range contacts {
+		if contacts[i].ID == contactID && contacts[i].LastContact < occurredAt {
+			contacts[i].LastContact = occurredAt
+		}
+	}
 
 	if occurredAt > contacts[contactIdx].LastContact {
 		contacts[contactIdx].LastContact = occurredAt

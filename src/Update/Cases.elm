@@ -1,6 +1,7 @@
 module Update.Cases exposing (update)
 
-{-| Case and document messages. -}
+{-| Case and document messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -41,7 +42,6 @@ update msg model =
                 Err message ->
                     ( { model | cases = Failure message }, Cmd.none )
 
-
         UpdatedCasesQuery q ->
             let
                 next =
@@ -53,7 +53,6 @@ update msg model =
                             Success { items = [], query = q, stageFilter = "", total = 0, offset = 0, limit = pageSize }
             in
             ( { model | cases = next, pendingCasesQuery = Just q }, Cmd.none )
-
 
         UpdatedCasesStageFilter stage ->
             case model.token of
@@ -74,7 +73,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         FlushCasesSearch ->
             case ( model.token, model.pendingCasesQuery ) of
                 ( Just t, Just q ) ->
@@ -94,7 +92,6 @@ update msg model =
                 _ ->
                     ( { model | pendingCasesQuery = Nothing }, Cmd.none )
 
-
         CasesPageChanged newOffset ->
             case ( model.token, model.cases ) of
                 ( Just t, Success data ) ->
@@ -105,10 +102,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddCase ->
             ( { model | caseForm = Just emptyCaseForm, editingCaseId = Nothing, toast = Nothing }, Cmd.none )
-
 
         OpenedAddCaseForStudent student ->
             ( { model
@@ -120,15 +115,12 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedEditCase c ->
             ( { model | caseForm = Just (caseToForm c), editingCaseId = Just c.id, toast = Nothing }, Cmd.none )
-
 
         OpenedCaseDetail c ->
             Update.Navigation.update (NavigatedTo (CaseDetail c.id))
                 { model | viewingCase = Just c, toast = Nothing }
-
 
         RequestedCloseCaseForm ->
             case ( model.caseForm, model.deletingCase ) of
@@ -145,10 +137,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseCaseForm ->
             ( { model | caseForm = Nothing, editingCaseId = Nothing }, Cmd.none )
-
 
         CancelledCloseCaseForm ->
             case model.caseForm of
@@ -158,34 +148,74 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         UpdatedCaseFormField field value ->
             case model.caseForm of
                 Just cf ->
                     let
                         updated =
                             case field of
-                                "caseNumber" -> { cf | caseNumber = value }
-                                "clientId" -> { cf | clientId = value }
-                                "studentId" -> { cf | studentId = value }
-                                "serviceCategory" -> { cf | serviceCategory = value }
-                                "destinationCountry" -> { cf | destinationCountry = value }
-                                "visaType" -> { cf | visaType = value }
-                                "schoolOrEmployer" -> { cf | schoolOrEmployer = value }
-                                "assignedOfficer" -> { cf | assignedOfficer = value }
-                                "externalAdviser" -> { cf | externalAdviser = value }
-                                "dateOpened" -> { cf | dateOpened = value }
-                                "targetSubmission" -> { cf | targetSubmission = value }
-                                "actualSubmission" -> { cf | actualSubmission = value }
-                                "governmentRef" -> { cf | governmentRef = value }
-                                "currentStage" -> { cf | currentStage = value }
-                                "priority" -> { cf | priority = value }
-                                "nextAction" -> { cf | nextAction = value }
-                                "nextDeadline" -> { cf | nextDeadline = value }
-                                "result" -> { cf | result = value }
-                                "closureDate" -> { cf | closureDate = value }
-                                "notes" -> { cf | notes = value }
-                                _ -> cf
+                                "caseNumber" ->
+                                    { cf | caseNumber = value }
+
+                                "clientId" ->
+                                    { cf | clientId = value }
+
+                                "studentId" ->
+                                    { cf | studentId = value }
+
+                                "serviceCategory" ->
+                                    { cf | serviceCategory = value }
+
+                                "destinationCountry" ->
+                                    { cf | destinationCountry = value }
+
+                                "visaType" ->
+                                    { cf | visaType = value }
+
+                                "schoolOrEmployer" ->
+                                    { cf | schoolOrEmployer = value }
+
+                                "assignedOfficer" ->
+                                    { cf | assignedOfficer = value }
+
+                                "externalAdviser" ->
+                                    { cf | externalAdviser = value }
+
+                                "dateOpened" ->
+                                    { cf | dateOpened = value }
+
+                                "targetSubmission" ->
+                                    { cf | targetSubmission = value }
+
+                                "actualSubmission" ->
+                                    { cf | actualSubmission = value }
+
+                                "governmentRef" ->
+                                    { cf | governmentRef = value }
+
+                                "currentStage" ->
+                                    { cf | currentStage = value }
+
+                                "priority" ->
+                                    { cf | priority = value }
+
+                                "nextAction" ->
+                                    { cf | nextAction = value }
+
+                                "nextDeadline" ->
+                                    { cf | nextDeadline = value }
+
+                                "result" ->
+                                    { cf | result = value }
+
+                                "closureDate" ->
+                                    { cf | closureDate = value }
+
+                                "notes" ->
+                                    { cf | notes = value }
+
+                                _ ->
+                                    cf
                     in
                     ( { model
                         | caseForm =
@@ -200,7 +230,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         SubmittedCaseForm ->
             case ( model.caseForm, model.token ) of
@@ -226,7 +255,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedCase result ->
             case result of
@@ -276,14 +304,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteCase c ->
             ( { model | deletingCase = Just c }, Cmd.none )
 
-
         CancelledDeleteCase ->
             ( { model | deletingCase = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteCase ->
             case ( model.deletingCase, model.token ) of
@@ -292,7 +317,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedCase result ->
             case result of
@@ -337,7 +361,6 @@ update msg model =
                     , Cmd.none
                     )
 
-
         GotCaseDocuments result ->
             case result of
                 Ok docs ->
@@ -346,14 +369,11 @@ update msg model =
                 Err message ->
                     ( { model | caseDocuments = Failure message }, Cmd.none )
 
-
         OpenedAddDocument ->
             ( { model | documentForm = Just emptyDocumentForm, editingDocumentId = Nothing, toast = Nothing }, Cmd.none )
 
-
         OpenedEditDocument d ->
             ( { model | documentForm = Just (documentToForm d), editingDocumentId = Just d.id, toast = Nothing }, Cmd.none )
-
 
         RequestedCloseDocumentForm ->
             case ( model.documentForm, model.deletingDocument ) of
@@ -370,10 +390,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseDocumentForm ->
             ( { model | documentForm = Nothing, editingDocumentId = Nothing }, Cmd.none )
-
 
         CancelledCloseDocumentForm ->
             case model.documentForm of
@@ -383,24 +401,44 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         UpdatedDocumentFormField field value ->
             case model.documentForm of
                 Just df ->
                     let
                         updated =
                             case field of
-                                "docName" -> { df | docName = value }
-                                "dateRequested" -> { df | dateRequested = value }
-                                "dateReceived" -> { df | dateReceived = value }
-                                "expiryDate" -> { df | expiryDate = value }
-                                "verifiedBy" -> { df | verifiedBy = value }
-                                "verificationDate" -> { df | verificationDate = value }
-                                "status" -> { df | status = value }
-                                "rejectionReason" -> { df | rejectionReason = value }
-                                "filePath" -> { df | filePath = value }
-                                "notes" -> { df | notes = value }
-                                _ -> df
+                                "docName" ->
+                                    { df | docName = value }
+
+                                "dateRequested" ->
+                                    { df | dateRequested = value }
+
+                                "dateReceived" ->
+                                    { df | dateReceived = value }
+
+                                "expiryDate" ->
+                                    { df | expiryDate = value }
+
+                                "verifiedBy" ->
+                                    { df | verifiedBy = value }
+
+                                "verificationDate" ->
+                                    { df | verificationDate = value }
+
+                                "status" ->
+                                    { df | status = value }
+
+                                "rejectionReason" ->
+                                    { df | rejectionReason = value }
+
+                                "filePath" ->
+                                    { df | filePath = value }
+
+                                "notes" ->
+                                    { df | notes = value }
+
+                                _ ->
+                                    df
                     in
                     ( { model
                         | documentForm =
@@ -416,23 +454,28 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         ToggledDocumentBool field value ->
             case model.documentForm of
                 Just df ->
                     let
                         updated =
                             case field of
-                                "required" -> { df | required = value }
-                                "translationRequired" -> { df | translationRequired = value }
-                                "legalizationRequired" -> { df | legalizationRequired = value }
-                                _ -> df
+                                "required" ->
+                                    { df | required = value }
+
+                                "translationRequired" ->
+                                    { df | translationRequired = value }
+
+                                "legalizationRequired" ->
+                                    { df | legalizationRequired = value }
+
+                                _ ->
+                                    df
                     in
                     ( { model | documentForm = Just { updated | dirty = True } }, Cmd.none )
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         SubmittedDocumentForm ->
             case ( model.documentForm, model.token, model.viewingCase ) of
@@ -459,7 +502,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedDocument result ->
             case result of
@@ -502,14 +544,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteDocument d ->
             ( { model | deletingDocument = Just d }, Cmd.none )
 
-
         CancelledDeleteDocument ->
             ( { model | deletingDocument = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteDocument ->
             case ( model.deletingDocument, model.token ) of
@@ -518,7 +557,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedDocument result ->
             case result of
@@ -537,7 +575,6 @@ update msg model =
                     , Cmd.none
                     )
 
-
         UpdatedDocumentStatus d newStatus ->
             case model.token of
                 Just token ->
@@ -545,7 +582,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         GotUpdatedDocument result ->
             case result of

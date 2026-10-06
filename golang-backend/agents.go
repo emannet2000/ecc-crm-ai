@@ -84,6 +84,7 @@ func listAgentsHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, a)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"agents": slicePage(filtered, offset, limit),
@@ -124,6 +125,7 @@ func createAgentHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newAgent := Agent{
+		RecordScope:      newRecordScope(r),
 		ID:               newID("ag"),
 		Name:             strings.TrimSpace(req.Name),
 		AgentCode:        strings.TrimSpace(req.AgentCode),

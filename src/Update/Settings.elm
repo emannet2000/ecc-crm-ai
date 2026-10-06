@@ -1,10 +1,12 @@
 module Update.Settings exposing (update)
 
-{-| Profile, password and session settings messages. -}
+{-| Profile, password and session settings messages.
+-}
 
 import Api
 import Ports exposing (storeToken)
 import Types exposing (..)
+import Update.Auth
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -35,7 +37,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         SubmittedProfile ->
             case model.token of
@@ -76,7 +77,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         GotUpdatedProfile result ->
             let
                 pf =
@@ -115,7 +115,6 @@ update msg model =
                     , Cmd.none
                     )
 
-
         UpdatedPasswordField field value ->
             let
                 pf =
@@ -144,7 +143,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         SubmittedPassword ->
             case model.token of
@@ -190,7 +188,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         GotChangedPassword result ->
             let
                 pf =
@@ -198,13 +195,11 @@ update msg model =
             in
             case result of
                 Ok _ ->
-                    ( { model
-                        | passwordForm =
-                            { emptyPasswordForm | success = Just "Password changed." }
-                        , toast = Just "Password updated"
-                      }
-                    , Cmd.none
-                    )
+                    let
+                        ( signedOut, command ) =
+                            Update.Auth.update LoggedOut model
+                    in
+                    ( { signedOut | alert = Just { kind = AlertSuccess, message = "Password changed. Sign in with your new password." } }, command )
 
                 Err message ->
                     ( { model
@@ -217,14 +212,11 @@ update msg model =
                     , Cmd.none
                     )
 
-
         RequestedLogoutAll ->
             ( { model | logoutAllConfirm = True }, Cmd.none )
 
-
         CancelledLogoutAll ->
             ( { model | logoutAllConfirm = False }, Cmd.none )
-
 
         ConfirmedLogoutAll ->
             case model.token of
@@ -235,7 +227,6 @@ update msg model =
 
                 Nothing ->
                     ( { model | logoutAllConfirm = False }, Cmd.none )
-
 
         GotLogoutAll result ->
             case result of

@@ -1,9 +1,10 @@
 module View.Tasks exposing (deleteTaskConfirmModal, taskFormModal, tasksView)
 
-{-| Tasks page, task form and delete confirmation. -}
+{-| Tasks page, task form and delete confirmation.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -71,7 +72,7 @@ tasksView model =
             tasksSkeleton
 
         Failure msg ->
-            div [ class "content__empty-block" ] [ text ("Could not load tasks: " ++ msg) ]
+            div [ class "content__empty-block" ] [ text ("Could not load tasks: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             div []
@@ -126,8 +127,23 @@ tasksView model =
                                 ]
                             , tbody [] (List.map (taskRow model) data.items)
                             ]
+                        , div [ class "workspace-toolbar" ]
+                            [ button [ type_ "button", disabled (model.taskOffset == 0), onClick (ChangedTasksPage (model.taskOffset - 25)) ] [ text "Previous" ]
+                            , span [] [ text ("Page " ++ String.fromInt (model.taskOffset // 25 + 1)) ]
+                            , button [ type_ "button", disabled (model.taskOffset + 25 >= data.total), onClick (ChangedTasksPage (model.taskOffset + 25)) ] [ text "Next" ]
+                            ]
                         , p [ class "page-toolbar__summary" ]
-                            [ text (String.fromInt data.total ++ " task" ++ (if data.total == 1 then "" else "s")) ]
+                            [ text
+                                (String.fromInt data.total
+                                    ++ " task"
+                                    ++ (if data.total == 1 then
+                                            ""
+
+                                        else
+                                            "s"
+                                       )
+                                )
+                            ]
                         ]
                 ]
 
@@ -167,7 +183,14 @@ taskRow model task =
                 [ text (taskStatusLabel task.status) ]
             ]
         , td []
-            [ text (if String.isEmpty task.dueDate then "—" else task.dueDate) ]
+            [ text
+                (if String.isEmpty task.dueDate then
+                    "—"
+
+                 else
+                    task.dueDate
+                )
+            ]
         , td [] [ contactLinkForTask model task ]
         , td [ class "cell-actions" ]
             [ button [ type_ "button", class "row-action", onClick (OpenedEditTask task), Attr.attribute "aria-label" "Edit" ] [ iconEdit ]
@@ -208,7 +231,13 @@ contactLinkForTask model task =
                     ]
 
             Nothing ->
-                text (if String.isEmpty task.contactName then "—" else task.contactName)
+                text
+                    (if String.isEmpty task.contactName then
+                        "—"
+
+                     else
+                        task.contactName
+                    )
 
 
 taskFormFieldError : String -> TaskForm -> Maybe String
@@ -314,7 +343,13 @@ taskFormModal model tf =
                                 (\s ->
                                     button
                                         [ type_ "button"
-                                        , class (if tf.status == s then "stage-pill stage-pill--active" else "stage-pill")
+                                        , class
+                                            (if tf.status == s then
+                                                "stage-pill stage-pill--active"
+
+                                             else
+                                                "stage-pill"
+                                            )
                                         , onClick (UpdatedTaskFormField "status" s)
                                         , disabled tf.submitting
                                         ]
@@ -341,7 +376,14 @@ taskFormModal model tf =
                             , class "ecc-btn ecc-btn--inline"
                             , disabled (tf.submitting || not tf.dirty)
                             ]
-                            [ text (if tf.submitting then "Saving…" else "Save task") ]
+                            [ text
+                                (if tf.submitting then
+                                    "Saving…"
+
+                                 else
+                                    "Save task"
+                                )
+                            ]
                         ]
                     ]
             ]

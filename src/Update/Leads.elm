@@ -1,6 +1,7 @@
 module Update.Leads exposing (update)
 
-{-| Lead messages. -}
+{-| Lead messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -40,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | leads = Failure message }, Cmd.none )
 
-
         UpdatedLeadsQuery q ->
             let
                 next =
@@ -53,7 +53,6 @@ update msg model =
             in
             ( { model | leads = next, pendingLeadsQuery = Just q }, Cmd.none )
 
-
         FlushLeadsSearch ->
             case ( model.token, model.pendingLeadsQuery ) of
                 ( Just t, Just q ) ->
@@ -63,7 +62,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingLeadsQuery = Nothing }, Cmd.none )
-
 
         LeadsPageChanged newOffset ->
             case ( model.token, model.leads ) of
@@ -75,7 +73,6 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddLead ->
             ( { model
                 | leadForm = Just emptyLeadForm
@@ -84,7 +81,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         OpenedEditLead lead ->
             ( { model
@@ -95,11 +91,9 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedLeadDetail lead ->
             Update.Navigation.update (NavigatedTo (LeadDetail lead.id))
                 { model | viewingLead = Just lead, toast = Nothing }
-
 
         RequestedCloseLeadForm ->
             case ( model.leadForm, model.deletingLead ) of
@@ -116,10 +110,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseLeadForm ->
             ( { model | leadForm = Nothing, editingLeadId = Nothing }, Cmd.none )
-
 
         CancelledCloseLeadForm ->
             case model.leadForm of
@@ -128,7 +120,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedLeadFormField field value ->
             case model.leadForm of
@@ -193,7 +184,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedLeadForm ->
             case ( model.leadForm, model.token ) of
                 ( Just lf, Just token ) ->
@@ -218,7 +208,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedLead result ->
             case result of
@@ -268,14 +257,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteLead lead ->
             ( { model | deletingLead = Just lead }, Cmd.none )
 
-
         CancelledDeleteLead ->
             ( { model | deletingLead = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteLead ->
             case ( model.deletingLead, model.token ) of
@@ -284,7 +270,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedLead result ->
             case result of

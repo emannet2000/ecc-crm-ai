@@ -1,6 +1,7 @@
 module Update.Agents exposing (update)
 
-{-| Agent messages. -}
+{-| Agent messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -40,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | agents = Failure message }, Cmd.none )
 
-
         UpdatedAgentsQuery q ->
             let
                 next =
@@ -53,7 +53,6 @@ update msg model =
             in
             ( { model | agents = next, pendingAgentsQuery = Just q }, Cmd.none )
 
-
         FlushAgentsSearch ->
             case ( model.token, model.pendingAgentsQuery ) of
                 ( Just t, Just q ) ->
@@ -63,7 +62,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingAgentsQuery = Nothing }, Cmd.none )
-
 
         AgentsPageChanged newOffset ->
             case ( model.token, model.agents ) of
@@ -75,7 +73,6 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddAgent ->
             ( { model
                 | agentForm = Just emptyAgentForm
@@ -84,7 +81,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         OpenedEditAgent agent ->
             ( { model
@@ -95,11 +91,9 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedAgentDetail agent ->
             Update.Navigation.update (NavigatedTo (AgentDetail agent.id))
                 { model | viewingAgent = Just agent, toast = Nothing }
-
 
         RequestedCloseAgentForm ->
             case ( model.agentForm, model.deletingAgent ) of
@@ -116,10 +110,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseAgentForm ->
             ( { model | agentForm = Nothing, editingAgentId = Nothing }, Cmd.none )
-
 
         CancelledCloseAgentForm ->
             case model.agentForm of
@@ -128,7 +120,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedAgentFormField field value ->
             case model.agentForm of
@@ -175,7 +166,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedAgentForm ->
             case ( model.agentForm, model.token ) of
                 ( Just af, Just token ) ->
@@ -200,7 +190,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedAgent result ->
             case result of
@@ -250,14 +239,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteAgent agent ->
             ( { model | deletingAgent = Just agent }, Cmd.none )
 
-
         CancelledDeleteAgent ->
             ( { model | deletingAgent = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteAgent ->
             case ( model.deletingAgent, model.token ) of
@@ -266,7 +252,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedAgent result ->
             case result of

@@ -1,6 +1,7 @@
 module Update.Students exposing (update)
 
-{-| Student messages. -}
+{-| Student messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -40,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | students = Failure message }, Cmd.none )
 
-
         GotStudentDossier result ->
             case result of
                 Ok dossier ->
@@ -48,7 +48,6 @@ update msg model =
 
                 Err message ->
                     ( { model | studentDossier = Failure message }, Cmd.none )
-
 
         UpdatedStudentsQuery q ->
             let
@@ -62,7 +61,6 @@ update msg model =
             in
             ( { model | students = next, pendingStudentsQuery = Just q }, Cmd.none )
 
-
         FlushStudentsSearch ->
             case ( model.token, model.pendingStudentsQuery ) of
                 ( Just t, Just q ) ->
@@ -72,7 +70,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingStudentsQuery = Nothing }, Cmd.none )
-
 
         StudentsPageChanged newOffset ->
             case ( model.token, model.students ) of
@@ -84,7 +81,6 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddStudent ->
             ( { model
                 | studentForm = Just emptyStudentForm
@@ -93,7 +89,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         OpenedEditStudent student ->
             ( { model
@@ -104,11 +99,9 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedStudentDetail student ->
             Update.Navigation.update (NavigatedTo (StudentDetail student.id))
                 { model | viewingStudent = Just student, toast = Nothing }
-
 
         RequestedCloseStudentForm ->
             case ( model.studentForm, model.deletingStudent ) of
@@ -125,10 +118,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseStudentForm ->
             ( { model | studentForm = Nothing, editingStudentId = Nothing }, Cmd.none )
-
 
         CancelledCloseStudentForm ->
             case model.studentForm of
@@ -137,7 +128,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedStudentFormField field value ->
             case model.studentForm of
@@ -193,7 +183,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedStudentForm ->
             case ( model.studentForm, model.token ) of
                 ( Just sf, Just token ) ->
@@ -218,7 +207,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedStudent result ->
             case result of
@@ -268,14 +256,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteStudent student ->
             ( { model | deletingStudent = Just student }, Cmd.none )
 
-
         CancelledDeleteStudent ->
             ( { model | deletingStudent = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteStudent ->
             case ( model.deletingStudent, model.token ) of
@@ -284,7 +269,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedStudent result ->
             case result of

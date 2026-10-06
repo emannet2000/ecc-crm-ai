@@ -1,14 +1,16 @@
 module View.Students exposing (deleteStudentConfirmModal, studentDetailView, studentFormModal, studentsView)
 
-{-| Students: list, detail (with case/documents/invoice dossier), form. -}
+{-| Students: list, detail (with case/documents/invoice dossier), form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Svg
 import Types exposing (..)
 import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, caseEntry, documentCorrectionAlert, documentEntry, expiredDocumentAlert, invoiceEntry, outstandingInvoiceAlert)
-import View.Format exposing (formatCurrency)
+import View.Format exposing (formatCurrency, formatCurrencyWith)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconMail, iconPin, iconSchool, iconStudent, iconTasks, iconTrash, iconUserTiny)
 
@@ -220,7 +222,7 @@ studentsView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load students: " ++ msg) ]
+                [ text ("Could not load students: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -243,7 +245,7 @@ studentsView model =
                             , Attr.attribute "stroke-linecap" "round"
                             , Attr.attribute "stroke-linejoin" "round"
                             ]
-                            [ Html.node "circle"
+                            [ Svg.node "circle"
                                 [ Attr.attribute "cx" "11"
                                 , Attr.attribute "cy" "11"
                                 , Attr.attribute "r" "8"
@@ -395,7 +397,7 @@ invoiceDossierRow inv =
                 ]
             , div [ class "activity-item__meta" ]
                 [ span [ class "activity-item__kind" ]
-                    [ text ("Balance " ++ formatCurrency inv.balance) ]
+                    [ text ("Balance " ++ formatCurrencyWith inv.currency inv.balance) ]
                 , if String.isEmpty inv.caseNumber then
                     text ""
 
@@ -500,6 +502,7 @@ studentDetailView model s =
             [ iconBack
             , span [] [ text "Back to students" ]
             ]
+        , a [ Attr.href ("/workspace?tab=workflows&entity=students&id=" ++ s.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Application tools & create case" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar" ] [ text (initials s.name) ]
             , div [ class "detail-hero__body" ]
@@ -841,13 +844,12 @@ studentFormView model sf isEdit =
                 "Save student"
     in
     form [ onSubmit SubmittedStudentForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ studentRichField sf "name" "Student full name" "text"
             , studentRichField sf "studentCode" "Student ID code" "text"

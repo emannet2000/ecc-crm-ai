@@ -4,7 +4,10 @@ import Api
 import Browser
 import Browser.Events
 import Browser.Navigation as Nav
+import Html
+import Html.Attributes as Attr
 import Json.Decode as D
+import Ports
 import Router exposing (parseRoute, routeToPath)
 import Set
 import Time
@@ -24,6 +27,7 @@ import Update.Schools
 import Update.Settings
 import Update.Students
 import Update.Tasks
+import Update.Workspace
 import Url
 import Views
 
@@ -31,6 +35,7 @@ import Views
 type alias Flags =
     { token : Maybe String
     , today : String
+    , theme : Maybe String
     }
 
 
@@ -42,6 +47,19 @@ init flags url key =
 
         model =
             { mode = Login
+            , theme =
+                if flags.theme == Just "dark" then
+                    DarkTheme
+
+                else
+                    LightTheme
+            , reports = NotAsked
+            , globalQuery = ""
+            , globalResults = NotAsked
+            , audit = NotAsked
+            , auditOffset = 0
+            , exportEntity = "contacts"
+            , exporting = Nothing
             , form = emptyForm
             , errors = []
             , alert = Nothing
@@ -69,12 +87,14 @@ init flags url key =
             , ownerFilter = ""
             , dateFromFilter = ""
             , dateToFilter = ""
+            , unreadNotifications = 0
             , today = flags.today
             , bulkMoveStage = Nothing
             , bulkDeleteConfirm = False
             , activities = NotAsked
             , activityForm = Nothing
             , deletingActivity = Nothing
+            , taskOffset = 0
             , tasks = NotAsked
             , taskForm = Nothing
             , editingTaskId = Nothing
@@ -142,7 +162,7 @@ init flags url key =
     in
     case flags.token of
         Just t ->
-            ( model, Api.me t GotUser )
+            ( model, Api.refreshSession RefreshedSession )
 
         Nothing ->
             ( model, Cmd.none )
@@ -151,8 +171,43 @@ init flags url key =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ToggledTheme ->
+            let
+                nextTheme =
+                    if model.theme == LightTheme then
+                        DarkTheme
+
+                    else
+                        LightTheme
+            in
+            ( { model | theme = nextTheme }
+            , Ports.storeTheme
+                (if nextTheme == DarkTheme then
+                    "dark"
+
+                 else
+                    "light"
+                )
+            )
+
+        GotReports result ->
+            ( { model
+                | reports =
+                    case result of
+                        Ok summary ->
+                            Success summary
+
+                        Err message ->
+                            Failure message
+              }
+            , Cmd.none
+            )
+
         EscapePressed ->
-            if model.sidebarOpen then
+            if model.globalQuery /= "" then
+                Update.Workspace.update ClosedGlobalSearch model
+
+            else if model.sidebarOpen then
                 ( { model | sidebarOpen = False }, Cmd.none )
 
             else if model.logoutAllConfirm then
@@ -254,7 +309,8 @@ updateDomains msg model =
             ( m2, cmd :: cmds )
         )
         ( model, [] )
-        [ Update.Auth.update
+        [ Update.Workspace.update
+        , Update.Auth.update
         , Update.Navigation.update
         , Update.Contacts.update
         , Update.Deals.update
@@ -290,9 +346,14 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Browser.Events.onKeyDown escapeDecoder
+        , if model.user /= Nothing then
+            Sub.batch [ Time.every 600000 (\_ -> RefreshSession), Time.every 60000 (\_ -> PollWorkspaceClock) ]
+
+          else
+            Sub.none
         , case model.toast of
             Just _ ->
-                Time.every 3500 (\_ -> DismissedToast)
+                Time.every 8000 (\_ -> DismissedToast)
 
             Nothing ->
                 Sub.none
@@ -356,7 +417,7 @@ main =
         , view =
             \model ->
                 { title = "ECC CRM"
-                , body = [ Views.view model ]
+                , body = [ Html.a [ Attr.href "#workspace-content", Attr.class "skip-link" ] [ Html.text "Skip to main content" ], Views.view model ]
                 }
         , update = update
         , subscriptions = subscriptions

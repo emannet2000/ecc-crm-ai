@@ -1,6 +1,7 @@
 module Update.Tasks exposing (update)
 
-{-| Task messages. -}
+{-| Task messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -10,6 +11,9 @@ import Update.Loaders exposing (loadTasks)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ChangedTasksPage offset ->
+            loadTasks { model | taskOffset = max 0 offset }
+
         GotTasks result ->
             case result of
                 Ok ( items, total ) ->
@@ -37,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | tasks = Failure message }, Cmd.none )
 
-
         UpdatedTasksQuery q ->
             let
                 next =
@@ -48,8 +51,7 @@ update msg model =
                         _ ->
                             Success { items = [], query = q, statusFilter = "", total = 0 }
             in
-            ( { model | tasks = next, pendingTasksQuery = Just q }, Cmd.none )
-
+            ( { model | tasks = next, taskOffset = 0, pendingTasksQuery = Just q }, Cmd.none )
 
         FlushTasksSearch ->
             case ( model.token, model.pendingTasksQuery ) of
@@ -69,7 +71,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingTasksQuery = Nothing }, Cmd.none )
-
 
         UpdatedTasksStatusFilter status ->
             case model.token of
@@ -91,21 +92,18 @@ update msg model =
                                 _ ->
                                     Success { items = [], query = q, statusFilter = status, total = 0 }
                     in
-                    ( { model | tasks = next }
+                    ( { model | tasks = next, taskOffset = 0 }
                     , Api.fetchTasks t q status GotTasks
                     )
 
                 Nothing ->
                     ( model, Cmd.none )
 
-
         OpenedAddTask ->
             ( { model | taskForm = Just emptyTaskForm, editingTaskId = Nothing, toast = Nothing }, Cmd.none )
 
-
         OpenedEditTask task ->
             ( { model | taskForm = Just (taskToForm task), editingTaskId = Just task.id, toast = Nothing }, Cmd.none )
-
 
         RequestedCloseTaskForm ->
             case ( model.taskForm, model.deletingTask ) of
@@ -122,10 +120,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseTaskForm ->
             ( { model | taskForm = Nothing, editingTaskId = Nothing }, Cmd.none )
-
 
         CancelledCloseTaskForm ->
             case model.taskForm of
@@ -134,7 +130,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedTaskFormField field value ->
             case model.taskForm of
@@ -177,7 +172,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedTaskForm ->
             case ( model.taskForm, model.token ) of
                 ( Just tf, Just token ) ->
@@ -209,7 +203,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedTask result ->
             case result of
@@ -243,7 +236,6 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         ToggledTaskStatus task newStatus ->
             case model.token of
                 Just token ->
@@ -251,7 +243,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         GotToggledTask result ->
             case result of
@@ -274,14 +265,11 @@ update msg model =
                     in
                     ( { model | toast = Just message }, Cmd.none )
 
-
         RequestedDeleteTask task ->
             ( { model | deletingTask = Just task }, Cmd.none )
 
-
         CancelledDeleteTask ->
             ( { model | deletingTask = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteTask ->
             case ( model.deletingTask, model.token ) of
@@ -290,7 +278,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedTask result ->
             case result of

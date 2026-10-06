@@ -116,6 +116,7 @@ func listStudentsHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, s)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"students": slicePage(filtered, offset, limit),
@@ -172,6 +173,7 @@ func createStudentHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newStudent := Student{
+		RecordScope:      newRecordScope(r),
 		ID:               newID("st"),
 		Name:             strings.TrimSpace(req.Name),
 		StudentCode:      strings.TrimSpace(req.StudentCode),

@@ -37,7 +37,6 @@ update msg model =
                 Err message ->
                     ( { model | invoices = Failure message }, Cmd.none )
 
-
         UpdatedInvoicesQuery q ->
             let
                 next =
@@ -50,7 +49,6 @@ update msg model =
             in
             ( { model | invoices = next, pendingInvoicesQuery = Just q }, Cmd.none )
 
-
         FlushInvoicesSearch ->
             case ( model.token, model.pendingInvoicesQuery ) of
                 ( Just t, Just q ) ->
@@ -60,7 +58,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingInvoicesQuery = Nothing }, Cmd.none )
-
 
         InvoicesPageChanged newOffset ->
             case ( model.token, model.invoices ) of
@@ -72,19 +69,15 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedAddInvoice ->
             ( { model | invoiceForm = Just emptyInvoiceForm, editingInvoiceId = Nothing, toast = Nothing }, Cmd.none )
-
 
         OpenedEditInvoice inv ->
             ( { model | invoiceForm = Just (invoiceToForm inv), editingInvoiceId = Just inv.id, toast = Nothing }, Cmd.none )
 
-
         OpenedInvoiceDetail inv ->
             Update.Navigation.update (NavigatedTo (InvoiceDetail inv.id))
                 { model | viewingInvoice = Just inv, toast = Nothing }
-
 
         RequestedCloseInvoiceForm ->
             case ( model.invoiceForm, model.deletingInvoice ) of
@@ -101,10 +94,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseInvoiceForm ->
             ( { model | invoiceForm = Nothing, editingInvoiceId = Nothing }, Cmd.none )
-
 
         CancelledCloseInvoiceForm ->
             case model.invoiceForm of
@@ -113,7 +104,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedInvoiceFormField field value ->
             case model.invoiceForm of
@@ -183,7 +173,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedInvoiceForm ->
             case ( model.invoiceForm, model.token ) of
                 ( Just inv, Just token ) ->
@@ -212,7 +201,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedInvoice result ->
             case result of
@@ -262,14 +250,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteInvoice inv ->
             ( { model | deletingInvoice = Just inv }, Cmd.none )
 
-
         CancelledDeleteInvoice ->
             ( { model | deletingInvoice = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteInvoice ->
             case ( model.deletingInvoice, model.token ) of
@@ -278,7 +263,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedInvoice result ->
             case result of
@@ -323,7 +307,6 @@ update msg model =
                     , Cmd.none
                     )
 
-
         GotInvoicePayments result ->
             case result of
                 Ok ps ->
@@ -332,14 +315,11 @@ update msg model =
                 Err message ->
                     ( { model | invoicePayments = Failure message }, Cmd.none )
 
-
         OpenedPaymentForm ->
             ( { model | paymentForm = Just emptyPaymentForm, toast = Nothing }, Cmd.none )
 
-
         ClosedPaymentForm ->
             ( { model | paymentForm = Nothing }, Cmd.none )
-
 
         UpdatedPaymentFormField field value ->
             case model.paymentForm of
@@ -378,7 +358,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         SubmittedPaymentForm ->
             case ( model.paymentForm, model.token, model.viewingInvoice ) of
                 ( Just pf, Just token, Just inv ) ->
@@ -407,7 +386,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedPayment result ->
             case result of
@@ -442,14 +420,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeletePayment p ->
             ( { model | deletingPayment = Just p }, Cmd.none )
 
-
         CancelledDeletePayment ->
             ( { model | deletingPayment = Nothing }, Cmd.none )
-
 
         ConfirmedDeletePayment ->
             case ( model.deletingPayment, model.token ) of
@@ -458,7 +433,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedPayment result ->
             case result of
@@ -477,14 +451,11 @@ update msg model =
                     , Cmd.none
                     )
 
-
         RequestedRefund inv ->
             ( { model | refundConfirmInvoice = Just inv }, Cmd.none )
 
-
         CancelledRefund ->
             ( { model | refundConfirmInvoice = Nothing }, Cmd.none )
-
 
         ConfirmedRefund ->
             case ( model.refundConfirmInvoice, model.token ) of
@@ -495,7 +466,6 @@ update msg model =
 
                 _ ->
                     ( { model | refundConfirmInvoice = Nothing }, Cmd.none )
-
 
         GotRefunded result ->
             case result of

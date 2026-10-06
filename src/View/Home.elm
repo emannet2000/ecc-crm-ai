@@ -1,6 +1,6 @@
 module View.Home exposing (homeView)
 
-{-| Dashboard home page: 5-stat row with sparklines, deal pipeline
+{-| Dashboard home page: 5-stat row, deal pipeline
 donut, win-rate gauge, pipeline-value bar chart, contribution
 heatmap, priority alerts, and board activity.
 -}
@@ -11,17 +11,15 @@ import Types exposing (..)
 import View.Charts exposing (BarDatum, barChart, gauge)
 import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, caseEntry, dealEntry, leadEntry, outstandingInvoiceAlert, overdueTaskAlert, pendingAgentAlert, pendingSchoolAlert, studentEntry, urgentCaseAlert)
 import View.Donut exposing (donutWithLegend)
-import View.Format exposing (dateToDays, formatCurrency)
+import View.Format exposing (currencyTotals, dateToDays, formatCurrency)
 import View.Heatmap exposing (activityHeatmap)
-import View.Helpers exposing (sparkline)
 
 
-statCard : String -> String -> String -> List Int -> Html Msg
-statCard label valueText hint trend =
+statCard : String -> String -> String -> Html Msg
+statCard label valueText hint =
     div [ class "stat-card" ]
         [ span [ class "stat-card__label" ] [ text label ]
         , span [ class "stat-card__value" ] [ text valueText ]
-        , sparkline trend
         , span [ class "stat-card__hint" ] [ text hint ]
         ]
 
@@ -34,6 +32,7 @@ isPast today dateStr =
 
         _ ->
             False
+
 
 
 -- ─── Derived deal numbers ────────────────────────────────────
@@ -52,7 +51,7 @@ dealsOf model =
 totalDealValue : Model -> Float
 totalDealValue model =
     dealsOf model
-        |> List.filter (\x -> x.stage /= "Lost")
+        |> List.filter (\x -> x.stage /= "Lost" && x.stage /= "Won")
         |> List.map .value
         |> List.sum
 
@@ -66,6 +65,7 @@ stageValue : Model -> String -> Float
 stageValue model stage =
     dealsOf model
         |> List.filter (\x -> x.stage == stage)
+        |> List.filter (\d -> d.currency == "" || d.currency == "USD")
         |> List.map .value
         |> List.sum
 
@@ -97,6 +97,7 @@ conversionPct model =
 
     else
         won / closed
+
 
 
 -- ─── Chart data ──────────────────────────────────────────────
@@ -135,6 +136,7 @@ barData model =
             }
         )
         stageColors
+
 
 
 -- ─── Heatmap source data ─────────────────────────────────────
@@ -192,6 +194,7 @@ allCreatedAt model =
                     []
     in
     fromLeads ++ fromStudents ++ fromCases ++ fromDeals ++ fromSchools ++ fromAgents
+
 
 
 -- ─── Priority alerts ──────────────────────────────────────────
@@ -253,6 +256,7 @@ priorityAlerts model =
     fromCases ++ fromTasks ++ fromInvoices ++ fromSchools ++ fromAgents
 
 
+
 -- ─── Board activity ───────────────────────────────────────────
 
 
@@ -294,6 +298,7 @@ recentEntries model =
     fromLeads ++ fromCases ++ fromStudents ++ fromDeals
 
 
+
 -- ─── Home view ────────────────────────────────────────────────
 
 
@@ -312,7 +317,7 @@ homeView model user =
                 )
             ]
         , div [ class "stats" ]
-            [ statCard "Open Deals"
+            [ statCard "Deals"
                 (case model.deals of
                     Success d ->
                         String.fromInt d.total
@@ -332,11 +337,9 @@ homeView model user =
                     _ ->
                         "Loading…"
                 )
-                [ 3, 5, 4, 7, 6, 8, 9 ]
             , statCard "Pipeline (USD)"
-                (formatCurrency (totalDealValue model))
-                "Active total"
-                [ 6, 7, 5, 8, 9, 8, 11 ]
+                (currencyTotals (dealsOf model |> List.filter (\d -> d.stage /= "Won" && d.stage /= "Lost") |> List.map (\d -> ( d.currency, d.value ))))
+                "Open opportunities"
             , statCard "Leads"
                 (case model.leads of
                     Success d ->
@@ -356,7 +359,6 @@ homeView model user =
                     _ ->
                         "Loading…"
                 )
-                [ 2, 4, 3, 6, 5, 7, 8 ]
             , statCard "Students"
                 (case model.students of
                     Success d ->
@@ -376,7 +378,6 @@ homeView model user =
                     _ ->
                         "Loading…"
                 )
-                [ 4, 5, 6, 5, 7, 8, 10 ]
             , statCard "Cases"
                 (case model.cases of
                     Success d ->
@@ -390,14 +391,13 @@ homeView model user =
                         let
                             open =
                                 List.length
-                                    (List.filter (\c -> c.currentStage /= "Closed" && c.currentStage /= "Refused") d.items)
+                                    (List.filter (\c -> c.currentStage /= "Closed" && c.currentStage /= "Refused" && c.currentStage /= "Approved") d.items)
                         in
                         String.fromInt open ++ " open"
 
                     _ ->
                         "Loading…"
                 )
-                [ 5, 6, 5, 7, 8, 9, 11 ]
             ]
         , div [ class "chart-row" ]
             [ div [ class "chart-card" ]
@@ -430,7 +430,7 @@ homeView model user =
         , div [ class "chart-card" ]
             [ h3 [ class "chart-card__title" ] [ text "Pipeline value by stage" ]
             , p [ class "chart-card__subtitle" ]
-                [ text "Deal value in USD, summed per stage" ]
+                [ text "USD deals only · Other currencies are included in Reports" ]
             , barChart (barData model)
             ]
         , activityHeatmap model.today (allCreatedAt model)

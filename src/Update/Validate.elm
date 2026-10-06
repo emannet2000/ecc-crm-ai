@@ -1,6 +1,7 @@
 module Update.Validate exposing (validate, validateActivityForm, validateAgentForm, validateCaseForm, validateContactForm, validateDealForm, validateLeadForm, validateSchoolForm, validateStudentForm)
 
-{-| Form validation. -}
+{-| Form validation.
+-}
 
 import Types exposing (..)
 
@@ -23,8 +24,16 @@ validate form mode =
                 []
 
         passErr =
-            if String.length form.password < 8 then
-                [ ( PasswordField, "Password must be at least 8 characters." ) ]
+            if
+                String.length form.password
+                    < (if mode == Register then
+                        12
+
+                       else
+                        8
+                      )
+            then
+                [ ( PasswordField, "Password must be at least 12 characters when registering." ) ]
 
             else
                 []

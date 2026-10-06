@@ -89,6 +89,7 @@ func listContacts(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, c)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"contacts": slicePage(filtered, offset, limit),
@@ -139,6 +140,7 @@ func createContact(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newContact := Contact{
+		RecordScope: newRecordScope(r),
 		ID:          newID("c"),
 		Name:        strings.TrimSpace(req.Name),
 		Email:       strings.TrimSpace(req.Email),

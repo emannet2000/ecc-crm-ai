@@ -1,9 +1,10 @@
 module View.DealDetail exposing (dealDetailView)
 
-{-| Deal detail page. -}
+{-| Deal detail page.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, type_, disabled)
+import Html.Attributes as Attr exposing (class, disabled, type_)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import View.Contacts exposing (contactById, contactList, stageBadge)

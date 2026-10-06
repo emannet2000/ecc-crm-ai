@@ -1,17 +1,32 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func main() {
 	initSecret()
-	seedData()
+	path := os.Getenv("DATABASE_PATH")
+	if path == "" {
+		path = filepath.Join(findProjectRoot(), "data", "crm.sqlite3")
+		if legacy := os.Getenv("DATA_FILE"); legacy != "" {
+			os.Setenv("LEGACY_DATA_FILE", legacy)
+			path = filepath.Join(filepath.Dir(legacy), "crm.sqlite3")
+		}
+	}
+	if err := loadStore(path); err != nil {
+		log.Fatal(err)
+	}
+
+	defer database.Close()
+	startWorkers(context.Background())
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -20,9 +35,29 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
+		if err := database.PingContext(r.Context()); err != nil {
+			writeError(w, http.StatusServiceUnavailable, "Database unavailable")
+			return
+		}
+		writeJSON(w, 200, statusResponse{Status: "ok"})
+	})
+	mux.HandleFunc("GET /api/reports", authMiddleware(handleReports))
+	mux.HandleFunc("GET /api/search", authMiddleware(handleSearch))
+	mux.HandleFunc("GET /api/audit", authMiddleware(handleAudit))
+	mux.HandleFunc("GET /api/exports/{entity}", authMiddleware(handleExport))
+
 	// ---- Auth ----
-	mux.HandleFunc("POST /api/login", handleLogin)
-	mux.HandleFunc("POST /api/register", handleRegister)
+	mux.HandleFunc("POST /api/session/refresh", handleSessionRefresh)
+	mux.HandleFunc("POST /api/session/logout", handleSessionLogout)
+	mux.HandleFunc("DELETE /api/me/sessions/{session}", authMiddleware(handleRevokeSession))
+	mux.HandleFunc("POST /api/me/two-factor", authMiddleware(handleTwoFactor))
+	mux.HandleFunc("POST /api/forgot-password", handleForgotPassword)
+	mux.HandleFunc("POST /api/reset-password", handleResetPassword)
+	registerWorkspaceRoutes(mux)
+
+	mux.HandleFunc("POST /api/login", handleSecureLogin)
+	mux.HandleFunc("POST /api/register", handleSecureRegister)
 	mux.HandleFunc("GET /api/me", authMiddleware(handleMe))
 	mux.HandleFunc("PUT /api/me", authMiddleware(handleUpdateMe))
 	mux.HandleFunc("POST /api/me/password", authMiddleware(handleChangePassword))
@@ -125,7 +160,8 @@ func main() {
 
 	addr := ":" + port
 	fmt.Printf("Go server listening on http://localhost%s\n", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	server := &http.Server{Addr: addr, Handler: protectHTTP(persistMutations(mux)), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
+	log.Fatal(server.ListenAndServe())
 }
 
 func mountStatic(mux *http.ServeMux) {
@@ -144,6 +180,15 @@ func mountStatic(mux *http.ServeMux) {
 		serveFileIfExists(w, r, elmPath, "application/javascript")
 	})
 
+	mux.HandleFunc("GET /account/{action}", func(w http.ResponseWriter, r *http.Request) {
+		serveFileIfExists(w, r, filepath.Join(publicDir, "account.html"), "text/html; charset=utf-8")
+	})
+	mux.HandleFunc("GET /reset-password", func(w http.ResponseWriter, r *http.Request) {
+		serveFileIfExists(w, r, filepath.Join(publicDir, "account.html"), "text/html; charset=utf-8")
+	})
+	mux.HandleFunc("GET /accept-invite", func(w http.ResponseWriter, r *http.Request) {
+		serveFileIfExists(w, r, filepath.Join(publicDir, "account.html"), "text/html; charset=utf-8")
+	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			writeError(w, http.StatusNotFound, "Not found")
@@ -157,12 +202,7 @@ func mountStatic(mux *http.ServeMux) {
 			serveFileIfExists(w, r, indexPath, "text/html; charset=utf-8")
 			return
 		}
-		clean := filepath.Clean(r.URL.Path)
-		if !isAllowedStaticFile(clean) {
-			writeError(w, http.StatusNotFound, "Not found")
-			return
-		}
-		http.ServeFile(w, r, filepath.Join(root, clean))
+		writeError(w, http.StatusNotFound, "Not found")
 	})
 }
 

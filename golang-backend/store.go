@@ -13,13 +13,23 @@ import (
 )
 
 type User struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"-"`
+	LastTOTPStep     int64    `json:"-"`
+	OrgID            string   `json:"orgId"`
+	TeamID           string   `json:"teamId"`
+	Role             string   `json:"role"`
+	Disabled         bool     `json:"disabled"`
+	TwoFactorEnabled bool     `json:"twoFactorEnabled"`
+	TOTPSecret       string   `json:"-"`
+	RecoveryHashes   []string `json:"-"`
+	SessionVersion   int      `json:"-"`
+	ID               string   `json:"id"`
+	Name             string   `json:"name"`
+	Email            string   `json:"email"`
+	Password         string   `json:"-"`
 }
 
 type Contact struct {
+	RecordScope
 	ID          string   `json:"id"`
 	Name        string   `json:"name"`
 	Email       string   `json:"email"`
@@ -36,6 +46,11 @@ type Contact struct {
 }
 
 type Deal struct {
+	Currency     string        `json:"currency"`
+	Probability  *float64      `json:"probability"`
+	LineItems    []LineItem    `json:"lineItems"`
+	StageHistory []StageChange `json:"stageHistory"`
+	RecordScope
 	ID          string  `json:"id"`
 	Title       string  `json:"title"`
 	ContactID   string  `json:"contactId"`
@@ -49,6 +64,7 @@ type Deal struct {
 }
 
 type Activity struct {
+	RecordScope
 	ID         string `json:"id"`
 	ContactID  string `json:"contactId"`
 	DealID     string `json:"dealId"`
@@ -61,6 +77,9 @@ type Activity struct {
 }
 
 type Task struct {
+	Recurrence   string `json:"recurrence"`
+	ReminderDate string `json:"reminderDate"`
+	RecordScope
 	ID          string `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
@@ -73,6 +92,8 @@ type Task struct {
 }
 
 type School struct {
+	Programs []Program `json:"programs"`
+	RecordScope
 	ID               string `json:"id"`
 	Name             string `json:"name"`
 	CountryCode      string `json:"countryCode"`
@@ -87,6 +108,13 @@ type School struct {
 }
 
 type Student struct {
+	TestType         string          `json:"testType"`
+	TestScore        float64         `json:"testScore"`
+	Accommodation    string          `json:"accommodation"`
+	TravelDate       string          `json:"travelDate"`
+	ApplicationStage string          `json:"applicationStage"`
+	PreDeparture     []ChecklistItem `json:"preDeparture"`
+	RecordScope
 	ID               string `json:"id"`
 	Name             string `json:"name"`
 	StudentCode      string `json:"studentCode"`
@@ -105,6 +133,8 @@ type Student struct {
 }
 
 type Agent struct {
+	CommissionRate float64 `json:"commissionRatePercent"`
+	RecordScope
 	ID               string `json:"id"`
 	Name             string `json:"name"`
 	AgentCode        string `json:"agentCode"`
@@ -118,6 +148,10 @@ type Agent struct {
 }
 
 type Lead struct {
+	ConvertedContactID string  `json:"convertedContactId"`
+	Score              int     `json:"score"`
+	SourceCost         float64 `json:"sourceCost"`
+	RecordScope
 	ID                string `json:"id"`
 	LeadNumber        string `json:"leadNumber"`
 	Name              string `json:"name"`
@@ -137,6 +171,13 @@ type Lead struct {
 }
 
 type Case struct {
+	PartnerID    string `json:"partnerId"`
+	StudentID    string `json:"studentId"`
+	ParentCaseID string `json:"parentCaseId"`
+	TemplateID   string `json:"templateId"`
+	SLADays      int    `json:"slaDays"`
+	AutoAdvance  bool   `json:"autoAdvance"`
+	RecordScope
 	ID                 string `json:"id"`
 	CaseNumber         string `json:"caseNumber"`
 	ClientID           string `json:"clientId"`
@@ -163,6 +204,7 @@ type Case struct {
 }
 
 type Document struct {
+	RecordScope
 	ID                   string `json:"id"`
 	CaseID               string `json:"caseId"`
 	CaseNumber           string `json:"caseNumber"`
@@ -185,6 +227,15 @@ type Document struct {
 }
 
 type Invoice struct {
+	Currency          string  `json:"currency"`
+	DueDate           string  `json:"dueDate"`
+	TaxAmount         float64 `json:"taxAmount"`
+	Discount          float64 `json:"discount"`
+	CreditAmount      float64 `json:"creditAmount"`
+	OpeningReceived   float64 `json:"openingReceived"`
+	LedgerInitialized bool    `json:"ledgerInitialized"`
+	Dunning           bool    `json:"dunning"`
+	RecordScope
 	ID                    string  `json:"id"`
 	InvoiceNumber         string  `json:"invoiceNumber"`
 	ClientID              string  `json:"clientId"`
@@ -209,6 +260,9 @@ type Invoice struct {
 }
 
 type Payment struct {
+	Currency string `json:"currency"`
+	Status   string `json:"status"`
+	RecordScope
 	ID        string  `json:"id"`
 	InvoiceID string  `json:"invoiceId"`
 	Amount    float64 `json:"amount"`
@@ -221,6 +275,8 @@ type Payment struct {
 }
 
 type Partner struct {
+	CommissionRate float64 `json:"commissionRatePercent"`
+	RecordScope
 	ID                  string  `json:"id"`
 	Type                string  `json:"type"`
 	LegalCompanyName    string  `json:"legalCompanyName"`
@@ -720,8 +776,8 @@ func seedCases() {
 			ActualSubmission: "2026-05-12", GovernmentRef: "AU-2026-884421",
 			CurrentStage: "Approved", Priority: "Medium",
 			NextAction: "Enrollment confirmation", NextDeadline: "2026-10-15",
-			Result: "Approved",
-			Notes:  "Visa approved. Enrolled for February intake.",
+			Result:    "Approved",
+			Notes:     "Visa approved. Enrolled for February intake.",
 			CreatedBy: "Demo User", CreatedAt: "2026-04-10",
 		},
 		{
@@ -797,7 +853,7 @@ func seedFinance() {
 			PaymentMilestone: "Fully Paid", PaymentMethod: "Bank Transfer",
 			OfficialReceiptNumber: "ECC-RCP-2026-00002",
 			ReferralCommission:    900, PartnerPayable: 500,
-			PaymentApproval:       "Demo User", Notes: "Fully paid.",
+			PaymentApproval: "Demo User", Notes: "Fully paid.",
 			CreatedBy: "Demo User", CreatedAt: "2026-04-20"},
 	}
 	payments = []Payment{
@@ -820,11 +876,11 @@ func seedPartners() {
 			Country:          "AE", LicenseNumber: "DXB-LAW-2024-0421",
 			LicenseExpiry: "2027-03-31", VerificationSource: "Dubai Legal Affairs",
 			ContactPerson: "Ahmed Al Farsi", ContactEmail: "ahmed@alfarsi.ae",
-			ContactPhone:  "+971 4 555 0101",
+			ContactPhone:   "+971 4 555 0101",
 			AgreementStart: "2025-04-01", AgreementExpiry: "2027-03-31",
 			ServicesPermitted:   "Immigration consultation, visa review",
 			CommissionStructure: "Flat fee per case", PaymentTerms: "Net 30",
-			CasesReferred:       24, CasesConverted: 18, AmountPayable: 12000,
+			CasesReferred: 24, CasesConverted: 18, AmountPayable: 12000,
 			ComplianceNotes: "License verified.",
 			CreatedBy:       "Demo User", CreatedAt: "2025-04-01"},
 		{ID: "p_2", Type: "Recruitment Agency",
@@ -832,11 +888,11 @@ func seedPartners() {
 			Country:          "AE", LicenseNumber: "DXB-EMP-2023-1188",
 			LicenseExpiry: "2026-12-31", VerificationSource: "MOHRE",
 			ContactPerson: "Sarah Khalid", ContactEmail: "sarah@gulftalent.ae",
-			ContactPhone:  "+971 4 555 0202",
+			ContactPhone:   "+971 4 555 0202",
 			AgreementStart: "2024-01-15", AgreementExpiry: "2026-12-31",
 			ServicesPermitted:   "Employer referrals",
 			CommissionStructure: "10% of first-year salary", PaymentTerms: "Net 45",
-			CasesReferred:       15, CasesConverted: 9, AmountPayable: 8500,
+			CasesReferred: 15, CasesConverted: 9, AmountPayable: 8500,
 			ComplianceNotes: "License renewal due Dec 2026.",
 			CreatedBy:       "Demo User", CreatedAt: "2024-01-15"},
 		{ID: "p_3", Type: "Travel Agency",
@@ -844,11 +900,11 @@ func seedPartners() {
 			Country:          "AE", LicenseNumber: "DXB-TRV-2025-0044",
 			LicenseExpiry: "2028-06-30", VerificationSource: "DET",
 			ContactPerson: "Rashid Al Marri", ContactEmail: "rashid@emtravel.ae",
-			ContactPhone:  "+971 4 555 0303",
+			ContactPhone:   "+971 4 555 0303",
 			AgreementStart: "2025-07-01", AgreementExpiry: "2028-06-30",
 			ServicesPermitted:   "Flight booking, travel insurance",
 			CommissionStructure: "Tiered", PaymentTerms: "Net 15",
-			CasesReferred:       8, CasesConverted: 6, AmountPayable: 2400,
+			CasesReferred: 8, CasesConverted: 6, AmountPayable: 2400,
 			CreatedBy: "Demo User", CreatedAt: "2025-07-01"},
 	}
 	log.Println("Seeded 3 partners")

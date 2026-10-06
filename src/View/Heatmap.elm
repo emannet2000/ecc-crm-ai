@@ -103,7 +103,12 @@ cellFor buckets maxWeight day =
             else
                 String.fromInt weight
                     ++ " record"
-                    ++ (if weight == 1 then "" else "s")
+                    ++ (if weight == 1 then
+                            ""
+
+                        else
+                            "s"
+                       )
     in
     span
         [ class ("heatmap-cell" ++ levelClass)

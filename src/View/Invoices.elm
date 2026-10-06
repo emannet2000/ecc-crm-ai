@@ -1,13 +1,14 @@
 module View.Invoices exposing (deleteInvoiceConfirmModal, deletePaymentConfirmModal, invoiceDetailView, invoiceFormModal, invoicesView, paymentFormModal, refundConfirmModal)
 
-{-| Invoices: list, detail (with payments panel), form + payment + refund modals. -}
+{-| Invoices: list, detail (with payments panel), form + payment + refund modals.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
-import View.Format exposing (formatCurrency)
+import View.Format exposing (formatCurrency, formatCurrencyWith)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconDeals, iconEdit, iconMail, iconTasks, iconTrash, iconUserTiny)
 
@@ -48,7 +49,7 @@ invoiceRow inv =
                 ]
             ]
         , td [] [ text inv.caseNumber ]
-        , td [] [ text (formatCurrency inv.balance) ]
+        , td [] [ text (formatCurrencyWith inv.currency inv.balance) ]
         , td [] [ milestoneBadge inv.paymentMilestone ]
         , td [ class "contact-actions-cell" ]
             [ button
@@ -100,7 +101,7 @@ invoicesView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load invoices: " ++ msg) ]
+                [ text ("Could not load invoices: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -165,7 +166,7 @@ paymentItem pmt =
         [ div [ class "activity-item__marker" ] []
         , div [ class "activity-item__body" ]
             [ div [ class "activity-item__meta" ]
-                [ span [ class "activity-item__kind" ] [ text (formatCurrency pmt.amount) ]
+                [ span [ class "activity-item__kind" ] [ text (formatCurrencyWith pmt.currency pmt.amount) ]
                 , if String.isEmpty pmt.paidOn then
                     text ""
 
@@ -215,7 +216,7 @@ paymentsPanel model =
 
         Failure msg ->
             div [ class "activity-loading" ]
-                [ text ("Could not load payments: " ++ msg) ]
+                [ text ("Could not load payments: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success [] ->
             detailEmpty
@@ -246,9 +247,11 @@ invoiceDetailView model inv =
             [ iconBack
             , span [] [ text "Back to invoices" ]
             ]
+        , a [ Attr.href ("/workspace?tab=workflows&entity=invoices&id=" ++ inv.id), Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Tax, refunds & reminders" ]
+        , a [ Attr.href ("/api/invoices/" ++ inv.id ++ "/pdf"), Attr.attribute "download" "invoice.pdf", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Download PDF" ]
         , header [ class "detail-hero" ]
             [ div [ class "detail-hero__avatar detail-hero__avatar--deal" ]
-                [ text (formatCurrency inv.balance) ]
+                [ text (formatCurrencyWith inv.currency inv.balance) ]
             , div [ class "detail-hero__body" ]
                 [ div [ class "detail-hero__title-row" ]
                     [ h1 [ class "detail-hero__name" ] [ text inv.invoiceNumber ]
@@ -277,10 +280,10 @@ invoiceDetailView model inv =
                 ]
             ]
         , div [ class "detail-stats" ]
-            [ detailStat "Total fee" (formatCurrency inv.totalFee) "Base"
-            , detailStat "Received" (formatCurrency inv.amountReceived) "Collected"
-            , detailStat "Balance" (formatCurrency inv.balance) "Outstanding"
-            , detailStat "Gov fee" (formatCurrency inv.governmentFee) "Pass-through"
+            [ detailStat "Total fee" (formatCurrencyWith inv.currency inv.totalFee) "Base"
+            , detailStat "Received" (formatCurrencyWith inv.currency inv.amountReceived) "Collected"
+            , detailStat "Balance" (formatCurrencyWith inv.currency inv.balance) "Outstanding"
+            , detailStat "Gov fee" (formatCurrencyWith inv.currency inv.governmentFee) "Pass-through"
             ]
         , div [ class "detail__grid" ]
             [ aside [ class "detail__sidebar" ]
@@ -289,9 +292,9 @@ invoiceDetailView model inv =
                     (div [ class "info-list" ]
                         [ infoRow iconUserTiny "Client" inv.clientName
                         , infoRow iconTasks "Case" (display inv.caseNumber)
-                        , infoRow iconDeals "School partner fee" (formatCurrency inv.schoolPartnerFee)
-                        , infoRow iconDeals "Referral commission" (formatCurrency inv.referralCommission)
-                        , infoRow iconDeals "Partner payable" (formatCurrency inv.partnerPayable)
+                        , infoRow iconDeals "School partner fee" (formatCurrencyWith inv.currency inv.schoolPartnerFee)
+                        , infoRow iconDeals "Referral commission" (formatCurrencyWith inv.currency inv.referralCommission)
+                        , infoRow iconDeals "Partner payable" (formatCurrencyWith inv.currency inv.partnerPayable)
                         , infoRow iconMail "Method" (display inv.paymentMethod)
                         , infoRow iconCalendar "Receipt #" (display inv.officialReceiptNumber)
                         , infoRow iconUserTiny "Approved by" (display inv.paymentApproval)
@@ -554,13 +557,12 @@ invoiceFormView model inv isEdit =
                 "Save invoice"
     in
     form [ onSubmit SubmittedInvoiceForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ invoiceRichField inv "invoiceNumber" "Invoice number (auto if empty)" "text"
             , invoiceClientSelect model inv
@@ -735,13 +737,12 @@ paymentFormModal pf =
             [ header [ class "modal__header" ]
                 [ h2 [ class "modal__title" ] [ text "Record payment" ] ]
             , form [ onSubmit SubmittedPaymentForm, Attr.novalidate True ]
-                [ (case fieldErr "form" of
+                [ case fieldErr "form" of
                     Just msg ->
                         div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
                     Nothing ->
                         text ""
-                  )
                 , div [ class "form-grid" ]
                     [ div
                         [ class
@@ -764,13 +765,12 @@ paymentFormModal pf =
                             ]
                             []
                         , label [ for "pf-amount" ] [ text "Amount" ]
-                        , (case fieldErr "amount" of
+                        , case fieldErr "amount" of
                             Just msg ->
                                 p [ class "ecc-field__message" ] [ text msg ]
 
                             Nothing ->
                                 text ""
-                          )
                         ]
                     , div [ class "ecc-field" ]
                         [ input
@@ -854,7 +854,7 @@ deletePaymentConfirmModal pmt =
                 [ h2 [ class "modal__title" ] [ text "Delete payment" ] ]
             , p [ class "modal__confirm-text" ]
                 [ text "Delete payment of "
-                , strong [] [ text (formatCurrency pmt.amount) ]
+                , strong [] [ text (formatCurrencyWith pmt.currency pmt.amount) ]
                 , text "?"
                 ]
             , div [ class "modal__actions" ]

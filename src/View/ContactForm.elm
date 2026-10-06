@@ -1,9 +1,10 @@
 module View.ContactForm exposing (contactFormModal, deleteConfirmModal)
 
-{-| Contact create/edit modal and delete confirmation. -}
+{-| Contact create/edit modal and delete confirmation.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -220,14 +221,13 @@ contactFormView cf isEdit =
                 "Save contact"
     in
     form [ onSubmit SubmittedContactForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ]
                     [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ richField cf "name" "Full name" "text" True
             , richField cf "email" "Email address" "email" False

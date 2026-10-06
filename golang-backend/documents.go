@@ -91,6 +91,7 @@ func listDocumentsHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, d)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"documents": slicePage(filtered, offset, limit),
@@ -131,6 +132,10 @@ func createDocumentHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	defer mu.Unlock()
 
+	if req.Status == "Verified" && r.PathValue("id") == "" {
+		writeError(w, 400, "Upload a file version before verification")
+		return
+	}
 	if fields := validateDocument(req); len(fields) > 0 {
 		writeFieldErrors(w, fields)
 		return
@@ -144,6 +149,7 @@ func createDocumentHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newDoc := Document{
+		RecordScope:          newRecordScope(r),
 		ID:                   newID("doc"),
 		CaseID:               caseID,
 		CaseNumber:           caseNumber,
@@ -159,7 +165,7 @@ func createDocumentHandler(w http.ResponseWriter, r *http.Request) {
 		LatestVersion:        1,
 		TranslationRequired:  req.TranslationRequired,
 		LegalizationRequired: req.LegalizationRequired,
-		FilePath:             strings.TrimSpace(req.FilePath),
+		FilePath:             "",
 		Notes:                req.Notes,
 		CreatedBy:            createdBy,
 		CreatedAt:            now,
@@ -214,11 +220,14 @@ func updateDocumentHandler(w http.ResponseWriter, r *http.Request) {
 	updated.ExpiryDate = strings.TrimSpace(req.ExpiryDate)
 	updated.VerifiedBy = strings.TrimSpace(req.VerifiedBy)
 	updated.VerificationDate = strings.TrimSpace(req.VerificationDate)
+	if !documentTransition(w, r, updated, strings.TrimSpace(req.Status)) {
+		return
+	}
 	updated.Status = strings.TrimSpace(req.Status)
 	updated.RejectionReason = strings.TrimSpace(req.RejectionReason)
 	updated.TranslationRequired = req.TranslationRequired
 	updated.LegalizationRequired = req.LegalizationRequired
-	updated.FilePath = strings.TrimSpace(req.FilePath)
+	// Protected file paths are assigned only by the upload endpoint.
 	updated.Notes = req.Notes
 
 	documents[idx] = updated
@@ -255,12 +264,16 @@ func updateDocumentStatusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !documentTransition(w, r, documents[idx], status) {
+		return
+	}
 	documents[idx].Status = status
 	if status == "Correction Required" {
 		documents[idx].RejectionReason = strings.TrimSpace(req.RejectionReason)
 	}
 	if status == "Verified" {
-		documents[idx].VerificationDate = time.Now().Format("2006-01-02")
+		documents[idx].VerificationDate = organizationToday(r)
+		documents[idx].VerifiedBy = currentUser(r).Name
 	}
 
 	writeJSON(w, http.StatusOK, map[string]any{"document": documents[idx]})
@@ -286,4 +299,19 @@ func deleteDocumentHandler(w http.ResponseWriter, r *http.Request) {
 
 	documents = append(documents[:idx], documents[idx+1:]...)
 	writeJSON(w, http.StatusOK, map[string]any{"deleted": id})
+}
+
+func documentTransition(w http.ResponseWriter, r *http.Request, doc Document, status string) bool {
+	if status == "Verified" {
+		var n int
+		if storeDB(r).QueryRow("SELECT count(*) FROM file_versions WHERE document_id=? AND org_id=?", doc.ID, currentUser(r).OrgID).Scan(&n) != nil || n == 0 {
+			writeError(w, 409, "Upload a file version before verifying this document")
+			return false
+		}
+		if doc.ExpiryDate != "" && doc.ExpiryDate < organizationToday(r) {
+			writeError(w, 409, "An expired document cannot be verified")
+			return false
+		}
+	}
+	return true
 }

@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
-	"log"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -21,14 +18,7 @@ var (
 	revokedTokens = map[string]time.Time{}
 )
 
-func initSecret() {
-	s := os.Getenv("JWT_SECRET")
-	if s == "" {
-		s = "dev-secret-not-for-production-please-change-me"
-		log.Println("WARNING: JWT_SECRET not set, using insecure dev default")
-	}
-	jwtSecret = []byte(s)
-}
+func initSecret() { initializePersistentSecret() }
 
 type loginRequest struct {
 	Email    string `json:"email"`
@@ -95,6 +85,7 @@ func issueToken(u User) (string, error) {
 	now := time.Now()
 	claims := jwt.MapClaims{
 		"sub":   u.ID,
+		"ver":   u.SessionVersion,
 		"email": u.Email,
 		"jti":   newID("jti"),
 		"exp":   now.Add(24 * time.Hour).Unix(),
@@ -106,6 +97,10 @@ func issueToken(u User) (string, error) {
 
 func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if sessionUser, sessionID, err := cookieIdentity(r); err == nil {
+			authorizeWorkspaceRequest(next, w, r, sessionUser, sessionID)
+			return
+		}
 		auth := r.Header.Get("Authorization")
 		if !strings.HasPrefix(auth, "Bearer ") {
 			writeError(w, http.StatusUnauthorized, "Missing authorization header")
@@ -114,7 +109,7 @@ func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		tokenStr := strings.TrimPrefix(auth, "Bearer ")
 		token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (any, error) {
 			return jwtSecret, nil
-		})
+		}, jwt.WithValidMethods([]string{"HS256"}), jwt.WithExpirationRequired())
 		if err != nil || !token.Valid {
 			writeError(w, http.StatusUnauthorized, "Invalid or expired token")
 			return
@@ -128,15 +123,19 @@ func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		id, _ := claims["sub"].(string)
 		jti, _ := claims["jti"].(string)
 
+		user, exists := findUserByEmail(email)
+		version, _ := claims["ver"].(float64)
+		if !exists || user.ID != id || user.Disabled || int(version) != user.SessionVersion {
+			writeError(w, http.StatusUnauthorized, "Session has expired")
+			return
+		}
+
 		if jti != "" && isTokenRevoked(jti) {
 			writeError(w, http.StatusUnauthorized, "Token has been revoked")
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), ctxUserEmail, email)
-		ctx = context.WithValue(ctx, ctxUserID, id)
-		ctx = context.WithValue(ctx, ctxTokenID, jti)
-		next(w, r.WithContext(ctx))
+		authorizeWorkspaceRequest(next, w, r, user, jti)
 	}
 }
 
@@ -307,22 +306,22 @@ func handleUpdateMe(w http.ResponseWriter, r *http.Request) {
 
 	mu.Lock()
 	for i := range contacts {
-		if contacts[i].Owner == oldName || contacts[i].Owner == "Demo User" {
+		if contacts[i].Owner == oldName && canWrite(contacts[i].RecordScope, user) {
 			contacts[i].Owner = name
 		}
 	}
 	for i := range deals {
-		if deals[i].Owner == oldName || deals[i].Owner == "Demo User" {
+		if deals[i].Owner == oldName && canWrite(deals[i].RecordScope, user) {
 			deals[i].Owner = name
 		}
 	}
 	for i := range tasks {
-		if tasks[i].Owner == oldName || tasks[i].Owner == "Demo User" {
+		if tasks[i].Owner == oldName && canWrite(tasks[i].RecordScope, user) {
 			tasks[i].Owner = name
 		}
 	}
 	for i := range activities {
-		if activities[i].CreatedBy == oldName || activities[i].CreatedBy == "Demo User" {
+		if activities[i].CreatedBy == oldName && canWrite(activities[i].RecordScope, user) {
 			activities[i].CreatedBy = name
 		}
 	}
@@ -332,6 +331,13 @@ func handleUpdateMe(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "Could not issue token")
 		return
+	}
+	if err := mintSession(w, r, user, true); err != nil {
+		writeError(w, 500, "Could not refresh session")
+		return
+	}
+	if _, err := r.Cookie("ecc_session"); err == nil {
+		token = "cookie-session"
 	}
 	writeJSON(w, http.StatusOK, profileUpdateResponse{Token: token, User: user})
 }
@@ -353,8 +359,8 @@ func handleChangePassword(w http.ResponseWriter, r *http.Request) {
 	if req.CurrentPassword == "" {
 		fields["current"] = "Enter your current password"
 	}
-	if len(req.NewPassword) < 8 {
-		fields["next"] = "New password must be at least 8 characters"
+	if message := passwordError(req.NewPassword); message != "" {
+		fields["next"] = message
 	}
 	if len(fields) > 0 {
 		writeFieldErrors(w, fields)
@@ -381,7 +387,12 @@ func handleChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.Password = string(hash)
+	user.SessionVersion++
 	users[emailKey] = user
+	if err := mintSession(w, r, user, true); err != nil {
+		writeError(w, 500, "Could not refresh session")
+		return
+	}
 
 	writeJSON(w, http.StatusOK, statusResponse{Status: "ok"})
 }
@@ -393,6 +404,15 @@ func handleLogoutAll(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnauthorized, "Invalid token claims")
 		return
 	}
+
+	mu.Lock()
+	key := strings.ToLower(strings.TrimSpace(email))
+	user, exists := users[key]
+	if exists {
+		user.SessionVersion++
+		users[key] = user
+	}
+	mu.Unlock()
 
 	if jti != "" {
 		revokeToken(jti, time.Now().Add(24*time.Hour))

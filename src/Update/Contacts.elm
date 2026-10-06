@@ -1,6 +1,7 @@
 module Update.Contacts exposing (update)
 
-{-| Contact messages. -}
+{-| Contact messages.
+-}
 
 import Api
 import Types exposing (..)
@@ -40,7 +41,6 @@ update msg model =
                 Err message ->
                     ( { model | contacts = Failure message }, Cmd.none )
 
-
         UpdatedContactsQuery q ->
             let
                 nextContacts =
@@ -55,7 +55,6 @@ update msg model =
             , Cmd.none
             )
 
-
         FlushContactsSearch ->
             case ( model.token, model.pendingContactsQuery ) of
                 ( Just t, Just q ) ->
@@ -65,7 +64,6 @@ update msg model =
 
                 _ ->
                     ( { model | pendingContactsQuery = Nothing }, Cmd.none )
-
 
         ContactsPageChanged newOffset ->
             case ( model.token, model.contacts ) of
@@ -77,11 +75,9 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         OpenedContactDetail contact ->
             Update.Navigation.update (NavigatedTo (ContactDetail contact.id))
                 { model | viewingContact = Just contact, toast = Nothing }
-
 
         OpenedAddContact ->
             ( { model
@@ -92,7 +88,6 @@ update msg model =
             , Cmd.none
             )
 
-
         OpenedEditContact contact ->
             ( { model
                 | contactForm = Just (contactToForm contact)
@@ -101,7 +96,6 @@ update msg model =
               }
             , Cmd.none
             )
-
 
         RequestedCloseContactForm ->
             case ( model.contactForm, model.deletingContact ) of
@@ -120,10 +114,8 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-
         ConfirmedCloseContactForm ->
             ( { model | contactForm = Nothing, editingId = Nothing }, Cmd.none )
-
 
         CancelledCloseContactForm ->
             case model.contactForm of
@@ -134,7 +126,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         UpdatedContactFormField field value ->
             case model.contactForm of
@@ -187,7 +178,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         AddedContactTag ->
             case model.contactForm of
                 Just cf ->
@@ -214,7 +204,6 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-
         RemovedContactTag tag ->
             case model.contactForm of
                 Just cf ->
@@ -231,7 +220,6 @@ update msg model =
 
                 Nothing ->
                     ( model, Cmd.none )
-
 
         SubmittedContactForm ->
             case ( model.contactForm, model.token ) of
@@ -261,7 +249,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotSavedContact result ->
             let
@@ -328,14 +315,11 @@ update msg model =
                         Nothing ->
                             ( model, Cmd.none )
 
-
         RequestedDeleteContact contact ->
             ( { model | deletingContact = Just contact }, Cmd.none )
 
-
         CancelledDeleteContact ->
             ( { model | deletingContact = Nothing }, Cmd.none )
-
 
         ConfirmedDeleteContact ->
             case ( model.deletingContact, model.token ) of
@@ -344,7 +328,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
 
         GotDeletedContact result ->
             case result of

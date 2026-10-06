@@ -1,9 +1,10 @@
 module View.Activity exposing (activityFeed, activityFormModal, deleteActivityConfirmModal)
 
-{-| Activity feed and activity form. -}
+{-| Activity feed and activity form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
 import Types exposing (..)
@@ -80,7 +81,7 @@ activityFeed model =
             div [ class "activity-loading" ] [ text "Loading activity…" ]
 
         Failure msg ->
-            div [ class "activity-loading" ] [ text ("Could not load activity: " ++ msg) ]
+            div [ class "activity-loading" ] [ text ("Could not load activity: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success [] ->
             detailEmpty
@@ -160,13 +161,12 @@ activityFormView af =
                 "Log activity"
     in
     form [ onSubmit SubmittedActivityForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , activityKindPills af
         , div [ class titleCls ]
             [ input

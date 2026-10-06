@@ -1,11 +1,13 @@
 module View.Agents exposing (agentDetailView, agentFormModal, agentsView, deleteAgentConfirmModal)
 
-{-| Agents: list, detail, form. -}
+{-| Agents: list, detail, form.
+-}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, id, type_, placeholder, value, disabled, for)
+import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Svg
 import Types exposing (..)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconPin, iconStudent, iconTrash, iconUserTiny)
@@ -124,7 +126,7 @@ agentsView model =
 
         Failure msg ->
             div [ class "content__empty-block" ]
-                [ text ("Could not load agents: " ++ msg) ]
+                [ text ("Could not load agents: " ++ msg), button [ class "ecc-btn ecc-btn--ghost ecc-btn--inline", onClick (NavigatedTo model.route) ] [ text "Retry" ] ]
 
         Success data ->
             let
@@ -147,7 +149,7 @@ agentsView model =
                             , Attr.attribute "stroke-linecap" "round"
                             , Attr.attribute "stroke-linejoin" "round"
                             ]
-                            [ Html.node "circle"
+                            [ Svg.node "circle"
                                 [ Attr.attribute "cx" "11"
                                 , Attr.attribute "cy" "11"
                                 , Attr.attribute "r" "8"
@@ -441,13 +443,12 @@ agentFormView af isEdit =
                 "Save agent"
     in
     form [ onSubmit SubmittedAgentForm, Attr.novalidate True ]
-        [ (case formError of
+        [ case formError of
             Just msg ->
                 div [ class "ecc-alert ecc-alert--error" ] [ text msg ]
 
             Nothing ->
                 text ""
-          )
         , div [ class "form-grid" ]
             [ agentRichField af "name" "Agent full name" "text"
             , agentRichField af "agentCode" "Agent ID code" "text"

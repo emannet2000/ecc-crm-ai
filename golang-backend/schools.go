@@ -68,6 +68,7 @@ func listSchoolsHandler(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, s)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"schools": slicePage(filtered, offset, limit),
@@ -108,6 +109,7 @@ func createSchoolHandler(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newSchool := School{
+		RecordScope:      newRecordScope(r),
 		ID:               newID("s"),
 		Name:             strings.TrimSpace(req.Name),
 		CountryCode:      strings.TrimSpace(strings.ToUpper(req.CountryCode)),

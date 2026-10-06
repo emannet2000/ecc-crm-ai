@@ -1,9 +1,11 @@
 module View.Donut exposing (Slice, donut, donutWithLegend, total)
 
-{-| SVG donut chart with center label and legend. -}
+{-| SVG donut chart with center label and legend.
+-}
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, style)
+import Svg
 
 
 type alias Slice =
@@ -45,11 +47,12 @@ donut slices size =
                 ( [], -90 )
                 slices
     in
-    Html.node "svg"
+    Svg.node "svg"
         [ Attr.attribute "viewBox"
             ("0 0 " ++ String.fromFloat size ++ " " ++ String.fromFloat size)
-        , class "donut"
+        , Attr.attribute "class" "donut"
         , Attr.attribute "role" "img"
+        , Attr.attribute "aria-label" ("Pipeline distribution: " ++ String.join ", " (List.map (\slice -> slice.label ++ " " ++ String.fromFloat slice.value) slices))
         ]
         (List.reverse arcs)
 
@@ -134,7 +137,7 @@ arcPath size startAngle endAngle color =
                 ++ String.fromFloat y4
                 ++ " Z"
     in
-    Html.node "path"
+    Svg.node "path"
         [ Attr.attribute "d" path
         , Attr.attribute "fill" color
         ]

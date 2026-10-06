@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -9,6 +8,7 @@ import (
 )
 
 type dealRequest struct {
+	Currency  string  `json:"currency"`
 	Title     string  `json:"title"`
 	ContactID string  `json:"contactId"`
 	Value     float64 `json:"value"`
@@ -57,6 +57,9 @@ func validateDeal(req dealRequest) map[string]string {
 		fields["title"] = "Title must be 200 characters or fewer"
 	}
 
+	if req.Currency != "" && !validCurrency(req.Currency) {
+		fields["currency"] = "Choose a supported currency"
+	}
 	if req.Value < 0 {
 		fields["value"] = "Value can't be negative"
 	}
@@ -83,6 +86,9 @@ func listDeals(w http.ResponseWriter, r *http.Request) {
 
 	filtered := make([]Deal, 0, len(deals))
 	for _, d := range deals {
+		if r.URL.Query().Get("mine") == "true" && d.OwnerID != currentUser(r).ID {
+			continue
+		}
 		if q == "" ||
 			strings.Contains(strings.ToLower(d.Title), q) ||
 			strings.Contains(strings.ToLower(d.ContactName), q) ||
@@ -90,6 +96,7 @@ func listDeals(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, d)
 		}
 	}
+	filtered = sortRecords(filtered, r)
 	total := len(filtered)
 	writeJSON(w, http.StatusOK, map[string]any{
 		"deals":  slicePage(filtered, offset, limit),
@@ -143,6 +150,8 @@ func createDeal(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now().Format("2006-01-02")
 	newDeal := Deal{
+		RecordScope: newRecordScope(r),
+		Currency:    currencyOf(req.Currency),
 		ID:          newID("d"),
 		Title:       strings.TrimSpace(req.Title),
 		ContactID:   contactID,
@@ -206,7 +215,14 @@ func updateDeal(w http.ResponseWriter, r *http.Request) {
 	updated.Title = strings.TrimSpace(req.Title)
 	updated.ContactID = contactID
 	updated.ContactName = contactName
-	updated.Value = req.Value
+	if len(updated.LineItems)>0 {total:=0.0;for _,line:=range updated.LineItems{total+=line.Quantity*line.UnitPrice};if money(req.Value)!=money(total){writeFieldErrors(w,map[string]string{"value":"Change products and prices in Workspace tools to update this amount"});return}}
+ updated.Value = req.Value
+	if req.Currency != "" {
+		updated.Currency = req.Currency
+	}
+	if updated.Stage != stage {
+		updated.StageHistory = append(updated.StageHistory, StageChange{updated.Stage, stage, currentUser(r).Name, utcNow()})
+	}
 	updated.Stage = stage
 	updated.CloseDate = strings.TrimSpace(req.CloseDate)
 	updated.Owner = strings.TrimSpace(req.Owner)
@@ -247,6 +263,9 @@ func updateDealStage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if deals[idx].Stage != stage {
+		deals[idx].StageHistory = append(deals[idx].StageHistory, StageChange{deals[idx].Stage, stage, currentUser(r).Name, utcNow()})
+	}
 	deals[idx].Stage = stage
 
 	writeJSON(w, http.StatusOK, map[string]any{"deal": deals[idx]})

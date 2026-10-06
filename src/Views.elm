@@ -1,6 +1,7 @@
 module Views exposing (view)
 
-{-| Root view: routing between pages and app shell. -}
+{-| Root view: routing between pages and app shell.
+-}
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class)
@@ -19,24 +20,15 @@ import View.Deals exposing (dealsView)
 import View.Helpers exposing (toastView)
 import View.Home exposing (homeView)
 import View.Invoices exposing (deleteInvoiceConfirmModal, deletePaymentConfirmModal, invoiceDetailView, invoiceFormModal, invoicesView, paymentFormModal, refundConfirmModal)
-import View.Layout exposing (pageTitle, sidebar, topbar)
+import View.Layout exposing (pageDescription, pageTitle, sidebar, topbar)
 import View.Leads exposing (deleteLeadConfirmModal, leadDetailView, leadFormModal, leadsView)
 import View.Login exposing (brandPanel, loginCard)
 import View.Partners exposing (deletePartnerConfirmModal, partnerDetailView, partnerFormModal, partnersView)
+import View.Reports exposing (reportsView)
 import View.Schools exposing (deleteSchoolConfirmModal, schoolDetailView, schoolFormModal, schoolsView)
 import View.Settings exposing (logoutAllConfirmModal, settingsView)
 import View.Students exposing (deleteStudentConfirmModal, studentDetailView, studentFormModal, studentsView)
 import View.Tasks exposing (deleteTaskConfirmModal, taskFormModal, tasksView)
-
-
-placeholderView : String -> String -> Html Msg
-placeholderView heading message =
-    div []
-        [ h1 [ class "content__heading" ] [ text heading ]
-        , p [ class "content__lede" ] [ text message ]
-        , div [ class "content__empty-block" ]
-            [ text "Coming soon." ]
-        ]
 
 
 pageContent : Model -> User -> Html Msg
@@ -73,8 +65,11 @@ pageContent model user =
             Tasks ->
                 tasksView model
 
+            Workspace ->
+                iframe [ Attr.src "/public/center.html", Attr.title "Workspace tools", class "workspace-tools" ] []
+
             Reports ->
-                placeholderView "Reports" "Analytics and reports will appear here."
+                reportsView model
 
             Settings ->
                 settingsView model
@@ -351,7 +346,23 @@ pageContent model user =
 
 appShell : Model -> User -> Html Msg
 appShell model user =
-    div [ class "app-shell" ]
+    div
+        [ class
+            ("app-shell"
+                ++ (if user.role == "viewer" then
+                        " app-shell--viewer"
+
+                    else
+                        ""
+                   )
+                ++ (if model.theme == DarkTheme then
+                        " app-shell--dark"
+
+                    else
+                        ""
+                   )
+            )
+        ]
         [ if model.sidebarOpen then
             div
                 [ class "sidebar-backdrop"
@@ -364,10 +375,11 @@ appShell model user =
         , sidebar model user
         , div [ class "app-main" ]
             [ topbar model user
-            , main_ [ class "content" ]
+            , main_ [ class "content", Attr.id "workspace-content" ]
                 [ div [ class "content__header" ]
                     [ h1 [ class "content__title" ]
                         [ text (pageTitle model) ]
+                    , p [ class "content__description" ] [ text (pageDescription model) ]
                     ]
                 , pageContent model user
                 ]
@@ -396,8 +408,13 @@ motifs =
 
 view : Model -> Html Msg
 view model =
-    main_ [ class "ecc-shell" ]
-        (motifs
+    div [ class "ecc-shell" ]
+        ((if model.user == Nothing then
+            motifs
+
+          else
+            []
+         )
             ++ [ if model.bootstrapping then
                     loadingView
 
