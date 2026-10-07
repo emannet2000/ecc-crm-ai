@@ -75,8 +75,10 @@ func listAgentsHandler(w http.ResponseWriter, r *http.Request) {
 	limit, offset := parseLimitOffset(r, 50, 0)
 
 	all := listAgents()
+	agentCounts, _ := linkedStudentCounts()
 	filtered := make([]Agent, 0, len(all))
 	for _, a := range all {
+		a.StudentsReferred = agentCounts[a.ID]
 		if q == "" ||
 			strings.Contains(strings.ToLower(a.Name), q) ||
 			strings.Contains(strings.ToLower(a.AgentCode), q) ||
@@ -101,6 +103,8 @@ func getAgentHandler(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "Agent not found")
 		return
 	}
+	agentCounts, _ := linkedStudentCounts()
+	a.StudentsReferred = agentCounts[a.ID]
 	writeJSON(w, http.StatusOK, map[string]any{"agent": a})
 }
 

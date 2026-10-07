@@ -5,7 +5,7 @@ module Update.Students exposing (update)
 
 import Api
 import Types exposing (..)
-import Update.Loaders exposing (loadStudents, pageSize)
+import Update.Loaders exposing (loadAgents, loadSchools, loadStudents, pageSize)
 import Update.Navigation
 import Update.Validate exposing (validateStudentForm)
 
@@ -40,6 +40,18 @@ update msg model =
 
                 Err message ->
                     ( { model | students = Failure message }, Cmd.none )
+
+        GotLinkedStudents parentId result ->
+            if not (isCurrentLinkedStudentsRoute model.route parentId) then
+                ( model, Cmd.none )
+
+            else
+                case result of
+                    Ok ( items, total ) ->
+                        ( { model | linkedStudents = Success { parentId = parentId, items = items, total = total } }, Cmd.none )
+
+                    Err message ->
+                        ( { model | linkedStudents = Failure message }, Cmd.none )
 
         GotStudentDossier result ->
             case result of
@@ -84,6 +96,24 @@ update msg model =
         OpenedAddStudent ->
             ( { model
                 | studentForm = Just emptyStudentForm
+                , editingStudentId = Nothing
+                , toast = Nothing
+              }
+            , Cmd.none
+            )
+
+        OpenedAddStudentForAgent agent ->
+            ( { model
+                | studentForm = Just { emptyStudentForm | agentId = agent.id }
+                , editingStudentId = Nothing
+                , toast = Nothing
+              }
+            , Cmd.none
+            )
+
+        OpenedAddStudentForSchool school ->
+            ( { model
+                | studentForm = Just { emptyStudentForm | schoolId = school.id }
                 , editingStudentId = Nothing
                 , toast = Nothing
               }
@@ -231,9 +261,16 @@ update msg model =
                                         _ ->
                                             model.viewingStudent
                                 , toast = Just (verb ++ student.name)
+                                , linkedStudents = Loading
                             }
                     in
-                    ( fresh, Tuple.second (loadStudents fresh) )
+                    ( fresh
+                    , Cmd.batch
+                        (Tuple.second (loadStudents fresh)
+                            :: linkedStudentsRefresh model
+                            :: relatedCountRefresh fresh
+                        )
+                    )
 
                 Err (FieldErrors fields) ->
                     case model.studentForm of
@@ -315,3 +352,42 @@ update msg model =
 
         _ ->
             ( model, Cmd.none )
+
+
+linkedStudentsRefresh : Model -> Cmd Msg
+linkedStudentsRefresh model =
+    case ( model.token, model.route ) of
+        ( Just token, AgentDetail id ) ->
+            Api.fetchLinkedStudents token "agent" id (GotLinkedStudents id)
+
+        ( Just token, SchoolDetail id ) ->
+            Api.fetchLinkedStudents token "school" id (GotLinkedStudents id)
+
+        _ ->
+            Cmd.none
+
+
+relatedCountRefresh : Model -> List (Cmd Msg)
+relatedCountRefresh model =
+    case model.route of
+        AgentDetail _ ->
+            [ Tuple.second (loadAgents model) ]
+
+        SchoolDetail _ ->
+            [ Tuple.second (loadSchools model) ]
+
+        _ ->
+            []
+
+
+isCurrentLinkedStudentsRoute : Route -> String -> Bool
+isCurrentLinkedStudentsRoute route parentId =
+    case route of
+        AgentDetail id ->
+            id == parentId
+
+        SchoolDetail id ->
+            id == parentId
+
+        _ ->
+            False

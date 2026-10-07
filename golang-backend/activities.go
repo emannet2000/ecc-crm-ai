@@ -16,7 +16,7 @@ type activityRequest struct {
 	DealID     string `json:"dealId"`
 }
 
-var validActivityKinds = []string{"email", "call", "meeting", "note", "task"}
+var validActivityKinds = []string{"email", "whatsapp", "call", "meeting", "note", "task"}
 
 func isValidActivityKind(k string) bool {
 	for _, v := range validActivityKinds {

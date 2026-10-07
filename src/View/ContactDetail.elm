@@ -4,7 +4,7 @@ module View.ContactDetail exposing (contactDetailView)
 -}
 
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, disabled, type_)
+import Html.Attributes as Attr exposing (class, type_)
 import Html.Events exposing (onClick)
 import Types exposing (..)
 import View.Activity exposing (activityFeed)
@@ -212,7 +212,14 @@ contactDetailView model c =
             , span [] [ text "Back to contacts" ]
             ]
         , header [ class "detail-hero" ]
-            [ div [ class "detail-hero__avatar" ] [ text (initials c.name) ]
+            [ node "crm-record-photo"
+                [ class "detail-hero__avatar"
+                , Attr.attribute "entity" "contacts"
+                , Attr.attribute "record-id" c.id
+                , Attr.attribute "initials" (initials c.name)
+                , Attr.attribute "editable" (if Maybe.withDefault False (Maybe.map (\u -> u.role /= "viewer") model.user) then "true" else "false")
+                ]
+                []
             , div [ class "detail-hero__body" ]
                 [ div [ class "detail-hero__title-row" ]
                     [ h1 [ class "detail-hero__name" ] [ text c.name ]
@@ -327,8 +334,7 @@ contactDetailView model c =
                         (button
                             [ class "detail-card__action"
                             , type_ "button"
-                            , disabled True
-                            , Attr.title "Coming soon"
+                            , onClick (OpenedAddDealForContact c)
                             ]
                             [ text "New deal" ]
                         )
@@ -348,8 +354,7 @@ contactDetailView model c =
                         (button
                             [ class "detail-card__action"
                             , type_ "button"
-                            , disabled True
-                            , Attr.title "Coming soon"
+                            , onClick (OpenedAddTaskForContact c)
                             ]
                             [ text "New task" ]
                         )

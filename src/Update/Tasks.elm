@@ -102,6 +102,15 @@ update msg model =
         OpenedAddTask ->
             ( { model | taskForm = Just emptyTaskForm, editingTaskId = Nothing, toast = Nothing }, Cmd.none )
 
+        OpenedAddTaskForContact contact ->
+            ( { model
+                | taskForm = Just { emptyTaskForm | contactId = contact.id }
+                , editingTaskId = Nothing
+                , toast = Nothing
+              }
+            , Cmd.none
+            )
+
         OpenedEditTask task ->
             ( { model | taskForm = Just (taskToForm task), editingTaskId = Just task.id, toast = Nothing }, Cmd.none )
 

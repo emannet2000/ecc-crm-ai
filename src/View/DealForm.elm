@@ -22,12 +22,28 @@ dealFormFieldError field df =
 
 contactsForSelect : Model -> List Contact
 contactsForSelect model =
-    case model.contacts of
-        Success data ->
-            List.sortBy .name data.items
+    let
+        loaded =
+            case model.contacts of
+                Success data ->
+                    data.items
 
-        _ ->
-            []
+                _ ->
+                    []
+
+        current =
+            case model.viewingContact of
+                Just contact ->
+                    if List.any (\item -> item.id == contact.id) loaded then
+                        []
+
+                    else
+                        [ contact ]
+
+                Nothing ->
+                    []
+    in
+    List.sortBy .name (loaded ++ current)
 
 
 dealContactSelect : Model -> DealForm -> Html Msg

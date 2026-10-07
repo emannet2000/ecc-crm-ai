@@ -1,4 +1,4 @@
-module View.Students exposing (deleteStudentConfirmModal, studentDetailView, studentFormModal, studentsView)
+module View.Students exposing (deleteStudentConfirmModal, linkedStudentsView, studentDetailView, studentFormModal, studentsView)
 
 {-| Students: list, detail (with case/documents/invoice dossier), form.
 -}
@@ -7,6 +7,7 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Router exposing (routeToPath)
 import Svg
 import Types exposing (..)
 import View.Dashboard exposing (ActivityEntry, PriorityAlert, activityPanel, alertsPanel, caseEntry, documentCorrectionAlert, documentEntry, expiredDocumentAlert, invoiceEntry, outstandingInvoiceAlert)
@@ -139,12 +140,19 @@ milestoneBadge m =
 
 studentRow : Student -> Html Msg
 studentRow s =
-    tr [ class "contact-row", onClick (OpenedStudentDetail s) ]
+    tr [ class "contact-row" ]
         [ td []
             [ div [ class "contact-name-cell" ]
-                [ div [ class "contact-avatar" ] [ text (initials s.name) ]
+                [ node "crm-record-photo"
+                    [ class "contact-avatar"
+                    , Attr.attribute "entity" "students"
+                    , Attr.attribute "record-id" s.id
+                    , Attr.attribute "initials" (initials s.name)
+                    , Attr.attribute "person-name" s.name
+                    ]
+                    []
                 , div [ class "contact-name-info" ]
-                    [ span [ class "contact-name" ] [ text s.name ]
+                    [ a [ class "contact-name record-link", Attr.href (routeToPath (StudentDetail s.id)) ] [ text s.name ]
                     , span [ class "contact-email" ]
                         [ text
                             (if String.isEmpty s.studentCode then
@@ -191,6 +199,55 @@ studentRow s =
                 [ iconTrash ]
             ]
         ]
+
+
+linkedStudentsView : Model -> String -> Html Msg
+linkedStudentsView model parentId =
+    case model.linkedStudents of
+        Loading ->
+            div [ class "activity-loading" ] [ text "Loading linked students…" ]
+
+        Failure message ->
+            div [ class "activity-loading" ] [ text ("Could not load linked students: " ++ message) ]
+
+        Success data ->
+            if data.parentId /= parentId then
+                div [ class "activity-loading" ] [ text "Loading linked students…" ]
+
+            else if List.isEmpty data.items then
+                p [ class "detail-muted" ] [ text "No linked students yet." ]
+
+            else
+                div []
+                    ([ div [ class "table-wrap" ]
+                        [ table [ class "data-table" ]
+                            [ thead []
+                                [ tr []
+                                    [ th [] [ text "Student" ]
+                                    , th [] [ text "School" ]
+                                    , th [] [ text "Agent" ]
+                                    , th [] [ text "Program" ]
+                                    , th [] [ text "Acceptance" ]
+                                    , th [] [ text "Visa" ]
+                                    , th [ class "th-actions" ] [ text "" ]
+                                    ]
+                                ]
+                            , tbody [] (List.map studentRow data.items)
+                            ]
+                        ]
+                     ]
+                        ++ (if data.total > List.length data.items then
+                                [ p [ class "detail-muted" ]
+                                    [ text ("Showing " ++ String.fromInt (List.length data.items) ++ " of " ++ String.fromInt data.total ++ " linked students. Open the Students list to browse all records.") ]
+                                ]
+
+                            else
+                                []
+                           )
+                    )
+
+        NotAsked ->
+            div [ class "activity-loading" ] [ text "Linked students are not loaded." ]
 
 
 studentsSkeleton : Html Msg
@@ -254,7 +311,8 @@ studentsView model =
                             , svgPath "M21 21l-4.35-4.35"
                             ]
                         , input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search students"
                             , placeholder "Search students…"
                             , value data.query
                             , onInput UpdatedStudentsQuery
@@ -504,7 +562,14 @@ studentDetailView model s =
             ]
         , a [ Attr.href "#record-tools?tab=workflows", Attr.target "_self", class "ecc-btn ecc-btn--ghost ecc-btn--inline" ] [ text "Application tools & create case" ]
         , header [ class "detail-hero" ]
-            [ div [ class "detail-hero__avatar" ] [ text (initials s.name) ]
+            [ node "crm-record-photo"
+                [ class "detail-hero__avatar"
+                , Attr.attribute "entity" "students"
+                , Attr.attribute "record-id" s.id
+                , Attr.attribute "initials" (initials s.name)
+                , Attr.attribute "editable" (if Maybe.withDefault False (Maybe.map (\u -> u.role /= "viewer") model.user) then "true" else "false")
+                ]
+                []
             , div [ class "detail-hero__body" ]
                 [ div [ class "detail-hero__title-row" ]
                     [ h1 [ class "detail-hero__name" ] [ text s.name ]
@@ -703,12 +768,28 @@ studentSchoolSelect : Model -> StudentForm -> Html Msg
 studentSchoolSelect model sf =
     let
         options =
-            case model.schools of
-                Success data ->
-                    List.sortBy .name data.items
+            let
+                loaded =
+                    case model.schools of
+                        Success data ->
+                            data.items
 
-                _ ->
-                    []
+                        _ ->
+                            []
+
+                current =
+                    case model.viewingSchool of
+                        Just school ->
+                            if List.any (\item -> item.id == school.id) loaded then
+                                []
+
+                            else
+                                [ school ]
+
+                        Nothing ->
+                            []
+            in
+            List.sortBy .name (loaded ++ current)
 
         err =
             studentFormFieldError "schoolId" sf
@@ -753,12 +834,28 @@ studentAgentSelect : Model -> StudentForm -> Html Msg
 studentAgentSelect model sf =
     let
         options =
-            case model.agents of
-                Success data ->
-                    List.sortBy .name data.items
+            let
+                loaded =
+                    case model.agents of
+                        Success data ->
+                            data.items
 
-                _ ->
-                    []
+                        _ ->
+                            []
+
+                current =
+                    case model.viewingAgent of
+                        Just agent ->
+                            if List.any (\item -> item.id == agent.id) loaded then
+                                []
+
+                            else
+                                [ agent ]
+
+                        Nothing ->
+                            []
+            in
+            List.sortBy .name (loaded ++ current)
 
         err =
             studentFormFieldError "agentId" sf

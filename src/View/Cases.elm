@@ -174,7 +174,8 @@ casesView model =
                 [ div [ class "page-toolbar" ]
                     [ div [ class "page-toolbar__search" ]
                         [ input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search cases"
                             , placeholder "Search cases…"
                             , value data.query
                             , onInput UpdatedCasesQuery

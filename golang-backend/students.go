@@ -24,6 +24,19 @@ var validAcceptanceStatuses = []string{"Pending", "Accepted", "Rejected", "Waitl
 var validVisaStatuses = []string{"Not Started", "Pending", "Approved", "Denied"}
 var validInvoiceStatuses = []string{"Not Issued", "Issued", "Paid", "Overdue"}
 
+func linkedStudentCounts() (map[string]int, map[string]int) {
+	agents, schools := map[string]int{}, map[string]int{}
+	for _, student := range listStudents() {
+		if student.AgentID != "" {
+			agents[student.AgentID]++
+		}
+		if student.SchoolID != "" {
+			schools[student.SchoolID]++
+		}
+	}
+	return agents, schools
+}
+
 func isValidAcceptanceStatus(s string) bool {
 	for _, v := range validAcceptanceStatuses {
 		if v == s {
@@ -102,11 +115,16 @@ func validateStudent(req studentRequest) map[string]string {
 
 func listStudentsHandler(w http.ResponseWriter, r *http.Request) {
 	q := strings.ToLower(strings.TrimSpace(r.URL.Query().Get("q")))
+	agentID := strings.TrimSpace(r.URL.Query().Get("agentId"))
+	schoolID := strings.TrimSpace(r.URL.Query().Get("schoolId"))
 	limit, offset := parseLimitOffset(r, 50, 0)
 
 	all := listStudents()
 	filtered := make([]Student, 0, len(all))
 	for _, s := range all {
+		if (agentID != "" && s.AgentID != agentID) || (schoolID != "" && s.SchoolID != schoolID) {
+			continue
+		}
 		if q == "" ||
 			strings.Contains(strings.ToLower(s.Name), q) ||
 			strings.Contains(strings.ToLower(s.StudentCode), q) ||

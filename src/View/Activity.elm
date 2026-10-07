@@ -18,6 +18,9 @@ activityKindLabel kind =
         "email" ->
             "Email"
 
+        "whatsapp" ->
+            "WhatsApp"
+
         "call" ->
             "Call"
 

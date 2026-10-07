@@ -75,6 +75,15 @@ update msg model =
             , Cmd.none
             )
 
+        OpenedAddDealForContact contact ->
+            ( { model
+                | dealForm = Just { emptyDealForm | contactId = contact.id }
+                , editingDealId = Nothing
+                , toast = Nothing
+              }
+            , Cmd.none
+            )
+
         OpenedAddDealWithStage stage ->
             ( { model
                 | dealForm = Just { emptyDealForm | stage = stage }

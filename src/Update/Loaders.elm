@@ -317,9 +317,18 @@ fetchForDealRoute model route preserved =
 
 fetchForSchoolRoute : Model -> Route -> Maybe School -> Cmd Msg
 fetchForSchoolRoute model route preserved =
-    case ( route, preserved, model.token ) of
-        ( SchoolDetail id, Nothing, Just t ) ->
-            Api.fetchSchool t id FetchedSchool
+    case ( route, model.token ) of
+        ( SchoolDetail id, Just t ) ->
+            let
+                schoolCmd =
+                    case preserved of
+                        Nothing ->
+                            Api.fetchSchool t id FetchedSchool
+
+                        Just _ ->
+                            Cmd.none
+            in
+            Cmd.batch [ schoolCmd, Api.fetchLinkedStudents t "school" id (GotLinkedStudents id) ]
 
         _ ->
             Cmd.none
@@ -337,9 +346,18 @@ fetchForStudentRoute model route preserved =
 
 fetchForAgentRoute : Model -> Route -> Maybe Agent -> Cmd Msg
 fetchForAgentRoute model route preserved =
-    case ( route, preserved, model.token ) of
-        ( AgentDetail id, Nothing, Just t ) ->
-            Api.fetchAgent t id FetchedAgent
+    case ( route, model.token ) of
+        ( AgentDetail id, Just t ) ->
+            let
+                agentCmd =
+                    case preserved of
+                        Nothing ->
+                            Api.fetchAgent t id FetchedAgent
+
+                        Just _ ->
+                            Cmd.none
+            in
+            Cmd.batch [ agentCmd, Api.fetchLinkedStudents t "agent" id (GotLinkedStudents id) ]
 
         _ ->
             Cmd.none

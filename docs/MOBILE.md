@@ -19,9 +19,16 @@ layout and scroll within their container. Larger screens retain the desktop tabl
 Controls have larger touch targets and form fields use a 16-pixel font. Phone edit
 forms use the available screen height; confirmation dialogs open as bottom sheets.
 Layouts allow space for display cutouts and the home indicator. Deal boards scroll
-horizontally between stages. An offline notice appears when the browser reports
-a lost connection; reconnect and retry any failed operation. Offline edits and
-background synchronization are not implemented.
+horizontally between stages. On supported browsers, install ECC CRM from the
+in-app **Install ECC CRM** button or the browser menu. On iPhone/iPad, open the app
+in Safari, use **Share**, then **Add to Home Screen**. Installation requires HTTPS
+in production; localhost is supported for development.
+
+The service worker keeps only the public app shell and static files available
+offline. It never caches API responses, uploaded photos, documents or client data.
+The offline notice appears when the browser reports a lost connection. Sign-in,
+record data, uploads and edits still need a connection; offline edits and background
+synchronization are not implemented.
 
 ## Open it on a phone
 

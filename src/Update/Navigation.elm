@@ -473,6 +473,16 @@ update msg model =
 
                             else
                                 clearedModel.students
+                        , linkedStudents =
+                            case route of
+                                AgentDetail _ ->
+                                    Loading
+
+                                SchoolDetail _ ->
+                                    Loading
+
+                                _ ->
+                                    NotAsked
                         , agents =
                             if needsAgents then
                                 Loading

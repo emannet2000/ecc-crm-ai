@@ -333,7 +333,7 @@ emptyActivityForm =
 
 activityKinds : List String
 activityKinds =
-    [ "note", "call", "email", "meeting", "task" ]
+    [ "note", "call", "email", "whatsapp", "meeting", "task" ]
 
 
 type alias ProfileForm =
@@ -525,6 +525,13 @@ type alias StudentsData =
     , total : Int
     , offset : Int
     , limit : Int
+    }
+
+
+type alias LinkedStudentsData =
+    { parentId : String
+    , items : List Student
+    , total : Int
     }
 
 
@@ -1484,6 +1491,7 @@ type alias Model =
     , deletingSchool : Maybe School
     , pendingSchoolsQuery : Maybe String
     , students : RemoteData StudentsData
+    , linkedStudents : RemoteData LinkedStudentsData
     , viewingStudent : Maybe Student
     , studentDossier : RemoteData Dossier
     , studentForm : Maybe StudentForm
@@ -1592,6 +1600,7 @@ type Msg
     | GotDeletedContact (Result String String)
     | GotDeals (Result String ( List Deal, Int ))
     | OpenedAddDeal
+    | OpenedAddDealForContact Contact
     | OpenedAddDealWithStage String
     | OpenedEditDeal Deal
     | OpenedDealDetail Deal
@@ -1655,6 +1664,7 @@ type Msg
     | UpdatedTasksQuery String
     | UpdatedTasksStatusFilter String
     | OpenedAddTask
+    | OpenedAddTaskForContact Contact
     | OpenedEditTask Task
     | RequestedCloseTaskForm
     | ConfirmedCloseTaskForm
@@ -1690,8 +1700,11 @@ type Msg
     | SchoolsPageChanged Int
     | FlushSchoolsSearch
     | GotStudents (Result String ( List Student, Int ))
+    | GotLinkedStudents String (Result String ( List Student, Int ))
     | UpdatedStudentsQuery String
     | OpenedAddStudent
+    | OpenedAddStudentForAgent Agent
+    | OpenedAddStudentForSchool School
     | OpenedEditStudent Student
     | OpenedStudentDetail Student
     | RequestedCloseStudentForm

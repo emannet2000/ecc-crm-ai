@@ -7,10 +7,12 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Router exposing (routeToPath)
 import Svg
 import Types exposing (..)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconPin, iconStudent, iconTrash, iconUserTiny)
+import View.Students exposing (linkedStudentsView)
 
 
 agentContractBadge : String -> Html Msg
@@ -51,46 +53,46 @@ agentStatusBadge status =
 
 
 agentRow : Agent -> Html Msg
-agentRow a =
-    tr [ class "contact-row", onClick (OpenedAgentDetail a) ]
+agentRow agent =
+    tr [ class "contact-row" ]
         [ td []
             [ div [ class "contact-name-cell" ]
-                [ div [ class "contact-avatar" ] [ text (initials a.name) ]
+                [ div [ class "contact-avatar" ] [ text (initials agent.name) ]
                 , div [ class "contact-name-info" ]
-                    [ span [ class "contact-name" ] [ text a.name ]
+                    [ a [ class "contact-name record-link", Attr.href (routeToPath (AgentDetail agent.id)) ] [ text agent.name ]
                     , span [ class "contact-email" ]
                         [ text
-                            (if String.isEmpty a.agentCode then
-                                a.countryCode
+                            (if String.isEmpty agent.agentCode then
+                                agent.countryCode
 
                              else
-                                a.agentCode
+                                agent.agentCode
                             )
                         ]
                     ]
                 ]
             ]
-        , td [] [ text a.countryCode ]
-        , td [] [ agentContractBadge a.contractStatus ]
-        , td [] [ agentStatusBadge a.agentStatus ]
-        , td [] [ text (String.fromInt a.studentsReferred) ]
+        , td [] [ text agent.countryCode ]
+        , td [] [ agentContractBadge agent.contractStatus ]
+        , td [] [ agentStatusBadge agent.agentStatus ]
+        , td [] [ text (String.fromInt agent.studentsReferred) ]
         , td [ class "contact-actions-cell" ]
             [ button
                 [ class "row-action"
                 , type_ "button"
                 , Attr.title "Edit"
-                , Attr.attribute "aria-label" ("Edit " ++ a.name)
+                , Attr.attribute "aria-label" ("Edit " ++ agent.name)
                 , Html.Events.stopPropagationOn "click"
-                    (D.succeed ( OpenedEditAgent a, True ))
+                    (D.succeed ( OpenedEditAgent agent, True ))
                 ]
                 [ iconEdit ]
             , button
                 [ class "row-action row-action--danger"
                 , type_ "button"
                 , Attr.title "Delete"
-                , Attr.attribute "aria-label" ("Delete " ++ a.name)
+                , Attr.attribute "aria-label" ("Delete " ++ agent.name)
                 , Html.Events.stopPropagationOn "click"
-                    (D.succeed ( RequestedDeleteAgent a, True ))
+                    (D.succeed ( RequestedDeleteAgent agent, True ))
                 ]
                 [ iconTrash ]
             ]
@@ -158,7 +160,8 @@ agentsView model =
                             , svgPath "M21 21l-4.35-4.35"
                             ]
                         , input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search agents"
                             , placeholder "Search agents…"
                             , value data.query
                             , onInput UpdatedAgentsQuery
@@ -215,7 +218,7 @@ agentsView model =
                                     , th [] [ text "Country" ]
                                     , th [] [ text "Contract" ]
                                     , th [] [ text "Status" ]
-                                    , th [] [ text "Referred" ]
+                                    , th [] [ text "Linked students" ]
                                     , th [ class "th-actions" ] [ text "" ]
                                     ]
                                 ]
@@ -227,7 +230,7 @@ agentsView model =
 
 
 agentDetailView : Model -> Agent -> Html Msg
-agentDetailView _ a =
+agentDetailView model a =
     let
         display v =
             if String.isEmpty v then
@@ -247,6 +250,18 @@ agentDetailView _ a =
 
         ownerDisplay =
             display a.createdBy
+
+        linkedCount =
+            case model.linkedStudents of
+                Success data ->
+                    if data.parentId == a.id then
+                        data.total
+
+                    else
+                        a.studentsReferred
+
+                _ ->
+                    a.studentsReferred
     in
     div [ class "detail" ]
         [ button
@@ -290,8 +305,8 @@ agentDetailView _ a =
             [ detailStat "Contract" a.contractStatus "Agreement"
             , detailStat "Status" a.agentStatus "Current"
             , detailStat "Students referred"
-                (String.fromInt a.studentsReferred)
-                "Total"
+                (String.fromInt linkedCount)
+                "Linked student records"
             , detailStat "Country" countryDisplay "Location"
             ]
         , div [ class "detail__grid" ]
@@ -321,16 +336,20 @@ agentDetailView _ a =
                         (button
                             [ class "detail-card__action"
                             , type_ "button"
-                            , disabled True
-                            , Attr.title "Coming soon"
+                            , onClick (OpenedAddStudentForAgent a)
                             ]
                             [ text "Add referral" ]
                         )
                     )
-                    (detailEmpty
-                        iconStudent
-                        "No referrals yet"
-                        "Students referred by this agent will appear here once linked."
+                    (div []
+                        [ linkedStudentsView model a.id
+                        , button
+                            [ class "ecc-btn ecc-btn--ghost ecc-btn--inline"
+                            , type_ "button"
+                            , onClick (NavigatedTo Students)
+                            ]
+                            [ text "Open students" ]
+                        ]
                     )
                 ]
             ]
@@ -453,7 +472,6 @@ agentFormView af isEdit =
             [ agentRichField af "name" "Agent full name" "text"
             , agentRichField af "agentCode" "Agent ID code" "text"
             , agentRichField af "countryCode" "Country code (e.g. IN)" "text"
-            , agentRichField af "studentsReferred" "Students referred" "number"
             ]
         , agentStatusPills "Contract status"
             af.contractStatus

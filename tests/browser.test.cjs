@@ -24,7 +24,7 @@ async function fixture(view = 'contacts') {
   page.on('request', async req=> {
     try {
       const url=new URL(req.url()); calls.push({path:url.pathname,method:req.method(),headers:req.headers(),body:req.postData()});
-      let data,contentType='application/json';
+      let data,contentType='application/json',status=200;
       if(url.pathname.startsWith('/public/')) {data=fs.readFileSync(path.join(__dirname,'..',url.pathname));contentType=url.pathname.endsWith('.css')?'text/css':'application/javascript';}
       else if(url.pathname==='/portal') {data=fs.readFileSync(path.join(__dirname,'../public/portal.html'));contentType='text/html';}
       else if(url.pathname==='/') {contentType='text/html';data=`<!doctype html><html><body><div id="app">${view==='workspace'?'<crm-workspace></crm-workspace>':view==='insights'?'<crm-insights></crm-insights>':`<crm-record-tools entity="${view}" record-id="${view==='students'?'s_client':'c_client'}"></crm-record-tools>`}</div><script src="/public/record-versions.js"></script><script src="/public/center.js"></script><script src="/public/components.js"></script></body></html>`;}
@@ -35,10 +35,14 @@ async function fixture(view = 'contacts') {
       else if(url.pathname==='/api/assistant/jobs') data={jobs:[]};
       else if(url.pathname==='/api/portal/invitations') data={invitations:[],url:'http://crm.test/portal#invite=private',message:'Share this invitation'};
       else if(url.pathname==='/api/portal/me') data={email:contact.email,student:{name:'Client One',applicationStage:'Applying'},cases:[{id:'case_client',caseNumber:'ECC-001',stage:'Documents Pending',nextAction:'Upload passport'}],documents:[{id:'doc_client',name:'Passport',required:true,status:'Requested',caseNumber:'ECC-001',latestVersion:0}],invoices:[],messages:[]};
+      else if(url.pathname==='/api/data-quality') data={total:1,totalAll:1,page:1,pages:1,findings:[{severity:'error',title:'Deadline is overdue',detail:'ECC-001 passed its deadline.',entity:'cases',recordId:'case_client',route:'/cases/case_client'}]};
+      else if(url.pathname==='/api/follow-up-rules') data={rules:[{id:'rule-1',data:JSON.stringify({name:'Stale case',entity:'cases',stage:'',inactiveDays:5,taskTitle:'Follow {{record}}',description:'Check in',enabled:false}),count:1}]};
+      else if(url.pathname.endsWith('/rule-1/preview')) data={count:1,records:[{name:'ECC-001',lastTouch:'2026-09-20'}],previewToken:'preview-token',previewExpiresAt:'2026-10-07T09:05:00Z'};
+      else if(url.pathname==='/api/follow-up-rules/rule-1'&&req.method()==='PATCH') {status=409;data={error:'Records changed since the preview. Preview the rule again before enabling it.'};}
       else if(url.pathname.includes('/conversations')) data={messages:[{channel:'email',direction:'inbound',subject:'Reply',body:'<img src=x onerror=alert(1)>',status:'received'}]};
       else if(url.pathname==='/api/contacts/c_client'&&req.method()==='GET') data={contact};
       else data={status:'ok'};
-      await req.respond({status:200,contentType,body:typeof data==='object'&&!Buffer.isBuffer(data)?JSON.stringify(data):data});
+      await req.respond({status,contentType,body:typeof data==='object'&&!Buffer.isBuffer(data)?JSON.stringify(data):data});
     }catch(e){errors.push(e.message);await req.abort().catch(()=>{});}
   });
   await page.goto('http://crm.test/'+(view==='portal'?'portal#invite=single-use-invitation':''),{waitUntil:'networkidle0'});
@@ -78,7 +82,15 @@ test('report date filters request server aggregates and retain full record count
 });
 
 test('portal removes invitation credentials from the URL and supports document submission',async()=>{
- const {page,calls,errors}=await fixture('portal');try{await page.waitForSelector('input[type=file]');assert.equal(new URL(page.url()).hash,'');assert.equal(JSON.parse(calls.find(r=>r.path==='/api/portal/session').body).token,'single-use-invitation');const file=path.join(os.tmpdir(),'ecc-portal-upload.txt');fs.writeFileSync(file,'Client document');const input=await page.$('input[type=file]');await input.uploadFile(file);await page.evaluate(()=>document.querySelector('input[type=file]').closest('form').requestSubmit());await page.waitForFunction(()=>document.getElementById('notice').textContent.includes('uploaded'));assert.ok(calls.some(r=>r.path==='/api/portal/documents/doc_client/files'&&r.method==='POST'));assert.deepEqual(errors,[]);fs.unlinkSync(file)}finally{await page.close()}
+ const {page,calls,errors}=await fixture('portal');try{await page.waitForSelector('input[type=file]');assert.equal(new URL(page.url()).hash,'');assert.equal(JSON.parse(calls.find(r=>r.path==='/api/portal/session').body).token,'single-use-invitation');assert.ok(await page.$eval('body',el=>el.textContent.includes('Journey progress')&&el.textContent.includes('0 of 1 required documents verified')&&el.textContent.includes('Next step: Upload passport')));const file=path.join(os.tmpdir(),'ecc-portal-upload.txt');fs.writeFileSync(file,'Client document');const input=await page.$('input[type=file]');await input.uploadFile(file);await page.evaluate(()=>document.querySelector('input[type=file]').closest('form').requestSubmit());await page.waitForFunction(()=>document.getElementById('notice').textContent.includes('uploaded'));assert.ok(calls.some(r=>r.path==='/api/portal/documents/doc_client/files'&&r.method==='POST'));assert.deepEqual(errors,[]);fs.unlinkSync(file)}finally{await page.close()}
+});
+
+test('data-quality scan filters findings and navigates to the affected case',async()=>{
+ const {page,calls,errors}=await fixture('workspace');try{await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.querySelectorAll('nav button').length);await page.evaluate(()=>[...document.querySelector('crm-workspace').shadowRoot.querySelectorAll('nav button')].find(b=>b.textContent==='Data & views').click());await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.textContent.includes('Run data quality scan'));await page.evaluate(()=>[...document.querySelector('crm-workspace').shadowRoot.querySelectorAll('button')].find(b=>b.textContent==='Run data quality scan').click());await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.textContent.includes('Deadline is overdue'));const link=await page.$eval('crm-workspace',el=>[...el.shadowRoot.querySelectorAll('a')].find(a=>a.textContent==='Review cases')?.getAttribute('href'));assert.equal(link,'/cases/case_client');assert.ok(calls.some(c=>c.path==='/api/data-quality'&&c.path.includes('data-quality')));assert.deepEqual(errors,[])}finally{await page.close()}
+});
+
+test('follow-up rule preview surfaces a stale-preview rejection',async()=>{
+ const {page,calls,errors}=await fixture('workspace');try{page.on('dialog',d=>d.accept());await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.querySelectorAll('nav button').length);await page.evaluate(()=>[...document.querySelector('crm-workspace').shadowRoot.querySelectorAll('nav button')].find(b=>b.textContent==='Workflows').click());await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.textContent.includes('Preview & enable'));await page.evaluate(()=>[...document.querySelector('crm-workspace').shadowRoot.querySelectorAll('button')].find(b=>b.textContent==='Preview & enable').click());await page.waitForFunction(()=>document.querySelector('crm-workspace').shadowRoot.textContent.includes('Records changed since the preview'));assert.ok(calls.some(c=>c.path==='/api/follow-up-rules/rule-1/preview'));assert.deepEqual(errors,[])}finally{await page.close()}
 });
 
 test('a background refresh cannot replace the version attached to an open edit dialog',async()=>{

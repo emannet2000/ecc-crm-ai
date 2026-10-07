@@ -19,6 +19,21 @@ import (
 func expansionTestMux() http.Handler {
 	m := http.NewServeMux()
 	registerWorkspaceRoutes(m)
+	registerFollowupRoutes(m)
+	m.HandleFunc("GET /api/admin/operations", authMiddleware(handleOperations))
+	m.HandleFunc("GET /api/contacts", authMiddleware(listContacts))
+	m.HandleFunc("GET /api/deals", authMiddleware(listDeals))
+	m.HandleFunc("GET /api/tasks", authMiddleware(listTasks))
+	m.HandleFunc("GET /api/schools", authMiddleware(listSchoolsHandler))
+	m.HandleFunc("GET /api/schools/{id}", authMiddleware(getSchoolHandler))
+	m.HandleFunc("GET /api/students", authMiddleware(listStudentsHandler))
+	m.HandleFunc("POST /api/students", authMiddleware(createStudentHandler))
+	m.HandleFunc("GET /api/agents", authMiddleware(listAgentsHandler))
+	m.HandleFunc("GET /api/agents/{id}", authMiddleware(getAgentHandler))
+	m.HandleFunc("GET /api/leads", authMiddleware(listLeadsHandler))
+	m.HandleFunc("GET /api/cases", authMiddleware(listCasesHandler))
+	m.HandleFunc("GET /api/invoices", authMiddleware(listInvoicesHandler))
+	m.HandleFunc("GET /api/partners", authMiddleware(listPartnersHandler))
 	m.HandleFunc("GET /api/contacts/{id}", authMiddleware(getContact))
 	m.HandleFunc("POST /api/contacts", authMiddleware(createContact))
 	m.HandleFunc("PUT /api/contacts/{id}", authMiddleware(updateContact))
@@ -76,6 +91,80 @@ func TestRecordVersionRejectsStaleEditsAndDeletes(t *testing.T) {
 	w := expansionRequest(t, h, "GET", "/api/records/contacts/"+c.ID, nil, "")
 	if !strings.Contains(w.Body.String(), "Changed client") {
 		t.Fatal("stale update overwrote current data")
+	}
+}
+
+func TestStudentListFiltersLinkedAgentAndSchool(t *testing.T) {
+	setupStore(t)
+	h := expansionTestMux()
+	for _, tc := range []struct{ query, want, omit string }{
+		{"agentId=ag_1&limit=200", `"id":"st_1"`, `"id":"st_2"`},
+		{"schoolId=s_1&limit=200", `"id":"st_3"`, `"id":"st_4"`},
+	} {
+		w := expansionRequest(t, h, "GET", "/api/students?"+tc.query, nil, "")
+		assertStatus(t, w, 200)
+		if !strings.Contains(w.Body.String(), tc.want) || strings.Contains(w.Body.String(), tc.omit) {
+			t.Fatalf("relationship filter %q returned unexpected records: %s", tc.query, w.Body.String())
+		}
+	}
+}
+
+func TestAgentAndSchoolCountsFollowStudentLinks(t *testing.T) {
+	setupStore(t)
+	h := expansionTestMux()
+	assertCount := func(path, field string, want int) {
+		t.Helper()
+		w := expansionRequest(t, h, "GET", path, nil, "")
+		assertStatus(t, w, 200)
+		var result map[string]any
+		if err := json.Unmarshal(w.Body.Bytes(), &result); err != nil {
+			t.Fatal(err)
+		}
+		var record map[string]any
+		if rows, ok := result["agents"].([]any); ok && len(rows) > 0 {
+			record = rows[0].(map[string]any)
+		} else if rows, ok := result["schools"].([]any); ok && len(rows) > 0 {
+			record = rows[0].(map[string]any)
+		} else if value, ok := result["agent"].(map[string]any); ok {
+			record = value
+		} else if value, ok := result["school"].(map[string]any); ok {
+			record = value
+		}
+		if record == nil || int(record[field].(float64)) != want {
+			t.Fatalf("%s expected %s=%d: %s", path, field, want, w.Body.String())
+		}
+	}
+	assertCount("/api/agents?q=00001", "studentsReferred", 2)
+	assertCount("/api/schools?q=toronto", "studentsEnrolled", 2)
+	assertStatus(t, expansionRequest(t, h, "POST", "/api/students", map[string]any{
+		"name": "New link", "schoolId": "s_1", "agentId": "ag_1",
+		"acceptanceStatus": "Pending", "visaStatus": "Not Started", "invoiceStatus": "Not Issued",
+	}, ""), 201)
+	assertCount("/api/agents/ag_1", "studentsReferred", 3)
+	assertCount("/api/schools/s_1", "studentsEnrolled", 3)
+}
+
+func TestSearchQueriesFilterCoreCRMLists(t *testing.T) {
+	setupStore(t)
+	h := expansionTestMux()
+	for _, tc := range []struct{ path, id string }{
+		{"/api/contacts?q=analytical", `"id":"c_1"`},
+		{"/api/deals?q=cryptography", `"id":"d_3"`},
+		{"/api/tasks?q=whitepaper", `"id":"t_3"`},
+		{"/api/schools?q=toronto", `"id":"s_1"`},
+		{"/api/students?q=ecc-ng-2026", `"id":"st_2"`},
+		{"/api/agents?q=00003", `"id":"ag_3"`},
+		{"/api/leads?q=carlos", `"email":"carlos.reyes@example.com"`},
+		{"/api/cases?q=ecc-case-2026-00002", `"id":"case_2"`},
+		{"/api/invoices?q=ecc-inv-2026-00001", `"id":"inv_1"`},
+	} {
+		w := expansionRequest(t, h, "GET", tc.path, nil, "")
+		if w.Code != 200 {
+			t.Fatalf("search %q returned %d: %s", tc.path, w.Code, w.Body.String())
+		}
+		if !strings.Contains(strings.ToLower(w.Body.String()), strings.ToLower(tc.id)) || !strings.Contains(w.Body.String(), `"total":1`) {
+			t.Fatalf("search %q did not return one matching record: %s", tc.path, w.Body.String())
+		}
 	}
 }
 func TestTrashRestoresDeletionBatchAndRejectsNewerRelatedChanges(t *testing.T) {
@@ -213,6 +302,88 @@ func TestPortalCredentialsAreSingleUseScopedAndRevocable(t *testing.T) {
 	assertStatus(t, expansionRequest(t, h, "DELETE", "/api/portal/invitations/"+invite.ID, nil, ""), 200)
 	assertStatus(t, featureRequest(h, "GET", "/api/portal/me", nil, cookies), 401)
 }
+
+func TestFollowupRulePreviewActivationAndIdempotentTaskCreation(t *testing.T) {
+	setupStore(t)
+	h := expansionTestMux()
+	rule := map[string]any{"name": "Stale case follow-up", "entity": "cases", "stage": "", "inactiveDays": 1, "taskTitle": "Follow up: {{record}}", "description": "Check the application with the client.", "enabled": true}
+	w := expansionRequest(t, h, "POST", "/api/follow-up-rules/preview", rule, "")
+	assertStatus(t, w, 200)
+	var preview struct {
+		Count            int    `json:"count"`
+		PreviewToken     string `json:"previewToken"`
+		PreviewExpiresAt string `json:"previewExpiresAt"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &preview); err != nil || preview.Count == 0 || preview.PreviewToken == "" {
+		t.Fatalf("expected stale cases in preview, got %s", w.Body.String())
+	}
+	rule["previewToken"] = preview.PreviewToken
+	rule["previewExpiresAt"] = preview.PreviewExpiresAt
+	rule["description"] = "Changed after preview"
+	assertStatus(t, expansionRequest(t, h, "POST", "/api/follow-up-rules", rule, ""), 409)
+	rule["description"] = "Check the application with the client."
+	w = expansionRequest(t, h, "POST", "/api/follow-up-rules", rule, "")
+	assertStatus(t, w, 201)
+	var saved struct {
+		ID string `json:"id"`
+	}
+	json.Unmarshal(w.Body.Bytes(), &saved)
+	var enabledRule struct {
+		Data string `json:"data"`
+	}
+	database.QueryRow("SELECT data FROM workspace_entries WHERE id=?", saved.ID).Scan(&enabledRule.Data)
+	var config followupRule
+	json.Unmarshal([]byte(enabledRule.Data), &config)
+	if config.Enabled {
+		t.Fatal("new rules must remain disabled until a preview is reviewed")
+	}
+	assertStatus(t, expansionRequest(t, h, "PATCH", "/api/follow-up-rules/"+saved.ID, map[string]any{"enabled": true, "previewToken": "stale-preview", "previewExpiresAt": preview.PreviewExpiresAt}, ""), 409)
+	assertStatus(t, expansionRequest(t, h, "PATCH", "/api/follow-up-rules/"+saved.ID, map[string]any{"enabled": true, "previewToken": preview.PreviewToken, "previewExpiresAt": preview.PreviewExpiresAt}, ""), 200)
+	before := len(snapshot().Tasks)
+	runFollowupRules()
+	after := len(snapshot().Tasks)
+	if after <= before {
+		t.Fatal("enabled rule did not create follow-up tasks")
+	}
+	runFollowupRules()
+	if len(snapshot().Tasks) != after {
+		t.Fatal("repeated automation created duplicate tasks")
+	}
+	mu.Lock()
+	documents[0].Status = "Expired"
+	cases[0].StudentID = students[0].ID
+	cases[0].CurrentStage = "Approved"
+	students[0].ApplicationStage = "Applying"
+	mu.Unlock()
+	w = expansionRequest(t, h, "GET", "/api/data-quality", nil, "")
+	assertStatus(t, w, 200)
+	if !strings.Contains(w.Body.String(), "Required document expired") {
+		t.Fatal("data quality scan missed an expired required document")
+	}
+	if strings.Contains(w.Body.String(), students[0].Name+" has no active linked case") {
+		t.Fatal("data quality scan flagged a student who has a completed linked case")
+	}
+	w = expansionRequest(t, h, "GET", "/api/data-quality?severity=error&page=1&pageSize=1", nil, "")
+	assertStatus(t, w, 200)
+	var page struct {
+		Findings []qualityFinding `json:"findings"`
+		Total    int              `json:"total"`
+		Pages    int              `json:"pages"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &page); err != nil || len(page.Findings) > 1 || page.Pages < 1 || page.Total < len(page.Findings) {
+		t.Fatalf("quality filters and pagination should be returned: %s", w.Body.String())
+	}
+	assertStatus(t, expansionRequest(t, h, "GET", "/api/application-queue", nil, ""), 200)
+	assertStatus(t, expansionRequest(t, h, "GET", "/api/admin/operations", nil, ""), 200)
+	history := expansionRequest(t, h, "GET", "/api/follow-up-history", nil, "")
+	assertStatus(t, history, 200)
+	if !strings.Contains(history.Body.String(), "Stale case follow-up") || !strings.Contains(history.Body.String(), "taskId") {
+		t.Fatalf("expected generated-task attribution in history, got %s", history.Body.String())
+	}
+	assertStatus(t, expansionRequest(t, h, "PUT", "/api/follow-up-rules/"+saved.ID, map[string]any{"name": "Edited rule", "entity": "cases", "inactiveDays": 3, "taskTitle": "Follow {{record}}", "description": "Review"}, ""), 200)
+	assertStatus(t, expansionRequest(t, h, "DELETE", "/api/follow-up-rules/"+saved.ID, nil, ""), 200)
+}
+
 func TestSignedInboundEmailDeduplicatesAndPreservesContactScope(t *testing.T) {
 	setupStore(t)
 	t.Setenv("INBOUND_EMAIL_SECRET", "inbound-test-secret")
@@ -231,6 +402,12 @@ func TestSignedInboundEmailDeduplicatesAndPreservesContactScope(t *testing.T) {
 	a := s.Activities[len(s.Activities)-1]
 	if a.ContactID != c.ID || a.RecordScope != c.RecordScope {
 		t.Fatal("incoming mail widened record visibility")
+	}
+	if a.Kind != "email" {
+		t.Fatalf("incoming email has activity kind %q", a.Kind)
+	}
+	if !isValidActivityKind("whatsapp") {
+		t.Fatal("WhatsApp activity kind should be supported")
 	}
 }
 func signedEmailRequest(h http.Handler, payload []byte, signature string) *httptest.ResponseRecorder {
@@ -271,6 +448,12 @@ func TestAssistantUsesResponsesWithoutStorageAndRequiresActivation(t *testing.T)
 		if r.URL.Path != "/v1/responses" || body["store"] != false || body["model"] != "configured-model" {
 			t.Fatal("incorrect provider request")
 		}
+		if instructions, _ := body["instructions"].(string); strings.Contains(instructions, "daily work brief") {
+			input := mustJSON(body["input"])
+			if !strings.Contains(input, "Prepare applicant file") || strings.Contains(input, c.Email) || strings.Contains(input, "task_ai_due") {
+				t.Fatal("productivity input should be minimized to work facts, without contact details or internal IDs")
+			}
+		}
 		return &http.Response{StatusCode: 200, Body: io.NopCloser(strings.NewReader(`{"status":"completed","output":[{"content":[{"type":"output_text","text":"Reviewable summary"}]}]}`)), Header: make(http.Header)}, nil
 	})}
 	processAssistantJobs(context.Background())
@@ -278,6 +461,36 @@ func TestAssistantUsesResponsesWithoutStorageAndRequiresActivation(t *testing.T)
 	assertStatus(t, w, 200)
 	if !strings.Contains(w.Body.String(), "Reviewable summary") || strings.Contains(w.Body.String(), `"input"`) {
 		t.Fatal(w.Body.String())
+	}
+	u, _ := findUserByEmail("demo@northwind.dev")
+	today, _ := time.Parse("2006-01-02", organizationTodayForOrg(u.OrgID))
+	yesterday := today.AddDate(0, 0, -1).Format("2006-01-02")
+	mu.Lock()
+	tasks = append(tasks, Task{RecordScope: RecordScope{OrgID: u.OrgID, OwnerID: u.ID, Visibility: "private"}, ID: "task_ai_due", Title: "Prepare applicant file", Description: "Review requested paperwork", Status: "todo", DueDate: yesterday, Owner: u.Name})
+	mu.Unlock()
+	w = expansionRequest(t, h, "POST", "/api/assistant/productivity", nil, "")
+	assertStatus(t, w, 202)
+	var briefQueued struct {
+		ID    string             `json:"id"`
+		Items []productivityItem `json:"items"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &briefQueued); err != nil || len(briefQueued.Items) == 0 {
+		t.Fatalf("work brief should put the user's overdue task first: %s", w.Body.String())
+	}
+	foundOverdue := false
+	for _, item := range briefQueued.Items {
+		if item.ID == "task_ai_due" && item.Priority == "urgent" {
+			foundOverdue = true
+		}
+	}
+	if !foundOverdue {
+		t.Fatalf("overdue task should appear with urgent priority: %s", w.Body.String())
+	}
+	processAssistantJobs(context.Background())
+	w = expansionRequest(t, h, "GET", "/api/assistant/jobs/"+briefQueued.ID, nil, "")
+	assertStatus(t, w, 200)
+	if !strings.Contains(w.Body.String(), "Reviewable summary") || strings.Contains(w.Body.String(), "task_ai_due") || strings.Contains(w.Body.String(), `"input"`) {
+		t.Fatalf("completed job should discard inputs and keep record IDs out of the AI job response: %s", w.Body.String())
 	}
 	var count int
 	database.QueryRow("SELECT count(*) FROM mail_outbox WHERE contact_id=?", c.ID).Scan(&count)

@@ -102,5 +102,39 @@
     disconnectedCallback() { window.removeEventListener('online', this.update); window.removeEventListener('offline', this.update); }
   }
   customElements.define('crm-connection-status', ConnectionStatus);
+
+  const installButton = document.getElementById('install-app');
+  let installPrompt = null;
+  const installed = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (installed) document.documentElement.classList.add('pwa-installed');
+  if (installButton && !installed) {
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      installPrompt = event;
+      installButton.hidden = false;
+    });
+    installButton.addEventListener('click', async () => {
+      if (!installPrompt) return;
+      installButton.disabled = true;
+      try {
+        await installPrompt.prompt();
+        await installPrompt.userChoice;
+      } catch (error) {
+        console.warn('PWA installation was cancelled or unavailable', error);
+      } finally {
+        installPrompt = null;
+        installButton.hidden = true;
+        installButton.disabled = false;
+      }
+    });
+    window.addEventListener('appinstalled', () => {
+      installPrompt = null;
+      installButton.hidden = true;
+      document.documentElement.classList.add('pwa-installed');
+    });
+  }
+  if ('serviceWorker' in navigator && window.isSecureContext) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(error => console.warn('PWA shell caching is unavailable', error)));
+  }
   refresh();
 })();

@@ -26,6 +26,7 @@ func registerExpansionRoutes(m *http.ServeMux) {
 	registerPortalRoutes(m)
 	registerConversationRoutes(m)
 	registerAssistantRoutes(m)
+	registerRecordPhotoRoutes(m)
 }
 func migrateExpansion(tx *sql.Tx) error {
 	statements := []string{
@@ -38,6 +39,7 @@ func migrateExpansion(tx *sql.Tx) error {
 		`CREATE TABLE IF NOT EXISTS inbound_events(provider TEXT NOT NULL,event_id TEXT NOT NULL,received_at TEXT NOT NULL,PRIMARY KEY(provider,event_id))`,
 		`CREATE TABLE IF NOT EXISTS case_stage_events(id TEXT PRIMARY KEY,org_id TEXT NOT NULL,case_id TEXT NOT NULL,stage TEXT NOT NULL,entered_at TEXT NOT NULL)`,
 		`CREATE INDEX IF NOT EXISTS case_stage_case ON case_stage_events(org_id,case_id,entered_at)`,
+		`CREATE TABLE IF NOT EXISTS record_photos(org_id TEXT NOT NULL,entity TEXT NOT NULL,record_id TEXT NOT NULL,mime TEXT NOT NULL,data BLOB NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(org_id,entity,record_id))`,
 	}
 	for _, table := range entityTables {
 		statements = append(statements, `CREATE INDEX IF NOT EXISTS `+table+`_scope ON `+table+`(json_extract(data,'$.orgId'),json_extract(data,'$.ownerId'),json_extract(data,'$.visibility'),json_extract(data,'$.teamId'))`)

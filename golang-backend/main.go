@@ -43,6 +43,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/admin/metrics", authMiddleware(handleMetrics))
+	mux.HandleFunc("GET /api/admin/operations", authMiddleware(handleOperations))
 
 	mux.HandleFunc("GET /api/health", func(w http.ResponseWriter, r *http.Request) {
 		if err := database.PingContext(r.Context()); err != nil {
@@ -64,6 +65,7 @@ func main() {
 	mux.HandleFunc("POST /api/forgot-password", handleForgotPassword)
 	mux.HandleFunc("POST /api/reset-password", handleResetPassword)
 	registerWorkspaceRoutes(mux)
+	registerFollowupRoutes(mux)
 
 	mux.HandleFunc("POST /api/login", handleSecureLogin)
 	mux.HandleFunc("POST /api/register", handleSecureRegister)
@@ -208,6 +210,13 @@ func mountStatic(mux *http.ServeMux) {
 
 	fileServer := http.FileServer(http.Dir(publicDir))
 	mux.Handle("/public/", http.StripPrefix("/public/", fileServer))
+	mux.HandleFunc("GET /manifest.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+		serveFileIfExists(w, r, filepath.Join(root, "manifest.webmanifest"), "application/manifest+json; charset=utf-8")
+	})
+	mux.HandleFunc("GET /sw.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
+		serveFileIfExists(w, r, filepath.Join(publicDir, "pwa-sw.js"), "text/javascript; charset=utf-8")
+	})
 
 	mux.HandleFunc("/elm.js", func(w http.ResponseWriter, r *http.Request) {
 		serveFileIfExists(w, r, elmPath, "application/javascript")

@@ -25,10 +25,11 @@ settingsTextField :
     -> String
     -> String
     -> Bool
+    -> Bool
     -> (String -> Msg)
     -> Maybe String
     -> Html Msg
-settingsTextField fieldId labelText inputType currentValue isDisabled toMsg err =
+settingsTextField fieldId labelText inputType currentValue isDisabled reveal toMsg err =
     let
         cls =
             case err of
@@ -38,10 +39,10 @@ settingsTextField fieldId labelText inputType currentValue isDisabled toMsg err 
                 Nothing ->
                     "ecc-field"
     in
-    div [ class cls ]
+        div [ class cls ]
         ([ input
             [ id fieldId
-            , type_ inputType
+            , type_ (if inputType == "password" && reveal then "text" else inputType)
             , placeholder " "
             , value currentValue
             , onInput toMsg
@@ -50,6 +51,25 @@ settingsTextField fieldId labelText inputType currentValue isDisabled toMsg err 
             []
          , label [ for fieldId ] [ text labelText ]
          ]
+            ++ (if inputType == "password" && labelText == "New password" then
+                    [ p [ class "settings-password-hint" ] [ text "Use at least 12 characters. Passwords are case-sensitive." ] ]
+
+                else
+                    []
+               )
+            ++ (if inputType == "password" then
+                    [ button
+                        [ type_ "button"
+                        , class "ecc-field__toggle"
+                        , Attr.attribute "aria-label" (if reveal then "Hide password" else "Show password")
+                        , onClick ToggledShowPassword
+                        ]
+                        [ text (if reveal then "Hide" else "Show") ]
+                    ]
+
+                else
+                    []
+               )
             ++ (case err of
                     Just msg ->
                         [ p [ class "ecc-field__message" ] [ text msg ] ]
@@ -111,6 +131,7 @@ settingsProfileCard model =
                 "text"
                 pf.name
                 pf.submitting
+                False
                 (UpdatedProfileField "name")
                 nameErr
             , settingsTextField "pf-email"
@@ -118,6 +139,7 @@ settingsProfileCard model =
                 "email"
                 pf.email
                 pf.submitting
+                False
                 (UpdatedProfileField "email")
                 emailErr
             , settingsStatus pf.success pf.errors
@@ -155,6 +177,7 @@ settingsPasswordCard model =
                 "password"
                 pf.current
                 pf.submitting
+                model.showPassword
                 (UpdatedPasswordField "current")
                 (settingsFieldError "current" pf.errors)
             , settingsTextField "pw-next"
@@ -162,6 +185,7 @@ settingsPasswordCard model =
                 "password"
                 pf.next
                 pf.submitting
+                model.showPassword
                 (UpdatedPasswordField "next")
                 (settingsFieldError "next" pf.errors)
             , settingsTextField "pw-confirm"
@@ -169,6 +193,7 @@ settingsPasswordCard model =
                 "password"
                 pf.confirm
                 pf.submitting
+                model.showPassword
                 (UpdatedPasswordField "confirm")
                 (settingsFieldError "confirm" pf.errors)
             , settingsStatus pf.success pf.errors

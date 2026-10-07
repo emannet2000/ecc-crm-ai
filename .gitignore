@@ -43,3 +43,4 @@ data/
 tests/artifacts/
 __pycache__/
 *.tar.gz
+golang-backend/backend

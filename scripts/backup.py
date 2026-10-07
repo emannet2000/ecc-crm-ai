@@ -3,6 +3,7 @@
 For a mutually consistent backup, stop the service while this command runs.
 """
 import argparse
+import json
 import os
 from pathlib import Path
 import sqlite3
@@ -48,5 +49,13 @@ if __name__ == '__main__':
     parser.add_argument('destination')
     parser.add_argument('--secret', help='Generated auth-secret path; preserve JWT_SECRET separately when configured')
     args = parser.parse_args()
-    backup(args.database, args.destination, args.secret)
+    status_path = Path(args.database).resolve().parent / 'backup-status.json'
+    try:
+        backup(args.database, args.destination, args.secret)
+    except Exception as error:
+        status_path.write_text(json.dumps({'state': 'failed', 'checkedAt': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(), 'message': str(error)[:300]}))
+        os.chmod(status_path, 0o600)
+        raise
+    status_path.write_text(json.dumps({'state': 'ok', 'checkedAt': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(), 'destination': str(Path(args.destination).resolve())}))
+    os.chmod(status_path, 0o600)
     print(f'Backup created: {args.destination}')

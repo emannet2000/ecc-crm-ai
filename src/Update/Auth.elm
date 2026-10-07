@@ -218,6 +218,7 @@ update msg model =
                 , deletingSchool = Nothing
                 , pendingSchoolsQuery = Nothing
                 , students = NotAsked
+                , linkedStudents = NotAsked
                 , viewingStudent = Nothing
                 , studentDossier = NotAsked
                 , studentForm = Nothing

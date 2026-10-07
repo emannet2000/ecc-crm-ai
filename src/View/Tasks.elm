@@ -79,7 +79,8 @@ tasksView model =
                 [ div [ class "page-toolbar" ]
                     [ div [ class "page-toolbar__search" ]
                         [ input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search tasks"
                             , placeholder "Search tasks…"
                             , value data.query
                             , onInput UpdatedTasksQuery

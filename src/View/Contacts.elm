@@ -51,7 +51,14 @@ contactRow c =
     tr [ class "contact-row" ]
         [ td []
             [ div [ class "contact-name-cell" ]
-                [ div [ class "contact-avatar" ] [ text (initials c.name) ]
+                [ node "crm-record-photo"
+                    [ class "contact-avatar"
+                    , Attr.attribute "entity" "contacts"
+                    , Attr.attribute "record-id" c.id
+                    , Attr.attribute "initials" (initials c.name)
+                    , Attr.attribute "person-name" c.name
+                    ]
+                    []
                 , div [ class "contact-name-info" ]
                     [ a [ class "contact-name record-link", Attr.href (routeToPath (ContactDetail c.id)) ] [ text c.name ]
                     , span [ class "contact-email" ] [ text c.email ]
@@ -146,7 +153,8 @@ contactsView model =
                             , svgPath "M21 21l-4.35-4.35"
                             ]
                         , input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search contacts"
                             , placeholder "Search contacts…"
                             , value data.query
                             , onInput UpdatedContactsQuery

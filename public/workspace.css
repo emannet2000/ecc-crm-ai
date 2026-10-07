@@ -70,7 +70,7 @@
   overflow: hidden;
 }
 .app-shell .sidebar__brand { display:flex; gap:12px; align-items:center; padding:0 10px 24px; margin:0 0 12px; border:0; flex-shrink:0; }
-.sidebar-brand-mark { display:grid; place-items:center; width:36px; height:36px; border-radius:10px; background:#dfb45f; color:#182131; font-size:21px; font-weight:800; }
+.sidebar-brand-logo { display:block; width:44px; height:44px; flex:0 0 auto; object-fit:contain; border-radius:50%; }
 .app-shell .sidebar__name { font-family:var(--font-sans); font-size:19px; color:#fff; text-shadow:none; letter-spacing:.03em; }
 .app-shell .sidebar__product { color:#aab8cb; font-size:11px; text-transform:none; letter-spacing:0; margin-top:5px; font-weight:400; }
 .app-shell .sidebar__nav { gap:3px; margin:0; flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#4b586b transparent; }
@@ -79,7 +79,7 @@
 .app-shell .nav-item { padding:9px 12px; min-height:38px; font-size:13px; font-weight:500; flex-shrink:0; border:0; color:#bdc7d7; box-shadow:none; }
 .app-shell .nav-item__icon { display:inline-flex; width:20px; opacity:.9; }
 .app-shell .nav-item:hover { background:#253146; color:#fff; }
-.app-shell .nav-item--active { background:#354036; color:#f7d58f; box-shadow:none; }
+.app-shell .nav-item--active { background:rgba(223,180,95,.14); color:#f7d58f; border-color:rgba(223,180,95,.28); box-shadow:none; }
 .app-shell .nav-item--active::before { display:none; }
 .app-shell .sidebar__nav--bottom { flex:0 0 auto; margin-top:16px; padding-top:12px; border-top:1px solid #303a4a; overflow:visible; }
 .app-shell .sidebar__user { margin-top:14px; border:0; border-radius:8px; padding:8px 6px; background:transparent; box-shadow:none; }

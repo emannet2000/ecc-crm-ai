@@ -281,21 +281,37 @@ dealDetailView model d =
                     )
                 ]
             , div [ class "detail__main" ]
-                [ detailCard "Recent activity"
-                    (Just
-                        (button
-                            [ class "detail-card__action"
-                            , type_ "button"
-                            , disabled True
-                            , Attr.title "Coming soon"
-                            ]
-                            [ text "Log activity" ]
-                        )
+                [ detailCard "Contact activity"
+                    (case linkedContact of
+                        Just contact ->
+                            Just
+                                (button
+                                    [ class "detail-card__action"
+                                    , type_ "button"
+                                    , onClick (OpenedContactDetail contact)
+                                    ]
+                                    [ text "Open contact activity" ]
+                                )
+
+                        Nothing ->
+                            Nothing
                     )
                     (detailEmpty
                         iconTasks
-                        "No activity yet"
-                        "Activity on this deal will appear here once it's linked to a contact."
+                        (case linkedContact of
+                            Just contact ->
+                                "Activity is logged on the linked contact"
+
+                            Nothing ->
+                                "No contact linked"
+                        )
+                        (case linkedContact of
+                            Just contact ->
+                                "Open " ++ contact.name ++ " to review or log calls, emails, meetings, and notes."
+
+                            Nothing ->
+                                "Edit this deal to link a contact before logging related activity."
+                        )
                     )
                 ]
             ]

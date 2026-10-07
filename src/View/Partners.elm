@@ -104,7 +104,8 @@ partnersView model =
                 [ div [ class "page-toolbar" ]
                     [ div [ class "page-toolbar__search" ]
                         [ input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search partners"
                             , placeholder "Search partners…"
                             , value data.query
                             , onInput UpdatedPartnersQuery

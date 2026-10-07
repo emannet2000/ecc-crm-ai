@@ -7,10 +7,12 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (class, disabled, for, id, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Json.Decode as D
+import Router exposing (routeToPath)
 import Svg
 import Types exposing (..)
 import View.Helpers exposing (detailCard, detailEmpty, detailStat, infoRow, initials, paginationBar, svgIcon, svgPath)
 import View.Icons exposing (iconBack, iconCalendar, iconContacts, iconDeals, iconEdit, iconPin, iconTrash, iconUserTiny)
+import View.Students exposing (linkedStudentsView)
 
 
 contractStatusBadge : String -> Html Msg
@@ -35,12 +37,12 @@ contractStatusBadge status =
 
 schoolRow : School -> Html Msg
 schoolRow s =
-    tr [ class "contact-row", onClick (OpenedSchoolDetail s) ]
+    tr [ class "contact-row" ]
         [ td []
             [ div [ class "contact-name-cell" ]
                 [ div [ class "contact-avatar" ] [ text (initials s.name) ]
                 , div [ class "contact-name-info" ]
-                    [ span [ class "contact-name" ] [ text s.name ]
+                    [ a [ class "contact-name record-link", Attr.href (routeToPath (SchoolDetail s.id)) ] [ text s.name ]
                     , span [ class "contact-email" ]
                         [ text
                             (if String.isEmpty s.website then
@@ -141,7 +143,8 @@ schoolsView model =
                             , svgPath "M21 21l-4.35-4.35"
                             ]
                         , input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search schools"
                             , placeholder "Search schools…"
                             , value data.query
                             , onInput UpdatedSchoolsQuery
@@ -198,7 +201,7 @@ schoolsView model =
                                     , th [] [ text "Country" ]
                                     , th [] [ text "Commission" ]
                                     , th [] [ text "Contract" ]
-                                    , th [] [ text "Students" ]
+                                    , th [] [ text "Linked students" ]
                                     , th [ class "th-actions" ] [ text "" ]
                                     ]
                                 ]
@@ -210,7 +213,7 @@ schoolsView model =
 
 
 schoolDetailView : Model -> School -> Html Msg
-schoolDetailView _ s =
+schoolDetailView model s =
     let
         display v =
             if String.isEmpty v then
@@ -233,6 +236,18 @@ schoolDetailView _ s =
 
         ownerDisplay =
             display s.createdBy
+
+        linkedCount =
+            case model.linkedStudents of
+                Success data ->
+                    if data.parentId == s.id then
+                        data.total
+
+                    else
+                        s.studentsEnrolled
+
+                _ ->
+                    s.studentsEnrolled
     in
     div [ class "detail" ]
         [ button
@@ -273,9 +288,9 @@ schoolDetailView _ s =
                 ]
             ]
         , div [ class "detail-stats" ]
-            [ detailStat "Students enrolled"
-                (String.fromInt s.studentsEnrolled)
-                "Referred"
+            [ detailStat "Linked students"
+                (String.fromInt linkedCount)
+                "Applications associated"
             , detailStat "Commission" commissionDisplay "Rate"
             , detailStat "Country" (display s.countryCode) "Location"
             , detailStat "Created" createdDisplay "Added to CRM"
@@ -316,16 +331,20 @@ schoolDetailView _ s =
                         (button
                             [ class "detail-card__action"
                             , type_ "button"
-                            , disabled True
-                            , Attr.title "Coming soon"
+                            , onClick (OpenedAddStudentForSchool s)
                             ]
                             [ text "Add student" ]
                         )
                     )
-                    (detailEmpty
-                        iconContacts
-                        "No students yet"
-                        "Students referred to this school will appear here."
+                    (div []
+                        [ linkedStudentsView model s.id
+                        , button
+                            [ class "ecc-btn ecc-btn--ghost ecc-btn--inline"
+                            , type_ "button"
+                            , onClick (NavigatedTo Students)
+                            ]
+                            [ text "Open students" ]
+                        ]
                     )
                 ]
             ]
@@ -460,7 +479,6 @@ schoolFormView sf isEdit =
             [ schoolRichField sf "name" "School name" "text"
             , schoolRichField sf "countryCode" "Country code (e.g. CA)" "text"
             , schoolRichField sf "commissionRate" "Commission (e.g. 15%)" "text"
-            , schoolRichField sf "studentsEnrolled" "Students enrolled" "number"
             , schoolRichField sf "contactPerson" "Contact person" "text"
             , schoolRichField sf "website" "Website" "url"
             ]

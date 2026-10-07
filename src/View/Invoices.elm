@@ -112,7 +112,8 @@ invoicesView model =
                 [ div [ class "page-toolbar" ]
                     [ div [ class "page-toolbar__search" ]
                         [ input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search invoices"
                             , placeholder "Search invoices…"
                             , value data.query
                             , onInput UpdatedInvoicesQuery

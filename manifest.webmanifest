@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "ECC CRM",
+  "short_name": "ECC CRM",
+  "description": "ECC student and client relationship workspace",
+  "start_url": "/?source=installed-app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#182131",
+  "theme_color": "#182131",
+  "orientation": "any",
+  "icons": [
+    { "src": "/public/icons/ecc-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/public/icons/ecc-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Students", "short_name": "Students", "url": "/students" },
+    { "name": "Cases", "short_name": "Cases", "url": "/cases" },
+    { "name": "Tasks", "short_name": "Tasks", "url": "/tasks" }
+  ]
+}

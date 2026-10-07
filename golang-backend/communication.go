@@ -241,6 +241,18 @@ func wrapBase64(data []byte) string {
 	out.WriteString(encoded + "\r\n")
 	return out.String()
 }
+
+var workerHeartbeatMu sync.RWMutex
+var workerHeartbeats = map[string]time.Time{}
+
+func markWorkerRun(names ...string) {
+	workerHeartbeatMu.Lock()
+	defer workerHeartbeatMu.Unlock()
+	for _, name := range names {
+		workerHeartbeats[name] = time.Now().UTC()
+	}
+}
+
 func startWorkers(ctx context.Context) func() {
 	var workers sync.WaitGroup
 	workers.Add(1)
@@ -253,8 +265,10 @@ func startWorkers(ctx context.Context) func() {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
+				markWorkerRun("mail-delivery", "reminders", "follow-up-automation", "webhooks", "push-notifications")
 				deliverMailOutbox()
 				generateReminders()
+				runFollowupRules()
 				deliverWebhooks()
 				deliverPushNotifications()
 			}

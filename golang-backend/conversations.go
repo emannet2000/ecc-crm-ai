@@ -128,8 +128,12 @@ func attachInbound(r *http.Request, channel string, m inboundMessage) error {
 		return nil
 	}
 	if matched {
+		activityKind := channel
+		if activityKind != "whatsapp" {
+			activityKind = "email"
+		}
 		mu.Lock()
-		activities = append(activities, Activity{RecordScope: scope, ID: newID("a"), ContactID: c.ID, Kind: "email", Title: "Incoming " + channel + " · " + m.Subject, Body: m.Body, CreatedBy: m.From, OccurredAt: at, CreatedAt: utcNow()})
+		activities = append(activities, Activity{RecordScope: scope, ID: newID("a"), ContactID: c.ID, Kind: activityKind, Title: "Incoming " + channel + " · " + m.Subject, Body: m.Body, CreatedBy: m.From, OccurredAt: at, CreatedAt: utcNow()})
 		mu.Unlock()
 	}
 	if meta := metadata(r); meta != nil {
@@ -205,8 +209,12 @@ func handleLinkMessage(w http.ResponseWriter, r *http.Request) {
 		writeError(w, 500, "Could not attach message")
 		return
 	}
+	activityKind := channel
+	if activityKind != "whatsapp" {
+		activityKind = "email"
+	}
 	mu.Lock()
-	activities = append(activities, Activity{RecordScope: c.RecordScope, ID: newID("a"), ContactID: c.ID, Kind: "email", Title: "Incoming " + channel + " · " + subject, Body: body, CreatedBy: currentUser(r).Name, CreatedAt: utcNow(), OccurredAt: utcNow()})
+	activities = append(activities, Activity{RecordScope: c.RecordScope, ID: newID("a"), ContactID: c.ID, Kind: activityKind, Title: "Incoming " + channel + " · " + subject, Body: body, CreatedBy: currentUser(r).Name, CreatedAt: utcNow(), OccurredAt: utcNow()})
 	mu.Unlock()
 	writeJSON(w, 200, statusResponse{"linked"})
 }

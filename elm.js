@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ay.Z === region.bb.Z)
+	if (region.aA.Z === region.bd.Z)
 	{
-		return 'on line ' + region.ay.Z;
+		return 'on line ' + region.aA.Z;
 	}
-	return 'on lines ' + region.ay.Z + ' through ' + region.bb.Z;
+	return 'on lines ' + region.aA.Z + ' through ' + region.bd.Z;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.dx,
-		impl.eZ,
-		impl.eO,
+		impl.dz,
+		impl.e$,
+		impl.eQ,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		dN: func(record.dN),
-		az: record.az,
-		au: record.au
+		dQ: func(record.dQ),
+		aB: record.aB,
+		aw: record.aw
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.dN;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.az;
+		var message = !tag ? value : tag < 3 ? value.a : value.dQ;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aB;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.au) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.aw) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.dx,
-		impl.eZ,
-		impl.eO,
+		impl.dz,
+		impl.e$,
+		impl.eQ,
 		function(sendToApp, initialModel) {
-			var view = impl.e$;
+			var view = impl.e1;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.dx,
-		impl.eZ,
-		impl.eO,
+		impl.dz,
+		impl.e$,
+		impl.eQ,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.aw && impl.aw(sendToApp)
-			var view = impl.e$;
+			var divertHrefToApp = impl.ay && impl.ay(sendToApp)
+			var view = impl.e1;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.dX;
-	var onUrlRequest = impl.dY;
+	var onUrlChange = impl.d_;
+	var onUrlRequest = impl.d$;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		aw: function(sendToApp)
+		ay: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bN === next.bN
-							&& curr.bk === next.bk
-							&& curr.bK.a === next.bK.a
+							&& curr.bP === next.bP
+							&& curr.bm === next.bm
+							&& curr.bM.a === next.bM.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		dx: function(flags)
+		dz: function(flags)
 		{
-			return A3(impl.dx, flags, _Browser_getUrl(), key);
+			return A3(impl.dz, flags, _Browser_getUrl(), key);
 		},
+		e1: impl.e1,
 		e$: impl.e$,
-		eZ: impl.eZ,
-		eO: impl.eO
+		eQ: impl.eQ
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { dv: 'hidden', cI: 'visibilitychange' }
+		? { dx: 'hidden', cK: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { dv: 'mozHidden', cI: 'mozvisibilitychange' }
+		? { dx: 'mozHidden', cK: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { dv: 'msHidden', cI: 'msvisibilitychange' }
+		? { dx: 'msHidden', cK: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { dv: 'webkitHidden', cI: 'webkitvisibilitychange' }
-		: { dv: 'hidden', cI: 'visibilitychange' };
+		? { dx: 'webkitHidden', cK: 'webkitvisibilitychange' }
+		: { dx: 'hidden', cK: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bX: _Browser_getScene(),
-		b6: {
-			b8: _Browser_window.pageXOffset,
-			b9: _Browser_window.pageYOffset,
-			b7: _Browser_doc.documentElement.clientWidth,
-			bj: _Browser_doc.documentElement.clientHeight
+		bZ: _Browser_getScene(),
+		b8: {
+			ca: _Browser_window.pageXOffset,
+			cb: _Browser_window.pageYOffset,
+			b9: _Browser_doc.documentElement.clientWidth,
+			bl: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		b7: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		bj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		b9: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bl: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bX: {
-				b7: node.scrollWidth,
-				bj: node.scrollHeight
+			bZ: {
+				b9: node.scrollWidth,
+				bl: node.scrollHeight
 			},
-			b6: {
-				b8: node.scrollLeft,
-				b9: node.scrollTop,
-				b7: node.clientWidth,
-				bj: node.clientHeight
+			b8: {
+				ca: node.scrollLeft,
+				cb: node.scrollTop,
+				b9: node.clientWidth,
+				bl: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bX: _Browser_getScene(),
-			b6: {
-				b8: x,
-				b9: y,
-				b7: _Browser_doc.documentElement.clientWidth,
-				bj: _Browser_doc.documentElement.clientHeight
+			bZ: _Browser_getScene(),
+			b8: {
+				ca: x,
+				cb: y,
+				b9: _Browser_doc.documentElement.clientWidth,
+				bl: _Browser_doc.documentElement.clientHeight
 			},
-			di: {
-				b8: x + rect.left,
-				b9: y + rect.top,
-				b7: rect.width,
-				bj: rect.height
+			dk: {
+				ca: x + rect.left,
+				cb: y + rect.top,
+				b9: rect.width,
+				bl: rect.height
 			}
 		};
 	});
@@ -4432,7 +4432,7 @@ function _Http_configureRequest(xhr, request)
 	}
 	xhr.timeout = request.f.a || 0;
 	xhr.responseType = request.b.d;
-	xhr.withCredentials = request.cp;
+	xhr.withCredentials = request.cr;
 }
 
 
@@ -4455,7 +4455,7 @@ function _Http_toMetadata(xhr)
 	return {
 		c: xhr.responseURL,
 		s: xhr.status,
-		eE: xhr.statusText,
+		eI: xhr.statusText,
 		e: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
@@ -4551,15 +4551,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			ev: event.loaded,
-			bZ: event.total
+			ez: event.loaded,
+			b$: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			eg: event.loaded,
-			bZ: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			ek: event.loaded,
+			b$: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4692,11 +4692,11 @@ var $elm$core$Maybe$Just = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Types$LinkClicked = function (a) {
-	return {$: 288, a: a};
+	return {$: 293, a: a};
 };
 var $elm$core$Maybe$Nothing = {$: 1};
 var $author$project$Types$UrlChanged = function (a) {
-	return {$: 289, a: a};
+	return {$: 294, a: a};
 };
 var $elm$core$Result$Err = function (a) {
 	return {$: 1, a: a};
@@ -5120,7 +5120,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bh: fragment, bk: host, bx: path, bK: port_, bN: protocol, D: query};
+		return {bj: fragment, bm: host, bz: path, bM: port_, bP: protocol, D: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5426,16 +5426,16 @@ var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Set$empty = $elm$core$Dict$empty;
-var $author$project$Types$emptyForm = {ag: '', M: '', bu: '', bw: '', bQ: true};
-var $author$project$Types$emptyPasswordForm = {aP: '', aU: '', dj: _List_Nil, bt: '', eN: false, aa: $elm$core$Maybe$Nothing};
-var $author$project$Types$emptyProfileForm = {ag: '', dj: _List_Nil, M: '', eN: false, aa: $elm$core$Maybe$Nothing};
+var $author$project$Types$emptyForm = {ai: '', M: '', bw: '', by: '', bS: true};
+var $author$project$Types$emptyPasswordForm = {aR: '', aW: '', dl: _List_Nil, bv: '', eP: false, ac: $elm$core$Maybe$Nothing};
+var $author$project$Types$emptyProfileForm = {ai: '', dl: _List_Nil, M: '', eP: false, ac: $elm$core$Maybe$Nothing};
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Types$Home = {$: 0};
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
-		return {L: frag, N: params, K: unvisited, aD: value, P: visited};
+		return {L: frag, N: params, K: unvisited, aF: value, P: visited};
 	});
 var $elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
@@ -5447,10 +5447,10 @@ var $elm$url$Url$Parser$getFirstMatch = function (states) {
 			var rest = states.b;
 			var _v1 = state.K;
 			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.aD);
+				return $elm$core$Maybe$Just(state.aF);
 			} else {
 				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.aD);
+					return $elm$core$Maybe$Just(state.aF);
 				} else {
 					var $temp$states = rest;
 					states = $temp$states;
@@ -6060,9 +6060,9 @@ var $elm$url$Url$Parser$parse = F2(
 				A5(
 					$elm$url$Url$Parser$State,
 					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.bx),
+					$elm$url$Url$Parser$preparePath(url.bz),
 					$elm$url$Url$Parser$prepareQuery(url.D),
-					url.bh,
+					url.bj,
 					$elm$core$Basics$identity)));
 	});
 var $author$project$Types$Administration = {$: 8};
@@ -6109,7 +6109,7 @@ var $author$project$Types$Workspace = {$: 7};
 var $elm$url$Url$Parser$Parser = $elm$core$Basics$identity;
 var $elm$url$Url$Parser$mapState = F2(
 	function (func, _v0) {
-		var value = _v0.aD;
+		var value = _v0.aF;
 		var frag = _v0.L;
 		var params = _v0.N;
 		var unvisited = _v0.K;
@@ -6126,7 +6126,7 @@ var $elm$url$Url$Parser$map = F2(
 	function (subValue, _v0) {
 		var parseArg = _v0;
 		return function (_v1) {
-			var value = _v1.aD;
+			var value = _v1.aF;
 			var frag = _v1.L;
 			var params = _v1.N;
 			var unvisited = _v1.K;
@@ -6167,7 +6167,7 @@ var $elm$url$Url$Parser$oneOf = function (parsers) {
 };
 var $elm$url$Url$Parser$s = function (str) {
 	return function (_v0) {
-		var value = _v0.aD;
+		var value = _v0.aF;
 		var frag = _v0.L;
 		var params = _v0.N;
 		var unvisited = _v0.K;
@@ -6204,7 +6204,7 @@ var $elm$url$Url$Parser$slash = F2(
 var $elm$url$Url$Parser$custom = F2(
 	function (tipe, stringToSomething) {
 		return function (_v0) {
-			var value = _v0.aD;
+			var value = _v0.aF;
 			var frag = _v0.L;
 			var params = _v0.N;
 			var unvisited = _v0.K;
@@ -6379,12 +6379,12 @@ var $author$project$Router$parseRoute = function (url) {
 };
 var $author$project$Types$AuthResponse = F2(
 	function (token, user) {
-		return {V: token, b3: user};
+		return {V: token, b5: user};
 	});
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Types$User = F4(
 	function (role, id, name, email) {
-		return {ag: email, ah: id, M: name, eo: role};
+		return {ai: email, aj: id, M: name, es: role};
 	});
 var $elm$json$Json$Decode$map4 = _Json_map4;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
@@ -6491,7 +6491,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {bT: reqs, b$: subs};
+		return {bV: reqs, b1: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6565,7 +6565,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.bT));
+			A3($elm$http$Http$updateReqs, router, cmds, state.bV));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -6608,7 +6608,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.b$)));
+					state.b1)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -6622,7 +6622,7 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					cp: r.cp,
+					cr: r.cr,
 					a: r.a,
 					b: A2(_Http_mapExpect, func, r.b),
 					e: r.e,
@@ -6652,7 +6652,7 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{cp: false, a: r.a, b: r.b, e: r.e, d: r.d, f: r.f, g: r.g, c: r.c}));
+			{cr: false, a: r.a, b: r.b, e: r.e, d: r.d, f: r.f, g: r.g, c: r.c}));
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
@@ -6670,27 +6670,25 @@ var $author$project$Main$init = F3(
 	function (flags, url, key) {
 		var route = $author$project$Router$parseRoute(url);
 		var model = {
-			ce: $author$project$Types$NotAsked,
-			aE: $elm$core$Maybe$Nothing,
+			cg: $author$project$Types$NotAsked,
 			aG: $elm$core$Maybe$Nothing,
-			cl: $author$project$Types$NotAsked,
-			co: $elm$core$Maybe$Nothing,
-			cx: $author$project$Types$NotAsked,
-			cy: 0,
-			cB: !_Utils_eq(flags.V, $elm$core$Maybe$Nothing),
-			al: false,
 			aI: $elm$core$Maybe$Nothing,
-			cC: $author$project$Types$NotAsked,
-			aJ: $elm$core$Maybe$Nothing,
-			cF: $author$project$Types$NotAsked,
-			aQ: $elm$core$Maybe$Nothing,
-			cP: $author$project$Types$NotAsked,
-			cW: '',
+			cn: $author$project$Types$NotAsked,
+			cq: $elm$core$Maybe$Nothing,
+			cz: $author$project$Types$NotAsked,
+			cA: 0,
+			cD: !_Utils_eq(flags.V, $elm$core$Maybe$Nothing),
+			an: false,
+			aK: $elm$core$Maybe$Nothing,
+			cE: $author$project$Types$NotAsked,
+			aL: $elm$core$Maybe$Nothing,
+			cH: $author$project$Types$NotAsked,
+			aS: $elm$core$Maybe$Nothing,
+			cR: $author$project$Types$NotAsked,
 			cY: '',
-			aY: $elm$core$Maybe$Nothing,
-			c_: $author$project$Types$NotAsked,
-			aZ: $elm$core$Maybe$Nothing,
+			c_: '',
 			a_: $elm$core$Maybe$Nothing,
+			c0: $author$project$Types$NotAsked,
 			a$: $elm$core$Maybe$Nothing,
 			a0: $elm$core$Maybe$Nothing,
 			a1: $elm$core$Maybe$Nothing,
@@ -6698,15 +6696,15 @@ var $author$project$Main$init = F3(
 			a3: $elm$core$Maybe$Nothing,
 			a4: $elm$core$Maybe$Nothing,
 			a5: $elm$core$Maybe$Nothing,
-			c$: $elm$core$Maybe$Nothing,
 			a6: $elm$core$Maybe$Nothing,
 			a7: $elm$core$Maybe$Nothing,
+			c1: $elm$core$Maybe$Nothing,
 			a8: $elm$core$Maybe$Nothing,
+			a9: $elm$core$Maybe$Nothing,
 			ba: $elm$core$Maybe$Nothing,
-			c4: $elm$core$Maybe$Nothing,
-			c5: $elm$core$Maybe$Nothing,
+			bc: $elm$core$Maybe$Nothing,
+			c6: $elm$core$Maybe$Nothing,
 			c7: $elm$core$Maybe$Nothing,
-			c8: $elm$core$Maybe$Nothing,
 			c9: $elm$core$Maybe$Nothing,
 			da: $elm$core$Maybe$Nothing,
 			db: $elm$core$Maybe$Nothing,
@@ -6716,27 +6714,28 @@ var $author$project$Main$init = F3(
 			df: $elm$core$Maybe$Nothing,
 			dg: $elm$core$Maybe$Nothing,
 			dh: $elm$core$Maybe$Nothing,
-			dj: _List_Nil,
-			dl: 'contacts',
-			dn: $elm$core$Maybe$Nothing,
-			dr: $author$project$Types$emptyForm,
-			bi: '',
-			ds: $author$project$Types$NotAsked,
-			bl: $elm$core$Maybe$Nothing,
-			dC: $author$project$Types$NotAsked,
+			di: $elm$core$Maybe$Nothing,
+			dj: $elm$core$Maybe$Nothing,
+			dl: _List_Nil,
+			dn: 'contacts',
+			dp: $elm$core$Maybe$Nothing,
+			dt: $author$project$Types$emptyForm,
+			bk: '',
+			du: $author$project$Types$NotAsked,
+			bn: $elm$core$Maybe$Nothing,
 			dE: $author$project$Types$NotAsked,
-			bp: $elm$core$Maybe$Nothing,
-			dJ: $author$project$Types$NotAsked,
-			ar: false,
-			dP: 0,
-			dQ: $elm$core$Maybe$Nothing,
-			bs: key,
-			d0: '',
-			bv: $elm$core$Maybe$Nothing,
-			d4: $author$project$Types$NotAsked,
-			d5: $author$project$Types$emptyPasswordForm,
-			by: $elm$core$Maybe$Nothing,
-			bz: $elm$core$Maybe$Nothing,
+			dG: $author$project$Types$NotAsked,
+			br: $elm$core$Maybe$Nothing,
+			dL: $author$project$Types$NotAsked,
+			dP: $author$project$Types$NotAsked,
+			at: false,
+			dS: 0,
+			dT: $elm$core$Maybe$Nothing,
+			bu: key,
+			d3: '',
+			bx: $elm$core$Maybe$Nothing,
+			d8: $author$project$Types$NotAsked,
+			d9: $author$project$Types$emptyPasswordForm,
 			bA: $elm$core$Maybe$Nothing,
 			bB: $elm$core$Maybe$Nothing,
 			bC: $elm$core$Maybe$Nothing,
@@ -6746,39 +6745,41 @@ var $author$project$Main$init = F3(
 			bG: $elm$core$Maybe$Nothing,
 			bH: $elm$core$Maybe$Nothing,
 			bI: $elm$core$Maybe$Nothing,
-			ee: $author$project$Types$emptyProfileForm,
-			bO: $elm$core$Maybe$Nothing,
-			bS: $author$project$Types$NotAsked,
+			bJ: $elm$core$Maybe$Nothing,
+			bK: $elm$core$Maybe$Nothing,
+			ei: $author$project$Types$emptyProfileForm,
+			bQ: $elm$core$Maybe$Nothing,
+			bU: $author$project$Types$NotAsked,
 			_: route,
-			bY: $elm$core$Maybe$Nothing,
-			et: $author$project$Types$NotAsked,
-			eu: $elm$core$Set$empty,
-			ey: false,
-			ax: false,
-			eH: $author$project$Types$NotAsked,
 			b_: $elm$core$Maybe$Nothing,
-			eK: $author$project$Types$NotAsked,
-			eN: false,
-			b1: $elm$core$Maybe$Nothing,
-			eR: 0,
-			eS: $author$project$Types$NotAsked,
+			ex: $author$project$Types$NotAsked,
+			ey: $elm$core$Set$empty,
+			eC: false,
+			az: false,
+			eL: $author$project$Types$NotAsked,
+			b0: $elm$core$Maybe$Nothing,
+			eO: $author$project$Types$NotAsked,
+			eP: false,
+			b3: $elm$core$Maybe$Nothing,
+			eT: 0,
+			eU: $author$project$Types$NotAsked,
 			U: _Utils_eq(
 				flags.U,
 				$elm$core$Maybe$Just('dark')) ? 1 : 0,
-			aC: $elm$core$Maybe$Nothing,
-			ak: flags.ak,
+			aE: $elm$core$Maybe$Nothing,
+			am: flags.am,
 			V: flags.V,
-			eY: 0,
-			b3: $elm$core$Maybe$Nothing,
-			e0: $elm$core$Maybe$Nothing,
-			e1: $elm$core$Maybe$Nothing,
+			e_: 0,
+			b5: $elm$core$Maybe$Nothing,
 			e2: $elm$core$Maybe$Nothing,
 			e3: $elm$core$Maybe$Nothing,
 			e4: $elm$core$Maybe$Nothing,
 			e5: $elm$core$Maybe$Nothing,
 			e6: $elm$core$Maybe$Nothing,
 			e7: $elm$core$Maybe$Nothing,
-			e8: $elm$core$Maybe$Nothing
+			e8: $elm$core$Maybe$Nothing,
+			e9: $elm$core$Maybe$Nothing,
+			fa: $elm$core$Maybe$Nothing
 		};
 		var _v0 = flags.V;
 		if (!_v0.$) {
@@ -6791,24 +6792,24 @@ var $author$project$Main$init = F3(
 		}
 	});
 var $elm$json$Json$Decode$null = _Json_decodeNull;
-var $author$project$Types$DismissedToast = {$: 290};
-var $author$project$Types$FlushAgentsSearch = {$: 174};
-var $author$project$Types$FlushCasesSearch = {$: 210};
-var $author$project$Types$FlushContactsSearch = {$: 121};
-var $author$project$Types$FlushDealsSearch = {$: 122};
-var $author$project$Types$FlushInvoicesSearch = {$: 243};
-var $author$project$Types$FlushLeadsSearch = {$: 191};
-var $author$project$Types$FlushPartnersSearch = {$: 276};
-var $author$project$Types$FlushSchoolsSearch = {$: 140};
-var $author$project$Types$FlushStudentsSearch = {$: 157};
-var $author$project$Types$FlushTasksSearch = {$: 123};
+var $author$project$Types$DismissedToast = {$: 295};
+var $author$project$Types$FlushAgentsSearch = {$: 179};
+var $author$project$Types$FlushCasesSearch = {$: 215};
+var $author$project$Types$FlushContactsSearch = {$: 123};
+var $author$project$Types$FlushDealsSearch = {$: 124};
+var $author$project$Types$FlushInvoicesSearch = {$: 248};
+var $author$project$Types$FlushLeadsSearch = {$: 196};
+var $author$project$Types$FlushPartnersSearch = {$: 281};
+var $author$project$Types$FlushSchoolsSearch = {$: 142};
+var $author$project$Types$FlushStudentsSearch = {$: 162};
+var $author$project$Types$FlushTasksSearch = {$: 125};
 var $author$project$Types$NavigatedTo = function (a) {
 	return {$: 24, a: a};
 };
 var $author$project$Types$PollWorkspaceClock = {$: 17};
 var $author$project$Types$RefreshSession = {$: 19};
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $author$project$Types$EscapePressed = {$: 291};
+var $author$project$Types$EscapePressed = {$: 296};
 var $elm$json$Json$Decode$fail = _Json_fail;
 var $author$project$Main$escapeDecoder = A2(
 	$elm$json$Json$Decode$andThen,
@@ -6822,7 +6823,7 @@ var $elm$time$Time$Every = F2(
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {bM: processes, b0: taggers};
+		return {bO: processes, b2: taggers};
 	});
 var $elm$time$Time$init = $elm$core$Task$succeed(
 	A2($elm$time$Time$State, $elm$core$Dict$empty, $elm$core$Dict$empty));
@@ -6969,7 +6970,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.bM;
+		var processes = _v0.bO;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -7038,7 +7039,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.b0);
+		var _v0 = A2($elm$core$Dict$get, interval, state.b2);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -7092,7 +7093,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {bJ: pids, b$: subs};
+		return {bL: pids, b1: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -7126,7 +7127,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 };
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {bd: event, bm: key};
+		return {bf: event, bo: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -7200,7 +7201,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.bJ,
+			state.bL,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -7228,8 +7229,8 @@ var $elm$browser$Browser$Events$onEffects = F3(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var event = _v0.bd;
-		var key = _v0.bm;
+		var event = _v0.bf;
+		var key = _v0.bo;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -7238,7 +7239,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.b$);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.b1);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -7279,7 +7280,7 @@ var $author$project$Main$subscriptions = function (model) {
 					return $author$project$Types$NavigatedTo(model._);
 				}),
 				$elm$browser$Browser$Events$onKeyDown($author$project$Main$escapeDecoder),
-				(!_Utils_eq(model.b3, $elm$core$Maybe$Nothing)) ? $elm$core$Platform$Sub$batch(
+				(!_Utils_eq(model.b5, $elm$core$Maybe$Nothing)) ? $elm$core$Platform$Sub$batch(
 				_List_fromArray(
 					[
 						A2(
@@ -7296,7 +7297,7 @@ var $author$project$Main$subscriptions = function (model) {
 						})
 					])) : $elm$core$Platform$Sub$none,
 				function () {
-				var _v3 = model.aC;
+				var _v3 = model.aE;
 				if (!_v3.$) {
 					return A2(
 						$elm$time$Time$every,
@@ -7308,61 +7309,61 @@ var $author$project$Main$subscriptions = function (model) {
 					return $elm$core$Platform$Sub$none;
 				}
 			}(),
-				(!_Utils_eq(model.bB, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bD, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v5) {
 					return $author$project$Types$FlushContactsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bC, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bE, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v6) {
 					return $author$project$Types$FlushDealsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bI, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bK, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v7) {
 					return $author$project$Types$FlushTasksSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bG, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bI, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v8) {
 					return $author$project$Types$FlushSchoolsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bH, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bJ, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v9) {
 					return $author$project$Types$FlushStudentsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bz, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bB, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v10) {
 					return $author$project$Types$FlushAgentsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bE, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bG, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v11) {
 					return $author$project$Types$FlushLeadsSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bA, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bC, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v12) {
 					return $author$project$Types$FlushCasesSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bD, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bF, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v13) {
 					return $author$project$Types$FlushInvoicesSearch;
 				}) : $elm$core$Platform$Sub$none,
-				(!_Utils_eq(model.bF, $elm$core$Maybe$Nothing)) ? A2(
+				(!_Utils_eq(model.bH, $elm$core$Maybe$Nothing)) ? A2(
 				$elm$time$Time$every,
 				300,
 				function (_v14) {
@@ -7372,25 +7373,25 @@ var $author$project$Main$subscriptions = function (model) {
 };
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Types$CancelledBulkMove = {$: 73};
-var $author$project$Types$CancelledRefund = {$: 255};
+var $author$project$Types$CancelledBulkMove = {$: 74};
+var $author$project$Types$CancelledRefund = {$: 260};
 var $author$project$Types$ClosedGlobalSearch = {$: 9};
-var $author$project$Types$ClosedPaymentForm = {$: 246};
+var $author$project$Types$ClosedPaymentForm = {$: 251};
 var $author$project$Types$Failure = function (a) {
 	return {$: 3, a: a};
 };
-var $author$project$Types$RequestedCloseActivityForm = {$: 82};
-var $author$project$Types$RequestedCloseAgentForm = {$: 163};
-var $author$project$Types$RequestedCloseCaseForm = {$: 199};
+var $author$project$Types$RequestedCloseActivityForm = {$: 83};
+var $author$project$Types$RequestedCloseAgentForm = {$: 168};
+var $author$project$Types$RequestedCloseCaseForm = {$: 204};
 var $author$project$Types$RequestedCloseContactForm = {$: 30};
-var $author$project$Types$RequestedCloseDealForm = {$: 47};
-var $author$project$Types$RequestedCloseDocumentForm = {$: 214};
-var $author$project$Types$RequestedCloseInvoiceForm = {$: 232};
-var $author$project$Types$RequestedCloseLeadForm = {$: 180};
-var $author$project$Types$RequestedClosePartnerForm = {$: 265};
-var $author$project$Types$RequestedCloseSchoolForm = {$: 129};
-var $author$project$Types$RequestedCloseStudentForm = {$: 146};
-var $author$project$Types$RequestedCloseTaskForm = {$: 108};
+var $author$project$Types$RequestedCloseDealForm = {$: 48};
+var $author$project$Types$RequestedCloseDocumentForm = {$: 219};
+var $author$project$Types$RequestedCloseInvoiceForm = {$: 237};
+var $author$project$Types$RequestedCloseLeadForm = {$: 185};
+var $author$project$Types$RequestedClosePartnerForm = {$: 270};
+var $author$project$Types$RequestedCloseSchoolForm = {$: 131};
+var $author$project$Types$RequestedCloseStudentForm = {$: 151};
+var $author$project$Types$RequestedCloseTaskForm = {$: 110};
 var $author$project$Types$Success = function (a) {
 	return {$: 2, a: a};
 };
@@ -7498,22 +7499,22 @@ var $author$project$Ports$downloadFile = _Platform_outgoingPort(
 				[
 					_Utils_Tuple2(
 					'content',
-					$elm$json$Json$Encode$string($.cQ)),
+					$elm$json$Json$Encode$string($.cS)),
 					_Utils_Tuple2(
 					'filename',
-					$elm$json$Json$Encode$string($.dp)),
+					$elm$json$Json$Encode$string($.dr)),
 					_Utils_Tuple2(
 					'mime',
-					$elm$json$Json$Encode$string($.dO))
+					$elm$json$Json$Encode$string($.dR))
 				]));
 	});
 var $author$project$Types$AuditData = F2(
 	function (events, total) {
-		return {dk: events, y: total};
+		return {dm: events, t: total};
 	});
 var $author$project$Types$AuditEvent = F7(
 	function (id, actor, action, entity, recordId, label, occurredAt) {
-		return {cc: action, cf: actor, bc: entity, ah: id, dG: label, dV: occurredAt, eh: recordId};
+		return {ce: action, ch: actor, be: entity, aj: id, dI: label, dY: occurredAt, el: recordId};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
@@ -7672,11 +7673,11 @@ var $author$project$Api$fetchExport = F3(
 	});
 var $author$project$Types$SearchData = F2(
 	function (results, truncated) {
-		return {em: results, eV: truncated};
+		return {eq: results, eX: truncated};
 	});
 var $author$project$Types$SearchResult = F4(
 	function (entity, id, title, subtitle) {
-		return {bc: entity, ah: id, eP: subtitle, J: title};
+		return {be: entity, aj: id, eR: subtitle, J: title};
 	});
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $author$project$Api$fetchGlobalSearch = F3(
@@ -7752,7 +7753,7 @@ var $author$project$Update$Workspace$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ak: today, eY: unread}),
+							{am: today, e_: unread}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -7763,8 +7764,8 @@ var $author$project$Update$Workspace$update = F2(
 					_Utils_update(
 						model,
 						{
-							bi: query,
-							ds: ($elm$core$String$length(
+							bk: query,
+							du: ($elm$core$String$length(
 								$elm$core$String$trim(query)) >= 2) ? $author$project$Types$Loading : $author$project$Types$NotAsked
 						}),
 					A2(
@@ -7775,7 +7776,7 @@ var $author$project$Update$Workspace$update = F2(
 						$elm$core$Process$sleep(300)));
 			case 7:
 				var query = msg.a;
-				if (_Utils_eq(query, model.bi) && ($elm$core$String$length(
+				if (_Utils_eq(query, model.bk) && ($elm$core$String$length(
 					$elm$core$String$trim(query)) >= 2)) {
 					var _v5 = model.V;
 					if (!_v5.$) {
@@ -7796,18 +7797,18 @@ var $author$project$Update$Workspace$update = F2(
 			case 8:
 				var query = msg.a;
 				var result = msg.b;
-				return (_Utils_eq(query, model.bi) && (!_Utils_eq(model.b3, $elm$core$Maybe$Nothing))) ? _Utils_Tuple2(
+				return (_Utils_eq(query, model.bk) && (!_Utils_eq(model.b5, $elm$core$Maybe$Nothing))) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							ds: $author$project$Update$Workspace$remote(result)
+							du: $author$project$Update$Workspace$remote(result)
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			case 9:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{bi: '', ds: $author$project$Types$NotAsked}),
+						{bk: '', du: $author$project$Types$NotAsked}),
 					$elm$core$Platform$Cmd$none);
 			case 10:
 				var offset = msg.a;
@@ -7818,8 +7819,8 @@ var $author$project$Update$Workspace$update = F2(
 						_Utils_update(
 							model,
 							{
-								cx: $author$project$Types$Loading,
-								cy: A2($elm$core$Basics$max, 0, offset)
+								cz: $author$project$Types$Loading,
+								cA: A2($elm$core$Basics$max, 0, offset)
 							}),
 						A3(
 							$author$project$Api$fetchAudit,
@@ -7833,11 +7834,11 @@ var $author$project$Update$Workspace$update = F2(
 			case 11:
 				var offset = msg.a;
 				var result = msg.b;
-				return ((!_Utils_eq(model.b3, $elm$core$Maybe$Nothing)) && _Utils_eq(offset, model.cy)) ? _Utils_Tuple2(
+				return ((!_Utils_eq(model.b5, $elm$core$Maybe$Nothing)) && _Utils_eq(offset, model.cA)) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							cx: $author$project$Update$Workspace$remote(result)
+							cz: $author$project$Update$Workspace$remote(result)
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			case 12:
@@ -7845,10 +7846,10 @@ var $author$project$Update$Workspace$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{dl: entity}),
+						{dn: entity}),
 					$elm$core$Platform$Cmd$none);
 			case 13:
-				var _v7 = _Utils_Tuple2(model.V, model.dn);
+				var _v7 = _Utils_Tuple2(model.V, model.dp);
 				if ((!_v7.a.$) && (_v7.b.$ === 1)) {
 					var token = _v7.a.a;
 					var _v8 = _v7.b;
@@ -7856,13 +7857,13 @@ var $author$project$Update$Workspace$update = F2(
 						_Utils_update(
 							model,
 							{
-								dn: $elm$core$Maybe$Just(model.dl)
+								dp: $elm$core$Maybe$Just(model.dn)
 							}),
 						A3(
 							$author$project$Api$fetchExport,
 							token,
-							model.dl,
-							$author$project$Types$GotExport(model.dl)));
+							model.dn,
+							$author$project$Types$GotExport(model.dn)));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
@@ -7870,8 +7871,8 @@ var $author$project$Update$Workspace$update = F2(
 				var entity = msg.a;
 				var result = msg.b;
 				if ((!_Utils_eq(
-					model.dn,
-					$elm$core$Maybe$Just(entity))) || _Utils_eq(model.b3, $elm$core$Maybe$Nothing)) {
+					model.dp,
+					$elm$core$Maybe$Just(entity))) || _Utils_eq(model.b5, $elm$core$Maybe$Nothing)) {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
 					if (!result.$) {
@@ -7880,19 +7881,19 @@ var $author$project$Update$Workspace$update = F2(
 							_Utils_update(
 								model,
 								{
-									dn: $elm$core$Maybe$Nothing,
-									aC: $elm$core$Maybe$Just('CSV export downloaded')
+									dp: $elm$core$Maybe$Nothing,
+									aE: $elm$core$Maybe$Just('CSV export downloaded')
 								}),
 							$author$project$Ports$downloadFile(
-								{cQ: content, dp: entity + ('-' + (model.ak + '.csv')), dO: 'text/csv;charset=utf-8'}));
+								{cS: content, dr: entity + ('-' + (model.am + '.csv')), dR: 'text/csv;charset=utf-8'}));
 					} else {
 						var message = result.a;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									dn: $elm$core$Maybe$Nothing,
-									aC: $elm$core$Maybe$Just(message)
+									dp: $elm$core$Maybe$Nothing,
+									aE: $elm$core$Maybe$Just(message)
 								}),
 							$elm$core$Platform$Cmd$none);
 					}
@@ -7910,10 +7911,10 @@ var $elm$core$Tuple$mapSecond = F2(
 			func(y));
 	});
 var $author$project$Types$GotDeletedActivity = function (a) {
-	return {$: 91, a: a};
+	return {$: 92, a: a};
 };
 var $author$project$Types$GotSavedActivity = function (a) {
-	return {$: 87, a: a};
+	return {$: 88, a: a};
 };
 var $author$project$Api$activityFormPayload = function (af) {
 	return $elm$json$Json$Encode$object(
@@ -7921,7 +7922,7 @@ var $author$project$Api$activityFormPayload = function (af) {
 			[
 				_Utils_Tuple2(
 				'kind',
-				$elm$json$Json$Encode$string(af.dF)),
+				$elm$json$Json$Encode$string(af.dH)),
 				_Utils_Tuple2(
 				'title',
 				$elm$json$Json$Encode$string(af.J)),
@@ -7930,7 +7931,7 @@ var $author$project$Api$activityFormPayload = function (af) {
 				$elm$json$Json$Encode$string(af.a)),
 				_Utils_Tuple2(
 				'occurredAt',
-				$elm$json$Json$Encode$string(af.dV)),
+				$elm$json$Json$Encode$string(af.dY)),
 				_Utils_Tuple2(
 				'dealId',
 				$elm$json$Json$Encode$string(''))
@@ -7950,7 +7951,7 @@ var $author$project$Types$GenericError = function (a) {
 };
 var $author$project$Types$Activity = F9(
 	function (id, contactId, dealId, kind, title, body, occurredAt, createdBy, createdAt) {
-		return {a: body, ae: contactId, af: createdAt, z: createdBy, cZ: dealId, ah: id, dF: kind, dV: occurredAt, J: title};
+		return {a: body, ag: contactId, ah: createdAt, A: createdBy, c$: dealId, aj: id, dH: kind, dY: occurredAt, J: title};
 	});
 var $author$project$Api$andMap = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
 var $author$project$Api$optString = function (field) {
@@ -8119,7 +8120,7 @@ var $author$project$Api$deleteActivity = F3(
 				c: '/api/activities/' + id
 			});
 	});
-var $author$project$Types$emptyActivityForm = {a: '', h: false, i: false, dj: _List_Nil, dF: 'note', dV: '', eN: false, J: ''};
+var $author$project$Types$emptyActivityForm = {a: '', h: false, i: false, dl: _List_Nil, dH: 'note', dY: '', eP: false, J: ''};
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -8132,7 +8133,7 @@ var $elm$core$List$filter = F2(
 			list);
 	});
 var $author$project$Types$GotActivities = function (a) {
-	return {$: 80, a: a};
+	return {$: 81, a: a};
 };
 var $author$project$Api$activitiesDecoder = A2(
 	$elm$json$Json$Decode$field,
@@ -8198,7 +8199,7 @@ var $author$project$Update$Loaders$loadActivities = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{ce: $author$project$Types$Loading}),
+					{cg: $author$project$Types$Loading}),
 				A3($author$project$Api$fetchActivities, t, contactId, $author$project$Types$GotActivities));
 		} else {
 			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -8208,7 +8209,7 @@ var $author$project$Types$GotContacts = function (a) {
 	return {$: 25, a: a};
 };
 var $author$project$Update$Loaders$contactsOffsetOf = function (model) {
-	var _v0 = model.cP;
+	var _v0 = model.cR;
 	if (_v0.$ === 2) {
 		var d = _v0.a;
 		return d.G;
@@ -8217,7 +8218,7 @@ var $author$project$Update$Loaders$contactsOffsetOf = function (model) {
 	}
 };
 var $author$project$Update$Loaders$contactsQueryOf = function (model) {
-	var _v0 = model.cP;
+	var _v0 = model.cR;
 	if (_v0.$ === 2) {
 		var d = _v0.a;
 		return d.D;
@@ -8238,7 +8239,7 @@ var $author$project$Types$Contact = function (id) {
 										return function (tags) {
 											return function (notes) {
 												return function (createdAt) {
-													return {an: company, af: createdAt, ag: email, ah: id, bo: lastContact, aq: location, M: name, n: notes, R: owner, ai: phone, T: stage, aB: tags, J: title};
+													return {ap: company, ah: createdAt, ai: email, aj: id, bq: lastContact, as: location, M: name, n: notes, R: owner, ak: phone, T: stage, aD: tags, J: title};
 												};
 											};
 										};
@@ -8254,7 +8255,7 @@ var $author$project$Types$Contact = function (id) {
 };
 var $author$project$Api$ContactCore = F8(
 	function (id, name, email, company, title, phone, location, stage) {
-		return {an: company, ag: email, ah: id, aq: location, M: name, ai: phone, T: stage, J: title};
+		return {ap: company, ai: email, aj: id, as: location, M: name, ak: phone, T: stage, J: title};
 	});
 var $elm$json$Json$Decode$map8 = _Json_map8;
 var $author$project$Api$contactCoreDecoder = A9(
@@ -8275,7 +8276,7 @@ var $author$project$Api$contactCoreDecoder = A9(
 			])));
 var $author$project$Api$ContactExtras = F5(
 	function (lastContact, owner, tags, notes, createdAt) {
-		return {af: createdAt, bo: lastContact, n: notes, R: owner, aB: tags};
+		return {ah: createdAt, bq: lastContact, n: notes, R: owner, aD: tags};
 	});
 var $elm$json$Json$Decode$map5 = _Json_map5;
 var $author$project$Api$optStringList = function (field) {
@@ -8301,7 +8302,7 @@ var $author$project$Api$contactDecoder = A3(
 	$elm$json$Json$Decode$map2,
 	F2(
 		function (core, extras) {
-			return $author$project$Types$Contact(core.ah)(core.M)(core.ag)(core.an)(core.J)(core.ai)(core.aq)(core.T)(extras.bo)(extras.R)(extras.aB)(extras.n)(extras.af);
+			return $author$project$Types$Contact(core.aj)(core.M)(core.ai)(core.ap)(core.J)(core.ak)(core.as)(core.T)(extras.bq)(extras.R)(extras.aD)(extras.n)(extras.ah);
 		}),
 	$author$project$Api$contactCoreDecoder,
 	$author$project$Api$contactExtrasDecoder);
@@ -8389,7 +8390,7 @@ var $author$project$Update$Loaders$loadContacts = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{cP: $author$project$Types$Loading}),
+				{cR: $author$project$Types$Loading}),
 			A5(
 				$author$project$Api$fetchContacts,
 				t,
@@ -8406,7 +8407,7 @@ var $elm$core$Tuple$second = function (_v0) {
 	return y;
 };
 var $author$project$Types$activityKinds = _List_fromArray(
-	['note', 'call', 'email', 'meeting', 'task']);
+	['note', 'call', 'email', 'whatsapp', 'meeting', 'task']);
 var $elm$core$List$isEmpty = function (xs) {
 	if (!xs.b) {
 		return true;
@@ -8450,7 +8451,7 @@ var $author$project$Update$Validate$validateActivityForm = function (af) {
 		[
 			_Utils_Tuple2('title', 'Title is required.')
 		]) : _List_Nil;
-	var kindErr = A2($elm$core$List$member, af.dF, $author$project$Types$activityKinds) ? _List_Nil : _List_fromArray(
+	var kindErr = A2($elm$core$List$member, af.dH, $author$project$Types$activityKinds) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('kind', 'Pick a kind.')
 		]);
@@ -8458,13 +8459,13 @@ var $author$project$Update$Validate$validateActivityForm = function (af) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			af,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Activities$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 80:
+			case 81:
 				var result = msg.a;
 				if (!result.$) {
 					var items = result.a;
@@ -8472,7 +8473,7 @@ var $author$project$Update$Activities$update = F2(
 						_Utils_update(
 							model,
 							{
-								ce: $author$project$Types$Success(items)
+								cg: $author$project$Types$Success(items)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8481,35 +8482,35 @@ var $author$project$Update$Activities$update = F2(
 						_Utils_update(
 							model,
 							{
-								ce: $author$project$Types$Failure(message)
+								cg: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 81:
+			case 82:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aE: $elm$core$Maybe$Just($author$project$Types$emptyActivityForm),
-							aC: $elm$core$Maybe$Nothing
+							aG: $elm$core$Maybe$Just($author$project$Types$emptyActivityForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 82:
-				var _v2 = _Utils_Tuple2(model.aE, model.aZ);
+			case 83:
+				var _v2 = _Utils_Tuple2(model.aG, model.a$);
 				if (!_v2.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aZ: $elm$core$Maybe$Nothing}),
+							{a$: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v2.a.$) {
 						var af = _v2.a.a;
-						return (af.i && (!af.eN)) ? _Utils_Tuple2(
+						return (af.i && (!af.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									aE: $elm$core$Maybe$Just(
+									aG: $elm$core$Maybe$Just(
 										_Utils_update(
 											af,
 											{h: true}))
@@ -8517,27 +8518,27 @@ var $author$project$Update$Activities$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aE: $elm$core$Maybe$Nothing}),
+								{aG: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 83:
+			case 84:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aE: $elm$core$Maybe$Nothing}),
+						{aG: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 84:
-				var _v3 = model.aE;
+			case 85:
+				var _v3 = model.aG;
 				if (!_v3.$) {
 					var af = _v3.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aE: $elm$core$Maybe$Just(
+								aG: $elm$core$Maybe$Just(
 									_Utils_update(
 										af,
 										{h: false}))
@@ -8546,10 +8547,10 @@ var $author$project$Update$Activities$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 85:
+			case 86:
 				var field = msg.a;
 				var value = msg.b;
-				var _v4 = model.aE;
+				var _v4 = model.aG;
 				if (!_v4.$) {
 					var af = _v4.a;
 					var updated = function () {
@@ -8557,7 +8558,7 @@ var $author$project$Update$Activities$update = F2(
 							case 'kind':
 								return _Utils_update(
 									af,
-									{dF: value});
+									{dH: value});
 							case 'title':
 								return _Utils_update(
 									af,
@@ -8569,7 +8570,7 @@ var $author$project$Update$Activities$update = F2(
 							case 'occurredAt':
 								return _Utils_update(
 									af,
-									{dV: value});
+									{dY: value});
 							default:
 								return af;
 						}
@@ -8578,26 +8579,26 @@ var $author$project$Update$Activities$update = F2(
 						_Utils_update(
 							model,
 							{
-								aE: $elm$core$Maybe$Just(
+								aG: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v5) {
 													var f = _v5.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 86:
-				var _v7 = _Utils_Tuple3(model.aE, model.V, model.e2);
+			case 87:
+				var _v7 = _Utils_Tuple3(model.aG, model.V, model.e4);
 				if (((!_v7.a.$) && (!_v7.b.$)) && (!_v7.c.$)) {
 					var af = _v7.a.a;
 					var token = _v7.b.a;
@@ -8609,36 +8610,36 @@ var $author$project$Update$Activities$update = F2(
 						_Utils_update(
 							model,
 							{
-								aE: $elm$core$Maybe$Just(validated)
+								aG: $elm$core$Maybe$Just(validated)
 							}),
 						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aE: $elm$core$Maybe$Just(
+								aG: $elm$core$Maybe$Just(
 									_Utils_update(
 										validated,
-										{eN: true}))
+										{eP: true}))
 							}),
-						A4($author$project$Api$createActivity, token, contact.ah, validated, $author$project$Types$GotSavedActivity));
+						A4($author$project$Api$createActivity, token, contact.aj, validated, $author$project$Types$GotSavedActivity));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 87:
+			case 88:
 				var result = msg.a;
 				if (!result.$) {
 					var activity = result.a;
 					var freshModel = _Utils_update(
 						model,
 						{
-							aE: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just('Logged ' + activity.J)
+							aG: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just('Logged ' + activity.J)
 						});
 					var contactId = function () {
-						var _v10 = model.e2;
+						var _v10 = model.e4;
 						if (!_v10.$) {
 							var c = _v10.a;
-							return c.ah;
+							return c.aj;
 						} else {
 							return '';
 						}
@@ -8654,17 +8655,17 @@ var $author$project$Update$Activities$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v11 = model.aE;
+						var _v11 = model.aG;
 						if (!_v11.$) {
 							var af = _v11.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aE: $elm$core$Maybe$Just(
+										aG: $elm$core$Maybe$Just(
 											_Utils_update(
 												af,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -8672,22 +8673,22 @@ var $author$project$Update$Activities$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v12 = model.aE;
+						var _v12 = model.aG;
 						if (!_v12.$) {
 							var af = _v12.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aE: $elm$core$Maybe$Just(
+										aG: $elm$core$Maybe$Just(
 											_Utils_update(
 												af,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -8696,46 +8697,46 @@ var $author$project$Update$Activities$update = F2(
 						}
 					}
 				}
-			case 88:
+			case 89:
 				var activity = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aZ: $elm$core$Maybe$Just(activity)
+							a$: $elm$core$Maybe$Just(activity)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 89:
+			case 90:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aZ: $elm$core$Maybe$Nothing}),
+						{a$: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 90:
-				var _v13 = _Utils_Tuple2(model.aZ, model.V);
+			case 91:
+				var _v13 = _Utils_Tuple2(model.a$, model.V);
 				if ((!_v13.a.$) && (!_v13.b.$)) {
 					var activity = _v13.a.a;
 					var token = _v13.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteActivity, token, activity.ah, $author$project$Types$GotDeletedActivity));
+						A3($author$project$Api$deleteActivity, token, activity.aj, $author$project$Types$GotDeletedActivity));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 91:
+			case 92:
 				var result = msg.a;
 				if (!result.$) {
 					var freshModel = _Utils_update(
 						model,
 						{
-							aZ: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just('Activity deleted')
+							a$: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just('Activity deleted')
 						});
 					var contactId = function () {
-						var _v15 = model.e2;
+						var _v15 = model.e4;
 						if (!_v15.$) {
 							var c = _v15.a;
-							return c.ah;
+							return c.aj;
 						} else {
 							return '';
 						}
@@ -8749,8 +8750,8 @@ var $author$project$Update$Activities$update = F2(
 						_Utils_update(
 							model,
 							{
-								aZ: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a$: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -8759,30 +8760,29 @@ var $author$project$Update$Activities$update = F2(
 		}
 	});
 var $author$project$Types$GotAgents = function (a) {
-	return {$: 158, a: a};
+	return {$: 163, a: a};
 };
 var $author$project$Types$GotDeletedAgent = function (a) {
-	return {$: 172, a: a};
+	return {$: 177, a: a};
 };
 var $author$project$Types$GotSavedAgent = function (a) {
-	return {$: 168, a: a};
+	return {$: 173, a: a};
 };
 var $author$project$Types$agentToForm = function (a) {
 	return {
-		ch: a.ch,
-		ck: a.ck,
+		cj: a.cj,
+		cm: a.cm,
 		h: false,
-		aT: a.aT,
-		ao: a.ao,
+		aV: a.aV,
+		aq: a.aq,
 		i: false,
-		dj: _List_Nil,
+		dl: _List_Nil,
 		M: a.M,
 		n: a.n,
-		eM: $elm$core$String$fromInt(a.eM),
-		eN: false
+		ab: $elm$core$String$fromInt(a.ab),
+		eP: false
 	};
 };
-var $elm$json$Json$Encode$int = _Json_wrap;
 var $author$project$Api$agentFormPayload = function (af) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
@@ -8792,23 +8792,16 @@ var $author$project$Api$agentFormPayload = function (af) {
 				$elm$json$Json$Encode$string(af.M)),
 				_Utils_Tuple2(
 				'agentCode',
-				$elm$json$Json$Encode$string(af.ch)),
+				$elm$json$Json$Encode$string(af.cj)),
 				_Utils_Tuple2(
 				'countryCode',
-				$elm$json$Json$Encode$string(af.ao)),
+				$elm$json$Json$Encode$string(af.aq)),
 				_Utils_Tuple2(
 				'contractStatus',
-				$elm$json$Json$Encode$string(af.aT)),
+				$elm$json$Json$Encode$string(af.aV)),
 				_Utils_Tuple2(
 				'agentStatus',
-				$elm$json$Json$Encode$string(af.ck)),
-				_Utils_Tuple2(
-				'studentsReferred',
-				$elm$json$Json$Encode$int(
-					A2(
-						$elm$core$Maybe$withDefault,
-						0,
-						$elm$core$String$toInt(af.eM)))),
+				$elm$json$Json$Encode$string(af.cm)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(af.n))
@@ -8824,7 +8817,7 @@ var $author$project$Types$Agent = function (id) {
 							return function (notes) {
 								return function (createdBy) {
 									return function (createdAt) {
-										return {ch: agentCode, ck: agentStatus, aT: contractStatus, ao: countryCode, af: createdAt, z: createdBy, ah: id, M: name, n: notes, eM: studentsReferred};
+										return {cj: agentCode, cm: agentStatus, aV: contractStatus, aq: countryCode, ah: createdAt, A: createdBy, aj: id, M: name, n: notes, ab: studentsReferred};
 									};
 								};
 							};
@@ -9006,7 +8999,7 @@ var $author$project$Api$deleteAgent = F3(
 				c: '/api/agents/' + id
 			});
 	});
-var $author$project$Types$emptyAgentForm = {ch: '', ck: 'Active', h: false, aT: 'Pending', ao: '', i: false, dj: _List_Nil, M: '', n: '', eM: '0', eN: false};
+var $author$project$Types$emptyAgentForm = {cj: '', cm: 'Active', h: false, aV: 'Pending', aq: '', i: false, dl: _List_Nil, M: '', n: '', ab: '0', eP: false};
 var $author$project$Api$agentsPageExpect = function (toMsg) {
 	return A2(
 		$elm$http$Http$expectStringResponse,
@@ -9090,7 +9083,7 @@ var $author$project$Update$Loaders$loadAgents = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.cl;
+			var _v2 = model.cn;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return _Utils_Tuple2(d.D, d.G);
@@ -9103,14 +9096,14 @@ var $author$project$Update$Loaders$loadAgents = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{cl: $author$project$Types$Loading}),
+				{cn: $author$project$Types$Loading}),
 			A5($author$project$Api$fetchAgents, t, q, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotAgents));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$GotStudents = function (a) {
-	return {$: 141, a: a};
+	return {$: 143, a: a};
 };
 var $author$project$Types$Student = function (id) {
 	return function (name) {
@@ -9127,7 +9120,7 @@ var $author$project$Types$Student = function (id) {
 												return function (notes) {
 													return function (createdBy) {
 														return function (createdAt) {
-															return {cb: acceptanceStatus, ci: agentId, cj: agentName, ao: countryCode, af: createdAt, z: createdBy, ah: id, dD: invoiceStatus, M: name, n: notes, ef: program, ep: schoolId, eq: schoolName, eG: studentCode, e9: visaStatus};
+															return {cd: acceptanceStatus, ck: agentId, cl: agentName, aq: countryCode, ah: createdAt, A: createdBy, aj: id, dF: invoiceStatus, M: name, n: notes, ej: program, et: schoolId, eu: schoolName, eK: studentCode, fb: visaStatus};
 														};
 													};
 												};
@@ -9287,7 +9280,7 @@ var $author$project$Update$Loaders$loadStudents = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.eK;
+			var _v2 = model.eO;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return _Utils_Tuple2(d.D, d.G);
@@ -9300,7 +9293,7 @@ var $author$project$Update$Loaders$loadStudents = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{eK: $author$project$Types$Loading}),
+				{eO: $author$project$Types$Loading}),
 			A5($author$project$Api$fetchStudents, t, q, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotStudents));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -9310,8 +9303,12 @@ var $author$project$Types$GotReports = function (a) {
 	return {$: 15, a: a};
 };
 var $author$project$Types$FetchedAgent = function (a) {
-	return {$: 282, a: a};
+	return {$: 287, a: a};
 };
+var $author$project$Types$GotLinkedStudents = F2(
+	function (a, b) {
+		return {$: 144, a: a, b: b};
+	});
 var $author$project$Api$agentFetchExpect = function (toMsg) {
 	return A2(
 		$elm$http$Http$expectStringResponse,
@@ -9367,20 +9364,53 @@ var $author$project$Api$fetchAgent = F3(
 				c: '/api/agents/' + id
 			});
 	});
+var $author$project$Api$fetchLinkedStudents = F4(
+	function (token, relation, recordId, toMsg) {
+		var qs = relation + ('Id=' + ($elm$url$Url$percentEncode(recordId) + '&limit=200&offset=0'));
+		return $elm$http$Http$request(
+			{
+				a: $elm$http$Http$emptyBody,
+				b: $author$project$Api$studentsPageExpect(toMsg),
+				e: _List_fromArray(
+					[
+						A2($elm$http$Http$header, 'Authorization', 'Bearer ' + token)
+					]),
+				d: 'GET',
+				f: $elm$core$Maybe$Just(20000),
+				g: $elm$core$Maybe$Nothing,
+				c: '/api/students?' + qs
+			});
+	});
 var $author$project$Update$Loaders$fetchForAgentRoute = F3(
 	function (model, route, preserved) {
-		var _v0 = _Utils_Tuple3(route, preserved, model.V);
-		if (((_v0.a.$ === 15) && (_v0.b.$ === 1)) && (!_v0.c.$)) {
+		var _v0 = _Utils_Tuple2(route, model.V);
+		if ((_v0.a.$ === 15) && (!_v0.b.$)) {
 			var id = _v0.a.a;
-			var _v1 = _v0.b;
-			var t = _v0.c.a;
-			return A3($author$project$Api$fetchAgent, t, id, $author$project$Types$FetchedAgent);
+			var t = _v0.b.a;
+			var agentCmd = function () {
+				if (preserved.$ === 1) {
+					return A3($author$project$Api$fetchAgent, t, id, $author$project$Types$FetchedAgent);
+				} else {
+					return $elm$core$Platform$Cmd$none;
+				}
+			}();
+			return $elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						agentCmd,
+						A4(
+						$author$project$Api$fetchLinkedStudents,
+						t,
+						'agent',
+						id,
+						$author$project$Types$GotLinkedStudents(id))
+					]));
 		} else {
 			return $elm$core$Platform$Cmd$none;
 		}
 	});
 var $author$project$Types$FetchedCase = function (a) {
-	return {$: 284, a: a};
+	return {$: 289, a: a};
 };
 var $author$project$Types$Case = function (id) {
 	return function (caseNumber) {
@@ -9407,7 +9437,7 @@ var $author$project$Types$Case = function (id) {
 																						return function (notes) {
 																							return function (createdBy) {
 																								return function (createdAt) {
-																									return {cg: actualSubmission, cv: assignedOfficer, cE: caseNumber, aL: clientId, aM: clientName, cJ: closureDate, af: createdAt, z: createdBy, cV: currentStage, cX: dateOpened, c1: destinationCountry, $7: externalAdviser, du: governmentRef, ah: id, dT: nextAction, dU: nextDeadline, n: notes, ec: priority, el: result, er: schoolOrEmployer, ew: serviceCategory, eI: studentId, eJ: studentName, eQ: targetSubmission, fa: visaType};
+																									return {ci: actualSubmission, cx: assignedOfficer, cG: caseNumber, aN: clientId, aO: clientName, cL: closureDate, ah: createdAt, A: createdBy, cX: currentStage, cZ: dateOpened, c3: destinationCountry, dq: externalAdviser, dw: governmentRef, aj: id, dW: nextAction, dX: nextDeadline, n: notes, eg: priority, ep: result, ev: schoolOrEmployer, eA: serviceCategory, eM: studentId, eN: studentName, eS: targetSubmission, fc: visaType};
 																								};
 																							};
 																						};
@@ -9587,7 +9617,7 @@ var $author$project$Update$Loaders$fetchForCaseRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedContact = function (a) {
-	return {$: 277, a: a};
+	return {$: 282, a: a};
 };
 var $author$project$Api$contactFetchExpect = function (toMsg) {
 	return A2(
@@ -9657,7 +9687,7 @@ var $author$project$Update$Loaders$fetchForContactRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedDeal = function (a) {
-	return {$: 278, a: a};
+	return {$: 283, a: a};
 };
 var $author$project$Types$Deal = function (id) {
 	return function (title) {
@@ -9672,7 +9702,7 @@ var $author$project$Types$Deal = function (id) {
 										return function (owner) {
 											return function (notes) {
 												return function (createdAt) {
-													return {am: closeDate, ae: contactId, aR: contactName, af: createdAt, ap: currency, ah: id, n: notes, R: owner, d1: ownerId, ed: probability, T: stage, J: title, aD: value};
+													return {ao: closeDate, ag: contactId, aT: contactName, ah: createdAt, ar: currency, aj: id, n: notes, R: owner, d4: ownerId, eh: probability, T: stage, J: title, aF: value};
 												};
 											};
 										};
@@ -9688,7 +9718,7 @@ var $author$project$Types$Deal = function (id) {
 };
 var $author$project$Api$DealCore = F6(
 	function (id, title, contactId, contactName, value, currency) {
-		return {ae: contactId, aR: contactName, ap: currency, ah: id, J: title, aD: value};
+		return {ag: contactId, aT: contactName, ar: currency, aj: id, J: title, aF: value};
 	});
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$map6 = _Json_map6;
@@ -9713,7 +9743,7 @@ var $author$project$Api$dealCoreDecoder = A7(
 			])));
 var $author$project$Api$DealExtras = F5(
 	function (stage, closeDate, owner, notes, createdAt) {
-		return {am: closeDate, af: createdAt, n: notes, R: owner, T: stage};
+		return {ao: closeDate, ah: createdAt, n: notes, R: owner, T: stage};
 	});
 var $author$project$Api$dealExtrasDecoder = A6(
 	$elm$json$Json$Decode$map5,
@@ -9740,7 +9770,7 @@ var $author$project$Api$dealDecoder = A5(
 	$elm$json$Json$Decode$map4,
 	F4(
 		function (core, extras, probability, ownerId) {
-			return $author$project$Types$Deal(core.ah)(core.J)(core.ae)(core.aR)(core.aD)(probability)(core.ap)(extras.T)(extras.am)(ownerId)(extras.R)(extras.n)(extras.af);
+			return $author$project$Types$Deal(core.aj)(core.J)(core.ag)(core.aT)(core.aF)(probability)(core.ar)(extras.T)(extras.ao)(ownerId)(extras.R)(extras.n)(extras.ah);
 		}),
 	$author$project$Api$dealCoreDecoder,
 	$author$project$Api$dealExtrasDecoder,
@@ -9815,7 +9845,7 @@ var $author$project$Update$Loaders$fetchForDealRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedInvoice = function (a) {
-	return {$: 285, a: a};
+	return {$: 290, a: a};
 };
 var $author$project$Types$Invoice = function (currency) {
 	return function (id) {
@@ -9839,7 +9869,7 @@ var $author$project$Types$Invoice = function (currency) {
 																			return function (notes) {
 																				return function (createdBy) {
 																					return function (createdAt) {
-																						return {cs: amountReceived, cz: balance, cD: caseId, cE: caseNumber, aL: clientId, aM: clientName, af: createdAt, z: createdBy, ap: currency, dt: governmentFee, ah: id, dB: invoiceNumber, n: notes, dW: officialReceiptNumber, d3: partnerPayable, d6: paymentApproval, d7: paymentMethod, d8: paymentMilestone, ej: referralCommission, ek: refundStatus, es: schoolPartnerFee, eU: totalFee};
+																						return {cu: amountReceived, cB: balance, cF: caseId, cG: caseNumber, aN: clientId, aO: clientName, ah: createdAt, A: createdBy, ar: currency, dv: governmentFee, aj: id, dD: invoiceNumber, n: notes, dZ: officialReceiptNumber, d7: partnerPayable, ea: paymentApproval, eb: paymentMethod, ec: paymentMilestone, en: referralCommission, eo: refundStatus, ew: schoolPartnerFee, eW: totalFee};
 																					};
 																				};
 																			};
@@ -10037,7 +10067,7 @@ var $author$project$Update$Loaders$fetchForInvoiceRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedLead = function (a) {
-	return {$: 283, a: a};
+	return {$: 288, a: a};
 };
 var $author$project$Types$Lead = function (id) {
 	return function (leadNumber) {
@@ -10055,7 +10085,7 @@ var $author$project$Types$Lead = function (id) {
 													return function (notes) {
 														return function (createdBy) {
 															return function (createdAt) {
-																return {cw: assignedTo, af: createdAt, z: createdBy, cU: currentCountry, ag: email, dq: followUpDate, ah: id, dy: interestedCountry, dz: interestedService, dI: leadNumber, M: name, dR: nationality, n: notes, ai: phone, ez: source, aj: status};
+																return {cy: assignedTo, ah: createdAt, A: createdBy, cW: currentCountry, ai: email, ds: followUpDate, aj: id, dA: interestedCountry, dB: interestedService, dK: leadNumber, M: name, dU: nationality, n: notes, ak: phone, eD: source, al: status};
 															};
 														};
 													};
@@ -10199,7 +10229,7 @@ var $author$project$Update$Loaders$fetchForLeadRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedPartner = function (a) {
-	return {$: 286, a: a};
+	return {$: 291, a: a};
 };
 var $author$project$Types$Partner = function (id) {
 	return function (type_) {
@@ -10223,7 +10253,7 @@ var $author$project$Types$Partner = function (id) {
 																			return function (notes) {
 																				return function (createdBy) {
 																					return function (createdAt) {
-																						return {cm: agreementExpiry, cn: agreementStart, cr: amountPayable, cG: casesConverted, cH: casesReferred, cL: commissionStructure, cM: complianceNotes, cN: contactEmail, aS: contactPerson, cO: contactPhone, cR: country, af: createdAt, z: createdBy, ah: id, dK: legalCompanyName, dL: licenseExpiry, dM: licenseNumber, n: notes, d9: paymentTerms, ex: servicesPermitted, eX: type_, e_: verificationSource};
+																						return {co: agreementExpiry, cp: agreementStart, ct: amountPayable, cI: casesConverted, cJ: casesReferred, cN: commissionStructure, cO: complianceNotes, cP: contactEmail, aU: contactPerson, cQ: contactPhone, cT: country, ah: createdAt, A: createdBy, aj: id, dM: legalCompanyName, dN: licenseExpiry, dO: licenseNumber, n: notes, ed: paymentTerms, eB: servicesPermitted, eZ: type_, e0: verificationSource};
 																					};
 																				};
 																			};
@@ -10401,7 +10431,7 @@ var $author$project$Update$Loaders$fetchForPartnerRoute = F3(
 		}
 	});
 var $author$project$Types$FetchedSchool = function (a) {
-	return {$: 279, a: a};
+	return {$: 284, a: a};
 };
 var $author$project$Types$School = function (id) {
 	return function (name) {
@@ -10414,7 +10444,7 @@ var $author$project$Types$School = function (id) {
 								return function (notes) {
 									return function (createdBy) {
 										return function (createdAt) {
-											return {cK: commissionRate, aS: contactPerson, aT: contractStatus, ao: countryCode, af: createdAt, z: createdBy, ah: id, M: name, n: notes, eL: studentsEnrolled, fb: website};
+											return {cM: commissionRate, aU: contactPerson, aV: contractStatus, aq: countryCode, ah: createdAt, A: createdBy, aj: id, M: name, n: notes, aa: studentsEnrolled, fd: website};
 										};
 									};
 								};
@@ -10527,18 +10557,34 @@ var $author$project$Api$fetchSchool = F3(
 	});
 var $author$project$Update$Loaders$fetchForSchoolRoute = F3(
 	function (model, route, preserved) {
-		var _v0 = _Utils_Tuple3(route, preserved, model.V);
-		if (((_v0.a.$ === 11) && (_v0.b.$ === 1)) && (!_v0.c.$)) {
+		var _v0 = _Utils_Tuple2(route, model.V);
+		if ((_v0.a.$ === 11) && (!_v0.b.$)) {
 			var id = _v0.a.a;
-			var _v1 = _v0.b;
-			var t = _v0.c.a;
-			return A3($author$project$Api$fetchSchool, t, id, $author$project$Types$FetchedSchool);
+			var t = _v0.b.a;
+			var schoolCmd = function () {
+				if (preserved.$ === 1) {
+					return A3($author$project$Api$fetchSchool, t, id, $author$project$Types$FetchedSchool);
+				} else {
+					return $elm$core$Platform$Cmd$none;
+				}
+			}();
+			return $elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						schoolCmd,
+						A4(
+						$author$project$Api$fetchLinkedStudents,
+						t,
+						'school',
+						id,
+						$author$project$Types$GotLinkedStudents(id))
+					]));
 		} else {
 			return $elm$core$Platform$Cmd$none;
 		}
 	});
 var $author$project$Types$FetchedStudent = function (a) {
-	return {$: 280, a: a};
+	return {$: 285, a: a};
 };
 var $author$project$Api$studentFetchExpect = function (toMsg) {
 	return A2(
@@ -10624,7 +10670,7 @@ var $author$project$Types$ReportSummary = function (pipelineLabel) {
 														return function (newLeads) {
 															return function (approvedStudents) {
 																return function (totalCases) {
-																	return {cd: activeCases, ct: approvedStudents, cA: balanceLabel, cP: contacts, cT: createdCounts, dJ: leads, dS: newLeads, d_: openTasks, d$: outstandingBalance, ea: pipelineLabel, eb: pipelineValue, eA: stageCounts, eC: stageValues, eK: students, eT: totalCases, fc: wonLabel, fd: wonValue};
+																	return {cf: activeCases, cv: approvedStudents, cC: balanceLabel, cR: contacts, cV: createdCounts, dL: leads, dV: newLeads, d1: openTasks, d2: outstandingBalance, ee: pipelineLabel, ef: pipelineValue, eE: stageCounts, eG: stageValues, eO: students, eV: totalCases, fe: wonLabel, ff: wonValue};
 																};
 															};
 														};
@@ -10732,7 +10778,7 @@ var $author$project$Api$fetchReports = F2(
 	});
 var $elm$browser$Browser$Navigation$load = _Browser_load;
 var $author$project$Types$GotCaseDocuments = function (a) {
-	return {$: 211, a: a};
+	return {$: 216, a: a};
 };
 var $author$project$Types$Document = function (id) {
 	return function (caseId) {
@@ -10753,7 +10799,7 @@ var $author$project$Types$Document = function (id) {
 																return function (notes) {
 																	return function (createdBy) {
 																		return function (createdAt) {
-																			return {cD: caseId, cE: caseNumber, af: createdAt, z: createdBy, aV: dateReceived, aW: dateRequested, a9: docName, be: expiryDate, bg: filePath, ah: id, dH: latestVersion, bq: legalizationRequired, n: notes, bP: rejectionReason, bV: required, aj: status, b2: translationRequired, b4: verificationDate, b5: verifiedBy};
+																			return {cF: caseId, cG: caseNumber, ah: createdAt, A: createdBy, aX: dateReceived, aY: dateRequested, bb: docName, bg: expiryDate, bi: filePath, aj: id, dJ: latestVersion, bs: legalizationRequired, n: notes, bR: rejectionReason, bX: required, al: status, b4: translationRequired, b6: verificationDate, b7: verifiedBy};
 																		};
 																	};
 																};
@@ -10920,14 +10966,14 @@ var $author$project$Update$Loaders$loadCaseDocuments = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{cC: $author$project$Types$Loading}),
+					{cE: $author$project$Types$Loading}),
 				A3($author$project$Api$fetchCaseDocuments, t, caseId, $author$project$Types$GotCaseDocuments));
 		} else {
 			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Types$GotCases = function (a) {
-	return {$: 192, a: a};
+	return {$: 197, a: a};
 };
 var $author$project$Api$casesPageExpect = function (toMsg) {
 	return A2(
@@ -11015,10 +11061,10 @@ var $author$project$Update$Loaders$loadCases = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.cF;
+			var _v2 = model.cH;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
-				return _Utils_Tuple3(d.D, d.eB, d.G);
+				return _Utils_Tuple3(d.D, d.eF, d.G);
 			} else {
 				return _Utils_Tuple3('', '', 0);
 			}
@@ -11029,7 +11075,7 @@ var $author$project$Update$Loaders$loadCases = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{cF: $author$project$Types$Loading}),
+				{cH: $author$project$Types$Loading}),
 			A6($author$project$Api$fetchCases, t, q, st, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotCases));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -11040,7 +11086,7 @@ var $author$project$Types$GotDeals = function (a) {
 };
 var $author$project$Update$Loaders$dealsBoardLimit = 200;
 var $author$project$Update$Loaders$dealsQueryOf = function (model) {
-	var _v0 = model.c_;
+	var _v0 = model.c0;
 	if (_v0.$ === 2) {
 		var d = _v0.a;
 		return d.D;
@@ -11133,7 +11179,7 @@ var $author$project$Update$Loaders$loadDeals = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{c_: $author$project$Types$Loading}),
+				{c0: $author$project$Types$Loading}),
 			A5(
 				$author$project$Api$fetchDeals,
 				t,
@@ -11146,7 +11192,7 @@ var $author$project$Update$Loaders$loadDeals = function (model) {
 	}
 };
 var $author$project$Types$GotInvoicePayments = function (a) {
-	return {$: 244, a: a};
+	return {$: 249, a: a};
 };
 var $author$project$Types$Payment = function (currency) {
 	return function (id) {
@@ -11158,7 +11204,7 @@ var $author$project$Types$Payment = function (currency) {
 							return function (notes) {
 								return function (createdBy) {
 									return function (createdAt) {
-										return {cq: amount, af: createdAt, z: createdBy, ap: currency, ah: id, dA: invoiceId, d: method, n: notes, d2: paidOn, ei: reference};
+										return {cs: amount, ah: createdAt, A: createdBy, ar: currency, aj: id, dC: invoiceId, d: method, n: notes, d5: paidOn, em: reference};
 									};
 								};
 							};
@@ -11269,14 +11315,14 @@ var $author$project$Update$Loaders$loadInvoicePayments = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{dC: $author$project$Types$Loading}),
+					{dE: $author$project$Types$Loading}),
 				A3($author$project$Api$fetchInvoicePayments, t, invoiceId, $author$project$Types$GotInvoicePayments));
 		} else {
 			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Types$GotInvoices = function (a) {
-	return {$: 227, a: a};
+	return {$: 232, a: a};
 };
 var $author$project$Api$invoicesPageExpect = function (toMsg) {
 	return A2(
@@ -11361,7 +11407,7 @@ var $author$project$Update$Loaders$loadInvoices = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.dE;
+			var _v2 = model.dG;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return _Utils_Tuple2(d.D, d.G);
@@ -11374,14 +11420,14 @@ var $author$project$Update$Loaders$loadInvoices = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{dE: $author$project$Types$Loading}),
+				{dG: $author$project$Types$Loading}),
 			A5($author$project$Api$fetchInvoices, t, q, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotInvoices));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$GotLeads = function (a) {
-	return {$: 175, a: a};
+	return {$: 180, a: a};
 };
 var $author$project$Api$leadsPageExpect = function (toMsg) {
 	return A2(
@@ -11466,7 +11512,7 @@ var $author$project$Update$Loaders$loadLeads = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.dJ;
+			var _v2 = model.dL;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return _Utils_Tuple2(d.D, d.G);
@@ -11479,14 +11525,14 @@ var $author$project$Update$Loaders$loadLeads = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{dJ: $author$project$Types$Loading}),
+				{dL: $author$project$Types$Loading}),
 			A5($author$project$Api$fetchLeads, t, q, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotLeads));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$GotPartners = function (a) {
-	return {$: 258, a: a};
+	return {$: 263, a: a};
 };
 var $author$project$Api$partnersPageExpect = function (toMsg) {
 	return A2(
@@ -11575,10 +11621,10 @@ var $author$project$Update$Loaders$loadPartners = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.d4;
+			var _v2 = model.d8;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
-				return _Utils_Tuple2(d.D, d.eW);
+				return _Utils_Tuple2(d.D, d.eY);
 			} else {
 				return _Utils_Tuple2('', '');
 			}
@@ -11586,10 +11632,10 @@ var $author$project$Update$Loaders$loadPartners = function (model) {
 		var q = _v1.a;
 		var tp = _v1.b;
 		var _v3 = function () {
-			var _v4 = model.d4;
+			var _v4 = model.d8;
 			if (_v4.$ === 2) {
 				var d = _v4.a;
-				return _Utils_Tuple2(d.cS, d.G);
+				return _Utils_Tuple2(d.cU, d.G);
 			} else {
 				return _Utils_Tuple2('', 0);
 			}
@@ -11599,14 +11645,14 @@ var $author$project$Update$Loaders$loadPartners = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{d4: $author$project$Types$Loading}),
+				{d8: $author$project$Types$Loading}),
 			A7($author$project$Api$fetchPartners, t, q, tp, co, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotPartners));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$GotSchools = function (a) {
-	return {$: 124, a: a};
+	return {$: 126, a: a};
 };
 var $author$project$Api$schoolsPageExpect = function (toMsg) {
 	return A2(
@@ -11691,7 +11737,7 @@ var $author$project$Update$Loaders$loadSchools = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.et;
+			var _v2 = model.ex;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return _Utils_Tuple2(d.D, d.G);
@@ -11704,18 +11750,18 @@ var $author$project$Update$Loaders$loadSchools = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{et: $author$project$Types$Loading}),
+				{ex: $author$project$Types$Loading}),
 			A5($author$project$Api$fetchSchools, t, q, $author$project$Update$Loaders$pageSize, offset, $author$project$Types$GotSchools));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$GotStudentDossier = function (a) {
-	return {$: 281, a: a};
+	return {$: 286, a: a};
 };
 var $author$project$Types$Dossier = F4(
 	function (student, cases, documents, invoices) {
-		return {cF: cases, c2: documents, dE: invoices, eF: student};
+		return {cH: cases, c4: documents, dG: invoices, eJ: student};
 	});
 var $author$project$Api$dossierDecoder = A5(
 	$elm$json$Json$Decode$map4,
@@ -11793,18 +11839,18 @@ var $author$project$Update$Loaders$loadStudentDossier = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{eH: $author$project$Types$Loading}),
+					{eL: $author$project$Types$Loading}),
 				A3($author$project$Api$fetchStudentDossier, t, studentId, $author$project$Types$GotStudentDossier));
 		} else {
 			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Types$GotTasks = function (a) {
-	return {$: 103, a: a};
+	return {$: 104, a: a};
 };
 var $author$project$Types$Task = F9(
 	function (id, title, description, status, dueDate, contactId, contactName, owner, createdAt) {
-		return {ae: contactId, aR: contactName, af: createdAt, c0: description, c6: dueDate, ah: id, R: owner, aj: status, J: title};
+		return {ag: contactId, aT: contactName, ah: createdAt, c2: description, c8: dueDate, aj: id, R: owner, al: status, J: title};
 	});
 var $author$project$Api$taskDecoder = A2(
 	$author$project$Api$andMap,
@@ -11923,10 +11969,10 @@ var $author$project$Update$Loaders$loadTasks = function (model) {
 	if (!_v0.$) {
 		var t = _v0.a;
 		var _v1 = function () {
-			var _v2 = model.eS;
+			var _v2 = model.eU;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
-				return _Utils_Tuple2(d.D, d.eD);
+				return _Utils_Tuple2(d.D, d.eH);
 			} else {
 				return _Utils_Tuple2('', '');
 			}
@@ -11936,14 +11982,14 @@ var $author$project$Update$Loaders$loadTasks = function (model) {
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{eS: $author$project$Types$Loading}),
-			A5($author$project$Api$fetchTasksPage, t, q, st, model.eR, $author$project$Types$GotTasks));
+				{eU: $author$project$Types$Loading}),
+			A5($author$project$Api$fetchTasksPage, t, q, st, model.eT, $author$project$Types$GotTasks));
 	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	}
 };
 var $author$project$Types$profileFromUser = function (u) {
-	return {ag: u.ag, dj: _List_Nil, M: u.M, eN: false, aa: $elm$core$Maybe$Nothing};
+	return {ai: u.ai, dl: _List_Nil, M: u.M, eP: false, ac: $elm$core$Maybe$Nothing};
 };
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
@@ -11967,7 +12013,7 @@ var $elm$url$Url$addPrefixed = F3(
 	});
 var $elm$url$Url$toString = function (url) {
 	var http = function () {
-		var _v0 = url.bN;
+		var _v0 = url.bP;
 		if (!_v0) {
 			return 'http://';
 		} else {
@@ -11977,7 +12023,7 @@ var $elm$url$Url$toString = function (url) {
 	return A3(
 		$elm$url$Url$addPrefixed,
 		'#',
-		url.bh,
+		url.bj,
 		A3(
 			$elm$url$Url$addPrefixed,
 			'?',
@@ -11985,22 +12031,22 @@ var $elm$url$Url$toString = function (url) {
 			_Utils_ap(
 				A2(
 					$elm$url$Url$addPort,
-					url.bK,
-					_Utils_ap(http, url.bk)),
-				url.bx)));
+					url.bM,
+					_Utils_ap(http, url.bm)),
+				url.bz)));
 };
 var $author$project$Update$Navigation$update = F2(
 	function (msg, model) {
 		update:
 		while (true) {
 			switch (msg.$) {
-				case 292:
+				case 297:
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ax: !model.ax}),
+							{az: !model.az}),
 						$elm$core$Platform$Cmd$none);
-				case 288:
+				case 293:
 					var urlRequest = msg.a;
 					if (!urlRequest.$) {
 						var url = urlRequest.a;
@@ -12008,7 +12054,7 @@ var $author$project$Update$Navigation$update = F2(
 							model,
 							A2(
 								$elm$browser$Browser$Navigation$pushUrl,
-								model.bs,
+								model.bu,
 								$elm$url$Url$toString(url)));
 					} else {
 						var href = urlRequest.a;
@@ -12016,7 +12062,7 @@ var $author$project$Update$Navigation$update = F2(
 							model,
 							$elm$browser$Browser$Navigation$load(href));
 					}
-				case 289:
+				case 294:
 					var url = msg.a;
 					var $temp$msg = $author$project$Types$NavigatedTo(
 						$author$project$Router$parseRoute(url)),
@@ -12028,112 +12074,112 @@ var $author$project$Update$Navigation$update = F2(
 					var route = msg.a;
 					var seededProfile = function () {
 						if (_Utils_eq(route, $author$project$Types$Settings)) {
-							var _v21 = model.b3;
-							if (!_v21.$) {
-								var u = _v21.a;
+							var _v22 = model.b5;
+							if (!_v22.$) {
+								var u = _v22.a;
 								return $author$project$Types$profileFromUser(u);
 							} else {
 								return $author$project$Types$emptyProfileForm;
 							}
 						} else {
-							return model.ee;
+							return model.ei;
 						}
 					}();
 					var preservedStudent = function () {
-						var _v20 = _Utils_Tuple2(route, model.e8);
-						if ((_v20.a.$ === 13) && (!_v20.b.$)) {
-							var id = _v20.a.a;
-							var s = _v20.b.a;
-							return _Utils_eq(s.ah, id) ? $elm$core$Maybe$Just(s) : $elm$core$Maybe$Nothing;
+						var _v21 = _Utils_Tuple2(route, model.fa);
+						if ((_v21.a.$ === 13) && (!_v21.b.$)) {
+							var id = _v21.a.a;
+							var s = _v21.b.a;
+							return _Utils_eq(s.aj, id) ? $elm$core$Maybe$Just(s) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedSchool = function () {
-						var _v19 = _Utils_Tuple2(route, model.e7);
-						if ((_v19.a.$ === 11) && (!_v19.b.$)) {
-							var id = _v19.a.a;
-							var s = _v19.b.a;
-							return _Utils_eq(s.ah, id) ? $elm$core$Maybe$Just(s) : $elm$core$Maybe$Nothing;
+						var _v20 = _Utils_Tuple2(route, model.e9);
+						if ((_v20.a.$ === 11) && (!_v20.b.$)) {
+							var id = _v20.a.a;
+							var s = _v20.b.a;
+							return _Utils_eq(s.aj, id) ? $elm$core$Maybe$Just(s) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedPartner = function () {
-						var _v18 = _Utils_Tuple2(route, model.e6);
-						if ((_v18.a.$ === 23) && (!_v18.b.$)) {
-							var id = _v18.a.a;
-							var p = _v18.b.a;
-							return _Utils_eq(p.ah, id) ? $elm$core$Maybe$Just(p) : $elm$core$Maybe$Nothing;
+						var _v19 = _Utils_Tuple2(route, model.e8);
+						if ((_v19.a.$ === 23) && (!_v19.b.$)) {
+							var id = _v19.a.a;
+							var p = _v19.b.a;
+							return _Utils_eq(p.aj, id) ? $elm$core$Maybe$Just(p) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedLead = function () {
-						var _v17 = _Utils_Tuple2(route, model.e5);
-						if ((_v17.a.$ === 17) && (!_v17.b.$)) {
-							var id = _v17.a.a;
-							var l = _v17.b.a;
-							return _Utils_eq(l.ah, id) ? $elm$core$Maybe$Just(l) : $elm$core$Maybe$Nothing;
+						var _v18 = _Utils_Tuple2(route, model.e7);
+						if ((_v18.a.$ === 17) && (!_v18.b.$)) {
+							var id = _v18.a.a;
+							var l = _v18.b.a;
+							return _Utils_eq(l.aj, id) ? $elm$core$Maybe$Just(l) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedInvoice = function () {
-						var _v16 = _Utils_Tuple2(route, model.e4);
-						if ((_v16.a.$ === 21) && (!_v16.b.$)) {
-							var id = _v16.a.a;
-							var inv = _v16.b.a;
-							return _Utils_eq(inv.ah, id) ? $elm$core$Maybe$Just(inv) : $elm$core$Maybe$Nothing;
+						var _v17 = _Utils_Tuple2(route, model.e6);
+						if ((_v17.a.$ === 21) && (!_v17.b.$)) {
+							var id = _v17.a.a;
+							var inv = _v17.b.a;
+							return _Utils_eq(inv.aj, id) ? $elm$core$Maybe$Just(inv) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedDossier = function () {
-						var _v15 = _Utils_Tuple2(route, model.eH);
-						if ((_v15.a.$ === 13) && (_v15.b.$ === 2)) {
-							var d = _v15.b.a;
+						var _v16 = _Utils_Tuple2(route, model.eL);
+						if ((_v16.a.$ === 13) && (_v16.b.$ === 2)) {
+							var d = _v16.b.a;
 							return $author$project$Types$Success(d);
 						} else {
 							return $author$project$Types$NotAsked;
 						}
 					}();
 					var preservedDeal = function () {
-						var _v14 = _Utils_Tuple2(route, model.e3);
-						if ((_v14.a.$ === 4) && (!_v14.b.$)) {
-							var id = _v14.a.a;
-							var d = _v14.b.a;
-							return _Utils_eq(d.ah, id) ? $elm$core$Maybe$Just(d) : $elm$core$Maybe$Nothing;
+						var _v15 = _Utils_Tuple2(route, model.e5);
+						if ((_v15.a.$ === 4) && (!_v15.b.$)) {
+							var id = _v15.a.a;
+							var d = _v15.b.a;
+							return _Utils_eq(d.aj, id) ? $elm$core$Maybe$Just(d) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedContact = function () {
-						var _v13 = _Utils_Tuple2(route, model.e2);
-						if ((_v13.a.$ === 2) && (!_v13.b.$)) {
-							var id = _v13.a.a;
-							var c = _v13.b.a;
-							return _Utils_eq(c.ah, id) ? $elm$core$Maybe$Just(c) : $elm$core$Maybe$Nothing;
+						var _v14 = _Utils_Tuple2(route, model.e4);
+						if ((_v14.a.$ === 2) && (!_v14.b.$)) {
+							var id = _v14.a.a;
+							var c = _v14.b.a;
+							return _Utils_eq(c.aj, id) ? $elm$core$Maybe$Just(c) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedCase = function () {
-						var _v12 = _Utils_Tuple2(route, model.e1);
-						if ((_v12.a.$ === 19) && (!_v12.b.$)) {
-							var id = _v12.a.a;
-							var c = _v12.b.a;
-							return _Utils_eq(c.ah, id) ? $elm$core$Maybe$Just(c) : $elm$core$Maybe$Nothing;
+						var _v13 = _Utils_Tuple2(route, model.e3);
+						if ((_v13.a.$ === 19) && (!_v13.b.$)) {
+							var id = _v13.a.a;
+							var c = _v13.b.a;
+							return _Utils_eq(c.aj, id) ? $elm$core$Maybe$Just(c) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
 					}();
 					var preservedAgent = function () {
-						var _v11 = _Utils_Tuple2(route, model.e0);
-						if ((_v11.a.$ === 15) && (!_v11.b.$)) {
-							var id = _v11.a.a;
-							var a = _v11.b.a;
-							return _Utils_eq(a.ah, id) ? $elm$core$Maybe$Just(a) : $elm$core$Maybe$Nothing;
+						var _v12 = _Utils_Tuple2(route, model.e2);
+						if ((_v12.a.$ === 15) && (!_v12.b.$)) {
+							var id = _v12.a.a;
+							var a = _v12.b.a;
+							return _Utils_eq(a.aj, id) ? $elm$core$Maybe$Just(a) : $elm$core$Maybe$Nothing;
 						} else {
 							return $elm$core$Maybe$Nothing;
 						}
@@ -12155,12 +12201,12 @@ var $author$project$Update$Navigation$update = F2(
 					}();
 					var clearedModel = _Utils_update(
 						model,
-						{ce: $author$project$Types$NotAsked, aE: $elm$core$Maybe$Nothing, aG: $elm$core$Maybe$Nothing, al: false, aI: $elm$core$Maybe$Nothing, cC: $author$project$Types$NotAsked, aJ: $elm$core$Maybe$Nothing, aQ: $elm$core$Maybe$Nothing, aY: $elm$core$Maybe$Nothing, aZ: $elm$core$Maybe$Nothing, a_: $elm$core$Maybe$Nothing, a$: $elm$core$Maybe$Nothing, a0: $elm$core$Maybe$Nothing, a1: $elm$core$Maybe$Nothing, a2: $elm$core$Maybe$Nothing, a3: $elm$core$Maybe$Nothing, a4: $elm$core$Maybe$Nothing, a5: $elm$core$Maybe$Nothing, c$: $elm$core$Maybe$Nothing, a6: $elm$core$Maybe$Nothing, a7: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, ba: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing, dC: $author$project$Types$NotAsked, bp: $elm$core$Maybe$Nothing, ar: false, bv: $elm$core$Maybe$Nothing, d5: $author$project$Types$emptyPasswordForm, by: $elm$core$Maybe$Nothing, ee: seededProfile, bO: $elm$core$Maybe$Nothing, _: route, bY: $elm$core$Maybe$Nothing, ax: false, eH: preservedDossier, b_: $elm$core$Maybe$Nothing, b1: $elm$core$Maybe$Nothing, e0: preservedAgent, e1: preservedCase, e2: preservedContact, e3: preservedDeal, e4: preservedInvoice, e5: preservedLead, e6: preservedPartner, e7: preservedSchool, e8: preservedStudent});
+						{cg: $author$project$Types$NotAsked, aG: $elm$core$Maybe$Nothing, aI: $elm$core$Maybe$Nothing, an: false, aK: $elm$core$Maybe$Nothing, cE: $author$project$Types$NotAsked, aL: $elm$core$Maybe$Nothing, aS: $elm$core$Maybe$Nothing, a_: $elm$core$Maybe$Nothing, a$: $elm$core$Maybe$Nothing, a0: $elm$core$Maybe$Nothing, a1: $elm$core$Maybe$Nothing, a2: $elm$core$Maybe$Nothing, a3: $elm$core$Maybe$Nothing, a4: $elm$core$Maybe$Nothing, a5: $elm$core$Maybe$Nothing, a6: $elm$core$Maybe$Nothing, a7: $elm$core$Maybe$Nothing, c1: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, a9: $elm$core$Maybe$Nothing, ba: $elm$core$Maybe$Nothing, bc: $elm$core$Maybe$Nothing, bn: $elm$core$Maybe$Nothing, dE: $author$project$Types$NotAsked, br: $elm$core$Maybe$Nothing, at: false, bx: $elm$core$Maybe$Nothing, d9: $author$project$Types$emptyPasswordForm, bA: $elm$core$Maybe$Nothing, ei: seededProfile, bQ: $elm$core$Maybe$Nothing, _: route, b_: $elm$core$Maybe$Nothing, az: false, eL: preservedDossier, b0: $elm$core$Maybe$Nothing, b3: $elm$core$Maybe$Nothing, e2: preservedAgent, e3: preservedCase, e4: preservedContact, e5: preservedDeal, e6: preservedInvoice, e7: preservedLead, e8: preservedPartner, e9: preservedSchool, fa: preservedStudent});
 					var dossierCmd = function () {
 						if (route.$ === 13) {
 							var sid = route.a;
-							var _v8 = clearedModel.eH;
-							if (_v8.$ === 2) {
+							var _v9 = clearedModel.eL;
+							if (_v9.$ === 2) {
 								return $elm$core$Platform$Cmd$none;
 							} else {
 								return A2($author$project$Update$Loaders$loadStudentDossier, clearedModel, sid).b;
@@ -12194,46 +12240,56 @@ var $author$project$Update$Navigation$update = F2(
 						}
 					}();
 					var invoicePaymentCmd = function () {
-						var _v5 = _Utils_Tuple2(route, preservedInvoice);
-						if ((_v5.a.$ === 21) && (!_v5.b.$)) {
-							var inv = _v5.b.a;
-							return A2($author$project$Update$Loaders$loadInvoicePayments, clearedModel, inv.ah).b;
+						var _v6 = _Utils_Tuple2(route, preservedInvoice);
+						if ((_v6.a.$ === 21) && (!_v6.b.$)) {
+							var inv = _v6.b.a;
+							return A2($author$project$Update$Loaders$loadInvoicePayments, clearedModel, inv.aj).b;
 						} else {
 							return $elm$core$Platform$Cmd$none;
 						}
 					}();
-					var needsAgents = onHome || ((_Utils_eq(route, $author$project$Types$Agents) || _Utils_eq(route, $author$project$Types$Students)) && _Utils_eq(clearedModel.cl, $author$project$Types$NotAsked));
-					var needsCases = (onHome || (_Utils_eq(route, $author$project$Types$Cases) || onStudentDetail)) && _Utils_eq(clearedModel.cF, $author$project$Types$NotAsked);
-					var needsContacts = (onHome || (_Utils_eq(route, $author$project$Types$Contacts) || _Utils_eq(route, $author$project$Types$Tasks))) && _Utils_eq(clearedModel.cP, $author$project$Types$NotAsked);
+					var needsAgents = onHome || ((_Utils_eq(route, $author$project$Types$Agents) || _Utils_eq(route, $author$project$Types$Students)) && _Utils_eq(clearedModel.cn, $author$project$Types$NotAsked));
+					var needsCases = (onHome || (_Utils_eq(route, $author$project$Types$Cases) || onStudentDetail)) && _Utils_eq(clearedModel.cH, $author$project$Types$NotAsked);
+					var needsContacts = (onHome || (_Utils_eq(route, $author$project$Types$Contacts) || _Utils_eq(route, $author$project$Types$Tasks))) && _Utils_eq(clearedModel.cR, $author$project$Types$NotAsked);
 					var contactsCmd = needsContacts ? $author$project$Update$Loaders$loadContacts(clearedModel).b : $elm$core$Platform$Cmd$none;
-					var needsDeals = (onHome || (_Utils_eq(route, $author$project$Types$Deals) || onContactDetail)) && _Utils_eq(clearedModel.c_, $author$project$Types$NotAsked);
+					var needsDeals = (onHome || (_Utils_eq(route, $author$project$Types$Deals) || onContactDetail)) && _Utils_eq(clearedModel.c0, $author$project$Types$NotAsked);
 					var dealsCmd = needsDeals ? $author$project$Update$Loaders$loadDeals(clearedModel).b : $elm$core$Platform$Cmd$none;
-					var needsInvoices = (onHome || (_Utils_eq(route, $author$project$Types$Invoices) || onStudentDetail)) && _Utils_eq(clearedModel.dE, $author$project$Types$NotAsked);
+					var needsInvoices = (onHome || (_Utils_eq(route, $author$project$Types$Invoices) || onStudentDetail)) && _Utils_eq(clearedModel.dG, $author$project$Types$NotAsked);
 					var invoicesCmd = needsInvoices ? $author$project$Update$Loaders$loadInvoices(clearedModel).b : $elm$core$Platform$Cmd$none;
-					var needsLeads = onHome || (_Utils_eq(route, $author$project$Types$Leads) && _Utils_eq(clearedModel.dJ, $author$project$Types$NotAsked));
+					var needsLeads = onHome || (_Utils_eq(route, $author$project$Types$Leads) && _Utils_eq(clearedModel.dL, $author$project$Types$NotAsked));
 					var leadsCmd = needsLeads ? $author$project$Update$Loaders$loadLeads(clearedModel).b : $elm$core$Platform$Cmd$none;
-					var needsPartners = _Utils_eq(route, $author$project$Types$Partners) && _Utils_eq(clearedModel.d4, $author$project$Types$NotAsked);
-					var needsSchools = onHome || ((_Utils_eq(route, $author$project$Types$Schools) || _Utils_eq(route, $author$project$Types$Students)) && _Utils_eq(clearedModel.et, $author$project$Types$NotAsked));
-					var needsStudents = onHome || ((_Utils_eq(route, $author$project$Types$Students) || onStudentDetail) && _Utils_eq(clearedModel.eK, $author$project$Types$NotAsked));
-					var needsTasks = (onHome || (_Utils_eq(route, $author$project$Types$Tasks) || onContactDetail)) && _Utils_eq(clearedModel.eS, $author$project$Types$NotAsked);
+					var needsPartners = _Utils_eq(route, $author$project$Types$Partners) && _Utils_eq(clearedModel.d8, $author$project$Types$NotAsked);
+					var needsSchools = onHome || ((_Utils_eq(route, $author$project$Types$Schools) || _Utils_eq(route, $author$project$Types$Students)) && _Utils_eq(clearedModel.ex, $author$project$Types$NotAsked));
+					var needsStudents = onHome || ((_Utils_eq(route, $author$project$Types$Students) || onStudentDetail) && _Utils_eq(clearedModel.eO, $author$project$Types$NotAsked));
+					var needsTasks = (onHome || (_Utils_eq(route, $author$project$Types$Tasks) || onContactDetail)) && _Utils_eq(clearedModel.eU, $author$project$Types$NotAsked);
 					var finalModel = _Utils_update(
 						clearedModel,
 						{
-							cl: needsAgents ? $author$project$Types$Loading : clearedModel.cl,
-							cx: _Utils_eq(route, $author$project$Types$Reports) ? $author$project$Types$Loading : clearedModel.cx,
-							cy: _Utils_eq(route, $author$project$Types$Reports) ? 0 : clearedModel.cy,
-							cF: needsCases ? $author$project$Types$Loading : clearedModel.cF,
-							cP: needsContacts ? $author$project$Types$Loading : clearedModel.cP,
-							c_: needsDeals ? $author$project$Types$Loading : clearedModel.c_,
-							bi: '',
-							ds: $author$project$Types$NotAsked,
-							dE: needsInvoices ? $author$project$Types$Loading : clearedModel.dE,
-							dJ: needsLeads ? $author$project$Types$Loading : clearedModel.dJ,
-							d4: needsPartners ? $author$project$Types$Loading : clearedModel.d4,
-							bS: (_Utils_eq(route, $author$project$Types$Reports) || _Utils_eq(route, $author$project$Types$Home)) ? $author$project$Types$Loading : clearedModel.bS,
-							et: needsSchools ? $author$project$Types$Loading : clearedModel.et,
-							eK: needsStudents ? $author$project$Types$Loading : clearedModel.eK,
-							eS: needsTasks ? $author$project$Types$Loading : clearedModel.eS
+							cn: needsAgents ? $author$project$Types$Loading : clearedModel.cn,
+							cz: _Utils_eq(route, $author$project$Types$Reports) ? $author$project$Types$Loading : clearedModel.cz,
+							cA: _Utils_eq(route, $author$project$Types$Reports) ? 0 : clearedModel.cA,
+							cH: needsCases ? $author$project$Types$Loading : clearedModel.cH,
+							cR: needsContacts ? $author$project$Types$Loading : clearedModel.cR,
+							c0: needsDeals ? $author$project$Types$Loading : clearedModel.c0,
+							bk: '',
+							du: $author$project$Types$NotAsked,
+							dG: needsInvoices ? $author$project$Types$Loading : clearedModel.dG,
+							dL: needsLeads ? $author$project$Types$Loading : clearedModel.dL,
+							dP: function () {
+								switch (route.$) {
+									case 15:
+										return $author$project$Types$Loading;
+									case 11:
+										return $author$project$Types$Loading;
+									default:
+										return $author$project$Types$NotAsked;
+								}
+							}(),
+							d8: needsPartners ? $author$project$Types$Loading : clearedModel.d8,
+							bU: (_Utils_eq(route, $author$project$Types$Reports) || _Utils_eq(route, $author$project$Types$Home)) ? $author$project$Types$Loading : clearedModel.bU,
+							ex: needsSchools ? $author$project$Types$Loading : clearedModel.ex,
+							eO: needsStudents ? $author$project$Types$Loading : clearedModel.eO,
+							eU: needsTasks ? $author$project$Types$Loading : clearedModel.eU
 						});
 					var partnersCmd = needsPartners ? $author$project$Update$Loaders$loadPartners(clearedModel).b : $elm$core$Platform$Cmd$none;
 					var schoolsCmd = needsSchools ? $author$project$Update$Loaders$loadSchools(clearedModel).b : $elm$core$Platform$Cmd$none;
@@ -12244,7 +12300,7 @@ var $author$project$Update$Navigation$update = F2(
 						var _v4 = _Utils_Tuple2(route, preservedCase);
 						if ((_v4.a.$ === 19) && (!_v4.b.$)) {
 							var c = _v4.b.a;
-							return A2($author$project$Update$Loaders$loadCaseDocuments, clearedModel, c.ah).b;
+							return A2($author$project$Update$Loaders$loadCaseDocuments, clearedModel, c.aj).b;
 						} else {
 							return $elm$core$Platform$Cmd$none;
 						}
@@ -12254,7 +12310,7 @@ var $author$project$Update$Navigation$update = F2(
 						var _v3 = _Utils_Tuple2(route, preservedContact);
 						if ((_v3.a.$ === 2) && (!_v3.b.$)) {
 							var c = _v3.b.a;
-							return A2($author$project$Update$Loaders$loadActivities, clearedModel, c.ah).b;
+							return A2($author$project$Update$Loaders$loadActivities, clearedModel, c.aj).b;
 						} else {
 							return $elm$core$Platform$Cmd$none;
 						}
@@ -12330,12 +12386,12 @@ var $author$project$Types$agentContractStatuses = _List_fromArray(
 var $author$project$Types$agentStatuses = _List_fromArray(
 	['Active', 'Inactive']);
 var $author$project$Update$Validate$validateAgentForm = function (af) {
-	var statusErr = A2($elm$core$List$member, af.ck, $author$project$Types$agentStatuses) ? _List_Nil : _List_fromArray(
+	var statusErr = A2($elm$core$List$member, af.cm, $author$project$Types$agentStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('agentStatus', 'Pick an agent status.')
 		]);
 	var referredErr = function () {
-		var _v0 = $elm$core$String$toInt(af.eM);
+		var _v0 = $elm$core$String$toInt(af.ab);
 		if (!_v0.$) {
 			var n = _v0.a;
 			return (n < 0) ? _List_fromArray(
@@ -12354,7 +12410,7 @@ var $author$project$Update$Validate$validateAgentForm = function (af) {
 		[
 			_Utils_Tuple2('name', 'Agent name is required.')
 		]) : _List_Nil;
-	var contractErr = A2($elm$core$List$member, af.aT, $author$project$Types$agentContractStatuses) ? _List_Nil : _List_fromArray(
+	var contractErr = A2($elm$core$List$member, af.aV, $author$project$Types$agentContractStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('contractStatus', 'Pick a contract status.')
 		]);
@@ -12366,33 +12422,33 @@ var $author$project$Update$Validate$validateAgentForm = function (af) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			af,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Agents$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 158:
+			case 163:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.cl;
+						var _v3 = model.cn;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								cl: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								cn: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -12401,14 +12457,14 @@ var $author$project$Update$Agents$update = F2(
 						_Utils_update(
 							model,
 							{
-								cl: $author$project$Types$Failure(message)
+								cn: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 159:
+			case 164:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.cl;
+					var _v4 = model.cn;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -12417,37 +12473,37 @@ var $author$project$Update$Agents$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							cl: next,
-							bz: $elm$core$Maybe$Just(q)
+							cn: next,
+							bB: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 174:
-				var _v5 = _Utils_Tuple2(model.V, model.bz);
+			case 179:
+				var _v5 = _Utils_Tuple2(model.V, model.bB);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bz: $elm$core$Maybe$Nothing}),
+							{bB: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchAgents, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotAgents));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bz: $elm$core$Maybe$Nothing}),
+							{bB: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 173:
+			case 178:
 				var newOffset = msg.a;
-				var _v6 = _Utils_Tuple2(model.V, model.cl);
+				var _v6 = _Utils_Tuple2(model.V, model.cn);
 				if ((!_v6.a.$) && (_v6.b.$ === 2)) {
 					var t = _v6.a.a;
 					var data = _v6.b.a;
@@ -12455,7 +12511,7 @@ var $author$project$Update$Agents$update = F2(
 						_Utils_update(
 							model,
 							{
-								cl: $author$project$Types$Success(
+								cn: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -12464,56 +12520,56 @@ var $author$project$Update$Agents$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 160:
+			case 165:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just($author$project$Types$emptyAgentForm),
-							c7: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							aI: $elm$core$Maybe$Just($author$project$Types$emptyAgentForm),
+							c9: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 161:
+			case 166:
 				var agent = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just(
+							aI: $elm$core$Maybe$Just(
 								$author$project$Types$agentToForm(agent)),
-							c7: $elm$core$Maybe$Just(agent.ah),
-							aC: $elm$core$Maybe$Nothing
+							c9: $elm$core$Maybe$Just(agent.aj),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 162:
+			case 167:
 				var agent = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$AgentDetail(agent.ah)),
+						$author$project$Types$AgentDetail(agent.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e0: $elm$core$Maybe$Just(agent)
+							aE: $elm$core$Maybe$Nothing,
+							e2: $elm$core$Maybe$Just(agent)
 						}));
-			case 163:
-				var _v7 = _Utils_Tuple2(model.aG, model.a_);
+			case 168:
+				var _v7 = _Utils_Tuple2(model.aI, model.a0);
 				if (!_v7.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a_: $elm$core$Maybe$Nothing}),
+							{a0: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v7.a.$) {
 						var af = _v7.a.a;
-						return (af.i && (!af.eN)) ? _Utils_Tuple2(
+						return (af.i && (!af.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									aG: $elm$core$Maybe$Just(
+									aI: $elm$core$Maybe$Just(
 										_Utils_update(
 											af,
 											{h: true}))
@@ -12521,27 +12577,27 @@ var $author$project$Update$Agents$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aG: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
+								{aI: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 164:
+			case 169:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
+						{aI: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 165:
-				var _v8 = model.aG;
+			case 170:
+				var _v8 = model.aI;
 				if (!_v8.$) {
 					var af = _v8.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								aI: $elm$core$Maybe$Just(
 									_Utils_update(
 										af,
 										{h: false}))
@@ -12550,10 +12606,10 @@ var $author$project$Update$Agents$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 166:
+			case 171:
 				var field = msg.a;
 				var value = msg.b;
-				var _v9 = model.aG;
+				var _v9 = model.aI;
 				if (!_v9.$) {
 					var af = _v9.a;
 					var updated = function () {
@@ -12565,23 +12621,23 @@ var $author$project$Update$Agents$update = F2(
 							case 'agentCode':
 								return _Utils_update(
 									af,
-									{ch: value});
+									{cj: value});
 							case 'countryCode':
 								return _Utils_update(
 									af,
-									{ao: value});
+									{aq: value});
 							case 'contractStatus':
 								return _Utils_update(
 									af,
-									{aT: value});
+									{aV: value});
 							case 'agentStatus':
 								return _Utils_update(
 									af,
-									{ck: value});
+									{cm: value});
 							case 'studentsReferred':
 								return _Utils_update(
 									af,
-									{eM: value});
+									{ab: value});
 							case 'notes':
 								return _Utils_update(
 									af,
@@ -12594,26 +12650,26 @@ var $author$project$Update$Agents$update = F2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								aI: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v10) {
 													var f = _v10.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 167:
-				var _v12 = _Utils_Tuple2(model.aG, model.V);
+			case 172:
+				var _v12 = _Utils_Tuple2(model.aI, model.V);
 				if ((!_v12.a.$) && (!_v12.b.$)) {
 					var af = _v12.a.a;
 					var token = _v12.b.a;
@@ -12625,12 +12681,12 @@ var $author$project$Update$Agents$update = F2(
 							_Utils_update(
 								model,
 								{
-									aG: $elm$core$Maybe$Just(validated)
+									aI: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v14 = model.c7;
+							var _v14 = model.c9;
 							if (!_v14.$) {
 								var id = _v14.a;
 								return A4($author$project$Api$updateAgent, token, id, validated, $author$project$Types$GotSavedAgent);
@@ -12642,34 +12698,34 @@ var $author$project$Update$Agents$update = F2(
 							_Utils_update(
 								model,
 								{
-									aG: $elm$core$Maybe$Just(
+									aI: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 168:
+			case 173:
 				var result = msg.a;
 				if (!result.$) {
 					var agent = result.a;
-					var verb = (!_Utils_eq(model.c7, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.c9, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Nothing,
-							c7: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							aI: $elm$core$Maybe$Nothing,
+							c9: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, agent.M)),
-							e0: function () {
+							e2: function () {
 								var _v16 = model._;
 								if (_v16.$ === 15) {
 									return $elm$core$Maybe$Just(agent);
 								} else {
-									return model.e0;
+									return model.e2;
 								}
 							}()
 						});
@@ -12679,17 +12735,17 @@ var $author$project$Update$Agents$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v17 = model.aG;
+						var _v17 = model.aI;
 						if (!_v17.$) {
 							var af = _v17.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aG: $elm$core$Maybe$Just(
+										aI: $elm$core$Maybe$Just(
 											_Utils_update(
 												af,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -12697,22 +12753,22 @@ var $author$project$Update$Agents$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v18 = model.aG;
+						var _v18 = model.aI;
 						if (!_v18.$) {
 							var af = _v18.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aG: $elm$core$Maybe$Just(
+										aI: $elm$core$Maybe$Just(
 											_Utils_update(
 												af,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -12721,37 +12777,37 @@ var $author$project$Update$Agents$update = F2(
 						}
 					}
 				}
-			case 169:
+			case 174:
 				var agent = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a_: $elm$core$Maybe$Just(agent)
+							a0: $elm$core$Maybe$Just(agent)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 170:
+			case 175:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a_: $elm$core$Maybe$Nothing}),
+						{a0: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 171:
-				var _v19 = _Utils_Tuple2(model.a_, model.V);
+			case 176:
+				var _v19 = _Utils_Tuple2(model.a0, model.V);
 				if ((!_v19.a.$) && (!_v19.b.$)) {
 					var agent = _v19.a.a;
 					var token = _v19.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteAgent, token, agent.ah, $author$project$Types$GotDeletedAgent));
+						A3($author$project$Api$deleteAgent, token, agent.aj, $author$project$Types$GotDeletedAgent));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 172:
+			case 177:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v23 = model.a_;
+						var _v23 = model.a0;
 						if (!_v23.$) {
 							var a = _v23.a;
 							return a.M;
@@ -12762,7 +12818,7 @@ var $author$project$Update$Agents$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a_: $elm$core$Maybe$Nothing,
+							a0: $elm$core$Maybe$Nothing,
 							_: function () {
 								var _v21 = model._;
 								if (_v21.$ === 15) {
@@ -12771,13 +12827,13 @@ var $author$project$Update$Agents$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e0: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e2: function () {
 								var _v22 = model._;
 								if (_v22.$ === 15) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e0;
+									return model.e2;
 								}
 							}()
 						});
@@ -12795,8 +12851,8 @@ var $author$project$Update$Agents$update = F2(
 						_Utils_update(
 							model,
 							{
-								a_: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a0: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -12886,7 +12942,7 @@ var $author$project$Types$Register = 1;
 var $author$project$Update$Validate$validate = F2(
 	function (form, mode) {
 		var passErr = (_Utils_cmp(
-			$elm$core$String$length(form.bw),
+			$elm$core$String$length(form.by),
 			(mode === 1) ? 12 : 8) < 0) ? _List_fromArray(
 			[
 				_Utils_Tuple2(2, 'Password must be at least 12 characters when registering.')
@@ -12896,7 +12952,7 @@ var $author$project$Update$Validate$validate = F2(
 			[
 				_Utils_Tuple2(0, 'Please enter your name.')
 			]) : _List_Nil;
-		var emailErr = (!(A2($elm$core$String$contains, '@', form.ag) && A2($elm$core$String$contains, '.', form.ag))) ? _List_fromArray(
+		var emailErr = (!(A2($elm$core$String$contains, '@', form.ai) && A2($elm$core$String$contains, '.', form.ai))) ? _List_fromArray(
 			[
 				_Utils_Tuple2(1, 'Please enter a valid email.')
 			]) : _List_Nil;
@@ -12917,9 +12973,9 @@ var $author$project$Update$Auth$update = F2(
 					var result = msg.a;
 					if (!result.$) {
 						var response = result.a;
-						if (model.cB) {
+						if (model.cD) {
 							var $temp$msg = $author$project$Types$GotUser(
-								$elm$core$Result$Ok(response.b3)),
+								$elm$core$Result$Ok(response.b5)),
 								$temp$model = _Utils_update(
 								model,
 								{
@@ -12934,7 +12990,7 @@ var $author$project$Update$Auth$update = F2(
 									model,
 									{
 										V: $elm$core$Maybe$Just(response.V),
-										b3: $elm$core$Maybe$Just(response.b3)
+										b5: $elm$core$Maybe$Just(response.b5)
 									}),
 								$elm$core$Platform$Cmd$none);
 						}
@@ -12953,17 +13009,17 @@ var $author$project$Update$Auth$update = F2(
 						_Utils_update(
 							model,
 							{
-								dr: function (f) {
+								dt: function (f) {
 									return _Utils_update(
 										f,
-										{bu: value});
-								}(model.dr)
+										{bw: value});
+								}(model.dt)
 							}),
 						$elm$core$Platform$Cmd$none);
 				case 0:
 					var field = msg.a;
 					var value = msg.b;
-					var current = model.dr;
+					var current = model.dt;
 					var newForm = function () {
 						switch (field) {
 							case 0:
@@ -12973,25 +13029,25 @@ var $author$project$Update$Auth$update = F2(
 							case 1:
 								return _Utils_update(
 									current,
-									{ag: value});
+									{ai: value});
 							default:
 								return _Utils_update(
 									current,
-									{bw: value});
+									{by: value});
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								dj: A2(
+								dl: A2(
 									$elm$core$List$filter,
 									function (_v2) {
 										var f = _v2.a;
 										return !_Utils_eq(f, field);
 									},
-									model.dj),
-								dr: newForm
+									model.dl),
+								dt: newForm
 							}),
 						$elm$core$Platform$Cmd$none);
 				case 2:
@@ -13000,77 +13056,77 @@ var $author$project$Update$Auth$update = F2(
 						_Utils_update(
 							model,
 							{
-								dr: function (f) {
+								dt: function (f) {
 									return _Utils_update(
 										f,
-										{bQ: value});
-								}(model.dr)
+										{bS: value});
+								}(model.dt)
 							}),
 						$elm$core$Platform$Cmd$none);
 				case 3:
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ey: !model.ey}),
+							{eC: !model.eC}),
 						$elm$core$Platform$Cmd$none);
 				case 5:
 					var newMode = msg.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{co: $elm$core$Maybe$Nothing, dj: _List_Nil, dr: $author$project$Types$emptyForm, dP: newMode}),
+							{cq: $elm$core$Maybe$Nothing, dl: _List_Nil, dt: $author$project$Types$emptyForm, dS: newMode}),
 						$elm$core$Platform$Cmd$none);
 				case 4:
-					var errs = A2($author$project$Update$Validate$validate, model.dr, model.dP);
+					var errs = A2($author$project$Update$Validate$validate, model.dt, model.dS);
 					if (!$elm$core$List$isEmpty(errs)) {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{dj: errs}),
+								{dl: errs}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v4 = model.dP;
+							var _v4 = model.dS;
 							if (!_v4) {
-								return A5($author$project$Api$login, model.dr.ag, model.dr.bw, model.dr.bu, model.dr.bQ, $author$project$Types$GotAuth);
+								return A5($author$project$Api$login, model.dt.ai, model.dt.by, model.dt.bw, model.dt.bS, $author$project$Types$GotAuth);
 							} else {
-								return A4($author$project$Api$register, model.dr.M, model.dr.ag, model.dr.bw, $author$project$Types$GotAuth);
+								return A4($author$project$Api$register, model.dt.M, model.dt.ai, model.dt.by, $author$project$Types$GotAuth);
 							}
 						}();
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{co: $elm$core$Maybe$Nothing, dj: _List_Nil, eN: true}),
+								{cq: $elm$core$Maybe$Nothing, dl: _List_Nil, eP: true}),
 							cmd);
 					}
 				case 16:
 					var result = msg.a;
 					if (!result.$) {
-						var user = result.a.b3;
+						var user = result.a.b5;
 						var token = result.a.V;
 						var storeCmd = $author$project$Ports$storeToken(
 							$elm$core$Maybe$Just(token));
 						var modelWithAuth = _Utils_update(
 							model,
 							{
-								co: $elm$core$Maybe$Just(
-									{dF: 1, dN: 'Welcome, ' + (user.M + '!')}),
-								cx: $author$project$Types$NotAsked,
-								cy: 0,
-								cF: $author$project$Types$NotAsked,
-								cP: $author$project$Types$NotAsked,
-								c_: $author$project$Types$NotAsked,
-								dn: $elm$core$Maybe$Nothing,
-								bi: '',
-								ds: $author$project$Types$NotAsked,
-								dE: $author$project$Types$NotAsked,
-								d4: $author$project$Types$NotAsked,
-								bS: $author$project$Types$NotAsked,
+								cq: $elm$core$Maybe$Just(
+									{dH: 1, dQ: 'Welcome, ' + (user.M + '!')}),
+								cz: $author$project$Types$NotAsked,
+								cA: 0,
+								cH: $author$project$Types$NotAsked,
+								cR: $author$project$Types$NotAsked,
+								c0: $author$project$Types$NotAsked,
+								dp: $elm$core$Maybe$Nothing,
+								bk: '',
+								du: $author$project$Types$NotAsked,
+								dG: $author$project$Types$NotAsked,
+								d8: $author$project$Types$NotAsked,
+								bU: $author$project$Types$NotAsked,
 								_: model._,
-								eN: false,
-								aC: $elm$core$Maybe$Nothing,
+								eP: false,
+								aE: $elm$core$Maybe$Nothing,
 								V: $elm$core$Maybe$Just(token),
-								b3: $elm$core$Maybe$Just(user)
+								b5: $elm$core$Maybe$Just(user)
 							});
 						var _v6 = A2(
 							$author$project$Update$Navigation$update,
@@ -13093,9 +13149,9 @@ var $author$project$Update$Auth$update = F2(
 							_Utils_update(
 								model,
 								{
-									co: $elm$core$Maybe$Just(
-										{dF: 0, dN: message}),
-									eN: false
+									cq: $elm$core$Maybe$Just(
+										{dH: 0, dQ: message}),
+									eP: false
 								}),
 							$elm$core$Platform$Cmd$none);
 					}
@@ -13106,8 +13162,8 @@ var $author$project$Update$Auth$update = F2(
 						var modelWithUser = _Utils_update(
 							model,
 							{
-								cB: false,
-								b3: $elm$core$Maybe$Just(user)
+								cD: false,
+								b5: $elm$core$Maybe$Just(user)
 							});
 						var _v8 = A2(
 							$author$project$Update$Navigation$update,
@@ -13130,14 +13186,14 @@ var $author$project$Update$Auth$update = F2(
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{cB: false, V: $elm$core$Maybe$Nothing, b3: $elm$core$Maybe$Nothing}),
+								{cD: false, V: $elm$core$Maybe$Nothing, b5: $elm$core$Maybe$Nothing}),
 							$author$project$Ports$storeToken($elm$core$Maybe$Nothing));
 					}
 				case 23:
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ce: $author$project$Types$NotAsked, aE: $elm$core$Maybe$Nothing, aG: $elm$core$Maybe$Nothing, cl: $author$project$Types$NotAsked, co: $elm$core$Maybe$Nothing, cx: $author$project$Types$NotAsked, cy: 0, cB: false, al: false, aI: $elm$core$Maybe$Nothing, cC: $author$project$Types$NotAsked, aJ: $elm$core$Maybe$Nothing, cF: $author$project$Types$NotAsked, aQ: $elm$core$Maybe$Nothing, cP: $author$project$Types$NotAsked, cW: '', cY: '', aY: $elm$core$Maybe$Nothing, c_: $author$project$Types$NotAsked, aZ: $elm$core$Maybe$Nothing, a_: $elm$core$Maybe$Nothing, a$: $elm$core$Maybe$Nothing, a0: $elm$core$Maybe$Nothing, a1: $elm$core$Maybe$Nothing, a2: $elm$core$Maybe$Nothing, a3: $elm$core$Maybe$Nothing, a4: $elm$core$Maybe$Nothing, a5: $elm$core$Maybe$Nothing, c$: $elm$core$Maybe$Nothing, a6: $elm$core$Maybe$Nothing, a7: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, ba: $elm$core$Maybe$Nothing, c4: $elm$core$Maybe$Nothing, c5: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing, c8: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing, dc: $elm$core$Maybe$Nothing, dd: $elm$core$Maybe$Nothing, de: $elm$core$Maybe$Nothing, df: $elm$core$Maybe$Nothing, dg: $elm$core$Maybe$Nothing, dh: $elm$core$Maybe$Nothing, dn: $elm$core$Maybe$Nothing, dr: $author$project$Types$emptyForm, bi: '', ds: $author$project$Types$NotAsked, bl: $elm$core$Maybe$Nothing, dC: $author$project$Types$NotAsked, dE: $author$project$Types$NotAsked, bp: $elm$core$Maybe$Nothing, dJ: $author$project$Types$NotAsked, ar: false, dP: 0, dQ: $elm$core$Maybe$Nothing, d0: '', bv: $elm$core$Maybe$Nothing, d4: $author$project$Types$NotAsked, d5: $author$project$Types$emptyPasswordForm, by: $elm$core$Maybe$Nothing, bz: $elm$core$Maybe$Nothing, bA: $elm$core$Maybe$Nothing, bB: $elm$core$Maybe$Nothing, bC: $elm$core$Maybe$Nothing, bD: $elm$core$Maybe$Nothing, bE: $elm$core$Maybe$Nothing, bF: $elm$core$Maybe$Nothing, bG: $elm$core$Maybe$Nothing, bH: $elm$core$Maybe$Nothing, bI: $elm$core$Maybe$Nothing, ee: $author$project$Types$emptyProfileForm, bO: $elm$core$Maybe$Nothing, bS: $author$project$Types$NotAsked, _: $author$project$Types$Home, bY: $elm$core$Maybe$Nothing, et: $author$project$Types$NotAsked, eu: $elm$core$Set$empty, eH: $author$project$Types$NotAsked, b_: $elm$core$Maybe$Nothing, eK: $author$project$Types$NotAsked, b1: $elm$core$Maybe$Nothing, eS: $author$project$Types$NotAsked, aC: $elm$core$Maybe$Nothing, V: $elm$core$Maybe$Nothing, b3: $elm$core$Maybe$Nothing, e0: $elm$core$Maybe$Nothing, e1: $elm$core$Maybe$Nothing, e2: $elm$core$Maybe$Nothing, e3: $elm$core$Maybe$Nothing, e4: $elm$core$Maybe$Nothing, e5: $elm$core$Maybe$Nothing, e6: $elm$core$Maybe$Nothing, e7: $elm$core$Maybe$Nothing, e8: $elm$core$Maybe$Nothing}),
+							{cg: $author$project$Types$NotAsked, aG: $elm$core$Maybe$Nothing, aI: $elm$core$Maybe$Nothing, cn: $author$project$Types$NotAsked, cq: $elm$core$Maybe$Nothing, cz: $author$project$Types$NotAsked, cA: 0, cD: false, an: false, aK: $elm$core$Maybe$Nothing, cE: $author$project$Types$NotAsked, aL: $elm$core$Maybe$Nothing, cH: $author$project$Types$NotAsked, aS: $elm$core$Maybe$Nothing, cR: $author$project$Types$NotAsked, cY: '', c_: '', a_: $elm$core$Maybe$Nothing, c0: $author$project$Types$NotAsked, a$: $elm$core$Maybe$Nothing, a0: $elm$core$Maybe$Nothing, a1: $elm$core$Maybe$Nothing, a2: $elm$core$Maybe$Nothing, a3: $elm$core$Maybe$Nothing, a4: $elm$core$Maybe$Nothing, a5: $elm$core$Maybe$Nothing, a6: $elm$core$Maybe$Nothing, a7: $elm$core$Maybe$Nothing, c1: $elm$core$Maybe$Nothing, a8: $elm$core$Maybe$Nothing, a9: $elm$core$Maybe$Nothing, ba: $elm$core$Maybe$Nothing, bc: $elm$core$Maybe$Nothing, c6: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing, dc: $elm$core$Maybe$Nothing, dd: $elm$core$Maybe$Nothing, de: $elm$core$Maybe$Nothing, df: $elm$core$Maybe$Nothing, dg: $elm$core$Maybe$Nothing, dh: $elm$core$Maybe$Nothing, di: $elm$core$Maybe$Nothing, dj: $elm$core$Maybe$Nothing, dp: $elm$core$Maybe$Nothing, dt: $author$project$Types$emptyForm, bk: '', du: $author$project$Types$NotAsked, bn: $elm$core$Maybe$Nothing, dE: $author$project$Types$NotAsked, dG: $author$project$Types$NotAsked, br: $elm$core$Maybe$Nothing, dL: $author$project$Types$NotAsked, dP: $author$project$Types$NotAsked, at: false, dS: 0, dT: $elm$core$Maybe$Nothing, d3: '', bx: $elm$core$Maybe$Nothing, d8: $author$project$Types$NotAsked, d9: $author$project$Types$emptyPasswordForm, bA: $elm$core$Maybe$Nothing, bB: $elm$core$Maybe$Nothing, bC: $elm$core$Maybe$Nothing, bD: $elm$core$Maybe$Nothing, bE: $elm$core$Maybe$Nothing, bF: $elm$core$Maybe$Nothing, bG: $elm$core$Maybe$Nothing, bH: $elm$core$Maybe$Nothing, bI: $elm$core$Maybe$Nothing, bJ: $elm$core$Maybe$Nothing, bK: $elm$core$Maybe$Nothing, ei: $author$project$Types$emptyProfileForm, bQ: $elm$core$Maybe$Nothing, bU: $author$project$Types$NotAsked, _: $author$project$Types$Home, b_: $elm$core$Maybe$Nothing, ex: $author$project$Types$NotAsked, ey: $elm$core$Set$empty, eL: $author$project$Types$NotAsked, b0: $elm$core$Maybe$Nothing, eO: $author$project$Types$NotAsked, b3: $elm$core$Maybe$Nothing, eU: $author$project$Types$NotAsked, aE: $elm$core$Maybe$Nothing, V: $elm$core$Maybe$Nothing, b5: $elm$core$Maybe$Nothing, e2: $elm$core$Maybe$Nothing, e3: $elm$core$Maybe$Nothing, e4: $elm$core$Maybe$Nothing, e5: $elm$core$Maybe$Nothing, e6: $elm$core$Maybe$Nothing, e7: $elm$core$Maybe$Nothing, e8: $elm$core$Maybe$Nothing, e9: $elm$core$Maybe$Nothing, fa: $elm$core$Maybe$Nothing}),
 						$author$project$Ports$storeToken($elm$core$Maybe$Nothing));
 				default:
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -13145,22 +13201,22 @@ var $author$project$Update$Auth$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedCase = function (a) {
-	return {$: 208, a: a};
+	return {$: 213, a: a};
 };
 var $author$project$Types$GotDeletedDocument = function (a) {
-	return {$: 224, a: a};
+	return {$: 229, a: a};
 };
 var $author$project$Types$GotSavedCase = function (a) {
-	return {$: 204, a: a};
+	return {$: 209, a: a};
 };
 var $author$project$Types$GotSavedDocument = function (a) {
-	return {$: 220, a: a};
+	return {$: 225, a: a};
 };
 var $author$project$Types$GotUpdatedDocument = function (a) {
-	return {$: 226, a: a};
+	return {$: 231, a: a};
 };
 var $author$project$Types$caseToForm = function (c) {
-	return {cg: c.cg, cv: c.cv, cE: c.cE, aL: c.aL, cJ: c.cJ, h: false, cV: c.cV, cX: c.cX, c1: c.c1, i: false, dj: _List_Nil, $7: c.$7, du: c.du, dT: c.dT, dU: c.dU, n: c.n, ec: c.ec, el: c.el, er: c.er, ew: c.ew, eI: c.eI, eN: false, eQ: c.eQ, fa: c.fa};
+	return {ci: c.ci, cx: c.cx, cG: c.cG, aN: c.aN, cL: c.cL, h: false, cX: c.cX, cZ: c.cZ, c3: c.c3, i: false, dl: _List_Nil, dq: c.dq, dw: c.dw, dW: c.dW, dX: c.dX, n: c.n, eg: c.eg, ep: c.ep, ev: c.ev, eA: c.eA, eM: c.eM, eP: false, eS: c.eS, fc: c.fc};
 };
 var $author$project$Api$caseFormPayload = function (cf) {
 	return $elm$json$Json$Encode$object(
@@ -13168,61 +13224,61 @@ var $author$project$Api$caseFormPayload = function (cf) {
 			[
 				_Utils_Tuple2(
 				'caseNumber',
-				$elm$json$Json$Encode$string(cf.cE)),
+				$elm$json$Json$Encode$string(cf.cG)),
 				_Utils_Tuple2(
 				'clientId',
-				$elm$json$Json$Encode$string(cf.aL)),
+				$elm$json$Json$Encode$string(cf.aN)),
 				_Utils_Tuple2(
 				'studentId',
-				$elm$json$Json$Encode$string(cf.eI)),
+				$elm$json$Json$Encode$string(cf.eM)),
 				_Utils_Tuple2(
 				'serviceCategory',
-				$elm$json$Json$Encode$string(cf.ew)),
+				$elm$json$Json$Encode$string(cf.eA)),
 				_Utils_Tuple2(
 				'destinationCountry',
-				$elm$json$Json$Encode$string(cf.c1)),
+				$elm$json$Json$Encode$string(cf.c3)),
 				_Utils_Tuple2(
 				'visaType',
-				$elm$json$Json$Encode$string(cf.fa)),
+				$elm$json$Json$Encode$string(cf.fc)),
 				_Utils_Tuple2(
 				'schoolOrEmployer',
-				$elm$json$Json$Encode$string(cf.er)),
+				$elm$json$Json$Encode$string(cf.ev)),
 				_Utils_Tuple2(
 				'assignedOfficer',
-				$elm$json$Json$Encode$string(cf.cv)),
+				$elm$json$Json$Encode$string(cf.cx)),
 				_Utils_Tuple2(
 				'externalAdviser',
-				$elm$json$Json$Encode$string(cf.$7)),
+				$elm$json$Json$Encode$string(cf.dq)),
 				_Utils_Tuple2(
 				'dateOpened',
-				$elm$json$Json$Encode$string(cf.cX)),
+				$elm$json$Json$Encode$string(cf.cZ)),
 				_Utils_Tuple2(
 				'targetSubmission',
-				$elm$json$Json$Encode$string(cf.eQ)),
+				$elm$json$Json$Encode$string(cf.eS)),
 				_Utils_Tuple2(
 				'actualSubmission',
-				$elm$json$Json$Encode$string(cf.cg)),
+				$elm$json$Json$Encode$string(cf.ci)),
 				_Utils_Tuple2(
 				'governmentRef',
-				$elm$json$Json$Encode$string(cf.du)),
+				$elm$json$Json$Encode$string(cf.dw)),
 				_Utils_Tuple2(
 				'currentStage',
-				$elm$json$Json$Encode$string(cf.cV)),
+				$elm$json$Json$Encode$string(cf.cX)),
 				_Utils_Tuple2(
 				'priority',
-				$elm$json$Json$Encode$string(cf.ec)),
+				$elm$json$Json$Encode$string(cf.eg)),
 				_Utils_Tuple2(
 				'nextAction',
-				$elm$json$Json$Encode$string(cf.dT)),
+				$elm$json$Json$Encode$string(cf.dW)),
 				_Utils_Tuple2(
 				'nextDeadline',
-				$elm$json$Json$Encode$string(cf.dU)),
+				$elm$json$Json$Encode$string(cf.dX)),
 				_Utils_Tuple2(
 				'result',
-				$elm$json$Json$Encode$string(cf.el)),
+				$elm$json$Json$Encode$string(cf.ep)),
 				_Utils_Tuple2(
 				'closureDate',
-				$elm$json$Json$Encode$string(cf.cJ)),
+				$elm$json$Json$Encode$string(cf.cL)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(cf.n))
@@ -13363,40 +13419,40 @@ var $author$project$Api$createDocument = F4(
 								$elm$json$Json$Encode$string(caseId)),
 								_Utils_Tuple2(
 								'docName',
-								$elm$json$Json$Encode$string(df.a9)),
+								$elm$json$Json$Encode$string(df.bb)),
 								_Utils_Tuple2(
 								'required',
-								$elm$json$Json$Encode$bool(df.bV)),
+								$elm$json$Json$Encode$bool(df.bX)),
 								_Utils_Tuple2(
 								'dateRequested',
-								$elm$json$Json$Encode$string(df.aW)),
+								$elm$json$Json$Encode$string(df.aY)),
 								_Utils_Tuple2(
 								'dateReceived',
-								$elm$json$Json$Encode$string(df.aV)),
+								$elm$json$Json$Encode$string(df.aX)),
 								_Utils_Tuple2(
 								'expiryDate',
-								$elm$json$Json$Encode$string(df.be)),
+								$elm$json$Json$Encode$string(df.bg)),
 								_Utils_Tuple2(
 								'verifiedBy',
-								$elm$json$Json$Encode$string(df.b5)),
+								$elm$json$Json$Encode$string(df.b7)),
 								_Utils_Tuple2(
 								'verificationDate',
-								$elm$json$Json$Encode$string(df.b4)),
+								$elm$json$Json$Encode$string(df.b6)),
 								_Utils_Tuple2(
 								'status',
-								$elm$json$Json$Encode$string(df.aj)),
+								$elm$json$Json$Encode$string(df.al)),
 								_Utils_Tuple2(
 								'rejectionReason',
-								$elm$json$Json$Encode$string(df.bP)),
+								$elm$json$Json$Encode$string(df.bR)),
 								_Utils_Tuple2(
 								'translationRequired',
-								$elm$json$Json$Encode$bool(df.b2)),
+								$elm$json$Json$Encode$bool(df.b4)),
 								_Utils_Tuple2(
 								'legalizationRequired',
-								$elm$json$Json$Encode$bool(df.bq)),
+								$elm$json$Json$Encode$bool(df.bs)),
 								_Utils_Tuple2(
 								'filePath',
-								$elm$json$Json$Encode$string(df.bg)),
+								$elm$json$Json$Encode$string(df.bi)),
 								_Utils_Tuple2(
 								'notes',
 								$elm$json$Json$Encode$string(df.n))
@@ -13524,16 +13580,16 @@ var $author$project$Api$deleteDocument = F3(
 			});
 	});
 var $author$project$Types$documentToForm = function (d) {
-	return {h: false, aV: d.aV, aW: d.aW, i: false, a9: d.a9, dj: _List_Nil, be: d.be, bg: d.bg, bq: d.bq, n: d.n, bP: d.bP, bV: d.bV, aj: d.aj, eN: false, b2: d.b2, b4: d.b4, b5: d.b5};
+	return {h: false, aX: d.aX, aY: d.aY, i: false, bb: d.bb, dl: _List_Nil, bg: d.bg, bi: d.bi, bs: d.bs, n: d.n, bR: d.bR, bX: d.bX, al: d.al, eP: false, b4: d.b4, b6: d.b6, b7: d.b7};
 };
-var $author$project$Types$emptyCaseForm = {cg: '', cv: '', cE: '', aL: '', cJ: '', h: false, cV: 'Assessment', cX: '', c1: '', i: false, dj: _List_Nil, $7: '', du: '', dT: '', dU: '', n: '', ec: 'Medium', el: '', er: '', ew: '', eI: '', eN: false, eQ: '', fa: ''};
-var $author$project$Types$emptyDocumentForm = {h: false, aV: '', aW: '', i: false, a9: '', dj: _List_Nil, be: '', bg: '', bq: false, n: '', bP: '', bV: true, aj: 'Not Requested', eN: false, b2: false, b4: '', b5: ''};
+var $author$project$Types$emptyCaseForm = {ci: '', cx: '', cG: '', aN: '', cL: '', h: false, cX: 'Assessment', cZ: '', c3: '', i: false, dl: _List_Nil, dq: '', dw: '', dW: '', dX: '', n: '', eg: 'Medium', ep: '', ev: '', eA: '', eM: '', eP: false, eS: '', fc: ''};
+var $author$project$Types$emptyDocumentForm = {h: false, aX: '', aY: '', i: false, bb: '', dl: _List_Nil, bg: '', bi: '', bs: false, n: '', bR: '', bX: true, al: 'Not Requested', eP: false, b4: false, b6: '', b7: ''};
 var $author$project$Update$Cases$refreshDocuments = function (model) {
-	var _v0 = _Utils_Tuple2(model.V, model.e1);
+	var _v0 = _Utils_Tuple2(model.V, model.e3);
 	if ((!_v0.a.$) && (!_v0.b.$)) {
 		var t = _v0.a.a;
 		var c = _v0.b.a;
-		return A3($author$project$Api$fetchCaseDocuments, t, c.ah, $author$project$Types$GotCaseDocuments);
+		return A3($author$project$Api$fetchCaseDocuments, t, c.aj, $author$project$Types$GotCaseDocuments);
 	} else {
 		return $elm$core$Platform$Cmd$none;
 	}
@@ -13569,40 +13625,40 @@ var $author$project$Api$updateDocument = F5(
 								$elm$json$Json$Encode$string(caseId)),
 								_Utils_Tuple2(
 								'docName',
-								$elm$json$Json$Encode$string(df.a9)),
+								$elm$json$Json$Encode$string(df.bb)),
 								_Utils_Tuple2(
 								'required',
-								$elm$json$Json$Encode$bool(df.bV)),
+								$elm$json$Json$Encode$bool(df.bX)),
 								_Utils_Tuple2(
 								'dateRequested',
-								$elm$json$Json$Encode$string(df.aW)),
+								$elm$json$Json$Encode$string(df.aY)),
 								_Utils_Tuple2(
 								'dateReceived',
-								$elm$json$Json$Encode$string(df.aV)),
+								$elm$json$Json$Encode$string(df.aX)),
 								_Utils_Tuple2(
 								'expiryDate',
-								$elm$json$Json$Encode$string(df.be)),
+								$elm$json$Json$Encode$string(df.bg)),
 								_Utils_Tuple2(
 								'verifiedBy',
-								$elm$json$Json$Encode$string(df.b5)),
+								$elm$json$Json$Encode$string(df.b7)),
 								_Utils_Tuple2(
 								'verificationDate',
-								$elm$json$Json$Encode$string(df.b4)),
+								$elm$json$Json$Encode$string(df.b6)),
 								_Utils_Tuple2(
 								'status',
-								$elm$json$Json$Encode$string(df.aj)),
+								$elm$json$Json$Encode$string(df.al)),
 								_Utils_Tuple2(
 								'rejectionReason',
-								$elm$json$Json$Encode$string(df.bP)),
+								$elm$json$Json$Encode$string(df.bR)),
 								_Utils_Tuple2(
 								'translationRequired',
-								$elm$json$Json$Encode$bool(df.b2)),
+								$elm$json$Json$Encode$bool(df.b4)),
 								_Utils_Tuple2(
 								'legalizationRequired',
-								$elm$json$Json$Encode$bool(df.bq)),
+								$elm$json$Json$Encode$bool(df.bs)),
 								_Utils_Tuple2(
 								'filePath',
-								$elm$json$Json$Encode$string(df.bg)),
+								$elm$json$Json$Encode$string(df.bi)),
 								_Utils_Tuple2(
 								'notes',
 								$elm$json$Json$Encode$string(df.n))
@@ -13651,21 +13707,21 @@ var $author$project$Types$casePriorities = _List_fromArray(
 var $author$project$Types$caseStages = _List_fromArray(
 	['Assessment', 'Eligibility Review', 'Agreement Pending', 'Documents Pending', 'Documents Under Review', 'Application Preparation', 'Partner Review', 'Ready for Submission', 'Submitted', 'Additional Documents Requested', 'Decision Pending', 'Approved', 'Refused', 'Closed']);
 var $author$project$Update$Validate$validateCaseForm = function (cf) {
-	var stageErr = A2($elm$core$List$member, cf.cV, $author$project$Types$caseStages) ? _List_Nil : _List_fromArray(
+	var stageErr = A2($elm$core$List$member, cf.cX, $author$project$Types$caseStages) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('currentStage', 'Pick a stage.')
 		]);
 	var serviceErr = $elm$core$String$isEmpty(
-		$elm$core$String$trim(cf.ew)) ? _List_fromArray(
+		$elm$core$String$trim(cf.eA)) ? _List_fromArray(
 		[
 			_Utils_Tuple2('serviceCategory', 'Service category is required.')
 		]) : _List_Nil;
-	var prioErr = A2($elm$core$List$member, cf.ec, $author$project$Types$casePriorities) ? _List_Nil : _List_fromArray(
+	var prioErr = A2($elm$core$List$member, cf.eg, $author$project$Types$casePriorities) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('priority', 'Pick a priority.')
 		]);
 	var clientErr = $elm$core$String$isEmpty(
-		$elm$core$String$trim(cf.aL)) ? _List_fromArray(
+		$elm$core$String$trim(cf.aN)) ? _List_fromArray(
 		[
 			_Utils_Tuple2('clientId', 'Client is required.')
 		]) : _List_Nil;
@@ -13677,33 +13733,33 @@ var $author$project$Update$Validate$validateCaseForm = function (cf) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			cf,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Cases$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 192:
+			case 197:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.cF;
+						var _v3 = model.cH;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', eB: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', eF: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								cF: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, eB: prev.eB, y: total})
+								cH: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, eF: prev.eF, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -13712,14 +13768,14 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								cF: $author$project$Types$Failure(message)
+								cH: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 193:
+			case 198:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.cF;
+					var _v4 = model.cH;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -13728,24 +13784,24 @@ var $author$project$Update$Cases$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, eB: '', y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, eF: '', t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							cF: next,
-							bA: $elm$core$Maybe$Just(q)
+							cH: next,
+							bC: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 194:
+			case 199:
 				var stage = msg.a;
 				var _v5 = model.V;
 				if (!_v5.$) {
 					var t = _v5.a;
 					var _v6 = function () {
-						var _v7 = model.cF;
+						var _v7 = model.cH;
 						if (_v7.$ === 2) {
 							var data = _v7.a;
 							return _Utils_Tuple2(
@@ -13753,12 +13809,12 @@ var $author$project$Update$Cases$update = F2(
 								$author$project$Types$Success(
 									_Utils_update(
 										data,
-										{G: 0, eB: stage})));
+										{G: 0, eF: stage})));
 						} else {
 							return _Utils_Tuple2(
 								'',
 								$author$project$Types$Success(
-									{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', eB: stage, y: 0}));
+									{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', eF: stage, t: 0}));
 						}
 					}();
 					var q = _v6.a;
@@ -13766,21 +13822,21 @@ var $author$project$Update$Cases$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{cF: next}),
+							{cH: next}),
 						A6($author$project$Api$fetchCases, t, q, stage, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotCases));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 210:
-				var _v8 = _Utils_Tuple2(model.V, model.bA);
+			case 215:
+				var _v8 = _Utils_Tuple2(model.V, model.bC);
 				if ((!_v8.a.$) && (!_v8.b.$)) {
 					var t = _v8.a.a;
 					var q = _v8.b.a;
 					var stage = function () {
-						var _v9 = model.cF;
+						var _v9 = model.cH;
 						if (_v9.$ === 2) {
 							var d = _v9.a;
-							return d.eB;
+							return d.eF;
 						} else {
 							return '';
 						}
@@ -13788,18 +13844,18 @@ var $author$project$Update$Cases$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bA: $elm$core$Maybe$Nothing}),
+							{bC: $elm$core$Maybe$Nothing}),
 						A6($author$project$Api$fetchCases, t, q, stage, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotCases));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bA: $elm$core$Maybe$Nothing}),
+							{bC: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 209:
+			case 214:
 				var newOffset = msg.a;
-				var _v10 = _Utils_Tuple2(model.V, model.cF);
+				var _v10 = _Utils_Tuple2(model.V, model.cH);
 				if ((!_v10.a.$) && (_v10.b.$ === 2)) {
 					var t = _v10.a.a;
 					var data = _v10.b.a;
@@ -13807,80 +13863,80 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								cF: $author$project$Types$Success(
+								cH: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
 							}),
-						A6($author$project$Api$fetchCases, t, data.D, data.eB, $author$project$Update$Loaders$pageSize, newOffset, $author$project$Types$GotCases));
+						A6($author$project$Api$fetchCases, t, data.D, data.eF, $author$project$Update$Loaders$pageSize, newOffset, $author$project$Types$GotCases));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 195:
+			case 200:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aJ: $elm$core$Maybe$Just($author$project$Types$emptyCaseForm),
-							c8: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							aL: $elm$core$Maybe$Just($author$project$Types$emptyCaseForm),
+							da: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 196:
+			case 201:
 				var student = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aJ: $elm$core$Maybe$Just(
+							aL: $elm$core$Maybe$Just(
 								_Utils_update(
 									$author$project$Types$emptyCaseForm,
-									{eI: student.ah})),
-							c8: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing,
-							e8: $elm$core$Maybe$Just(student)
+									{eM: student.aj})),
+							da: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing,
+							fa: $elm$core$Maybe$Just(student)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 197:
+			case 202:
 				var c = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aJ: $elm$core$Maybe$Just(
+							aL: $elm$core$Maybe$Just(
 								$author$project$Types$caseToForm(c)),
-							c8: $elm$core$Maybe$Just(c.ah),
-							aC: $elm$core$Maybe$Nothing
+							da: $elm$core$Maybe$Just(c.aj),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 198:
+			case 203:
 				var c = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$CaseDetail(c.ah)),
+						$author$project$Types$CaseDetail(c.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e1: $elm$core$Maybe$Just(c)
+							aE: $elm$core$Maybe$Nothing,
+							e3: $elm$core$Maybe$Just(c)
 						}));
-			case 199:
-				var _v11 = _Utils_Tuple2(model.aJ, model.a$);
+			case 204:
+				var _v11 = _Utils_Tuple2(model.aL, model.a1);
 				if (!_v11.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a$: $elm$core$Maybe$Nothing}),
+							{a1: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v11.a.$) {
 						var cf = _v11.a.a;
-						return (cf.i && (!cf.eN)) ? _Utils_Tuple2(
+						return (cf.i && (!cf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									aJ: $elm$core$Maybe$Just(
+									aL: $elm$core$Maybe$Just(
 										_Utils_update(
 											cf,
 											{h: true}))
@@ -13888,27 +13944,27 @@ var $author$project$Update$Cases$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aJ: $elm$core$Maybe$Nothing, c8: $elm$core$Maybe$Nothing}),
+								{aL: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 200:
+			case 205:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aJ: $elm$core$Maybe$Nothing, c8: $elm$core$Maybe$Nothing}),
+						{aL: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 201:
-				var _v12 = model.aJ;
+			case 206:
+				var _v12 = model.aL;
 				if (!_v12.$) {
 					var cf = _v12.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aJ: $elm$core$Maybe$Just(
+								aL: $elm$core$Maybe$Just(
 									_Utils_update(
 										cf,
 										{h: false}))
@@ -13917,10 +13973,10 @@ var $author$project$Update$Cases$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 202:
+			case 207:
 				var field = msg.a;
 				var value = msg.b;
-				var _v13 = model.aJ;
+				var _v13 = model.aL;
 				if (!_v13.$) {
 					var cf = _v13.a;
 					var updated = function () {
@@ -13928,79 +13984,79 @@ var $author$project$Update$Cases$update = F2(
 							case 'caseNumber':
 								return _Utils_update(
 									cf,
-									{cE: value});
+									{cG: value});
 							case 'clientId':
 								return _Utils_update(
 									cf,
-									{aL: value});
+									{aN: value});
 							case 'studentId':
 								return _Utils_update(
 									cf,
-									{eI: value});
+									{eM: value});
 							case 'serviceCategory':
 								return _Utils_update(
 									cf,
-									{ew: value});
+									{eA: value});
 							case 'destinationCountry':
 								return _Utils_update(
 									cf,
-									{c1: value});
+									{c3: value});
 							case 'visaType':
 								return _Utils_update(
 									cf,
-									{fa: value});
+									{fc: value});
 							case 'schoolOrEmployer':
 								return _Utils_update(
 									cf,
-									{er: value});
+									{ev: value});
 							case 'assignedOfficer':
 								return _Utils_update(
 									cf,
-									{cv: value});
+									{cx: value});
 							case 'externalAdviser':
 								return _Utils_update(
 									cf,
-									{$7: value});
+									{dq: value});
 							case 'dateOpened':
 								return _Utils_update(
 									cf,
-									{cX: value});
+									{cZ: value});
 							case 'targetSubmission':
 								return _Utils_update(
 									cf,
-									{eQ: value});
+									{eS: value});
 							case 'actualSubmission':
 								return _Utils_update(
 									cf,
-									{cg: value});
+									{ci: value});
 							case 'governmentRef':
 								return _Utils_update(
 									cf,
-									{du: value});
+									{dw: value});
 							case 'currentStage':
 								return _Utils_update(
 									cf,
-									{cV: value});
+									{cX: value});
 							case 'priority':
 								return _Utils_update(
 									cf,
-									{ec: value});
+									{eg: value});
 							case 'nextAction':
 								return _Utils_update(
 									cf,
-									{dT: value});
+									{dW: value});
 							case 'nextDeadline':
 								return _Utils_update(
 									cf,
-									{dU: value});
+									{dX: value});
 							case 'result':
 								return _Utils_update(
 									cf,
-									{el: value});
+									{ep: value});
 							case 'closureDate':
 								return _Utils_update(
 									cf,
-									{cJ: value});
+									{cL: value});
 							case 'notes':
 								return _Utils_update(
 									cf,
@@ -14013,26 +14069,26 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								aJ: $elm$core$Maybe$Just(
+								aL: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v14) {
 													var f = _v14.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 203:
-				var _v16 = _Utils_Tuple2(model.aJ, model.V);
+			case 208:
+				var _v16 = _Utils_Tuple2(model.aL, model.V);
 				if ((!_v16.a.$) && (!_v16.b.$)) {
 					var cf = _v16.a.a;
 					var token = _v16.b.a;
@@ -14044,12 +14100,12 @@ var $author$project$Update$Cases$update = F2(
 							_Utils_update(
 								model,
 								{
-									aJ: $elm$core$Maybe$Just(validated)
+									aL: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v18 = model.c8;
+							var _v18 = model.da;
 							if (!_v18.$) {
 								var id = _v18.a;
 								return A4($author$project$Api$updateCase, token, id, validated, $author$project$Types$GotSavedCase);
@@ -14061,34 +14117,34 @@ var $author$project$Update$Cases$update = F2(
 							_Utils_update(
 								model,
 								{
-									aJ: $elm$core$Maybe$Just(
+									aL: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 204:
+			case 209:
 				var result = msg.a;
 				if (!result.$) {
 					var c = result.a;
-					var verb = (!_Utils_eq(model.c8, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.da, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							aJ: $elm$core$Maybe$Nothing,
-							c8: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
-								_Utils_ap(verb, c.cE)),
-							e1: function () {
+							aL: $elm$core$Maybe$Nothing,
+							da: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
+								_Utils_ap(verb, c.cG)),
+							e3: function () {
 								var _v20 = model._;
 								if (_v20.$ === 19) {
 									return $elm$core$Maybe$Just(c);
 								} else {
-									return model.e1;
+									return model.e3;
 								}
 							}()
 						});
@@ -14098,17 +14154,17 @@ var $author$project$Update$Cases$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v21 = model.aJ;
+						var _v21 = model.aL;
 						if (!_v21.$) {
 							var cf = _v21.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aJ: $elm$core$Maybe$Just(
+										aL: $elm$core$Maybe$Just(
 											_Utils_update(
 												cf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -14116,22 +14172,22 @@ var $author$project$Update$Cases$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v22 = model.aJ;
+						var _v22 = model.aL;
 						if (!_v22.$) {
 							var cf = _v22.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aJ: $elm$core$Maybe$Just(
+										aL: $elm$core$Maybe$Just(
 											_Utils_update(
 												cf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -14140,40 +14196,40 @@ var $author$project$Update$Cases$update = F2(
 						}
 					}
 				}
-			case 205:
+			case 210:
 				var c = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a$: $elm$core$Maybe$Just(c)
+							a1: $elm$core$Maybe$Just(c)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 206:
+			case 211:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a$: $elm$core$Maybe$Nothing}),
+						{a1: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 207:
-				var _v23 = _Utils_Tuple2(model.a$, model.V);
+			case 212:
+				var _v23 = _Utils_Tuple2(model.a1, model.V);
 				if ((!_v23.a.$) && (!_v23.b.$)) {
 					var c = _v23.a.a;
 					var token = _v23.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteCase, token, c.ah, $author$project$Types$GotDeletedCase));
+						A3($author$project$Api$deleteCase, token, c.aj, $author$project$Types$GotDeletedCase));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 208:
+			case 213:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v27 = model.a$;
+						var _v27 = model.a1;
 						if (!_v27.$) {
 							var c = _v27.a;
-							return c.cE;
+							return c.cG;
 						} else {
 							return 'case';
 						}
@@ -14181,8 +14237,8 @@ var $author$project$Update$Cases$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							cC: $author$project$Types$NotAsked,
-							a$: $elm$core$Maybe$Nothing,
+							cE: $author$project$Types$NotAsked,
+							a1: $elm$core$Maybe$Nothing,
 							_: function () {
 								var _v25 = model._;
 								if (_v25.$ === 19) {
@@ -14191,13 +14247,13 @@ var $author$project$Update$Cases$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e1: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e3: function () {
 								var _v26 = model._;
 								if (_v26.$ === 19) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e1;
+									return model.e3;
 								}
 							}()
 						});
@@ -14210,12 +14266,12 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								a$: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a1: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 211:
+			case 216:
 				var result = msg.a;
 				if (!result.$) {
 					var docs = result.a;
@@ -14223,7 +14279,7 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								cC: $author$project$Types$Success(docs)
+								cE: $author$project$Types$Success(docs)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -14232,48 +14288,48 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								cC: $author$project$Types$Failure(message)
+								cE: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 212:
+			case 217:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							ba: $elm$core$Maybe$Just($author$project$Types$emptyDocumentForm),
-							da: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							bc: $elm$core$Maybe$Just($author$project$Types$emptyDocumentForm),
+							dc: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 213:
+			case 218:
 				var d = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							ba: $elm$core$Maybe$Just(
+							bc: $elm$core$Maybe$Just(
 								$author$project$Types$documentToForm(d)),
-							da: $elm$core$Maybe$Just(d.ah),
-							aC: $elm$core$Maybe$Nothing
+							dc: $elm$core$Maybe$Just(d.aj),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 214:
-				var _v29 = _Utils_Tuple2(model.ba, model.a2);
+			case 219:
+				var _v29 = _Utils_Tuple2(model.bc, model.a4);
 				if (!_v29.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a2: $elm$core$Maybe$Nothing}),
+							{a4: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v29.a.$) {
 						var df = _v29.a.a;
-						return (df.i && (!df.eN)) ? _Utils_Tuple2(
+						return (df.i && (!df.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									ba: $elm$core$Maybe$Just(
+									bc: $elm$core$Maybe$Just(
 										_Utils_update(
 											df,
 											{h: true}))
@@ -14281,27 +14337,27 @@ var $author$project$Update$Cases$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{ba: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing}),
+								{bc: $elm$core$Maybe$Nothing, dc: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 215:
+			case 220:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ba: $elm$core$Maybe$Nothing, da: $elm$core$Maybe$Nothing}),
+						{bc: $elm$core$Maybe$Nothing, dc: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 216:
-				var _v30 = model.ba;
+			case 221:
+				var _v30 = model.bc;
 				if (!_v30.$) {
 					var df = _v30.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ba: $elm$core$Maybe$Just(
+								bc: $elm$core$Maybe$Just(
 									_Utils_update(
 										df,
 										{h: false}))
@@ -14310,10 +14366,10 @@ var $author$project$Update$Cases$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 217:
+			case 222:
 				var field = msg.a;
 				var value = msg.b;
-				var _v31 = model.ba;
+				var _v31 = model.bc;
 				if (!_v31.$) {
 					var df = _v31.a;
 					var updated = function () {
@@ -14321,39 +14377,39 @@ var $author$project$Update$Cases$update = F2(
 							case 'docName':
 								return _Utils_update(
 									df,
-									{a9: value});
+									{bb: value});
 							case 'dateRequested':
 								return _Utils_update(
 									df,
-									{aW: value});
+									{aY: value});
 							case 'dateReceived':
 								return _Utils_update(
 									df,
-									{aV: value});
+									{aX: value});
 							case 'expiryDate':
 								return _Utils_update(
 									df,
-									{be: value});
+									{bg: value});
 							case 'verifiedBy':
 								return _Utils_update(
 									df,
-									{b5: value});
+									{b7: value});
 							case 'verificationDate':
 								return _Utils_update(
 									df,
-									{b4: value});
+									{b6: value});
 							case 'status':
 								return _Utils_update(
 									df,
-									{aj: value});
+									{al: value});
 							case 'rejectionReason':
 								return _Utils_update(
 									df,
-									{bP: value});
+									{bR: value});
 							case 'filePath':
 								return _Utils_update(
 									df,
-									{bg: value});
+									{bi: value});
 							case 'notes':
 								return _Utils_update(
 									df,
@@ -14366,28 +14422,28 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								ba: $elm$core$Maybe$Just(
+								bc: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v32) {
 													var f = _v32.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 218:
+			case 223:
 				var field = msg.a;
 				var value = msg.b;
-				var _v34 = model.ba;
+				var _v34 = model.bc;
 				if (!_v34.$) {
 					var df = _v34.a;
 					var updated = function () {
@@ -14395,15 +14451,15 @@ var $author$project$Update$Cases$update = F2(
 							case 'required':
 								return _Utils_update(
 									df,
-									{bV: value});
+									{bX: value});
 							case 'translationRequired':
 								return _Utils_update(
 									df,
-									{b2: value});
+									{b4: value});
 							case 'legalizationRequired':
 								return _Utils_update(
 									df,
-									{bq: value});
+									{bs: value});
 							default:
 								return df;
 						}
@@ -14412,7 +14468,7 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								ba: $elm$core$Maybe$Just(
+								bc: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{i: true}))
@@ -14421,23 +14477,23 @@ var $author$project$Update$Cases$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 219:
-				var _v36 = _Utils_Tuple3(model.ba, model.V, model.e1);
+			case 224:
+				var _v36 = _Utils_Tuple3(model.bc, model.V, model.e3);
 				if (((!_v36.a.$) && (!_v36.b.$)) && (!_v36.c.$)) {
 					var df = _v36.a.a;
 					var token = _v36.b.a;
 					var c = _v36.c.a;
 					if ($elm$core$String$isEmpty(
-						$elm$core$String$trim(df.a9))) {
+						$elm$core$String$trim(df.bb))) {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									ba: $elm$core$Maybe$Just(
+									bc: $elm$core$Maybe$Just(
 										_Utils_update(
 											df,
 											{
-												dj: _List_fromArray(
+												dl: _List_fromArray(
 													[
 														_Utils_Tuple2('docName', 'Document name is required.')
 													])
@@ -14446,40 +14502,40 @@ var $author$project$Update$Cases$update = F2(
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v37 = model.da;
+							var _v37 = model.dc;
 							if (!_v37.$) {
 								var id = _v37.a;
-								return A5($author$project$Api$updateDocument, token, c.ah, id, df, $author$project$Types$GotSavedDocument);
+								return A5($author$project$Api$updateDocument, token, c.aj, id, df, $author$project$Types$GotSavedDocument);
 							} else {
-								return A4($author$project$Api$createDocument, token, c.ah, df, $author$project$Types$GotSavedDocument);
+								return A4($author$project$Api$createDocument, token, c.aj, df, $author$project$Types$GotSavedDocument);
 							}
 						}();
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									ba: $elm$core$Maybe$Just(
+									bc: $elm$core$Maybe$Just(
 										_Utils_update(
 											df,
-											{dj: _List_Nil, eN: true}))
+											{dl: _List_Nil, eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 220:
+			case 225:
 				var result = msg.a;
 				if (!result.$) {
 					var d = result.a;
-					var verb = (!_Utils_eq(model.da, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.dc, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							ba: $elm$core$Maybe$Nothing,
-							da: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
-								_Utils_ap(verb, d.a9))
+							bc: $elm$core$Maybe$Nothing,
+							dc: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
+								_Utils_ap(verb, d.bb))
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -14487,17 +14543,17 @@ var $author$project$Update$Cases$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v39 = model.ba;
+						var _v39 = model.bc;
 						if (!_v39.$) {
 							var df = _v39.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										ba: $elm$core$Maybe$Just(
+										bc: $elm$core$Maybe$Just(
 											_Utils_update(
 												df,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -14505,22 +14561,22 @@ var $author$project$Update$Cases$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v40 = model.ba;
+						var _v40 = model.bc;
 						if (!_v40.$) {
 							var df = _v40.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										ba: $elm$core$Maybe$Just(
+										bc: $elm$core$Maybe$Just(
 											_Utils_update(
 												df,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -14529,40 +14585,40 @@ var $author$project$Update$Cases$update = F2(
 						}
 					}
 				}
-			case 221:
+			case 226:
 				var d = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a2: $elm$core$Maybe$Just(d)
+							a4: $elm$core$Maybe$Just(d)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 222:
+			case 227:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a2: $elm$core$Maybe$Nothing}),
+						{a4: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 223:
-				var _v41 = _Utils_Tuple2(model.a2, model.V);
+			case 228:
+				var _v41 = _Utils_Tuple2(model.a4, model.V);
 				if ((!_v41.a.$) && (!_v41.b.$)) {
 					var d = _v41.a.a;
 					var token = _v41.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteDocument, token, d.ah, $author$project$Types$GotDeletedDocument));
+						A3($author$project$Api$deleteDocument, token, d.aj, $author$project$Types$GotDeletedDocument));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 224:
+			case 229:
 				var result = msg.a;
 				if (!result.$) {
 					var fresh = _Utils_update(
 						model,
 						{
-							a2: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just('Document deleted')
+							a4: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just('Document deleted')
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -14573,12 +14629,12 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								a2: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a4: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 225:
+			case 230:
 				var d = msg.a;
 				var newStatus = msg.b;
 				var _v43 = model.V;
@@ -14586,18 +14642,18 @@ var $author$project$Update$Cases$update = F2(
 					var token = _v43.a;
 					return _Utils_Tuple2(
 						model,
-						A4($author$project$Api$updateDocumentStatus, token, d.ah, newStatus, $author$project$Types$GotUpdatedDocument));
+						A4($author$project$Api$updateDocumentStatus, token, d.aj, newStatus, $author$project$Types$GotUpdatedDocument));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 226:
+			case 231:
 				var result = msg.a;
 				if (!result.$) {
 					var d = result.a;
 					var fresh = _Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Just(d.a9 + (' → ' + d.aj))
+							aE: $elm$core$Maybe$Just(d.bb + (' → ' + d.al))
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -14616,7 +14672,7 @@ var $author$project$Update$Cases$update = F2(
 						_Utils_update(
 							model,
 							{
-								aC: $elm$core$Maybe$Just(message)
+								aE: $elm$core$Maybe$Just(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -14631,7 +14687,7 @@ var $author$project$Types$GotSavedContact = function (a) {
 	return {$: 37, a: a};
 };
 var $author$project$Types$contactToForm = function (c) {
-	return {an: c.an, h: false, i: false, ag: c.ag, dj: _List_Nil, aq: c.aq, M: c.M, n: c.n, ai: c.ai, T: c.T, eN: false, aA: '', aB: c.aB, J: c.J};
+	return {ap: c.ap, h: false, i: false, ai: c.ai, dl: _List_Nil, as: c.as, M: c.M, n: c.n, ak: c.ak, T: c.T, eP: false, aC: '', aD: c.aD, J: c.J};
 };
 var $elm$json$Json$Encode$list = F2(
 	function (func, entries) {
@@ -14651,25 +14707,25 @@ var $author$project$Api$contactFormPayload = function (cf) {
 				$elm$json$Json$Encode$string(cf.M)),
 				_Utils_Tuple2(
 				'email',
-				$elm$json$Json$Encode$string(cf.ag)),
+				$elm$json$Json$Encode$string(cf.ai)),
 				_Utils_Tuple2(
 				'company',
-				$elm$json$Json$Encode$string(cf.an)),
+				$elm$json$Json$Encode$string(cf.ap)),
 				_Utils_Tuple2(
 				'title',
 				$elm$json$Json$Encode$string(cf.J)),
 				_Utils_Tuple2(
 				'phone',
-				$elm$json$Json$Encode$string(cf.ai)),
+				$elm$json$Json$Encode$string(cf.ak)),
 				_Utils_Tuple2(
 				'location',
-				$elm$json$Json$Encode$string(cf.aq)),
+				$elm$json$Json$Encode$string(cf.as)),
 				_Utils_Tuple2(
 				'stage',
 				$elm$json$Json$Encode$string(cf.T)),
 				_Utils_Tuple2(
 				'tags',
-				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, cf.aB)),
+				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, cf.aD)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(cf.n))
@@ -14800,7 +14856,7 @@ var $author$project$Api$deleteContact = F3(
 				c: '/api/contacts/' + id
 			});
 	});
-var $author$project$Types$emptyContactForm = {an: '', h: false, i: false, ag: '', dj: _List_Nil, aq: '', M: '', n: '', ai: '', T: 'Lead', eN: false, aA: '', aB: _List_Nil, J: ''};
+var $author$project$Types$emptyContactForm = {ap: '', h: false, i: false, ai: '', dl: _List_Nil, as: '', M: '', n: '', ak: '', T: 'Lead', eP: false, aC: '', aD: _List_Nil, J: ''};
 var $author$project$Api$updateContact = F4(
 	function (token, id, cf, toMsg) {
 		return $elm$http$Http$request(
@@ -14826,10 +14882,10 @@ var $author$project$Update$Validate$validateContactForm = function (cf) {
 			_Utils_Tuple2('name', 'Name is required.')
 		]) : _List_Nil;
 	var emailErr = $elm$core$String$isEmpty(
-		$elm$core$String$trim(cf.ag)) ? _List_fromArray(
+		$elm$core$String$trim(cf.ai)) ? _List_fromArray(
 		[
 			_Utils_Tuple2('email', 'Email is required.')
-		]) : ((!(A2($elm$core$String$contains, '@', cf.ag) && A2($elm$core$String$contains, '.', cf.ag))) ? _List_fromArray(
+		]) : ((!(A2($elm$core$String$contains, '@', cf.ai) && A2($elm$core$String$contains, '.', cf.ai))) ? _List_fromArray(
 		[
 			_Utils_Tuple2('email', 'Please enter a valid email.')
 		]) : _List_Nil);
@@ -14837,7 +14893,7 @@ var $author$project$Update$Validate$validateContactForm = function (cf) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			cf,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Contacts$update = F2(
@@ -14850,20 +14906,20 @@ var $author$project$Update$Contacts$update = F2(
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.cP;
+						var _v3 = model.cR;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								cP: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								cR: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -14872,14 +14928,14 @@ var $author$project$Update$Contacts$update = F2(
 						_Utils_update(
 							model,
 							{
-								cP: $author$project$Types$Failure(message)
+								cR: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 26:
 				var q = msg.a;
 				var nextContacts = function () {
-					var _v4 = model.cP;
+					var _v4 = model.cR;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -14888,37 +14944,37 @@ var $author$project$Update$Contacts$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							cP: nextContacts,
-							bB: $elm$core$Maybe$Just(q)
+							cR: nextContacts,
+							bD: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 121:
-				var _v5 = _Utils_Tuple2(model.V, model.bB);
+			case 123:
+				var _v5 = _Utils_Tuple2(model.V, model.bD);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bB: $elm$core$Maybe$Nothing}),
+							{bD: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchContacts, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotContacts));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bB: $elm$core$Maybe$Nothing}),
+							{bD: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 120:
+			case 122:
 				var newOffset = msg.a;
-				var _v6 = _Utils_Tuple2(model.V, model.cP);
+				var _v6 = _Utils_Tuple2(model.V, model.cR);
 				if ((!_v6.a.$) && (_v6.b.$ === 2)) {
 					var t = _v6.a.a;
 					var data = _v6.b.a;
@@ -14926,7 +14982,7 @@ var $author$project$Update$Contacts$update = F2(
 						_Utils_update(
 							model,
 							{
-								cP: $author$project$Types$Success(
+								cR: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -14940,21 +14996,21 @@ var $author$project$Update$Contacts$update = F2(
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$ContactDetail(contact.ah)),
+						$author$project$Types$ContactDetail(contact.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e2: $elm$core$Maybe$Just(contact)
+							aE: $elm$core$Maybe$Nothing,
+							e4: $elm$core$Maybe$Just(contact)
 						}));
 			case 28:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aQ: $elm$core$Maybe$Just($author$project$Types$emptyContactForm),
-							db: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							aS: $elm$core$Maybe$Just($author$project$Types$emptyContactForm),
+							dd: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 29:
@@ -14963,28 +15019,28 @@ var $author$project$Update$Contacts$update = F2(
 					_Utils_update(
 						model,
 						{
-							aQ: $elm$core$Maybe$Just(
+							aS: $elm$core$Maybe$Just(
 								$author$project$Types$contactToForm(contact)),
-							db: $elm$core$Maybe$Just(contact.ah),
-							aC: $elm$core$Maybe$Nothing
+							dd: $elm$core$Maybe$Just(contact.aj),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 30:
-				var _v7 = _Utils_Tuple2(model.aQ, model.a0);
+				var _v7 = _Utils_Tuple2(model.aS, model.a2);
 				if (!_v7.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a0: $elm$core$Maybe$Nothing}),
+							{a2: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v7.a.$) {
 						var cf = _v7.a.a;
-						return (cf.i && (!cf.eN)) ? _Utils_Tuple2(
+						return (cf.i && (!cf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									aQ: $elm$core$Maybe$Just(
+									aS: $elm$core$Maybe$Just(
 										_Utils_update(
 											cf,
 											{h: true}))
@@ -14992,7 +15048,7 @@ var $author$project$Update$Contacts$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aQ: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing}),
+								{aS: $elm$core$Maybe$Nothing, dd: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -15002,17 +15058,17 @@ var $author$project$Update$Contacts$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aQ: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing}),
+						{aS: $elm$core$Maybe$Nothing, dd: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
 			case 32:
-				var _v8 = model.aQ;
+				var _v8 = model.aS;
 				if (!_v8.$) {
 					var cf = _v8.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aQ: $elm$core$Maybe$Just(
+								aS: $elm$core$Maybe$Just(
 									_Utils_update(
 										cf,
 										{h: false}))
@@ -15024,7 +15080,7 @@ var $author$project$Update$Contacts$update = F2(
 			case 33:
 				var field = msg.a;
 				var value = msg.b;
-				var _v9 = model.aQ;
+				var _v9 = model.aS;
 				if (!_v9.$) {
 					var cf = _v9.a;
 					var updated = function () {
@@ -15036,11 +15092,11 @@ var $author$project$Update$Contacts$update = F2(
 							case 'email':
 								return _Utils_update(
 									cf,
-									{ag: value});
+									{ai: value});
 							case 'company':
 								return _Utils_update(
 									cf,
-									{an: value});
+									{ap: value});
 							case 'title':
 								return _Utils_update(
 									cf,
@@ -15048,11 +15104,11 @@ var $author$project$Update$Contacts$update = F2(
 							case 'phone':
 								return _Utils_update(
 									cf,
-									{ai: value});
+									{ak: value});
 							case 'location':
 								return _Utils_update(
 									cf,
-									{aq: value});
+									{as: value});
 							case 'stage':
 								return _Utils_update(
 									cf,
@@ -15060,7 +15116,7 @@ var $author$project$Update$Contacts$update = F2(
 							case 'tagInput':
 								return _Utils_update(
 									cf,
-									{aA: value});
+									{aC: value});
 							case 'notes':
 								return _Utils_update(
 									cf,
@@ -15073,18 +15129,18 @@ var $author$project$Update$Contacts$update = F2(
 						_Utils_update(
 							model,
 							{
-								aQ: $elm$core$Maybe$Just(
+								aS: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v10) {
 													var f = _v10.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
@@ -15092,31 +15148,31 @@ var $author$project$Update$Contacts$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 34:
-				var _v12 = model.aQ;
+				var _v12 = model.aS;
 				if (!_v12.$) {
 					var cf = _v12.a;
-					var tag = $elm$core$String$trim(cf.aA);
-					return ($elm$core$String$isEmpty(tag) || A2($elm$core$List$member, tag, cf.aB)) ? _Utils_Tuple2(
+					var tag = $elm$core$String$trim(cf.aC);
+					return ($elm$core$String$isEmpty(tag) || A2($elm$core$List$member, tag, cf.aD)) ? _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aQ: $elm$core$Maybe$Just(
+								aS: $elm$core$Maybe$Just(
 									_Utils_update(
 										cf,
-										{aA: ''}))
+										{aC: ''}))
 							}),
 						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aQ: $elm$core$Maybe$Just(
+								aS: $elm$core$Maybe$Just(
 									_Utils_update(
 										cf,
 										{
 											i: true,
-											aA: '',
-											aB: _Utils_ap(
-												cf.aB,
+											aC: '',
+											aD: _Utils_ap(
+												cf.aD,
 												_List_fromArray(
 													[tag]))
 										}))
@@ -15127,24 +15183,24 @@ var $author$project$Update$Contacts$update = F2(
 				}
 			case 35:
 				var tag = msg.a;
-				var _v13 = model.aQ;
+				var _v13 = model.aS;
 				if (!_v13.$) {
 					var cf = _v13.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aQ: $elm$core$Maybe$Just(
+								aS: $elm$core$Maybe$Just(
 									_Utils_update(
 										cf,
 										{
 											i: true,
-											aB: A2(
+											aD: A2(
 												$elm$core$List$filter,
 												function (t) {
 													return !_Utils_eq(t, tag);
 												},
-												cf.aB)
+												cf.aD)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
@@ -15152,7 +15208,7 @@ var $author$project$Update$Contacts$update = F2(
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 36:
-				var _v14 = _Utils_Tuple2(model.aQ, model.V);
+				var _v14 = _Utils_Tuple2(model.aS, model.V);
 				if ((!_v14.a.$) && (!_v14.b.$)) {
 					var cf = _v14.a.a;
 					var token = _v14.b.a;
@@ -15164,12 +15220,12 @@ var $author$project$Update$Contacts$update = F2(
 							_Utils_update(
 								model,
 								{
-									aQ: $elm$core$Maybe$Just(validated)
+									aS: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v16 = model.db;
+							var _v16 = model.dd;
 							if (!_v16.$) {
 								var id = _v16.a;
 								return A4($author$project$Api$updateContact, token, id, validated, $author$project$Types$GotSavedContact);
@@ -15181,10 +15237,10 @@ var $author$project$Update$Contacts$update = F2(
 							_Utils_update(
 								model,
 								{
-									aQ: $elm$core$Maybe$Just(
+									aS: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
@@ -15193,23 +15249,23 @@ var $author$project$Update$Contacts$update = F2(
 				}
 			case 37:
 				var result = msg.a;
-				var wasEdit = !_Utils_eq(model.db, $elm$core$Maybe$Nothing);
+				var wasEdit = !_Utils_eq(model.dd, $elm$core$Maybe$Nothing);
 				var verb = wasEdit ? 'Updated ' : 'Added ';
 				if (!result.$) {
 					var contact = result.a;
 					var freshModel = _Utils_update(
 						model,
 						{
-							aQ: $elm$core$Maybe$Nothing,
-							db: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							aS: $elm$core$Maybe$Nothing,
+							dd: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, contact.M)),
-							e2: function () {
+							e4: function () {
 								var _v18 = model._;
 								if (_v18.$ === 2) {
 									return $elm$core$Maybe$Just(contact);
 								} else {
-									return model.e2;
+									return model.e4;
 								}
 							}()
 						});
@@ -15219,17 +15275,17 @@ var $author$project$Update$Contacts$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v19 = model.aQ;
+						var _v19 = model.aS;
 						if (!_v19.$) {
 							var cf = _v19.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aQ: $elm$core$Maybe$Just(
+										aS: $elm$core$Maybe$Just(
 											_Utils_update(
 												cf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -15237,22 +15293,22 @@ var $author$project$Update$Contacts$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v20 = model.aQ;
+						var _v20 = model.aS;
 						if (!_v20.$) {
 							var cf = _v20.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aQ: $elm$core$Maybe$Just(
+										aS: $elm$core$Maybe$Just(
 											_Utils_update(
 												cf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -15267,23 +15323,23 @@ var $author$project$Update$Contacts$update = F2(
 					_Utils_update(
 						model,
 						{
-							a0: $elm$core$Maybe$Just(contact)
+							a2: $elm$core$Maybe$Just(contact)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 39:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a0: $elm$core$Maybe$Nothing}),
+						{a2: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
 			case 40:
-				var _v21 = _Utils_Tuple2(model.a0, model.V);
+				var _v21 = _Utils_Tuple2(model.a2, model.V);
 				if ((!_v21.a.$) && (!_v21.b.$)) {
 					var contact = _v21.a.a;
 					var token = _v21.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteContact, token, contact.ah, $author$project$Types$GotDeletedContact));
+						A3($author$project$Api$deleteContact, token, contact.aj, $author$project$Types$GotDeletedContact));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
@@ -15291,7 +15347,7 @@ var $author$project$Update$Contacts$update = F2(
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v24 = model.a0;
+						var _v24 = model.a2;
 						if (!_v24.$) {
 							var c = _v24.a;
 							return c.M;
@@ -15310,10 +15366,10 @@ var $author$project$Update$Contacts$update = F2(
 					var freshModel = _Utils_update(
 						model,
 						{
-							a0: $elm$core$Maybe$Nothing,
+							a2: $elm$core$Maybe$Nothing,
 							_: backToContacts ? $author$project$Types$Contacts : model._,
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e2: backToContacts ? $elm$core$Maybe$Nothing : model.e2
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e4: backToContacts ? $elm$core$Maybe$Nothing : model.e4
 						});
 					return _Utils_Tuple2(
 						freshModel,
@@ -15324,8 +15380,8 @@ var $author$project$Update$Contacts$update = F2(
 						_Utils_update(
 							model,
 							{
-								a0: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a2: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -15335,20 +15391,20 @@ var $author$project$Update$Contacts$update = F2(
 	});
 var $author$project$Types$GotBulkDeleted = F2(
 	function (a, b) {
-		return {$: 79, a: a, b: b};
+		return {$: 80, a: a, b: b};
 	});
 var $author$project$Types$GotBulkMoved = F2(
 	function (a, b) {
-		return {$: 78, a: a, b: b};
+		return {$: 79, a: a, b: b};
 	});
 var $author$project$Types$GotDeletedDeal = function (a) {
-	return {$: 59, a: a};
+	return {$: 60, a: a};
 };
 var $author$project$Types$GotMovedDeal = function (a) {
-	return {$: 55, a: a};
+	return {$: 56, a: a};
 };
 var $author$project$Types$GotSavedDeal = function (a) {
-	return {$: 52, a: a};
+	return {$: 53, a: a};
 };
 var $elm$core$List$all = F2(
 	function (isOkay, list) {
@@ -15368,23 +15424,23 @@ var $author$project$Api$dealFormPayload = function (df) {
 				$elm$json$Json$Encode$string(df.J)),
 				_Utils_Tuple2(
 				'contactId',
-				$elm$json$Json$Encode$string(df.ae)),
+				$elm$json$Json$Encode$string(df.ag)),
 				_Utils_Tuple2(
 				'value',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(df.aD)))),
+						$elm$core$String$toFloat(df.aF)))),
 				_Utils_Tuple2(
 				'currency',
-				$elm$json$Json$Encode$string(df.ap)),
+				$elm$json$Json$Encode$string(df.ar)),
 				_Utils_Tuple2(
 				'stage',
 				$elm$json$Json$Encode$string(df.T)),
 				_Utils_Tuple2(
 				'closeDate',
-				$elm$json$Json$Encode$string(df.am)),
+				$elm$json$Json$Encode$string(df.ao)),
 				_Utils_Tuple2(
 				'owner',
 				$elm$json$Json$Encode$string(df.R)),
@@ -15468,18 +15524,18 @@ var $author$project$Api$createDeal = F3(
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Types$dealToForm = function (d) {
 	return {
-		am: d.am,
+		ao: d.ao,
 		h: false,
-		ae: d.ae,
-		ap: d.ap,
+		ag: d.ag,
+		ar: d.ar,
 		i: false,
-		dj: _List_Nil,
+		dl: _List_Nil,
 		n: d.n,
 		R: d.R,
 		T: d.T,
-		eN: false,
+		eP: false,
 		J: d.J,
-		aD: $elm$core$String$fromFloat(d.aD)
+		aF: $elm$core$String$fromFloat(d.aF)
 	};
 };
 var $author$project$Api$deletedDealExpect = function (toMsg) {
@@ -15555,7 +15611,7 @@ var $author$project$Api$deleteDealRaw = F3(
 				c: '/api/deals/' + id
 			});
 	});
-var $author$project$Types$emptyDealForm = {am: '', h: false, ae: '', ap: 'USD', i: false, dj: _List_Nil, n: '', R: '', T: 'Lead', eN: false, J: '', aD: ''};
+var $author$project$Types$emptyDealForm = {ao: '', h: false, ag: '', ar: 'USD', i: false, dl: _List_Nil, n: '', R: '', T: 'Lead', eP: false, J: '', aF: ''};
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
 		var dict = _v0;
@@ -15660,7 +15716,7 @@ var $author$project$Api$updateDealStageOnly = F4(
 	});
 var $author$project$Update$Validate$validateDealForm = function (df) {
 	var valueErr = function () {
-		var _v0 = $elm$core$String$toFloat(df.aD);
+		var _v0 = $elm$core$String$toFloat(df.aF);
 		if (!_v0.$) {
 			var v = _v0.a;
 			return (v < 0) ? _List_fromArray(
@@ -15669,7 +15725,7 @@ var $author$project$Update$Validate$validateDealForm = function (df) {
 				]) : _List_Nil;
 		} else {
 			return $elm$core$String$isEmpty(
-				$elm$core$String$trim(df.aD)) ? _List_fromArray(
+				$elm$core$String$trim(df.aF)) ? _List_fromArray(
 				[
 					_Utils_Tuple2('value', 'Deal value is required.')
 				]) : _List_fromArray(
@@ -15687,7 +15743,7 @@ var $author$project$Update$Validate$validateDealForm = function (df) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			df,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Deals$update = F2(
@@ -15700,7 +15756,7 @@ var $author$project$Update$Deals$update = F2(
 					var items = _v2.a;
 					var total = _v2.b;
 					var prevQ = function () {
-						var _v3 = model.c_;
+						var _v3 = model.c0;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d.D;
@@ -15712,8 +15768,8 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								c_: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: 0, D: prevQ, y: total})
+								c0: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: 0, D: prevQ, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -15722,14 +15778,14 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								c_: $author$project$Types$Failure(message)
+								c0: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 53:
+			case 54:
 				var q = msg.a;
 				var nextDeals = function () {
-					var _v4 = model.c_;
+					var _v4 = model.c0;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -15738,32 +15794,32 @@ var $author$project$Update$Deals$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c_: nextDeals,
-							bC: $elm$core$Maybe$Just(q)
+							c0: nextDeals,
+							bE: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 122:
-				var _v5 = _Utils_Tuple2(model.V, model.bC);
+			case 124:
+				var _v5 = _Utils_Tuple2(model.V, model.bE);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bC: $elm$core$Maybe$Nothing}),
+							{bE: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchDeals, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotDeals));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bC: $elm$core$Maybe$Nothing}),
+							{bE: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 43:
@@ -15771,65 +15827,79 @@ var $author$project$Update$Deals$update = F2(
 					_Utils_update(
 						model,
 						{
-							aY: $elm$core$Maybe$Just($author$project$Types$emptyDealForm),
-							c9: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							a_: $elm$core$Maybe$Just($author$project$Types$emptyDealForm),
+							db: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 44:
+				var contact = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							a_: $elm$core$Maybe$Just(
+								_Utils_update(
+									$author$project$Types$emptyDealForm,
+									{ag: contact.aj})),
+							db: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 45:
 				var stage = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aY: $elm$core$Maybe$Just(
+							a_: $elm$core$Maybe$Just(
 								_Utils_update(
 									$author$project$Types$emptyDealForm,
 									{T: stage})),
-							c9: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Nothing
+							db: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 45:
+			case 46:
 				var deal = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aY: $elm$core$Maybe$Just(
+							a_: $elm$core$Maybe$Just(
 								$author$project$Types$dealToForm(deal)),
-							c9: $elm$core$Maybe$Just(deal.ah),
-							aC: $elm$core$Maybe$Nothing
+							db: $elm$core$Maybe$Just(deal.aj),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 46:
+			case 47:
 				var deal = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$DealDetail(deal.ah)),
+						$author$project$Types$DealDetail(deal.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e3: $elm$core$Maybe$Just(deal)
+							aE: $elm$core$Maybe$Nothing,
+							e5: $elm$core$Maybe$Just(deal)
 						}));
-			case 47:
-				var _v6 = _Utils_Tuple2(model.aY, model.a1);
+			case 48:
+				var _v6 = _Utils_Tuple2(model.a_, model.a3);
 				if (!_v6.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a1: $elm$core$Maybe$Nothing}),
+							{a3: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v6.a.$) {
 						var df = _v6.a.a;
-						return (df.i && (!df.eN)) ? _Utils_Tuple2(
+						return (df.i && (!df.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									aY: $elm$core$Maybe$Just(
+									a_: $elm$core$Maybe$Just(
 										_Utils_update(
 											df,
 											{h: true}))
@@ -15837,27 +15907,27 @@ var $author$project$Update$Deals$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aY: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing}),
+								{a_: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 48:
+			case 49:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aY: $elm$core$Maybe$Nothing, c9: $elm$core$Maybe$Nothing}),
+						{a_: $elm$core$Maybe$Nothing, db: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 49:
-				var _v7 = model.aY;
+			case 50:
+				var _v7 = model.a_;
 				if (!_v7.$) {
 					var df = _v7.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aY: $elm$core$Maybe$Just(
+								a_: $elm$core$Maybe$Just(
 									_Utils_update(
 										df,
 										{h: false}))
@@ -15866,10 +15936,10 @@ var $author$project$Update$Deals$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 50:
+			case 51:
 				var field = msg.a;
 				var value = msg.b;
-				var _v8 = model.aY;
+				var _v8 = model.a_;
 				if (!_v8.$) {
 					var df = _v8.a;
 					var updated = function () {
@@ -15881,15 +15951,15 @@ var $author$project$Update$Deals$update = F2(
 							case 'contactId':
 								return _Utils_update(
 									df,
-									{ae: value});
+									{ag: value});
 							case 'value':
 								return _Utils_update(
 									df,
-									{aD: value});
+									{aF: value});
 							case 'currency':
 								return _Utils_update(
 									df,
-									{ap: value});
+									{ar: value});
 							case 'stage':
 								return _Utils_update(
 									df,
@@ -15897,7 +15967,7 @@ var $author$project$Update$Deals$update = F2(
 							case 'closeDate':
 								return _Utils_update(
 									df,
-									{am: value});
+									{ao: value});
 							case 'owner':
 								return _Utils_update(
 									df,
@@ -15914,26 +15984,26 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								aY: $elm$core$Maybe$Just(
+								a_: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v9) {
 													var f = _v9.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 51:
-				var _v11 = _Utils_Tuple2(model.aY, model.V);
+			case 52:
+				var _v11 = _Utils_Tuple2(model.a_, model.V);
 				if ((!_v11.a.$) && (!_v11.b.$)) {
 					var df = _v11.a.a;
 					var token = _v11.b.a;
@@ -15945,12 +16015,12 @@ var $author$project$Update$Deals$update = F2(
 							_Utils_update(
 								model,
 								{
-									aY: $elm$core$Maybe$Just(validated)
+									a_: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v13 = model.c9;
+							var _v13 = model.db;
 							if (!_v13.$) {
 								var id = _v13.a;
 								return A4($author$project$Api$updateDeal, token, id, validated, $author$project$Types$GotSavedDeal);
@@ -15962,35 +16032,35 @@ var $author$project$Update$Deals$update = F2(
 							_Utils_update(
 								model,
 								{
-									aY: $elm$core$Maybe$Just(
+									a_: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 52:
+			case 53:
 				var result = msg.a;
-				var wasEdit = !_Utils_eq(model.c9, $elm$core$Maybe$Nothing);
+				var wasEdit = !_Utils_eq(model.db, $elm$core$Maybe$Nothing);
 				var verb = wasEdit ? 'Updated ' : 'Added ';
 				if (!result.$) {
 					var deal = result.a;
 					var freshModel = _Utils_update(
 						model,
 						{
-							aY: $elm$core$Maybe$Nothing,
-							c9: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							a_: $elm$core$Maybe$Nothing,
+							db: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, deal.J)),
-							e3: function () {
+							e5: function () {
 								var _v15 = model._;
 								if (_v15.$ === 4) {
 									return $elm$core$Maybe$Just(deal);
 								} else {
-									return model.e3;
+									return model.e5;
 								}
 							}()
 						});
@@ -16000,17 +16070,17 @@ var $author$project$Update$Deals$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v16 = model.aY;
+						var _v16 = model.a_;
 						if (!_v16.$) {
 							var df = _v16.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aY: $elm$core$Maybe$Just(
+										a_: $elm$core$Maybe$Just(
 											_Utils_update(
 												df,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -16018,22 +16088,22 @@ var $author$project$Update$Deals$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v17 = model.aY;
+						var _v17 = model.a_;
 						if (!_v17.$) {
 							var df = _v17.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										aY: $elm$core$Maybe$Just(
+										a_: $elm$core$Maybe$Just(
 											_Utils_update(
 												df,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -16042,7 +16112,7 @@ var $author$project$Update$Deals$update = F2(
 						}
 					}
 				}
-			case 54:
+			case 55:
 				var deal = msg.a;
 				var newStage = msg.b;
 				var _v18 = model.V;
@@ -16052,27 +16122,27 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								dQ: $elm$core$Maybe$Just(deal.ah)
+								dT: $elm$core$Maybe$Just(deal.aj)
 							}),
-						A4($author$project$Api$updateDealStage, token, deal.ah, newStage, $author$project$Types$GotMovedDeal));
+						A4($author$project$Api$updateDealStage, token, deal.aj, newStage, $author$project$Types$GotMovedDeal));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 55:
+			case 56:
 				var result = msg.a;
 				if (!result.$) {
 					var deal = result.a;
 					var freshModel = _Utils_update(
 						model,
 						{
-							dQ: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(deal.J + (' moved to ' + deal.T)),
-							e3: function () {
+							dT: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(deal.J + (' moved to ' + deal.T)),
+							e5: function () {
 								var _v20 = model._;
 								if (_v20.$ === 4) {
 									return $elm$core$Maybe$Just(deal);
 								} else {
-									return model.e3;
+									return model.e5;
 								}
 							}()
 						});
@@ -16093,42 +16163,42 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								dQ: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just(message)
+								dT: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 56:
+			case 57:
 				var deal = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a1: $elm$core$Maybe$Just(deal)
+							a3: $elm$core$Maybe$Just(deal)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 57:
+			case 58:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a1: $elm$core$Maybe$Nothing}),
+						{a3: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 58:
-				var _v22 = _Utils_Tuple2(model.a1, model.V);
+			case 59:
+				var _v22 = _Utils_Tuple2(model.a3, model.V);
 				if ((!_v22.a.$) && (!_v22.b.$)) {
 					var deal = _v22.a.a;
 					var token = _v22.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteDeal, token, deal.ah, $author$project$Types$GotDeletedDeal));
+						A3($author$project$Api$deleteDeal, token, deal.aj, $author$project$Types$GotDeletedDeal));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 59:
+			case 60:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v25 = model.a1;
+						var _v25 = model.a3;
 						if (!_v25.$) {
 							var d = _v25.a;
 							return d.J;
@@ -16147,12 +16217,12 @@ var $author$project$Update$Deals$update = F2(
 					var freshModel = _Utils_update(
 						model,
 						{
-							aY: $elm$core$Maybe$Nothing,
-							a1: $elm$core$Maybe$Nothing,
-							c9: $elm$core$Maybe$Nothing,
+							a_: $elm$core$Maybe$Nothing,
+							a3: $elm$core$Maybe$Nothing,
+							db: $elm$core$Maybe$Nothing,
 							_: backToDeals ? $author$project$Types$Deals : model._,
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e3: backToDeals ? $elm$core$Maybe$Nothing : model.e3
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e5: backToDeals ? $elm$core$Maybe$Nothing : model.e5
 						});
 					return _Utils_Tuple2(
 						freshModel,
@@ -16163,44 +16233,44 @@ var $author$project$Update$Deals$update = F2(
 						_Utils_update(
 							model,
 							{
-								a1: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a3: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 60:
+			case 61:
 				var id = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c4: $elm$core$Maybe$Just(id)
+							c6: $elm$core$Maybe$Just(id)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 61:
+			case 62:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{c4: $elm$core$Maybe$Nothing, c5: $elm$core$Maybe$Nothing}),
+						{c6: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 62:
+			case 63:
 				var stageName = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c5: $elm$core$Maybe$Just(stageName)
+							c7: $elm$core$Maybe$Just(stageName)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 63:
+			case 64:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{c5: $elm$core$Maybe$Nothing}),
+						{c7: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 64:
+			case 65:
 				var stageName = msg.a;
-				var _v26 = _Utils_Tuple3(model.c4, model.V, model.c_);
+				var _v26 = _Utils_Tuple3(model.c6, model.V, model.c0);
 				if (((!_v26.a.$) && (!_v26.b.$)) && (_v26.c.$ === 2)) {
 					var dealId = _v26.a.a;
 					var token = _v26.b.a;
@@ -16209,95 +16279,88 @@ var $author$project$Update$Deals$update = F2(
 						A2(
 							$elm$core$List$filter,
 							function (d) {
-								return _Utils_eq(d.ah, dealId);
+								return _Utils_eq(d.aj, dealId);
 							},
-							dealsData.A));
+							dealsData.x));
 					if (!_v27.$) {
 						var deal = _v27.a;
 						return _Utils_eq(deal.T, stageName) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{c4: $elm$core$Maybe$Nothing, c5: $elm$core$Maybe$Nothing}),
+								{c6: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									c4: $elm$core$Maybe$Nothing,
-									c5: $elm$core$Maybe$Nothing,
-									dQ: $elm$core$Maybe$Just(dealId)
+									c6: $elm$core$Maybe$Nothing,
+									c7: $elm$core$Maybe$Nothing,
+									dT: $elm$core$Maybe$Just(dealId)
 								}),
 							A4($author$project$Api$updateDealStage, token, dealId, stageName, $author$project$Types$GotMovedDeal));
 					} else {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{c4: $elm$core$Maybe$Nothing, c5: $elm$core$Maybe$Nothing}),
+								{c6: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					}
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{c4: $elm$core$Maybe$Nothing, c5: $elm$core$Maybe$Nothing}),
+							{c6: $elm$core$Maybe$Nothing, c7: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 65:
+			case 66:
 				var dealId = msg.a;
-				var newSelection = A2($elm$core$Set$member, dealId, model.eu) ? A2($elm$core$Set$remove, dealId, model.eu) : A2($elm$core$Set$insert, dealId, model.eu);
+				var newSelection = A2($elm$core$Set$member, dealId, model.ey) ? A2($elm$core$Set$remove, dealId, model.ey) : A2($elm$core$Set$insert, dealId, model.ey);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{eu: newSelection}),
+						{ey: newSelection}),
 					$elm$core$Platform$Cmd$none);
-			case 66:
-				var _v28 = model.c_;
+			case 67:
+				var _v28 = model.c0;
 				if (_v28.$ === 2) {
 					var data = _v28.a;
 					var allIds = A2(
 						$elm$core$List$map,
 						function ($) {
-							return $.ah;
+							return $.aj;
 						},
-						data.A);
+						data.x);
 					var allSelected = A2(
 						$elm$core$List$all,
 						function (id) {
-							return A2($elm$core$Set$member, id, model.eu);
+							return A2($elm$core$Set$member, id, model.ey);
 						},
 						allIds);
 					return allSelected ? _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{eu: $elm$core$Set$empty}),
+							{ey: $elm$core$Set$empty}),
 						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								eu: $elm$core$Set$fromList(allIds)
+								ey: $elm$core$Set$fromList(allIds)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 67:
+			case 68:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{eu: $elm$core$Set$empty}),
+						{ey: $elm$core$Set$empty}),
 					$elm$core$Platform$Cmd$none);
-			case 68:
+			case 69:
 				var owner = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{d0: owner}),
-					$elm$core$Platform$Cmd$none);
-			case 69:
-				var date = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{cW: date}),
+						{d3: owner}),
 					$elm$core$Platform$Cmd$none);
 			case 70:
 				var date = msg.a;
@@ -16307,36 +16370,43 @@ var $author$project$Update$Deals$update = F2(
 						{cY: date}),
 					$elm$core$Platform$Cmd$none);
 			case 71:
+				var date = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{cW: '', cY: '', d0: ''}),
+						{c_: date}),
 					$elm$core$Platform$Cmd$none);
 			case 72:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{cY: '', c_: '', d3: ''}),
+					$elm$core$Platform$Cmd$none);
+			case 73:
 				var stageName = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aI: $elm$core$Maybe$Just(
+							aK: $elm$core$Maybe$Just(
 								$elm$core$String$isEmpty(stageName) ? 'Qualified' : stageName)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 73:
+			case 74:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aI: $elm$core$Maybe$Nothing}),
+						{aK: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 74:
-				var _v29 = _Utils_Tuple2(model.V, model.aI);
+			case 75:
+				var _v29 = _Utils_Tuple2(model.V, model.aK);
 				if ((!_v29.a.$) && (!_v29.b.$)) {
 					var token = _v29.a.a;
 					var stageName = _v29.b.a;
 					if ($elm$core$String$isEmpty(stageName)) {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					} else {
-						var ids = $elm$core$Set$toList(model.eu);
+						var ids = $elm$core$Set$toList(model.ey);
 						var cmds = A2(
 							$elm$core$List$map,
 							function (dealId) {
@@ -16351,33 +16421,33 @@ var $author$project$Update$Deals$update = F2(
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{aI: $elm$core$Maybe$Nothing}),
+								{aK: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$batch(cmds));
 					}
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aI: $elm$core$Maybe$Nothing}),
+							{aK: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 75:
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{al: true}),
-					$elm$core$Platform$Cmd$none);
 			case 76:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{al: false}),
+						{an: true}),
 					$elm$core$Platform$Cmd$none);
 			case 77:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{an: false}),
+					$elm$core$Platform$Cmd$none);
+			case 78:
 				var _v30 = model.V;
 				if (!_v30.$) {
 					var token = _v30.a;
-					var ids = $elm$core$Set$toList(model.eu);
+					var ids = $elm$core$Set$toList(model.ey);
 					var cmds = A2(
 						$elm$core$List$map,
 						function (dealId) {
@@ -16391,16 +16461,16 @@ var $author$project$Update$Deals$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{al: false}),
+							{an: false}),
 						$elm$core$Platform$Cmd$batch(cmds));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{al: false}),
+							{an: false}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 78:
+			case 79:
 				var ids = msg.a;
 				var result = msg.b;
 				var n = $elm$core$List$length(ids);
@@ -16414,14 +16484,14 @@ var $author$project$Update$Deals$update = F2(
 				var freshModel = _Utils_update(
 					model,
 					{
-						dQ: $elm$core$Maybe$Nothing,
-						eu: $elm$core$Set$empty,
-						aC: $elm$core$Maybe$Just(msgText)
+						dT: $elm$core$Maybe$Nothing,
+						ey: $elm$core$Set$empty,
+						aE: $elm$core$Maybe$Just(msgText)
 					});
 				return _Utils_Tuple2(
 					freshModel,
 					$author$project$Update$Loaders$loadDeals(freshModel).b);
-			case 79:
+			case 80:
 				var ids = msg.a;
 				var result = msg.b;
 				var n = $elm$core$List$length(ids);
@@ -16435,8 +16505,8 @@ var $author$project$Update$Deals$update = F2(
 				var freshModel = _Utils_update(
 					model,
 					{
-						eu: $elm$core$Set$empty,
-						aC: $elm$core$Maybe$Just(msgText)
+						ey: $elm$core$Set$empty,
+						aE: $elm$core$Maybe$Just(msgText)
 					});
 				return _Utils_Tuple2(
 					freshModel,
@@ -16448,21 +16518,21 @@ var $author$project$Update$Deals$update = F2(
 var $author$project$Update$Fetched$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 277:
+			case 282:
 				var result = msg.a;
 				if (!result.$) {
 					var contact = result.a;
 					var freshModel = _Utils_update(
 						model,
 						{
-							e2: $elm$core$Maybe$Just(contact)
+							e4: $elm$core$Maybe$Just(contact)
 						});
 					var _v2 = model.V;
 					if (!_v2.$) {
 						var t = _v2.a;
 						return _Utils_Tuple2(
 							freshModel,
-							A3($author$project$Api$fetchActivities, t, contact.ah, $author$project$Types$GotActivities));
+							A3($author$project$Api$fetchActivities, t, contact.aj, $author$project$Types$GotActivities));
 					} else {
 						return _Utils_Tuple2(freshModel, $elm$core$Platform$Cmd$none);
 					}
@@ -16470,10 +16540,10 @@ var $author$project$Update$Fetched$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{e2: $elm$core$Maybe$Nothing}),
+							{e4: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 278:
+			case 283:
 				var result = msg.a;
 				if (!result.$) {
 					var deal = result.a;
@@ -16481,107 +16551,7 @@ var $author$project$Update$Fetched$update = F2(
 						_Utils_update(
 							model,
 							{
-								e3: $elm$core$Maybe$Just(deal)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{e3: $elm$core$Maybe$Nothing}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 279:
-				var result = msg.a;
-				if (!result.$) {
-					var school = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								e7: $elm$core$Maybe$Just(school)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{e7: $elm$core$Maybe$Nothing}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 280:
-				var result = msg.a;
-				if (!result.$) {
-					var student = result.a;
-					var fresh = _Utils_update(
-						model,
-						{
-							e8: $elm$core$Maybe$Just(student)
-						});
-					var _v6 = model.V;
-					if (!_v6.$) {
-						var t = _v6.a;
-						return _Utils_Tuple2(
-							fresh,
-							A3($author$project$Api$fetchStudentDossier, t, student.ah, $author$project$Types$GotStudentDossier));
-					} else {
-						return _Utils_Tuple2(fresh, $elm$core$Platform$Cmd$none);
-					}
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{eH: $author$project$Types$NotAsked, e8: $elm$core$Maybe$Nothing}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 281:
-				var result = msg.a;
-				if (!result.$) {
-					var dossier = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								eH: $author$project$Types$Success(dossier)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					var message = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								eH: $author$project$Types$Failure(message)
-							}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 282:
-				var result = msg.a;
-				if (!result.$) {
-					var agent = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								e0: $elm$core$Maybe$Just(agent)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{e0: $elm$core$Maybe$Nothing}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 283:
-				var result = msg.a;
-				if (!result.$) {
-					var lead = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								e5: $elm$core$Maybe$Just(lead)
+								e5: $elm$core$Maybe$Just(deal)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -16594,18 +16564,118 @@ var $author$project$Update$Fetched$update = F2(
 			case 284:
 				var result = msg.a;
 				if (!result.$) {
+					var school = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								e9: $elm$core$Maybe$Just(school)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{e9: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 285:
+				var result = msg.a;
+				if (!result.$) {
+					var student = result.a;
+					var fresh = _Utils_update(
+						model,
+						{
+							fa: $elm$core$Maybe$Just(student)
+						});
+					var _v6 = model.V;
+					if (!_v6.$) {
+						var t = _v6.a;
+						return _Utils_Tuple2(
+							fresh,
+							A3($author$project$Api$fetchStudentDossier, t, student.aj, $author$project$Types$GotStudentDossier));
+					} else {
+						return _Utils_Tuple2(fresh, $elm$core$Platform$Cmd$none);
+					}
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{eL: $author$project$Types$NotAsked, fa: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 286:
+				var result = msg.a;
+				if (!result.$) {
+					var dossier = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								eL: $author$project$Types$Success(dossier)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var message = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								eL: $author$project$Types$Failure(message)
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 287:
+				var result = msg.a;
+				if (!result.$) {
+					var agent = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								e2: $elm$core$Maybe$Just(agent)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{e2: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 288:
+				var result = msg.a;
+				if (!result.$) {
+					var lead = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								e7: $elm$core$Maybe$Just(lead)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{e7: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 289:
+				var result = msg.a;
+				if (!result.$) {
 					var c = result.a;
 					var fresh = _Utils_update(
 						model,
 						{
-							e1: $elm$core$Maybe$Just(c)
+							e3: $elm$core$Maybe$Just(c)
 						});
 					var _v11 = model.V;
 					if (!_v11.$) {
 						var t = _v11.a;
 						return _Utils_Tuple2(
 							fresh,
-							A3($author$project$Api$fetchCaseDocuments, t, c.ah, $author$project$Types$GotCaseDocuments));
+							A3($author$project$Api$fetchCaseDocuments, t, c.aj, $author$project$Types$GotCaseDocuments));
 					} else {
 						return _Utils_Tuple2(fresh, $elm$core$Platform$Cmd$none);
 					}
@@ -16613,45 +16683,27 @@ var $author$project$Update$Fetched$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{e1: $elm$core$Maybe$Nothing}),
+							{e3: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 285:
+			case 290:
 				var result = msg.a;
 				if (!result.$) {
 					var inv = result.a;
 					var fresh = _Utils_update(
 						model,
 						{
-							e4: $elm$core$Maybe$Just(inv)
+							e6: $elm$core$Maybe$Just(inv)
 						});
 					var _v13 = model.V;
 					if (!_v13.$) {
 						var t = _v13.a;
 						return _Utils_Tuple2(
 							fresh,
-							A3($author$project$Api$fetchInvoicePayments, t, inv.ah, $author$project$Types$GotInvoicePayments));
+							A3($author$project$Api$fetchInvoicePayments, t, inv.aj, $author$project$Types$GotInvoicePayments));
 					} else {
 						return _Utils_Tuple2(fresh, $elm$core$Platform$Cmd$none);
 					}
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{e4: $elm$core$Maybe$Nothing}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 286:
-				var result = msg.a;
-				if (!result.$) {
-					var p = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								e6: $elm$core$Maybe$Just(p)
-							}),
-						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
@@ -16659,13 +16711,31 @@ var $author$project$Update$Fetched$update = F2(
 							{e6: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 287:
+			case 291:
+				var result = msg.a;
+				if (!result.$) {
+					var p = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								e8: $elm$core$Maybe$Just(p)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{e8: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 292:
 				var message = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Just(message)
+							aE: $elm$core$Maybe$Just(message)
 						}),
 					$elm$core$Platform$Cmd$none);
 			default:
@@ -16673,19 +16743,19 @@ var $author$project$Update$Fetched$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedInvoice = function (a) {
-	return {$: 241, a: a};
+	return {$: 246, a: a};
 };
 var $author$project$Types$GotDeletedPayment = function (a) {
-	return {$: 253, a: a};
+	return {$: 258, a: a};
 };
 var $author$project$Types$GotRefunded = function (a) {
-	return {$: 257, a: a};
+	return {$: 262, a: a};
 };
 var $author$project$Types$GotSavedInvoice = function (a) {
-	return {$: 237, a: a};
+	return {$: 242, a: a};
 };
 var $author$project$Types$GotSavedPayment = function (a) {
-	return {$: 249, a: a};
+	return {$: 254, a: a};
 };
 var $author$project$Api$invoiceFormPayload = function (inv) {
 	return $elm$json$Json$Encode$object(
@@ -16693,70 +16763,70 @@ var $author$project$Api$invoiceFormPayload = function (inv) {
 			[
 				_Utils_Tuple2(
 				'invoiceNumber',
-				$elm$json$Json$Encode$string(inv.dB)),
+				$elm$json$Json$Encode$string(inv.dD)),
 				_Utils_Tuple2(
 				'clientId',
-				$elm$json$Json$Encode$string(inv.aL)),
+				$elm$json$Json$Encode$string(inv.aN)),
 				_Utils_Tuple2(
 				'caseId',
-				$elm$json$Json$Encode$string(inv.cD)),
+				$elm$json$Json$Encode$string(inv.cF)),
 				_Utils_Tuple2(
 				'totalFee',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.eU)))),
+						$elm$core$String$toFloat(inv.eW)))),
 				_Utils_Tuple2(
 				'governmentFee',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.dt)))),
+						$elm$core$String$toFloat(inv.dv)))),
 				_Utils_Tuple2(
 				'schoolPartnerFee',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.es)))),
+						$elm$core$String$toFloat(inv.ew)))),
 				_Utils_Tuple2(
 				'amountReceived',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.cs)))),
+						$elm$core$String$toFloat(inv.cu)))),
 				_Utils_Tuple2(
 				'paymentMilestone',
-				$elm$json$Json$Encode$string(inv.d8)),
+				$elm$json$Json$Encode$string(inv.ec)),
 				_Utils_Tuple2(
 				'paymentMethod',
-				$elm$json$Json$Encode$string(inv.d7)),
+				$elm$json$Json$Encode$string(inv.eb)),
 				_Utils_Tuple2(
 				'officialReceiptNumber',
-				$elm$json$Json$Encode$string(inv.dW)),
+				$elm$json$Json$Encode$string(inv.dZ)),
 				_Utils_Tuple2(
 				'refundStatus',
-				$elm$json$Json$Encode$string(inv.ek)),
+				$elm$json$Json$Encode$string(inv.eo)),
 				_Utils_Tuple2(
 				'referralCommission',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.ej)))),
+						$elm$core$String$toFloat(inv.en)))),
 				_Utils_Tuple2(
 				'partnerPayable',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(inv.d3)))),
+						$elm$core$String$toFloat(inv.d7)))),
 				_Utils_Tuple2(
 				'paymentApproval',
-				$elm$json$Json$Encode$string(inv.d6)),
+				$elm$json$Json$Encode$string(inv.ea)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(inv.n))
@@ -16846,16 +16916,16 @@ var $author$project$Api$paymentFormPayload = F2(
 						A2(
 							$elm$core$Maybe$withDefault,
 							0,
-							$elm$core$String$toFloat(pf.cq)))),
+							$elm$core$String$toFloat(pf.cs)))),
 					_Utils_Tuple2(
 					'paidOn',
-					$elm$json$Json$Encode$string(pf.d2)),
+					$elm$json$Json$Encode$string(pf.d5)),
 					_Utils_Tuple2(
 					'method',
 					$elm$json$Json$Encode$string(pf.d)),
 					_Utils_Tuple2(
 					'reference',
-					$elm$json$Json$Encode$string(pf.ei)),
+					$elm$json$Json$Encode$string(pf.em)),
 					_Utils_Tuple2(
 					'notes',
 					$elm$json$Json$Encode$string(pf.n))
@@ -17041,37 +17111,37 @@ var $author$project$Api$deletePayment = F3(
 				c: '/api/payments/' + id
 			});
 	});
-var $author$project$Types$emptyInvoiceForm = {cs: '0', cD: '', aL: '', h: false, i: false, dj: _List_Nil, dt: '0', dB: '', n: '', dW: '', d3: '0', d6: '', d7: '', d8: 'Quotation Issued', ej: '0', ek: '', es: '0', eN: false, eU: '0'};
-var $author$project$Types$emptyPaymentForm = {cq: '', dj: _List_Nil, d: '', n: '', d2: '', ei: '', eN: false};
+var $author$project$Types$emptyInvoiceForm = {cu: '0', cF: '', aN: '', h: false, i: false, dl: _List_Nil, dv: '0', dD: '', n: '', dZ: '', d7: '0', ea: '', eb: '', ec: 'Quotation Issued', en: '0', eo: '', ew: '0', eP: false, eW: '0'};
+var $author$project$Types$emptyPaymentForm = {cs: '', dl: _List_Nil, d: '', n: '', d5: '', em: '', eP: false};
 var $author$project$Types$invoiceToForm = function (inv) {
 	return {
-		cs: $elm$core$String$fromFloat(inv.cs),
-		cD: inv.cD,
-		aL: inv.aL,
+		cu: $elm$core$String$fromFloat(inv.cu),
+		cF: inv.cF,
+		aN: inv.aN,
 		h: false,
 		i: false,
-		dj: _List_Nil,
-		dt: $elm$core$String$fromFloat(inv.dt),
-		dB: inv.dB,
+		dl: _List_Nil,
+		dv: $elm$core$String$fromFloat(inv.dv),
+		dD: inv.dD,
 		n: inv.n,
-		dW: inv.dW,
-		d3: $elm$core$String$fromFloat(inv.d3),
-		d6: inv.d6,
-		d7: inv.d7,
-		d8: inv.d8,
-		ej: $elm$core$String$fromFloat(inv.ej),
-		ek: inv.ek,
-		es: $elm$core$String$fromFloat(inv.es),
-		eN: false,
-		eU: $elm$core$String$fromFloat(inv.eU)
+		dZ: inv.dZ,
+		d7: $elm$core$String$fromFloat(inv.d7),
+		ea: inv.ea,
+		eb: inv.eb,
+		ec: inv.ec,
+		en: $elm$core$String$fromFloat(inv.en),
+		eo: inv.eo,
+		ew: $elm$core$String$fromFloat(inv.ew),
+		eP: false,
+		eW: $elm$core$String$fromFloat(inv.eW)
 	};
 };
 var $author$project$Update$Invoices$refreshPayments = function (model) {
-	var _v0 = _Utils_Tuple2(model.V, model.e4);
+	var _v0 = _Utils_Tuple2(model.V, model.e6);
 	if ((!_v0.a.$) && (!_v0.b.$)) {
 		var t = _v0.a.a;
 		var inv = _v0.b.a;
-		return A3($author$project$Api$fetchInvoicePayments, t, inv.ah, $author$project$Types$GotInvoicePayments);
+		return A3($author$project$Api$fetchInvoicePayments, t, inv.aj, $author$project$Types$GotInvoicePayments);
 	} else {
 		return $elm$core$Platform$Cmd$none;
 	}
@@ -17121,27 +17191,27 @@ var $author$project$Api$updateInvoice = F4(
 var $author$project$Update$Invoices$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 227:
+			case 232:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.dE;
+						var _v3 = model.dG;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								dE: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								dG: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -17150,14 +17220,14 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								dE: $author$project$Types$Failure(message)
+								dG: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 228:
+			case 233:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.dE;
+					var _v4 = model.dG;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -17166,37 +17236,37 @@ var $author$project$Update$Invoices$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dE: next,
-							bD: $elm$core$Maybe$Just(q)
+							dG: next,
+							bF: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 243:
-				var _v5 = _Utils_Tuple2(model.V, model.bD);
+			case 248:
+				var _v5 = _Utils_Tuple2(model.V, model.bF);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bD: $elm$core$Maybe$Nothing}),
+							{bF: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchInvoices, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotInvoices));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bD: $elm$core$Maybe$Nothing}),
+							{bF: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 242:
+			case 247:
 				var newOffset = msg.a;
-				var _v6 = _Utils_Tuple2(model.V, model.dE);
+				var _v6 = _Utils_Tuple2(model.V, model.dG);
 				if ((!_v6.a.$) && (_v6.b.$ === 2)) {
 					var t = _v6.a.a;
 					var data = _v6.b.a;
@@ -17204,7 +17274,7 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								dE: $author$project$Types$Success(
+								dG: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -17213,56 +17283,56 @@ var $author$project$Update$Invoices$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 229:
+			case 234:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dc: $elm$core$Maybe$Nothing,
-							bl: $elm$core$Maybe$Just($author$project$Types$emptyInvoiceForm),
-							aC: $elm$core$Maybe$Nothing
+							de: $elm$core$Maybe$Nothing,
+							bn: $elm$core$Maybe$Just($author$project$Types$emptyInvoiceForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 230:
+			case 235:
 				var inv = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dc: $elm$core$Maybe$Just(inv.ah),
-							bl: $elm$core$Maybe$Just(
+							de: $elm$core$Maybe$Just(inv.aj),
+							bn: $elm$core$Maybe$Just(
 								$author$project$Types$invoiceToForm(inv)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 231:
+			case 236:
 				var inv = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$InvoiceDetail(inv.ah)),
+						$author$project$Types$InvoiceDetail(inv.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e4: $elm$core$Maybe$Just(inv)
+							aE: $elm$core$Maybe$Nothing,
+							e6: $elm$core$Maybe$Just(inv)
 						}));
-			case 232:
-				var _v7 = _Utils_Tuple2(model.bl, model.a3);
+			case 237:
+				var _v7 = _Utils_Tuple2(model.bn, model.a5);
 				if (!_v7.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a3: $elm$core$Maybe$Nothing}),
+							{a5: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v7.a.$) {
 						var inv = _v7.a.a;
-						return (inv.i && (!inv.eN)) ? _Utils_Tuple2(
+						return (inv.i && (!inv.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									bl: $elm$core$Maybe$Just(
+									bn: $elm$core$Maybe$Just(
 										_Utils_update(
 											inv,
 											{h: true}))
@@ -17270,27 +17340,27 @@ var $author$project$Update$Invoices$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{dc: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing}),
+								{de: $elm$core$Maybe$Nothing, bn: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 233:
+			case 238:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{dc: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing}),
+						{de: $elm$core$Maybe$Nothing, bn: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 234:
-				var _v8 = model.bl;
+			case 239:
+				var _v8 = model.bn;
 				if (!_v8.$) {
 					var inv = _v8.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bl: $elm$core$Maybe$Just(
+								bn: $elm$core$Maybe$Just(
 									_Utils_update(
 										inv,
 										{h: false}))
@@ -17299,10 +17369,10 @@ var $author$project$Update$Invoices$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 235:
+			case 240:
 				var field = msg.a;
 				var value = msg.b;
-				var _v9 = model.bl;
+				var _v9 = model.bn;
 				if (!_v9.$) {
 					var inv = _v9.a;
 					var updated = function () {
@@ -17310,59 +17380,59 @@ var $author$project$Update$Invoices$update = F2(
 							case 'invoiceNumber':
 								return _Utils_update(
 									inv,
-									{dB: value});
+									{dD: value});
 							case 'clientId':
 								return _Utils_update(
 									inv,
-									{aL: value});
+									{aN: value});
 							case 'caseId':
 								return _Utils_update(
 									inv,
-									{cD: value});
+									{cF: value});
 							case 'totalFee':
 								return _Utils_update(
 									inv,
-									{eU: value});
+									{eW: value});
 							case 'governmentFee':
 								return _Utils_update(
 									inv,
-									{dt: value});
+									{dv: value});
 							case 'schoolPartnerFee':
 								return _Utils_update(
 									inv,
-									{es: value});
+									{ew: value});
 							case 'amountReceived':
 								return _Utils_update(
 									inv,
-									{cs: value});
+									{cu: value});
 							case 'paymentMilestone':
 								return _Utils_update(
 									inv,
-									{d8: value});
+									{ec: value});
 							case 'paymentMethod':
 								return _Utils_update(
 									inv,
-									{d7: value});
+									{eb: value});
 							case 'officialReceiptNumber':
 								return _Utils_update(
 									inv,
-									{dW: value});
+									{dZ: value});
 							case 'refundStatus':
 								return _Utils_update(
 									inv,
-									{ek: value});
+									{eo: value});
 							case 'referralCommission':
 								return _Utils_update(
 									inv,
-									{ej: value});
+									{en: value});
 							case 'partnerPayable':
 								return _Utils_update(
 									inv,
-									{d3: value});
+									{d7: value});
 							case 'paymentApproval':
 								return _Utils_update(
 									inv,
-									{d6: value});
+									{ea: value});
 							case 'notes':
 								return _Utils_update(
 									inv,
@@ -17375,31 +17445,31 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								bl: $elm$core$Maybe$Just(
+								bn: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v10) {
 													var f = _v10.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 236:
-				var _v12 = _Utils_Tuple2(model.bl, model.V);
+			case 241:
+				var _v12 = _Utils_Tuple2(model.bn, model.V);
 				if ((!_v12.a.$) && (!_v12.b.$)) {
 					var inv = _v12.a.a;
 					var token = _v12.b.a;
 					var errs = $elm$core$String$isEmpty(
-						$elm$core$String$trim(inv.aL)) ? _List_fromArray(
+						$elm$core$String$trim(inv.aN)) ? _List_fromArray(
 						[
 							_Utils_Tuple2('clientId', 'Client is required.')
 						]) : _List_Nil;
@@ -17408,15 +17478,15 @@ var $author$project$Update$Invoices$update = F2(
 							_Utils_update(
 								model,
 								{
-									bl: $elm$core$Maybe$Just(
+									bn: $elm$core$Maybe$Just(
 										_Utils_update(
 											inv,
-											{dj: errs}))
+											{dl: errs}))
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v13 = model.dc;
+							var _v13 = model.de;
 							if (!_v13.$) {
 								var id = _v13.a;
 								return A4($author$project$Api$updateInvoice, token, id, inv, $author$project$Types$GotSavedInvoice);
@@ -17428,34 +17498,34 @@ var $author$project$Update$Invoices$update = F2(
 							_Utils_update(
 								model,
 								{
-									bl: $elm$core$Maybe$Just(
+									bn: $elm$core$Maybe$Just(
 										_Utils_update(
 											inv,
-											{dj: _List_Nil, eN: true}))
+											{dl: _List_Nil, eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 237:
+			case 242:
 				var result = msg.a;
 				if (!result.$) {
 					var inv = result.a;
-					var verb = (!_Utils_eq(model.dc, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.de, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							dc: $elm$core$Maybe$Nothing,
-							bl: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
-								_Utils_ap(verb, inv.dB)),
-							e4: function () {
+							de: $elm$core$Maybe$Nothing,
+							bn: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
+								_Utils_ap(verb, inv.dD)),
+							e6: function () {
 								var _v15 = model._;
 								if (_v15.$ === 21) {
 									return $elm$core$Maybe$Just(inv);
 								} else {
-									return model.e4;
+									return model.e6;
 								}
 							}()
 						});
@@ -17465,17 +17535,17 @@ var $author$project$Update$Invoices$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v16 = model.bl;
+						var _v16 = model.bn;
 						if (!_v16.$) {
 							var inv = _v16.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bl: $elm$core$Maybe$Just(
+										bn: $elm$core$Maybe$Just(
 											_Utils_update(
 												inv,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -17483,22 +17553,22 @@ var $author$project$Update$Invoices$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v17 = model.bl;
+						var _v17 = model.bn;
 						if (!_v17.$) {
 							var inv = _v17.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bl: $elm$core$Maybe$Just(
+										bn: $elm$core$Maybe$Just(
 											_Utils_update(
 												inv,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -17507,40 +17577,40 @@ var $author$project$Update$Invoices$update = F2(
 						}
 					}
 				}
-			case 238:
+			case 243:
 				var inv = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a3: $elm$core$Maybe$Just(inv)
+							a5: $elm$core$Maybe$Just(inv)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 239:
+			case 244:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a3: $elm$core$Maybe$Nothing}),
+						{a5: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 240:
-				var _v18 = _Utils_Tuple2(model.a3, model.V);
+			case 245:
+				var _v18 = _Utils_Tuple2(model.a5, model.V);
 				if ((!_v18.a.$) && (!_v18.b.$)) {
 					var inv = _v18.a.a;
 					var token = _v18.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteInvoice, token, inv.ah, $author$project$Types$GotDeletedInvoice));
+						A3($author$project$Api$deleteInvoice, token, inv.aj, $author$project$Types$GotDeletedInvoice));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 241:
+			case 246:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v22 = model.a3;
+						var _v22 = model.a5;
 						if (!_v22.$) {
 							var inv = _v22.a;
-							return inv.dB;
+							return inv.dD;
 						} else {
 							return 'invoice';
 						}
@@ -17548,8 +17618,8 @@ var $author$project$Update$Invoices$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a3: $elm$core$Maybe$Nothing,
-							dC: $author$project$Types$NotAsked,
+							a5: $elm$core$Maybe$Nothing,
+							dE: $author$project$Types$NotAsked,
 							_: function () {
 								var _v20 = model._;
 								if (_v20.$ === 21) {
@@ -17558,13 +17628,13 @@ var $author$project$Update$Invoices$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e4: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e6: function () {
 								var _v21 = model._;
 								if (_v21.$ === 21) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e4;
+									return model.e6;
 								}
 							}()
 						});
@@ -17577,12 +17647,12 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								a3: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a5: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 244:
+			case 249:
 				var result = msg.a;
 				if (!result.$) {
 					var ps = result.a;
@@ -17590,7 +17660,7 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								dC: $author$project$Types$Success(ps)
+								dE: $author$project$Types$Success(ps)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -17599,29 +17669,29 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								dC: $author$project$Types$Failure(message)
+								dE: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 245:
+			case 250:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							by: $elm$core$Maybe$Just($author$project$Types$emptyPaymentForm),
-							aC: $elm$core$Maybe$Nothing
+							bA: $elm$core$Maybe$Just($author$project$Types$emptyPaymentForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 246:
+			case 251:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{by: $elm$core$Maybe$Nothing}),
+						{bA: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 247:
+			case 252:
 				var field = msg.a;
 				var value = msg.b;
-				var _v24 = model.by;
+				var _v24 = model.bA;
 				if (!_v24.$) {
 					var pf = _v24.a;
 					var updated = function () {
@@ -17629,11 +17699,11 @@ var $author$project$Update$Invoices$update = F2(
 							case 'amount':
 								return _Utils_update(
 									pf,
-									{cq: value});
+									{cs: value});
 							case 'paidOn':
 								return _Utils_update(
 									pf,
-									{d2: value});
+									{d5: value});
 							case 'method':
 								return _Utils_update(
 									pf,
@@ -17641,7 +17711,7 @@ var $author$project$Update$Invoices$update = F2(
 							case 'reference':
 								return _Utils_update(
 									pf,
-									{ei: value});
+									{em: value});
 							case 'notes':
 								return _Utils_update(
 									pf,
@@ -17654,41 +17724,41 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								by: $elm$core$Maybe$Just(
+								bA: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v25) {
 													var f = _v25.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 248:
-				var _v27 = _Utils_Tuple3(model.by, model.V, model.e4);
+			case 253:
+				var _v27 = _Utils_Tuple3(model.bA, model.V, model.e6);
 				if (((!_v27.a.$) && (!_v27.b.$)) && (!_v27.c.$)) {
 					var pf = _v27.a.a;
 					var token = _v27.b.a;
 					var inv = _v27.c.a;
-					var _v28 = $elm$core$String$toFloat(pf.cq);
+					var _v28 = $elm$core$String$toFloat(pf.cs);
 					if (!_v28.$) {
 						var amt = _v28.a;
 						return (amt <= 0) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									by: $elm$core$Maybe$Just(
+									bA: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
 											{
-												dj: _List_fromArray(
+												dl: _List_fromArray(
 													[
 														_Utils_Tuple2('amount', 'Amount must be positive.')
 													])
@@ -17698,22 +17768,22 @@ var $author$project$Update$Invoices$update = F2(
 							_Utils_update(
 								model,
 								{
-									by: $elm$core$Maybe$Just(
+									bA: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
-											{dj: _List_Nil, eN: true}))
+											{dl: _List_Nil, eP: true}))
 								}),
-							A4($author$project$Api$createPayment, token, inv.ah, pf, $author$project$Types$GotSavedPayment));
+							A4($author$project$Api$createPayment, token, inv.aj, pf, $author$project$Types$GotSavedPayment));
 					} else {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									by: $elm$core$Maybe$Just(
+									bA: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
 											{
-												dj: _List_fromArray(
+												dl: _List_fromArray(
 													[
 														_Utils_Tuple2('amount', 'Enter a valid number.')
 													])
@@ -17724,16 +17794,16 @@ var $author$project$Update$Invoices$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 249:
+			case 254:
 				var result = msg.a;
 				if (!result.$) {
 					var p = result.a;
 					var fresh = _Utils_update(
 						model,
 						{
-							by: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
-								'Recorded payment of ' + $elm$core$String$fromFloat(p.cq))
+							bA: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
+								'Recorded payment of ' + $elm$core$String$fromFloat(p.cs))
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -17741,17 +17811,17 @@ var $author$project$Update$Invoices$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v30 = model.by;
+						var _v30 = model.bA;
 						if (!_v30.$) {
 							var pf = _v30.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										by: $elm$core$Maybe$Just(
+										bA: $elm$core$Maybe$Just(
 											_Utils_update(
 												pf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -17759,22 +17829,22 @@ var $author$project$Update$Invoices$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v31 = model.by;
+						var _v31 = model.bA;
 						if (!_v31.$) {
 							var pf = _v31.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										by: $elm$core$Maybe$Just(
+										bA: $elm$core$Maybe$Just(
 											_Utils_update(
 												pf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -17783,40 +17853,40 @@ var $author$project$Update$Invoices$update = F2(
 						}
 					}
 				}
-			case 250:
+			case 255:
 				var p = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c$: $elm$core$Maybe$Just(p)
+							c1: $elm$core$Maybe$Just(p)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 251:
+			case 256:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{c$: $elm$core$Maybe$Nothing}),
+						{c1: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 252:
-				var _v32 = _Utils_Tuple2(model.c$, model.V);
+			case 257:
+				var _v32 = _Utils_Tuple2(model.c1, model.V);
 				if ((!_v32.a.$) && (!_v32.b.$)) {
 					var p = _v32.a.a;
 					var token = _v32.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deletePayment, token, p.ah, $author$project$Types$GotDeletedPayment));
+						A3($author$project$Api$deletePayment, token, p.aj, $author$project$Types$GotDeletedPayment));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 253:
+			case 258:
 				var result = msg.a;
 				if (!result.$) {
 					var fresh = _Utils_update(
 						model,
 						{
-							c$: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just('Payment deleted')
+							c1: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just('Payment deleted')
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -17827,44 +17897,44 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								c$: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								c1: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 254:
+			case 259:
 				var inv = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							bO: $elm$core$Maybe$Just(inv)
+							bQ: $elm$core$Maybe$Just(inv)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 255:
+			case 260:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{bO: $elm$core$Maybe$Nothing}),
+						{bQ: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 256:
-				var _v34 = _Utils_Tuple2(model.bO, model.V);
+			case 261:
+				var _v34 = _Utils_Tuple2(model.bQ, model.V);
 				if ((!_v34.a.$) && (!_v34.b.$)) {
 					var inv = _v34.a.a;
 					var token = _v34.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bO: $elm$core$Maybe$Nothing}),
-						A4($author$project$Api$refundInvoice, token, inv.ah, 'Refund requested via UI', $author$project$Types$GotRefunded));
+							{bQ: $elm$core$Maybe$Nothing}),
+						A4($author$project$Api$refundInvoice, token, inv.aj, 'Refund requested via UI', $author$project$Types$GotRefunded));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bO: $elm$core$Maybe$Nothing}),
+							{bQ: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 257:
+			case 262:
 				var result = msg.a;
 				if (!result.$) {
 					var inv = result.a;
@@ -17873,15 +17943,15 @@ var $author$project$Update$Invoices$update = F2(
 						if (_v36.$ === 21) {
 							return $elm$core$Maybe$Just(inv);
 						} else {
-							return model.e4;
+							return model.e6;
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aC: $elm$core$Maybe$Just('Refund requested'),
-								e4: updatedViewingInvoice
+								aE: $elm$core$Maybe$Just('Refund requested'),
+								e6: updatedViewingInvoice
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -17898,7 +17968,7 @@ var $author$project$Update$Invoices$update = F2(
 						_Utils_update(
 							model,
 							{
-								aC: $elm$core$Maybe$Just(message)
+								aE: $elm$core$Maybe$Just(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -17907,10 +17977,10 @@ var $author$project$Update$Invoices$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedLead = function (a) {
-	return {$: 189, a: a};
+	return {$: 194, a: a};
 };
 var $author$project$Types$GotSavedLead = function (a) {
-	return {$: 185, a: a};
+	return {$: 190, a: a};
 };
 var $author$project$Api$leadFormPayload = function (lf) {
 	return $elm$json$Json$Encode$object(
@@ -17918,40 +17988,40 @@ var $author$project$Api$leadFormPayload = function (lf) {
 			[
 				_Utils_Tuple2(
 				'leadNumber',
-				$elm$json$Json$Encode$string(lf.dI)),
+				$elm$json$Json$Encode$string(lf.dK)),
 				_Utils_Tuple2(
 				'name',
 				$elm$json$Json$Encode$string(lf.M)),
 				_Utils_Tuple2(
 				'email',
-				$elm$json$Json$Encode$string(lf.ag)),
-				_Utils_Tuple2(
-				'phone',
 				$elm$json$Json$Encode$string(lf.ai)),
 				_Utils_Tuple2(
+				'phone',
+				$elm$json$Json$Encode$string(lf.ak)),
+				_Utils_Tuple2(
 				'nationality',
-				$elm$json$Json$Encode$string(lf.dR)),
+				$elm$json$Json$Encode$string(lf.dU)),
 				_Utils_Tuple2(
 				'currentCountry',
-				$elm$json$Json$Encode$string(lf.cU)),
+				$elm$json$Json$Encode$string(lf.cW)),
 				_Utils_Tuple2(
 				'interestedCountry',
-				$elm$json$Json$Encode$string(lf.dy)),
+				$elm$json$Json$Encode$string(lf.dA)),
 				_Utils_Tuple2(
 				'interestedService',
-				$elm$json$Json$Encode$string(lf.dz)),
+				$elm$json$Json$Encode$string(lf.dB)),
 				_Utils_Tuple2(
 				'source',
-				$elm$json$Json$Encode$string(lf.ez)),
+				$elm$json$Json$Encode$string(lf.eD)),
 				_Utils_Tuple2(
 				'assignedTo',
-				$elm$json$Json$Encode$string(lf.cw)),
+				$elm$json$Json$Encode$string(lf.cy)),
 				_Utils_Tuple2(
 				'status',
-				$elm$json$Json$Encode$string(lf.aj)),
+				$elm$json$Json$Encode$string(lf.al)),
 				_Utils_Tuple2(
 				'followUpDate',
-				$elm$json$Json$Encode$string(lf.dq)),
+				$elm$json$Json$Encode$string(lf.ds)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(lf.n))
@@ -18082,9 +18152,9 @@ var $author$project$Api$deleteLead = F3(
 				c: '/api/leads/' + id
 			});
 	});
-var $author$project$Types$emptyLeadForm = {cw: '', h: false, cU: '', i: false, ag: '', dj: _List_Nil, dq: '', dy: '', dz: '', dI: '', M: '', dR: '', n: '', ai: '', ez: 'Website', aj: 'New', eN: false};
+var $author$project$Types$emptyLeadForm = {cy: '', h: false, cW: '', i: false, ai: '', dl: _List_Nil, ds: '', dA: '', dB: '', dK: '', M: '', dU: '', n: '', ak: '', eD: 'Website', al: 'New', eP: false};
 var $author$project$Types$leadToForm = function (l) {
-	return {cw: l.cw, h: false, cU: l.cU, i: false, ag: l.ag, dj: _List_Nil, dq: l.dq, dy: l.dy, dz: l.dz, dI: l.dI, M: l.M, dR: l.dR, n: l.n, ai: l.ai, ez: l.ez, aj: l.aj, eN: false};
+	return {cy: l.cy, h: false, cW: l.cW, i: false, ai: l.ai, dl: _List_Nil, ds: l.ds, dA: l.dA, dB: l.dB, dK: l.dK, M: l.M, dU: l.dU, n: l.n, ak: l.ak, eD: l.eD, al: l.al, eP: false};
 };
 var $author$project$Api$updateLead = F4(
 	function (token, id, lf, toMsg) {
@@ -18109,11 +18179,11 @@ var $author$project$Types$leadSources = _List_fromArray(
 var $author$project$Types$leadStatuses = _List_fromArray(
 	['New', 'Contacted', 'Qualified', 'Consultation Booked', 'Proposal Sent', 'Converted', 'Closed/Lost']);
 var $author$project$Update$Validate$validateLeadForm = function (lf) {
-	var statusErr = A2($elm$core$List$member, lf.aj, $author$project$Types$leadStatuses) ? _List_Nil : _List_fromArray(
+	var statusErr = A2($elm$core$List$member, lf.al, $author$project$Types$leadStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('status', 'Pick a status.')
 		]);
-	var sourceErr = A2($elm$core$List$member, lf.ez, $author$project$Types$leadSources) ? _List_Nil : _List_fromArray(
+	var sourceErr = A2($elm$core$List$member, lf.eD, $author$project$Types$leadSources) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('source', 'Pick a source.')
 		]);
@@ -18128,33 +18198,33 @@ var $author$project$Update$Validate$validateLeadForm = function (lf) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			lf,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Leads$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 175:
+			case 180:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.dJ;
+						var _v3 = model.dL;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								dJ: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								dL: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -18163,14 +18233,14 @@ var $author$project$Update$Leads$update = F2(
 						_Utils_update(
 							model,
 							{
-								dJ: $author$project$Types$Failure(message)
+								dL: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 176:
+			case 181:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.dJ;
+					var _v4 = model.dL;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -18179,37 +18249,37 @@ var $author$project$Update$Leads$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dJ: next,
-							bE: $elm$core$Maybe$Just(q)
+							dL: next,
+							bG: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 191:
-				var _v5 = _Utils_Tuple2(model.V, model.bE);
+			case 196:
+				var _v5 = _Utils_Tuple2(model.V, model.bG);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bE: $elm$core$Maybe$Nothing}),
+							{bG: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchLeads, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotLeads));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bE: $elm$core$Maybe$Nothing}),
+							{bG: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 190:
+			case 195:
 				var newOffset = msg.a;
-				var _v6 = _Utils_Tuple2(model.V, model.dJ);
+				var _v6 = _Utils_Tuple2(model.V, model.dL);
 				if ((!_v6.a.$) && (_v6.b.$ === 2)) {
 					var t = _v6.a.a;
 					var data = _v6.b.a;
@@ -18217,7 +18287,7 @@ var $author$project$Update$Leads$update = F2(
 						_Utils_update(
 							model,
 							{
-								dJ: $author$project$Types$Success(
+								dL: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -18226,56 +18296,56 @@ var $author$project$Update$Leads$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 177:
+			case 182:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dd: $elm$core$Maybe$Nothing,
-							bp: $elm$core$Maybe$Just($author$project$Types$emptyLeadForm),
-							aC: $elm$core$Maybe$Nothing
+							df: $elm$core$Maybe$Nothing,
+							br: $elm$core$Maybe$Just($author$project$Types$emptyLeadForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 178:
+			case 183:
 				var lead = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dd: $elm$core$Maybe$Just(lead.ah),
-							bp: $elm$core$Maybe$Just(
+							df: $elm$core$Maybe$Just(lead.aj),
+							br: $elm$core$Maybe$Just(
 								$author$project$Types$leadToForm(lead)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 179:
+			case 184:
 				var lead = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$LeadDetail(lead.ah)),
+						$author$project$Types$LeadDetail(lead.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e5: $elm$core$Maybe$Just(lead)
+							aE: $elm$core$Maybe$Nothing,
+							e7: $elm$core$Maybe$Just(lead)
 						}));
-			case 180:
-				var _v7 = _Utils_Tuple2(model.bp, model.a4);
+			case 185:
+				var _v7 = _Utils_Tuple2(model.br, model.a6);
 				if (!_v7.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a4: $elm$core$Maybe$Nothing}),
+							{a6: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v7.a.$) {
 						var lf = _v7.a.a;
-						return (lf.i && (!lf.eN)) ? _Utils_Tuple2(
+						return (lf.i && (!lf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									bp: $elm$core$Maybe$Just(
+									br: $elm$core$Maybe$Just(
 										_Utils_update(
 											lf,
 											{h: true}))
@@ -18283,27 +18353,27 @@ var $author$project$Update$Leads$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{dd: $elm$core$Maybe$Nothing, bp: $elm$core$Maybe$Nothing}),
+								{df: $elm$core$Maybe$Nothing, br: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 181:
+			case 186:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{dd: $elm$core$Maybe$Nothing, bp: $elm$core$Maybe$Nothing}),
+						{df: $elm$core$Maybe$Nothing, br: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 182:
-				var _v8 = model.bp;
+			case 187:
+				var _v8 = model.br;
 				if (!_v8.$) {
 					var lf = _v8.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bp: $elm$core$Maybe$Just(
+								br: $elm$core$Maybe$Just(
 									_Utils_update(
 										lf,
 										{h: false}))
@@ -18312,10 +18382,10 @@ var $author$project$Update$Leads$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 183:
+			case 188:
 				var field = msg.a;
 				var value = msg.b;
-				var _v9 = model.bp;
+				var _v9 = model.br;
 				if (!_v9.$) {
 					var lf = _v9.a;
 					var updated = function () {
@@ -18323,7 +18393,7 @@ var $author$project$Update$Leads$update = F2(
 							case 'leadNumber':
 								return _Utils_update(
 									lf,
-									{dI: value});
+									{dK: value});
 							case 'name':
 								return _Utils_update(
 									lf,
@@ -18331,43 +18401,43 @@ var $author$project$Update$Leads$update = F2(
 							case 'email':
 								return _Utils_update(
 									lf,
-									{ag: value});
+									{ai: value});
 							case 'phone':
 								return _Utils_update(
 									lf,
-									{ai: value});
+									{ak: value});
 							case 'nationality':
 								return _Utils_update(
 									lf,
-									{dR: value});
+									{dU: value});
 							case 'currentCountry':
 								return _Utils_update(
 									lf,
-									{cU: value});
+									{cW: value});
 							case 'interestedCountry':
 								return _Utils_update(
 									lf,
-									{dy: value});
+									{dA: value});
 							case 'interestedService':
 								return _Utils_update(
 									lf,
-									{dz: value});
+									{dB: value});
 							case 'source':
 								return _Utils_update(
 									lf,
-									{ez: value});
+									{eD: value});
 							case 'assignedTo':
 								return _Utils_update(
 									lf,
-									{cw: value});
+									{cy: value});
 							case 'status':
 								return _Utils_update(
 									lf,
-									{aj: value});
+									{al: value});
 							case 'followUpDate':
 								return _Utils_update(
 									lf,
-									{dq: value});
+									{ds: value});
 							case 'notes':
 								return _Utils_update(
 									lf,
@@ -18380,26 +18450,26 @@ var $author$project$Update$Leads$update = F2(
 						_Utils_update(
 							model,
 							{
-								bp: $elm$core$Maybe$Just(
+								br: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v10) {
 													var f = _v10.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 184:
-				var _v12 = _Utils_Tuple2(model.bp, model.V);
+			case 189:
+				var _v12 = _Utils_Tuple2(model.br, model.V);
 				if ((!_v12.a.$) && (!_v12.b.$)) {
 					var lf = _v12.a.a;
 					var token = _v12.b.a;
@@ -18411,12 +18481,12 @@ var $author$project$Update$Leads$update = F2(
 							_Utils_update(
 								model,
 								{
-									bp: $elm$core$Maybe$Just(validated)
+									br: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v14 = model.dd;
+							var _v14 = model.df;
 							if (!_v14.$) {
 								var id = _v14.a;
 								return A4($author$project$Api$updateLead, token, id, validated, $author$project$Types$GotSavedLead);
@@ -18428,34 +18498,34 @@ var $author$project$Update$Leads$update = F2(
 							_Utils_update(
 								model,
 								{
-									bp: $elm$core$Maybe$Just(
+									br: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 185:
+			case 190:
 				var result = msg.a;
 				if (!result.$) {
 					var lead = result.a;
-					var verb = (!_Utils_eq(model.dd, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.df, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							dd: $elm$core$Maybe$Nothing,
-							bp: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							df: $elm$core$Maybe$Nothing,
+							br: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, lead.M)),
-							e5: function () {
+							e7: function () {
 								var _v16 = model._;
 								if (_v16.$ === 17) {
 									return $elm$core$Maybe$Just(lead);
 								} else {
-									return model.e5;
+									return model.e7;
 								}
 							}()
 						});
@@ -18465,17 +18535,17 @@ var $author$project$Update$Leads$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v17 = model.bp;
+						var _v17 = model.br;
 						if (!_v17.$) {
 							var lf = _v17.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bp: $elm$core$Maybe$Just(
+										br: $elm$core$Maybe$Just(
 											_Utils_update(
 												lf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -18483,22 +18553,22 @@ var $author$project$Update$Leads$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v18 = model.bp;
+						var _v18 = model.br;
 						if (!_v18.$) {
 							var lf = _v18.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bp: $elm$core$Maybe$Just(
+										br: $elm$core$Maybe$Just(
 											_Utils_update(
 												lf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -18507,37 +18577,37 @@ var $author$project$Update$Leads$update = F2(
 						}
 					}
 				}
-			case 186:
+			case 191:
 				var lead = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a4: $elm$core$Maybe$Just(lead)
+							a6: $elm$core$Maybe$Just(lead)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 187:
+			case 192:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a4: $elm$core$Maybe$Nothing}),
+						{a6: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 188:
-				var _v19 = _Utils_Tuple2(model.a4, model.V);
+			case 193:
+				var _v19 = _Utils_Tuple2(model.a6, model.V);
 				if ((!_v19.a.$) && (!_v19.b.$)) {
 					var lead = _v19.a.a;
 					var token = _v19.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteLead, token, lead.ah, $author$project$Types$GotDeletedLead));
+						A3($author$project$Api$deleteLead, token, lead.aj, $author$project$Types$GotDeletedLead));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 189:
+			case 194:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v23 = model.a4;
+						var _v23 = model.a6;
 						if (!_v23.$) {
 							var l = _v23.a;
 							return l.M;
@@ -18548,7 +18618,7 @@ var $author$project$Update$Leads$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a4: $elm$core$Maybe$Nothing,
+							a6: $elm$core$Maybe$Nothing,
 							_: function () {
 								var _v21 = model._;
 								if (_v21.$ === 17) {
@@ -18557,13 +18627,13 @@ var $author$project$Update$Leads$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e5: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e7: function () {
 								var _v22 = model._;
 								if (_v22.$ === 17) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e5;
+									return model.e7;
 								}
 							}()
 						});
@@ -18576,8 +18646,8 @@ var $author$project$Update$Leads$update = F2(
 						_Utils_update(
 							model,
 							{
-								a4: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a6: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -18586,81 +18656,82 @@ var $author$project$Update$Leads$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedPartner = function (a) {
-	return {$: 274, a: a};
+	return {$: 279, a: a};
 };
 var $author$project$Types$GotSavedPartner = function (a) {
-	return {$: 270, a: a};
+	return {$: 275, a: a};
 };
+var $elm$json$Json$Encode$int = _Json_wrap;
 var $author$project$Api$partnerFormPayload = function (pf) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
 			[
 				_Utils_Tuple2(
 				'type',
-				$elm$json$Json$Encode$string(pf.eX)),
+				$elm$json$Json$Encode$string(pf.eZ)),
 				_Utils_Tuple2(
 				'legalCompanyName',
-				$elm$json$Json$Encode$string(pf.dK)),
-				_Utils_Tuple2(
-				'country',
-				$elm$json$Json$Encode$string(pf.cR)),
-				_Utils_Tuple2(
-				'licenseNumber',
 				$elm$json$Json$Encode$string(pf.dM)),
 				_Utils_Tuple2(
+				'country',
+				$elm$json$Json$Encode$string(pf.cT)),
+				_Utils_Tuple2(
+				'licenseNumber',
+				$elm$json$Json$Encode$string(pf.dO)),
+				_Utils_Tuple2(
 				'licenseExpiry',
-				$elm$json$Json$Encode$string(pf.dL)),
+				$elm$json$Json$Encode$string(pf.dN)),
 				_Utils_Tuple2(
 				'verificationSource',
-				$elm$json$Json$Encode$string(pf.e_)),
+				$elm$json$Json$Encode$string(pf.e0)),
 				_Utils_Tuple2(
 				'contactPerson',
-				$elm$json$Json$Encode$string(pf.aS)),
+				$elm$json$Json$Encode$string(pf.aU)),
 				_Utils_Tuple2(
 				'contactEmail',
-				$elm$json$Json$Encode$string(pf.cN)),
+				$elm$json$Json$Encode$string(pf.cP)),
 				_Utils_Tuple2(
 				'contactPhone',
-				$elm$json$Json$Encode$string(pf.cO)),
+				$elm$json$Json$Encode$string(pf.cQ)),
 				_Utils_Tuple2(
 				'agreementStart',
-				$elm$json$Json$Encode$string(pf.cn)),
+				$elm$json$Json$Encode$string(pf.cp)),
 				_Utils_Tuple2(
 				'agreementExpiry',
-				$elm$json$Json$Encode$string(pf.cm)),
+				$elm$json$Json$Encode$string(pf.co)),
 				_Utils_Tuple2(
 				'servicesPermitted',
-				$elm$json$Json$Encode$string(pf.ex)),
+				$elm$json$Json$Encode$string(pf.eB)),
 				_Utils_Tuple2(
 				'commissionStructure',
-				$elm$json$Json$Encode$string(pf.cL)),
+				$elm$json$Json$Encode$string(pf.cN)),
 				_Utils_Tuple2(
 				'paymentTerms',
-				$elm$json$Json$Encode$string(pf.d9)),
+				$elm$json$Json$Encode$string(pf.ed)),
 				_Utils_Tuple2(
 				'casesReferred',
 				$elm$json$Json$Encode$int(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toInt(pf.cH)))),
+						$elm$core$String$toInt(pf.cJ)))),
 				_Utils_Tuple2(
 				'casesConverted',
 				$elm$json$Json$Encode$int(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toInt(pf.cG)))),
+						$elm$core$String$toInt(pf.cI)))),
 				_Utils_Tuple2(
 				'amountPayable',
 				$elm$json$Json$Encode$float(
 					A2(
 						$elm$core$Maybe$withDefault,
 						0,
-						$elm$core$String$toFloat(pf.cr)))),
+						$elm$core$String$toFloat(pf.ct)))),
 				_Utils_Tuple2(
 				'complianceNotes',
-				$elm$json$Json$Encode$string(pf.cM)),
+				$elm$json$Json$Encode$string(pf.cO)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(pf.n))
@@ -18791,32 +18862,32 @@ var $author$project$Api$deletePartner = F3(
 				c: '/api/partners/' + id
 			});
 	});
-var $author$project$Types$emptyPartnerForm = {cm: '', cn: '', cr: '0', cG: '0', cH: '0', cL: '', cM: '', h: false, cN: '', aS: '', cO: '', cR: '', i: false, dj: _List_Nil, dK: '', dL: '', dM: '', n: '', d9: '', ex: '', eN: false, eX: 'School', e_: ''};
+var $author$project$Types$emptyPartnerForm = {co: '', cp: '', ct: '0', cI: '0', cJ: '0', cN: '', cO: '', h: false, cP: '', aU: '', cQ: '', cT: '', i: false, dl: _List_Nil, dM: '', dN: '', dO: '', n: '', ed: '', eB: '', eP: false, eZ: 'School', e0: ''};
 var $author$project$Types$partnerToForm = function (p) {
 	return {
-		cm: p.cm,
-		cn: p.cn,
-		cr: $elm$core$String$fromFloat(p.cr),
-		cG: $elm$core$String$fromInt(p.cG),
-		cH: $elm$core$String$fromInt(p.cH),
-		cL: p.cL,
-		cM: p.cM,
-		h: false,
+		co: p.co,
+		cp: p.cp,
+		ct: $elm$core$String$fromFloat(p.ct),
+		cI: $elm$core$String$fromInt(p.cI),
+		cJ: $elm$core$String$fromInt(p.cJ),
 		cN: p.cN,
-		aS: p.aS,
 		cO: p.cO,
-		cR: p.cR,
+		h: false,
+		cP: p.cP,
+		aU: p.aU,
+		cQ: p.cQ,
+		cT: p.cT,
 		i: false,
-		dj: _List_Nil,
-		dK: p.dK,
-		dL: p.dL,
+		dl: _List_Nil,
 		dM: p.dM,
+		dN: p.dN,
+		dO: p.dO,
 		n: p.n,
-		d9: p.d9,
-		ex: p.ex,
-		eN: false,
-		eX: p.eX,
-		e_: p.e_
+		ed: p.ed,
+		eB: p.eB,
+		eP: false,
+		eZ: p.eZ,
+		e0: p.e0
 	};
 };
 var $author$project$Api$updatePartner = F4(
@@ -18840,27 +18911,27 @@ var $author$project$Api$updatePartner = F4(
 var $author$project$Update$Partners$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 258:
+			case 263:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.d4;
+						var _v3 = model.d8;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {cS: '', A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0, eW: ''};
+							return {cU: '', x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0, eY: ''};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								d4: $author$project$Types$Success(
-									{cS: prev.cS, A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total, eW: prev.eW})
+								d8: $author$project$Types$Success(
+									{cU: prev.cU, x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total, eY: prev.eY})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -18869,14 +18940,14 @@ var $author$project$Update$Partners$update = F2(
 						_Utils_update(
 							model,
 							{
-								d4: $author$project$Types$Failure(message)
+								d8: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 259:
+			case 264:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.d4;
+					var _v4 = model.d8;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -18885,39 +18956,39 @@ var $author$project$Update$Partners$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{cS: '', A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0, eW: ''});
+							{cU: '', x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0, eY: ''});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							d4: next,
-							bF: $elm$core$Maybe$Just(q)
+							d8: next,
+							bH: $elm$core$Maybe$Just(q)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 260:
+			case 265:
 				var t = msg.a;
 				var _v5 = model.V;
 				if (!_v5.$) {
 					var tok = _v5.a;
 					var _v6 = function () {
-						var _v7 = model.d4;
+						var _v7 = model.d8;
 						if (_v7.$ === 2) {
 							var data = _v7.a;
 							return _Utils_Tuple3(
 								data.D,
-								data.cS,
+								data.cU,
 								$author$project$Types$Success(
 									_Utils_update(
 										data,
-										{G: 0, eW: t})));
+										{G: 0, eY: t})));
 						} else {
 							return _Utils_Tuple3(
 								'',
 								'',
 								$author$project$Types$Success(
-									{cS: '', A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0, eW: t}));
+									{cU: '', x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0, eY: t}));
 						}
 					}();
 					var q = _v6.a;
@@ -18926,33 +18997,33 @@ var $author$project$Update$Partners$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d4: next}),
+							{d8: next}),
 						A7($author$project$Api$fetchPartners, tok, q, t, country, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotPartners));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 261:
+			case 266:
 				var c = msg.a;
 				var _v8 = model.V;
 				if (!_v8.$) {
 					var tok = _v8.a;
 					var _v9 = function () {
-						var _v10 = model.d4;
+						var _v10 = model.d8;
 						if (_v10.$ === 2) {
 							var data = _v10.a;
 							return _Utils_Tuple3(
 								data.D,
-								data.eW,
+								data.eY,
 								$author$project$Types$Success(
 									_Utils_update(
 										data,
-										{cS: c, G: 0})));
+										{cU: c, G: 0})));
 						} else {
 							return _Utils_Tuple3(
 								'',
 								'',
 								$author$project$Types$Success(
-									{cS: c, A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0, eW: ''}));
+									{cU: c, x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0, eY: ''}));
 						}
 					}();
 					var q = _v9.a;
@@ -18961,21 +19032,21 @@ var $author$project$Update$Partners$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{d4: next}),
+							{d8: next}),
 						A7($author$project$Api$fetchPartners, tok, q, ptype, c, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotPartners));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 276:
-				var _v11 = _Utils_Tuple2(model.V, model.bF);
+			case 281:
+				var _v11 = _Utils_Tuple2(model.V, model.bH);
 				if ((!_v11.a.$) && (!_v11.b.$)) {
 					var t = _v11.a.a;
 					var q = _v11.b.a;
 					var _v12 = function () {
-						var _v13 = model.d4;
+						var _v13 = model.d8;
 						if (_v13.$ === 2) {
 							var d = _v13.a;
-							return _Utils_Tuple2(d.eW, d.cS);
+							return _Utils_Tuple2(d.eY, d.cU);
 						} else {
 							return _Utils_Tuple2('', '');
 						}
@@ -18985,18 +19056,18 @@ var $author$project$Update$Partners$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bF: $elm$core$Maybe$Nothing}),
+							{bH: $elm$core$Maybe$Nothing}),
 						A7($author$project$Api$fetchPartners, t, q, ptype, country, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotPartners));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bF: $elm$core$Maybe$Nothing}),
+							{bH: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 275:
+			case 280:
 				var newOffset = msg.a;
-				var _v14 = _Utils_Tuple2(model.V, model.d4);
+				var _v14 = _Utils_Tuple2(model.V, model.d8);
 				if ((!_v14.a.$) && (_v14.b.$ === 2)) {
 					var t = _v14.a.a;
 					var data = _v14.b.a;
@@ -19004,65 +19075,65 @@ var $author$project$Update$Partners$update = F2(
 						_Utils_update(
 							model,
 							{
-								d4: $author$project$Types$Success(
+								d8: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
 							}),
-						A7($author$project$Api$fetchPartners, t, data.D, data.eW, data.cS, $author$project$Update$Loaders$pageSize, newOffset, $author$project$Types$GotPartners));
+						A7($author$project$Api$fetchPartners, t, data.D, data.eY, data.cU, $author$project$Update$Loaders$pageSize, newOffset, $author$project$Types$GotPartners));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 262:
+			case 267:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							de: $elm$core$Maybe$Nothing,
-							bv: $elm$core$Maybe$Just($author$project$Types$emptyPartnerForm),
-							aC: $elm$core$Maybe$Nothing
+							dg: $elm$core$Maybe$Nothing,
+							bx: $elm$core$Maybe$Just($author$project$Types$emptyPartnerForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 263:
+			case 268:
 				var p = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							de: $elm$core$Maybe$Just(p.ah),
-							bv: $elm$core$Maybe$Just(
+							dg: $elm$core$Maybe$Just(p.aj),
+							bx: $elm$core$Maybe$Just(
 								$author$project$Types$partnerToForm(p)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 264:
+			case 269:
 				var p = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$PartnerDetail(p.ah)),
+						$author$project$Types$PartnerDetail(p.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e6: $elm$core$Maybe$Just(p)
+							aE: $elm$core$Maybe$Nothing,
+							e8: $elm$core$Maybe$Just(p)
 						}));
-			case 265:
-				var _v15 = _Utils_Tuple2(model.bv, model.a5);
+			case 270:
+				var _v15 = _Utils_Tuple2(model.bx, model.a7);
 				if (!_v15.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a5: $elm$core$Maybe$Nothing}),
+							{a7: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v15.a.$) {
 						var pf = _v15.a.a;
-						return (pf.i && (!pf.eN)) ? _Utils_Tuple2(
+						return (pf.i && (!pf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									bv: $elm$core$Maybe$Just(
+									bx: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
 											{h: true}))
@@ -19070,27 +19141,27 @@ var $author$project$Update$Partners$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{de: $elm$core$Maybe$Nothing, bv: $elm$core$Maybe$Nothing}),
+								{dg: $elm$core$Maybe$Nothing, bx: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 266:
+			case 271:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{de: $elm$core$Maybe$Nothing, bv: $elm$core$Maybe$Nothing}),
+						{dg: $elm$core$Maybe$Nothing, bx: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 267:
-				var _v16 = model.bv;
+			case 272:
+				var _v16 = model.bx;
 				if (!_v16.$) {
 					var pf = _v16.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bv: $elm$core$Maybe$Just(
+								bx: $elm$core$Maybe$Just(
 									_Utils_update(
 										pf,
 										{h: false}))
@@ -19099,10 +19170,10 @@ var $author$project$Update$Partners$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 268:
+			case 273:
 				var field = msg.a;
 				var value = msg.b;
-				var _v17 = model.bv;
+				var _v17 = model.bx;
 				if (!_v17.$) {
 					var pf = _v17.a;
 					var updated = function () {
@@ -19110,75 +19181,75 @@ var $author$project$Update$Partners$update = F2(
 							case 'type':
 								return _Utils_update(
 									pf,
-									{eX: value});
+									{eZ: value});
 							case 'legalCompanyName':
 								return _Utils_update(
 									pf,
-									{dK: value});
+									{dM: value});
 							case 'country':
 								return _Utils_update(
 									pf,
-									{cR: value});
+									{cT: value});
 							case 'licenseNumber':
 								return _Utils_update(
 									pf,
-									{dM: value});
+									{dO: value});
 							case 'licenseExpiry':
 								return _Utils_update(
 									pf,
-									{dL: value});
+									{dN: value});
 							case 'verificationSource':
 								return _Utils_update(
 									pf,
-									{e_: value});
+									{e0: value});
 							case 'contactPerson':
 								return _Utils_update(
 									pf,
-									{aS: value});
+									{aU: value});
 							case 'contactEmail':
 								return _Utils_update(
 									pf,
-									{cN: value});
+									{cP: value});
 							case 'contactPhone':
 								return _Utils_update(
 									pf,
-									{cO: value});
+									{cQ: value});
 							case 'agreementStart':
 								return _Utils_update(
 									pf,
-									{cn: value});
+									{cp: value});
 							case 'agreementExpiry':
 								return _Utils_update(
 									pf,
-									{cm: value});
+									{co: value});
 							case 'servicesPermitted':
 								return _Utils_update(
 									pf,
-									{ex: value});
+									{eB: value});
 							case 'commissionStructure':
 								return _Utils_update(
 									pf,
-									{cL: value});
+									{cN: value});
 							case 'paymentTerms':
 								return _Utils_update(
 									pf,
-									{d9: value});
+									{ed: value});
 							case 'casesReferred':
 								return _Utils_update(
 									pf,
-									{cH: value});
+									{cJ: value});
 							case 'casesConverted':
 								return _Utils_update(
 									pf,
-									{cG: value});
+									{cI: value});
 							case 'amountPayable':
 								return _Utils_update(
 									pf,
-									{cr: value});
+									{ct: value});
 							case 'complianceNotes':
 								return _Utils_update(
 									pf,
-									{cM: value});
+									{cO: value});
 							case 'notes':
 								return _Utils_update(
 									pf,
@@ -19191,31 +19262,31 @@ var $author$project$Update$Partners$update = F2(
 						_Utils_update(
 							model,
 							{
-								bv: $elm$core$Maybe$Just(
+								bx: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v18) {
 													var f = _v18.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 269:
-				var _v20 = _Utils_Tuple2(model.bv, model.V);
+			case 274:
+				var _v20 = _Utils_Tuple2(model.bx, model.V);
 				if ((!_v20.a.$) && (!_v20.b.$)) {
 					var pf = _v20.a.a;
 					var token = _v20.b.a;
 					var errs = $elm$core$String$isEmpty(
-						$elm$core$String$trim(pf.dK)) ? _List_fromArray(
+						$elm$core$String$trim(pf.dM)) ? _List_fromArray(
 						[
 							_Utils_Tuple2('legalCompanyName', 'Legal company name is required.')
 						]) : _List_Nil;
@@ -19224,15 +19295,15 @@ var $author$project$Update$Partners$update = F2(
 							_Utils_update(
 								model,
 								{
-									bv: $elm$core$Maybe$Just(
+									bx: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
-											{dj: errs}))
+											{dl: errs}))
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v21 = model.de;
+							var _v21 = model.dg;
 							if (!_v21.$) {
 								var id = _v21.a;
 								return A4($author$project$Api$updatePartner, token, id, pf, $author$project$Types$GotSavedPartner);
@@ -19244,34 +19315,34 @@ var $author$project$Update$Partners$update = F2(
 							_Utils_update(
 								model,
 								{
-									bv: $elm$core$Maybe$Just(
+									bx: $elm$core$Maybe$Just(
 										_Utils_update(
 											pf,
-											{dj: _List_Nil, eN: true}))
+											{dl: _List_Nil, eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 270:
+			case 275:
 				var result = msg.a;
 				if (!result.$) {
 					var p = result.a;
-					var verb = (!_Utils_eq(model.de, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.dg, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							de: $elm$core$Maybe$Nothing,
-							bv: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
-								_Utils_ap(verb, p.dK)),
-							e6: function () {
+							dg: $elm$core$Maybe$Nothing,
+							bx: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
+								_Utils_ap(verb, p.dM)),
+							e8: function () {
 								var _v23 = model._;
 								if (_v23.$ === 23) {
 									return $elm$core$Maybe$Just(p);
 								} else {
-									return model.e6;
+									return model.e8;
 								}
 							}()
 						});
@@ -19281,17 +19352,17 @@ var $author$project$Update$Partners$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v24 = model.bv;
+						var _v24 = model.bx;
 						if (!_v24.$) {
 							var pf = _v24.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bv: $elm$core$Maybe$Just(
+										bx: $elm$core$Maybe$Just(
 											_Utils_update(
 												pf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -19299,22 +19370,22 @@ var $author$project$Update$Partners$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v25 = model.bv;
+						var _v25 = model.bx;
 						if (!_v25.$) {
 							var pf = _v25.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bv: $elm$core$Maybe$Just(
+										bx: $elm$core$Maybe$Just(
 											_Utils_update(
 												pf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -19323,40 +19394,40 @@ var $author$project$Update$Partners$update = F2(
 						}
 					}
 				}
-			case 271:
+			case 276:
 				var p = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a5: $elm$core$Maybe$Just(p)
+							a7: $elm$core$Maybe$Just(p)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 272:
+			case 277:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a5: $elm$core$Maybe$Nothing}),
+						{a7: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 273:
-				var _v26 = _Utils_Tuple2(model.a5, model.V);
+			case 278:
+				var _v26 = _Utils_Tuple2(model.a7, model.V);
 				if ((!_v26.a.$) && (!_v26.b.$)) {
 					var p = _v26.a.a;
 					var token = _v26.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deletePartner, token, p.ah, $author$project$Types$GotDeletedPartner));
+						A3($author$project$Api$deletePartner, token, p.aj, $author$project$Types$GotDeletedPartner));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 274:
+			case 279:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v30 = model.a5;
+						var _v30 = model.a7;
 						if (!_v30.$) {
 							var p = _v30.a;
-							return p.dK;
+							return p.dM;
 						} else {
 							return 'partner';
 						}
@@ -19364,7 +19435,7 @@ var $author$project$Update$Partners$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a5: $elm$core$Maybe$Nothing,
+							a7: $elm$core$Maybe$Nothing,
 							_: function () {
 								var _v28 = model._;
 								if (_v28.$ === 23) {
@@ -19373,13 +19444,13 @@ var $author$project$Update$Partners$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e6: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e8: function () {
 								var _v29 = model._;
 								if (_v29.$ === 23) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e6;
+									return model.e8;
 								}
 							}()
 						});
@@ -19392,8 +19463,8 @@ var $author$project$Update$Partners$update = F2(
 						_Utils_update(
 							model,
 							{
-								a5: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a7: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -19402,10 +19473,10 @@ var $author$project$Update$Partners$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedSchool = function (a) {
-	return {$: 138, a: a};
+	return {$: 140, a: a};
 };
 var $author$project$Types$GotSavedSchool = function (a) {
-	return {$: 134, a: a};
+	return {$: 136, a: a};
 };
 var $author$project$Api$savedSchoolExpect = function (toMsg) {
 	return A2(
@@ -19468,26 +19539,19 @@ var $author$project$Api$schoolFormPayload = function (sf) {
 				$elm$json$Json$Encode$string(sf.M)),
 				_Utils_Tuple2(
 				'countryCode',
-				$elm$json$Json$Encode$string(sf.ao)),
+				$elm$json$Json$Encode$string(sf.aq)),
 				_Utils_Tuple2(
 				'commissionRate',
-				$elm$json$Json$Encode$string(sf.cK)),
+				$elm$json$Json$Encode$string(sf.cM)),
 				_Utils_Tuple2(
 				'contractStatus',
-				$elm$json$Json$Encode$string(sf.aT)),
-				_Utils_Tuple2(
-				'studentsEnrolled',
-				$elm$json$Json$Encode$int(
-					A2(
-						$elm$core$Maybe$withDefault,
-						0,
-						$elm$core$String$toInt(sf.eL)))),
+				$elm$json$Json$Encode$string(sf.aV)),
 				_Utils_Tuple2(
 				'contactPerson',
-				$elm$json$Json$Encode$string(sf.aS)),
+				$elm$json$Json$Encode$string(sf.aU)),
 				_Utils_Tuple2(
 				'website',
-				$elm$json$Json$Encode$string(sf.fb)),
+				$elm$json$Json$Encode$string(sf.fd)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(sf.n))
@@ -19566,21 +19630,21 @@ var $author$project$Api$deleteSchool = F3(
 				c: '/api/schools/' + id
 			});
 	});
-var $author$project$Types$emptySchoolForm = {cK: '', h: false, aS: '', aT: 'Pending', ao: '', i: false, dj: _List_Nil, M: '', n: '', eL: '0', eN: false, fb: ''};
+var $author$project$Types$emptySchoolForm = {cM: '', h: false, aU: '', aV: 'Pending', aq: '', i: false, dl: _List_Nil, M: '', n: '', aa: '0', eP: false, fd: ''};
 var $author$project$Types$schoolToForm = function (s) {
 	return {
-		cK: s.cK,
+		cM: s.cM,
 		h: false,
-		aS: s.aS,
-		aT: s.aT,
-		ao: s.ao,
+		aU: s.aU,
+		aV: s.aV,
+		aq: s.aq,
 		i: false,
-		dj: _List_Nil,
+		dl: _List_Nil,
 		M: s.M,
 		n: s.n,
-		eL: $elm$core$String$fromInt(s.eL),
-		eN: false,
-		fb: s.fb
+		aa: $elm$core$String$fromInt(s.aa),
+		eP: false,
+		fd: s.fd
 	};
 };
 var $author$project$Api$updateSchool = F4(
@@ -19604,7 +19668,7 @@ var $author$project$Api$updateSchool = F4(
 var $author$project$Update$Validate$validateSchoolForm = function (sf) {
 	var statusErr = A2(
 		$elm$core$List$member,
-		sf.aT,
+		sf.aV,
 		_List_fromArray(
 			['Signed', 'Pending', 'Follow-up Required'])) ? _List_Nil : _List_fromArray(
 		[
@@ -19616,7 +19680,7 @@ var $author$project$Update$Validate$validateSchoolForm = function (sf) {
 			_Utils_Tuple2('name', 'School name is required.')
 		]) : _List_Nil;
 	var enrolledErr = function () {
-		var _v0 = $elm$core$String$toInt(sf.eL);
+		var _v0 = $elm$core$String$toInt(sf.aa);
 		if (!_v0.$) {
 			var n = _v0.a;
 			return (n < 0) ? _List_fromArray(
@@ -19625,7 +19689,7 @@ var $author$project$Update$Validate$validateSchoolForm = function (sf) {
 				]) : _List_Nil;
 		} else {
 			return $elm$core$String$isEmpty(
-				$elm$core$String$trim(sf.eL)) ? _List_fromArray(
+				$elm$core$String$trim(sf.aa)) ? _List_fromArray(
 				[
 					_Utils_Tuple2('studentsEnrolled', 'Enter a number.')
 				]) : _List_fromArray(
@@ -19640,33 +19704,33 @@ var $author$project$Update$Validate$validateSchoolForm = function (sf) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			sf,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Schools$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 124:
+			case 126:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.et;
+						var _v3 = model.ex;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								et: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								ex: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -19675,14 +19739,14 @@ var $author$project$Update$Schools$update = F2(
 						_Utils_update(
 							model,
 							{
-								et: $author$project$Types$Failure(message)
+								ex: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 125:
+			case 127:
 				var q = msg.a;
 				var next = function () {
-					var _v4 = model.et;
+					var _v4 = model.ex;
 					if (_v4.$ === 2) {
 						var data = _v4.a;
 						return $author$project$Types$Success(
@@ -19691,37 +19755,37 @@ var $author$project$Update$Schools$update = F2(
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							bG: $elm$core$Maybe$Just(q),
-							et: next
+							bI: $elm$core$Maybe$Just(q),
+							ex: next
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 140:
-				var _v5 = _Utils_Tuple2(model.V, model.bG);
+			case 142:
+				var _v5 = _Utils_Tuple2(model.V, model.bI);
 				if ((!_v5.a.$) && (!_v5.b.$)) {
 					var t = _v5.a.a;
 					var q = _v5.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bG: $elm$core$Maybe$Nothing}),
+							{bI: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchSchools, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotSchools));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bG: $elm$core$Maybe$Nothing}),
+							{bI: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 139:
+			case 141:
 				var newOffset = msg.a;
-				var _v6 = _Utils_Tuple2(model.V, model.et);
+				var _v6 = _Utils_Tuple2(model.V, model.ex);
 				if ((!_v6.a.$) && (_v6.b.$ === 2)) {
 					var t = _v6.a.a;
 					var data = _v6.b.a;
@@ -19729,7 +19793,7 @@ var $author$project$Update$Schools$update = F2(
 						_Utils_update(
 							model,
 							{
-								et: $author$project$Types$Success(
+								ex: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -19738,56 +19802,56 @@ var $author$project$Update$Schools$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 126:
+			case 128:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							df: $elm$core$Maybe$Nothing,
-							bY: $elm$core$Maybe$Just($author$project$Types$emptySchoolForm),
-							aC: $elm$core$Maybe$Nothing
+							dh: $elm$core$Maybe$Nothing,
+							b_: $elm$core$Maybe$Just($author$project$Types$emptySchoolForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 127:
+			case 129:
 				var school = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							df: $elm$core$Maybe$Just(school.ah),
-							bY: $elm$core$Maybe$Just(
+							dh: $elm$core$Maybe$Just(school.aj),
+							b_: $elm$core$Maybe$Just(
 								$author$project$Types$schoolToForm(school)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 128:
+			case 130:
 				var school = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$SchoolDetail(school.ah)),
+						$author$project$Types$SchoolDetail(school.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e7: $elm$core$Maybe$Just(school)
+							aE: $elm$core$Maybe$Nothing,
+							e9: $elm$core$Maybe$Just(school)
 						}));
-			case 129:
-				var _v7 = _Utils_Tuple2(model.bY, model.a6);
+			case 131:
+				var _v7 = _Utils_Tuple2(model.b_, model.a8);
 				if (!_v7.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a6: $elm$core$Maybe$Nothing}),
+							{a8: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v7.a.$) {
 						var sf = _v7.a.a;
-						return (sf.i && (!sf.eN)) ? _Utils_Tuple2(
+						return (sf.i && (!sf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									bY: $elm$core$Maybe$Just(
+									b_: $elm$core$Maybe$Just(
 										_Utils_update(
 											sf,
 											{h: true}))
@@ -19795,27 +19859,27 @@ var $author$project$Update$Schools$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{df: $elm$core$Maybe$Nothing, bY: $elm$core$Maybe$Nothing}),
+								{dh: $elm$core$Maybe$Nothing, b_: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 130:
+			case 132:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{df: $elm$core$Maybe$Nothing, bY: $elm$core$Maybe$Nothing}),
+						{dh: $elm$core$Maybe$Nothing, b_: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 131:
-				var _v8 = model.bY;
+			case 133:
+				var _v8 = model.b_;
 				if (!_v8.$) {
 					var sf = _v8.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bY: $elm$core$Maybe$Just(
+								b_: $elm$core$Maybe$Just(
 									_Utils_update(
 										sf,
 										{h: false}))
@@ -19824,10 +19888,10 @@ var $author$project$Update$Schools$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 132:
+			case 134:
 				var field = msg.a;
 				var value = msg.b;
-				var _v9 = model.bY;
+				var _v9 = model.b_;
 				if (!_v9.$) {
 					var sf = _v9.a;
 					var updated = function () {
@@ -19839,27 +19903,27 @@ var $author$project$Update$Schools$update = F2(
 							case 'countryCode':
 								return _Utils_update(
 									sf,
-									{ao: value});
+									{aq: value});
 							case 'commissionRate':
 								return _Utils_update(
 									sf,
-									{cK: value});
+									{cM: value});
 							case 'contractStatus':
 								return _Utils_update(
 									sf,
-									{aT: value});
+									{aV: value});
 							case 'studentsEnrolled':
 								return _Utils_update(
 									sf,
-									{eL: value});
+									{aa: value});
 							case 'contactPerson':
 								return _Utils_update(
 									sf,
-									{aS: value});
+									{aU: value});
 							case 'website':
 								return _Utils_update(
 									sf,
-									{fb: value});
+									{fd: value});
 							case 'notes':
 								return _Utils_update(
 									sf,
@@ -19872,26 +19936,26 @@ var $author$project$Update$Schools$update = F2(
 						_Utils_update(
 							model,
 							{
-								bY: $elm$core$Maybe$Just(
+								b_: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v10) {
 													var f = _v10.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 133:
-				var _v12 = _Utils_Tuple2(model.bY, model.V);
+			case 135:
+				var _v12 = _Utils_Tuple2(model.b_, model.V);
 				if ((!_v12.a.$) && (!_v12.b.$)) {
 					var sf = _v12.a.a;
 					var token = _v12.b.a;
@@ -19903,12 +19967,12 @@ var $author$project$Update$Schools$update = F2(
 							_Utils_update(
 								model,
 								{
-									bY: $elm$core$Maybe$Just(validated)
+									b_: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v14 = model.df;
+							var _v14 = model.dh;
 							if (!_v14.$) {
 								var id = _v14.a;
 								return A4($author$project$Api$updateSchool, token, id, validated, $author$project$Types$GotSavedSchool);
@@ -19920,34 +19984,34 @@ var $author$project$Update$Schools$update = F2(
 							_Utils_update(
 								model,
 								{
-									bY: $elm$core$Maybe$Just(
+									b_: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 134:
+			case 136:
 				var result = msg.a;
 				if (!result.$) {
 					var school = result.a;
-					var verb = (!_Utils_eq(model.df, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.dh, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							df: $elm$core$Maybe$Nothing,
-							bY: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							dh: $elm$core$Maybe$Nothing,
+							b_: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, school.M)),
-							e7: function () {
+							e9: function () {
 								var _v16 = model._;
 								if (_v16.$ === 11) {
 									return $elm$core$Maybe$Just(school);
 								} else {
-									return model.e7;
+									return model.e9;
 								}
 							}()
 						});
@@ -19957,17 +20021,17 @@ var $author$project$Update$Schools$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v17 = model.bY;
+						var _v17 = model.b_;
 						if (!_v17.$) {
 							var sf = _v17.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bY: $elm$core$Maybe$Just(
+										b_: $elm$core$Maybe$Just(
 											_Utils_update(
 												sf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -19975,22 +20039,22 @@ var $author$project$Update$Schools$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v18 = model.bY;
+						var _v18 = model.b_;
 						if (!_v18.$) {
 							var sf = _v18.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										bY: $elm$core$Maybe$Just(
+										b_: $elm$core$Maybe$Just(
 											_Utils_update(
 												sf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -19999,37 +20063,37 @@ var $author$project$Update$Schools$update = F2(
 						}
 					}
 				}
-			case 135:
+			case 137:
 				var school = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a6: $elm$core$Maybe$Just(school)
+							a8: $elm$core$Maybe$Just(school)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 136:
+			case 138:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a6: $elm$core$Maybe$Nothing}),
+						{a8: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 137:
-				var _v19 = _Utils_Tuple2(model.a6, model.V);
+			case 139:
+				var _v19 = _Utils_Tuple2(model.a8, model.V);
 				if ((!_v19.a.$) && (!_v19.b.$)) {
 					var school = _v19.a.a;
 					var token = _v19.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteSchool, token, school.ah, $author$project$Types$GotDeletedSchool));
+						A3($author$project$Api$deleteSchool, token, school.aj, $author$project$Types$GotDeletedSchool));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 138:
+			case 140:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v23 = model.a6;
+						var _v23 = model.a8;
 						if (!_v23.$) {
 							var s = _v23.a;
 							return s.M;
@@ -20040,7 +20104,7 @@ var $author$project$Update$Schools$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a6: $elm$core$Maybe$Nothing,
+							a8: $elm$core$Maybe$Nothing,
 							_: function () {
 								var _v21 = model._;
 								if (_v21.$ === 11) {
@@ -20049,13 +20113,13 @@ var $author$project$Update$Schools$update = F2(
 									return model._;
 								}
 							}(),
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e7: function () {
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							e9: function () {
 								var _v22 = model._;
 								if (_v22.$ === 11) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e7;
+									return model.e9;
 								}
 							}()
 						});
@@ -20073,8 +20137,8 @@ var $author$project$Update$Schools$update = F2(
 						_Utils_update(
 							model,
 							{
-								a6: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a8: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -20083,13 +20147,13 @@ var $author$project$Update$Schools$update = F2(
 		}
 	});
 var $author$project$Types$GotChangedPassword = function (a) {
-	return {$: 97, a: a};
+	return {$: 98, a: a};
 };
 var $author$project$Types$GotLogoutAll = function (a) {
-	return {$: 101, a: a};
+	return {$: 102, a: a};
 };
 var $author$project$Types$GotUpdatedProfile = function (a) {
-	return {$: 94, a: a};
+	return {$: 95, a: a};
 };
 var $author$project$Types$LoggedOut = {$: 23};
 var $author$project$Api$statusExpect = function (toMsg) {
@@ -20176,7 +20240,7 @@ var $author$project$Api$logoutAll = F2(
 	});
 var $author$project$Types$ProfileUpdateResponse = F2(
 	function (user, token) {
-		return {V: token, b3: user};
+		return {V: token, b5: user};
 	});
 var $author$project$Api$profileUpdateDecoder = A3(
 	$elm$json$Json$Decode$map2,
@@ -20262,10 +20326,10 @@ var $author$project$Api$updateMe = F4(
 var $author$project$Update$Settings$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 92:
+			case 93:
 				var field = msg.a;
 				var value = msg.b;
-				var pf = model.ee;
+				var pf = model.ei;
 				var updated = function () {
 					switch (field) {
 						case 'name':
@@ -20275,7 +20339,7 @@ var $author$project$Update$Settings$update = F2(
 						case 'email':
 							return _Utils_update(
 								pf,
-								{ag: value});
+								{ai: value});
 						default:
 							return pf;
 					}
@@ -20284,25 +20348,25 @@ var $author$project$Update$Settings$update = F2(
 					_Utils_update(
 						model,
 						{
-							ee: _Utils_update(
+							ei: _Utils_update(
 								updated,
 								{
-									dj: A2(
+									dl: A2(
 										$elm$core$List$filter,
 										function (_v1) {
 											var f = _v1.a;
 											return !_Utils_eq(f, field);
 										},
-										updated.dj),
-									aa: $elm$core$Maybe$Nothing
+										updated.dl),
+									ac: $elm$core$Maybe$Nothing
 								})
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 93:
+			case 94:
 				var _v3 = model.V;
 				if (!_v3.$) {
 					var token = _v3.a;
-					var pf = model.ee;
+					var pf = model.ei;
 					var errs = A2(
 						$elm$core$List$filterMap,
 						$elm$core$Basics$identity,
@@ -20311,46 +20375,46 @@ var $author$project$Update$Settings$update = F2(
 								$elm$core$String$isEmpty(
 								$elm$core$String$trim(pf.M)) ? $elm$core$Maybe$Just(
 								_Utils_Tuple2('name', 'Name is required.')) : $elm$core$Maybe$Nothing,
-								(!(A2($elm$core$String$contains, '@', pf.ag) && A2($elm$core$String$contains, '.', pf.ag))) ? $elm$core$Maybe$Just(
+								(!(A2($elm$core$String$contains, '@', pf.ai) && A2($elm$core$String$contains, '.', pf.ai))) ? $elm$core$Maybe$Just(
 								_Utils_Tuple2('email', 'Please enter a valid email.')) : $elm$core$Maybe$Nothing
 							]));
 					return (!$elm$core$List$isEmpty(errs)) ? _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ee: _Utils_update(
+								ei: _Utils_update(
 									pf,
-									{dj: errs})
+									{dl: errs})
 							}),
 						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ee: _Utils_update(
+								ei: _Utils_update(
 									pf,
-									{dj: _List_Nil, eN: true, aa: $elm$core$Maybe$Nothing})
+									{dl: _List_Nil, eP: true, ac: $elm$core$Maybe$Nothing})
 							}),
-						A4($author$project$Api$updateMe, token, pf.M, pf.ag, $author$project$Types$GotUpdatedProfile));
+						A4($author$project$Api$updateMe, token, pf.M, pf.ai, $author$project$Types$GotUpdatedProfile));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 94:
+			case 95:
 				var result = msg.a;
-				var pf = model.ee;
+				var pf = model.ei;
 				if (!result.$) {
 					var res = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ee: _Utils_update(
+								ei: _Utils_update(
 									pf,
 									{
-										eN: false,
-										aa: $elm$core$Maybe$Just('Profile updated.')
+										eP: false,
+										ac: $elm$core$Maybe$Just('Profile updated.')
 									}),
 								V: $elm$core$Maybe$Just(res.V),
-								b3: $elm$core$Maybe$Just(res.b3)
+								b5: $elm$core$Maybe$Just(res.b5)
 							}),
 						$author$project$Ports$storeToken(
 							$elm$core$Maybe$Just(res.V)));
@@ -20361,9 +20425,9 @@ var $author$project$Update$Settings$update = F2(
 							_Utils_update(
 								model,
 								{
-									ee: _Utils_update(
+									ei: _Utils_update(
 										pf,
-										{dj: fields, eN: false})
+										{dl: fields, eP: false})
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
@@ -20372,37 +20436,37 @@ var $author$project$Update$Settings$update = F2(
 							_Utils_update(
 								model,
 								{
-									ee: _Utils_update(
+									ei: _Utils_update(
 										pf,
 										{
-											dj: _List_fromArray(
+											dl: _List_fromArray(
 												[
 													_Utils_Tuple2('form', message)
 												]),
-											eN: false
+											eP: false
 										})
 								}),
 							$elm$core$Platform$Cmd$none);
 					}
 				}
-			case 95:
+			case 96:
 				var field = msg.a;
 				var value = msg.b;
-				var pf = model.d5;
+				var pf = model.d9;
 				var updated = function () {
 					switch (field) {
 						case 'current':
 							return _Utils_update(
 								pf,
-								{aU: value});
+								{aW: value});
 						case 'next':
 							return _Utils_update(
 								pf,
-								{bt: value});
+								{bv: value});
 						case 'confirm':
 							return _Utils_update(
 								pf,
-								{aP: value});
+								{aR: value});
 						default:
 							return pf;
 					}
@@ -20411,60 +20475,60 @@ var $author$project$Update$Settings$update = F2(
 					_Utils_update(
 						model,
 						{
-							d5: _Utils_update(
+							d9: _Utils_update(
 								updated,
 								{
-									dj: A2(
+									dl: A2(
 										$elm$core$List$filter,
 										function (_v5) {
 											var f = _v5.a;
 											return !_Utils_eq(f, field);
 										},
-										updated.dj),
-									aa: $elm$core$Maybe$Nothing
+										updated.dl),
+									ac: $elm$core$Maybe$Nothing
 								})
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 96:
+			case 97:
 				var _v7 = model.V;
 				if (!_v7.$) {
 					var token = _v7.a;
-					var pf = model.d5;
+					var pf = model.d9;
 					var errs = A2(
 						$elm$core$List$filterMap,
 						$elm$core$Basics$identity,
 						_List_fromArray(
 							[
-								$elm$core$String$isEmpty(pf.aU) ? $elm$core$Maybe$Just(
+								$elm$core$String$isEmpty(pf.aW) ? $elm$core$Maybe$Just(
 								_Utils_Tuple2('current', 'Enter your current password.')) : $elm$core$Maybe$Nothing,
-								($elm$core$String$length(pf.bt) < 8) ? $elm$core$Maybe$Just(
-								_Utils_Tuple2('next', 'New password must be at least 8 characters.')) : $elm$core$Maybe$Nothing,
-								(!_Utils_eq(pf.aP, pf.bt)) ? $elm$core$Maybe$Just(
+								($elm$core$String$length(pf.bv) < 12) ? $elm$core$Maybe$Just(
+								_Utils_Tuple2('next', 'New password must be at least 12 characters.')) : $elm$core$Maybe$Nothing,
+								(!_Utils_eq(pf.aR, pf.bv)) ? $elm$core$Maybe$Just(
 								_Utils_Tuple2('confirm', 'Passwords don\u0027t match.')) : $elm$core$Maybe$Nothing
 							]));
 					return (!$elm$core$List$isEmpty(errs)) ? _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								d5: _Utils_update(
+								d9: _Utils_update(
 									pf,
-									{dj: errs})
+									{dl: errs})
 							}),
 						$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								d5: _Utils_update(
+								d9: _Utils_update(
 									pf,
-									{dj: _List_Nil, eN: true, aa: $elm$core$Maybe$Nothing})
+									{dl: _List_Nil, eP: true, ac: $elm$core$Maybe$Nothing})
 							}),
-						A4($author$project$Api$changePassword, token, pf.aU, pf.bt, $author$project$Types$GotChangedPassword));
+						A4($author$project$Api$changePassword, token, pf.aW, pf.bv, $author$project$Types$GotChangedPassword));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 97:
+			case 98:
 				var result = msg.a;
-				var pf = model.d5;
+				var pf = model.d9;
 				if (!result.$) {
 					var _v9 = A2($author$project$Update$Auth$update, $author$project$Types$LoggedOut, model);
 					var signedOut = _v9.a;
@@ -20473,8 +20537,8 @@ var $author$project$Update$Settings$update = F2(
 						_Utils_update(
 							signedOut,
 							{
-								co: $elm$core$Maybe$Just(
-									{dF: 1, dN: 'Password changed. Sign in with your new password.'})
+								cq: $elm$core$Maybe$Just(
+									{dH: 1, dQ: 'Password changed. Sign in with your new password.'})
 							}),
 						command);
 				} else {
@@ -20483,67 +20547,67 @@ var $author$project$Update$Settings$update = F2(
 						_Utils_update(
 							model,
 							{
-								d5: _Utils_update(
+								d9: _Utils_update(
 									pf,
 									{
-										dj: _List_fromArray(
+										dl: _List_fromArray(
 											[
 												_Utils_Tuple2('form', message)
 											]),
-										eN: false
+										eP: false
 									})
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 98:
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{ar: true}),
-					$elm$core$Platform$Cmd$none);
 			case 99:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ar: false}),
+						{at: true}),
 					$elm$core$Platform$Cmd$none);
 			case 100:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{at: false}),
+					$elm$core$Platform$Cmd$none);
+			case 101:
 				var _v10 = model.V;
 				if (!_v10.$) {
 					var token = _v10.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ar: false}),
+							{at: false}),
 						A2($author$project$Api$logoutAll, token, $author$project$Types$GotLogoutAll));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ar: false}),
+							{at: false}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 101:
+			case 102:
 				var result = msg.a;
 				if (!result.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ce: $author$project$Types$NotAsked,
-								cl: $author$project$Types$NotAsked,
-								co: $elm$core$Maybe$Just(
-									{dF: 1, dN: 'Signed out of all devices.'}),
-								cP: $author$project$Types$NotAsked,
-								c_: $author$project$Types$NotAsked,
-								dJ: $author$project$Types$NotAsked,
-								dP: 0,
+								cg: $author$project$Types$NotAsked,
+								cn: $author$project$Types$NotAsked,
+								cq: $elm$core$Maybe$Just(
+									{dH: 1, dQ: 'Signed out of all devices.'}),
+								cR: $author$project$Types$NotAsked,
+								c0: $author$project$Types$NotAsked,
+								dL: $author$project$Types$NotAsked,
+								dS: 0,
 								_: $author$project$Types$Home,
-								et: $author$project$Types$NotAsked,
-								eK: $author$project$Types$NotAsked,
-								aC: $elm$core$Maybe$Nothing,
+								ex: $author$project$Types$NotAsked,
+								eO: $author$project$Types$NotAsked,
+								aE: $elm$core$Maybe$Nothing,
 								V: $elm$core$Maybe$Nothing,
-								b3: $elm$core$Maybe$Nothing
+								b5: $elm$core$Maybe$Nothing
 							}),
 						$author$project$Ports$storeToken($elm$core$Maybe$Nothing));
 				} else {
@@ -20552,7 +20616,7 @@ var $author$project$Update$Settings$update = F2(
 						_Utils_update(
 							model,
 							{
-								aC: $elm$core$Maybe$Just('Sign-out failed: ' + message)
+								aE: $elm$core$Maybe$Just('Sign-out failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -20561,10 +20625,10 @@ var $author$project$Update$Settings$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedStudent = function (a) {
-	return {$: 155, a: a};
+	return {$: 160, a: a};
 };
 var $author$project$Types$GotSavedStudent = function (a) {
-	return {$: 151, a: a};
+	return {$: 156, a: a};
 };
 var $author$project$Api$savedStudentExpect = function (toMsg) {
 	return A2(
@@ -20627,28 +20691,28 @@ var $author$project$Api$studentFormPayload = function (sf) {
 				$elm$json$Json$Encode$string(sf.M)),
 				_Utils_Tuple2(
 				'studentCode',
-				$elm$json$Json$Encode$string(sf.eG)),
+				$elm$json$Json$Encode$string(sf.eK)),
 				_Utils_Tuple2(
 				'countryCode',
-				$elm$json$Json$Encode$string(sf.ao)),
+				$elm$json$Json$Encode$string(sf.aq)),
 				_Utils_Tuple2(
 				'schoolId',
-				$elm$json$Json$Encode$string(sf.ep)),
+				$elm$json$Json$Encode$string(sf.et)),
 				_Utils_Tuple2(
 				'agentId',
-				$elm$json$Json$Encode$string(sf.ci)),
+				$elm$json$Json$Encode$string(sf.ck)),
 				_Utils_Tuple2(
 				'program',
-				$elm$json$Json$Encode$string(sf.ef)),
+				$elm$json$Json$Encode$string(sf.ej)),
 				_Utils_Tuple2(
 				'acceptanceStatus',
-				$elm$json$Json$Encode$string(sf.cb)),
+				$elm$json$Json$Encode$string(sf.cd)),
 				_Utils_Tuple2(
 				'visaStatus',
-				$elm$json$Json$Encode$string(sf.e9)),
+				$elm$json$Json$Encode$string(sf.fb)),
 				_Utils_Tuple2(
 				'invoiceStatus',
-				$elm$json$Json$Encode$string(sf.dD)),
+				$elm$json$Json$Encode$string(sf.dF)),
 				_Utils_Tuple2(
 				'notes',
 				$elm$json$Json$Encode$string(sf.n))
@@ -20727,9 +20791,72 @@ var $author$project$Api$deleteStudent = F3(
 				c: '/api/students/' + id
 			});
 	});
-var $author$project$Types$emptyStudentForm = {cb: 'Pending', ci: '', h: false, ao: '', i: false, dj: _List_Nil, dD: 'Not Issued', M: '', n: '', ef: '', ep: '', eG: '', eN: false, e9: 'Not Started'};
+var $author$project$Types$emptyStudentForm = {cd: 'Pending', ck: '', h: false, aq: '', i: false, dl: _List_Nil, dF: 'Not Issued', M: '', n: '', ej: '', et: '', eK: '', eP: false, fb: 'Not Started'};
+var $author$project$Update$Students$isCurrentLinkedStudentsRoute = F2(
+	function (route, parentId) {
+		switch (route.$) {
+			case 15:
+				var id = route.a;
+				return _Utils_eq(id, parentId);
+			case 11:
+				var id = route.a;
+				return _Utils_eq(id, parentId);
+			default:
+				return false;
+		}
+	});
+var $author$project$Update$Students$linkedStudentsRefresh = function (model) {
+	var _v0 = _Utils_Tuple2(model.V, model._);
+	_v0$2:
+	while (true) {
+		if (!_v0.a.$) {
+			switch (_v0.b.$) {
+				case 15:
+					var token = _v0.a.a;
+					var id = _v0.b.a;
+					return A4(
+						$author$project$Api$fetchLinkedStudents,
+						token,
+						'agent',
+						id,
+						$author$project$Types$GotLinkedStudents(id));
+				case 11:
+					var token = _v0.a.a;
+					var id = _v0.b.a;
+					return A4(
+						$author$project$Api$fetchLinkedStudents,
+						token,
+						'school',
+						id,
+						$author$project$Types$GotLinkedStudents(id));
+				default:
+					break _v0$2;
+			}
+		} else {
+			break _v0$2;
+		}
+	}
+	return $elm$core$Platform$Cmd$none;
+};
+var $author$project$Update$Students$relatedCountRefresh = function (model) {
+	var _v0 = model._;
+	switch (_v0.$) {
+		case 15:
+			return _List_fromArray(
+				[
+					$author$project$Update$Loaders$loadAgents(model).b
+				]);
+		case 11:
+			return _List_fromArray(
+				[
+					$author$project$Update$Loaders$loadSchools(model).b
+				]);
+		default:
+			return _List_Nil;
+	}
+};
 var $author$project$Types$studentToForm = function (s) {
-	return {cb: s.cb, ci: s.ci, h: false, ao: s.ao, i: false, dj: _List_Nil, dD: s.dD, M: s.M, n: s.n, ef: s.ef, ep: s.ep, eG: s.eG, eN: false, e9: s.e9};
+	return {cd: s.cd, ck: s.ck, h: false, aq: s.aq, i: false, dl: _List_Nil, dF: s.dF, M: s.M, n: s.n, ej: s.ej, et: s.et, eK: s.eK, eP: false, fb: s.fb};
 };
 var $author$project$Api$updateStudent = F4(
 	function (token, id, sf, toMsg) {
@@ -20756,7 +20883,7 @@ var $author$project$Types$invoiceStatuses = _List_fromArray(
 var $author$project$Types$visaStatuses = _List_fromArray(
 	['Not Started', 'Pending', 'Approved', 'Denied']);
 var $author$project$Update$Validate$validateStudentForm = function (sf) {
-	var visaErr = A2($elm$core$List$member, sf.e9, $author$project$Types$visaStatuses) ? _List_Nil : _List_fromArray(
+	var visaErr = A2($elm$core$List$member, sf.fb, $author$project$Types$visaStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('visaStatus', 'Pick a visa status.')
 		]);
@@ -20765,11 +20892,11 @@ var $author$project$Update$Validate$validateStudentForm = function (sf) {
 		[
 			_Utils_Tuple2('name', 'Student name is required.')
 		]) : _List_Nil;
-	var invoiceErr = A2($elm$core$List$member, sf.dD, $author$project$Types$invoiceStatuses) ? _List_Nil : _List_fromArray(
+	var invoiceErr = A2($elm$core$List$member, sf.dF, $author$project$Types$invoiceStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('invoiceStatus', 'Pick an invoice status.')
 		]);
-	var acceptanceErr = A2($elm$core$List$member, sf.cb, $author$project$Types$acceptanceStatuses) ? _List_Nil : _List_fromArray(
+	var acceptanceErr = A2($elm$core$List$member, sf.cd, $author$project$Types$acceptanceStatuses) ? _List_Nil : _List_fromArray(
 		[
 			_Utils_Tuple2('acceptanceStatus', 'Pick an acceptance status.')
 		]);
@@ -20781,33 +20908,33 @@ var $author$project$Update$Validate$validateStudentForm = function (sf) {
 	return _Utils_Tuple2(
 		_Utils_update(
 			sf,
-			{dj: allErrors}),
+			{dl: allErrors}),
 		$elm$core$List$isEmpty(allErrors));
 };
 var $author$project$Update$Students$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 141:
+			case 143:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var prev = function () {
-						var _v3 = model.eK;
+						var _v3 = model.eO;
 						if (_v3.$ === 2) {
 							var d = _v3.a;
 							return d;
 						} else {
-							return {A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', y: 0};
+							return {x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: '', t: 0};
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								eK: $author$project$Types$Success(
-									{A: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, y: total})
+								eO: $author$project$Types$Success(
+									{x: items, E: $author$project$Update$Loaders$pageSize, G: prev.G, D: prev.D, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -20816,11 +20943,40 @@ var $author$project$Update$Students$update = F2(
 						_Utils_update(
 							model,
 							{
-								eK: $author$project$Types$Failure(message)
+								eO: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 281:
+			case 144:
+				var parentId = msg.a;
+				var result = msg.b;
+				if (!A2($author$project$Update$Students$isCurrentLinkedStudentsRoute, model._, parentId)) {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				} else {
+					if (!result.$) {
+						var _v5 = result.a;
+						var items = _v5.a;
+						var total = _v5.b;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									dP: $author$project$Types$Success(
+										{x: items, d6: parentId, t: total})
+								}),
+							$elm$core$Platform$Cmd$none);
+					} else {
+						var message = result.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									dP: $author$project$Types$Failure(message)
+								}),
+							$elm$core$Platform$Cmd$none);
+					}
+				}
+			case 286:
 				var result = msg.a;
 				if (!result.$) {
 					var dossier = result.a;
@@ -20828,7 +20984,7 @@ var $author$project$Update$Students$update = F2(
 						_Utils_update(
 							model,
 							{
-								eH: $author$project$Types$Success(dossier)
+								eL: $author$project$Types$Success(dossier)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -20837,61 +20993,61 @@ var $author$project$Update$Students$update = F2(
 						_Utils_update(
 							model,
 							{
-								eH: $author$project$Types$Failure(message)
+								eL: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 142:
+			case 145:
 				var q = msg.a;
 				var next = function () {
-					var _v5 = model.eK;
-					if (_v5.$ === 2) {
-						var data = _v5.a;
+					var _v7 = model.eO;
+					if (_v7.$ === 2) {
+						var data = _v7.a;
 						return $author$project$Types$Success(
 							_Utils_update(
 								data,
 								{G: 0, D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, y: 0});
+							{x: _List_Nil, E: $author$project$Update$Loaders$pageSize, G: 0, D: q, t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							bH: $elm$core$Maybe$Just(q),
-							eK: next
+							bJ: $elm$core$Maybe$Just(q),
+							eO: next
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 157:
-				var _v6 = _Utils_Tuple2(model.V, model.bH);
-				if ((!_v6.a.$) && (!_v6.b.$)) {
-					var t = _v6.a.a;
-					var q = _v6.b.a;
+			case 162:
+				var _v8 = _Utils_Tuple2(model.V, model.bJ);
+				if ((!_v8.a.$) && (!_v8.b.$)) {
+					var t = _v8.a.a;
+					var q = _v8.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bH: $elm$core$Maybe$Nothing}),
+							{bJ: $elm$core$Maybe$Nothing}),
 						A5($author$project$Api$fetchStudents, t, q, $author$project$Update$Loaders$pageSize, 0, $author$project$Types$GotStudents));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bH: $elm$core$Maybe$Nothing}),
+							{bJ: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 156:
+			case 161:
 				var newOffset = msg.a;
-				var _v7 = _Utils_Tuple2(model.V, model.eK);
-				if ((!_v7.a.$) && (_v7.b.$ === 2)) {
-					var t = _v7.a.a;
-					var data = _v7.b.a;
+				var _v9 = _Utils_Tuple2(model.V, model.eO);
+				if ((!_v9.a.$) && (_v9.b.$ === 2)) {
+					var t = _v9.a.a;
+					var data = _v9.b.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								eK: $author$project$Types$Success(
+								eO: $author$project$Types$Success(
 									_Utils_update(
 										data,
 										{G: newOffset}))
@@ -20900,56 +21056,84 @@ var $author$project$Update$Students$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 143:
+			case 146:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dg: $elm$core$Maybe$Nothing,
-							b_: $elm$core$Maybe$Just($author$project$Types$emptyStudentForm),
-							aC: $elm$core$Maybe$Nothing
+							di: $elm$core$Maybe$Nothing,
+							b0: $elm$core$Maybe$Just($author$project$Types$emptyStudentForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 144:
+			case 147:
+				var agent = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							di: $elm$core$Maybe$Nothing,
+							b0: $elm$core$Maybe$Just(
+								_Utils_update(
+									$author$project$Types$emptyStudentForm,
+									{ck: agent.aj})),
+							aE: $elm$core$Maybe$Nothing
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 148:
+				var school = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							di: $elm$core$Maybe$Nothing,
+							b0: $elm$core$Maybe$Just(
+								_Utils_update(
+									$author$project$Types$emptyStudentForm,
+									{et: school.aj})),
+							aE: $elm$core$Maybe$Nothing
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 149:
 				var student = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dg: $elm$core$Maybe$Just(student.ah),
-							b_: $elm$core$Maybe$Just(
+							di: $elm$core$Maybe$Just(student.aj),
+							b0: $elm$core$Maybe$Just(
 								$author$project$Types$studentToForm(student)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 145:
+			case 150:
 				var student = msg.a;
 				return A2(
 					$author$project$Update$Navigation$update,
 					$author$project$Types$NavigatedTo(
-						$author$project$Types$StudentDetail(student.ah)),
+						$author$project$Types$StudentDetail(student.aj)),
 					_Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Nothing,
-							e8: $elm$core$Maybe$Just(student)
+							aE: $elm$core$Maybe$Nothing,
+							fa: $elm$core$Maybe$Just(student)
 						}));
-			case 146:
-				var _v8 = _Utils_Tuple2(model.b_, model.a7);
-				if (!_v8.b.$) {
+			case 151:
+				var _v10 = _Utils_Tuple2(model.b0, model.a9);
+				if (!_v10.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a7: $elm$core$Maybe$Nothing}),
+							{a9: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
-					if (!_v8.a.$) {
-						var sf = _v8.a.a;
-						return (sf.i && (!sf.eN)) ? _Utils_Tuple2(
+					if (!_v10.a.$) {
+						var sf = _v10.a.a;
+						return (sf.i && (!sf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									b_: $elm$core$Maybe$Just(
+									b0: $elm$core$Maybe$Just(
 										_Utils_update(
 											sf,
 											{h: true}))
@@ -20957,27 +21141,27 @@ var $author$project$Update$Students$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{dg: $elm$core$Maybe$Nothing, b_: $elm$core$Maybe$Nothing}),
+								{di: $elm$core$Maybe$Nothing, b0: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 147:
+			case 152:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{dg: $elm$core$Maybe$Nothing, b_: $elm$core$Maybe$Nothing}),
+						{di: $elm$core$Maybe$Nothing, b0: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 148:
-				var _v9 = model.b_;
-				if (!_v9.$) {
-					var sf = _v9.a;
+			case 153:
+				var _v11 = model.b0;
+				if (!_v11.$) {
+					var sf = _v11.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								b_: $elm$core$Maybe$Just(
+								b0: $elm$core$Maybe$Just(
 									_Utils_update(
 										sf,
 										{h: false}))
@@ -20986,12 +21170,12 @@ var $author$project$Update$Students$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 149:
+			case 154:
 				var field = msg.a;
 				var value = msg.b;
-				var _v10 = model.b_;
-				if (!_v10.$) {
-					var sf = _v10.a;
+				var _v12 = model.b0;
+				if (!_v12.$) {
+					var sf = _v12.a;
 					var updated = function () {
 						switch (field) {
 							case 'name':
@@ -21001,35 +21185,35 @@ var $author$project$Update$Students$update = F2(
 							case 'studentCode':
 								return _Utils_update(
 									sf,
-									{eG: value});
+									{eK: value});
 							case 'countryCode':
 								return _Utils_update(
 									sf,
-									{ao: value});
+									{aq: value});
 							case 'schoolId':
 								return _Utils_update(
 									sf,
-									{ep: value});
+									{et: value});
 							case 'agentId':
 								return _Utils_update(
 									sf,
-									{ci: value});
+									{ck: value});
 							case 'program':
 								return _Utils_update(
 									sf,
-									{ef: value});
+									{ej: value});
 							case 'acceptanceStatus':
 								return _Utils_update(
 									sf,
-									{cb: value});
+									{cd: value});
 							case 'visaStatus':
 								return _Utils_update(
 									sf,
-									{e9: value});
+									{fb: value});
 							case 'invoiceStatus':
 								return _Utils_update(
 									sf,
-									{dD: value});
+									{dF: value});
 							case 'notes':
 								return _Utils_update(
 									sf,
@@ -21042,45 +21226,45 @@ var $author$project$Update$Students$update = F2(
 						_Utils_update(
 							model,
 							{
-								b_: $elm$core$Maybe$Just(
+								b0: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
-												function (_v11) {
-													var f = _v11.a;
+												function (_v13) {
+													var f = _v13.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 150:
-				var _v13 = _Utils_Tuple2(model.b_, model.V);
-				if ((!_v13.a.$) && (!_v13.b.$)) {
-					var sf = _v13.a.a;
-					var token = _v13.b.a;
-					var _v14 = $author$project$Update$Validate$validateStudentForm(sf);
-					var validated = _v14.a;
-					var ok = _v14.b;
+			case 155:
+				var _v15 = _Utils_Tuple2(model.b0, model.V);
+				if ((!_v15.a.$) && (!_v15.b.$)) {
+					var sf = _v15.a.a;
+					var token = _v15.b.a;
+					var _v16 = $author$project$Update$Validate$validateStudentForm(sf);
+					var validated = _v16.a;
+					var ok = _v16.b;
 					if (!ok) {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									b_: $elm$core$Maybe$Just(validated)
+									b0: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v15 = model.dg;
-							if (!_v15.$) {
-								var id = _v15.a;
+							var _v17 = model.di;
+							if (!_v17.$) {
+								var id = _v17.a;
 								return A4($author$project$Api$updateStudent, token, id, validated, $author$project$Types$GotSavedStudent);
 							} else {
 								return A3($author$project$Api$createStudent, token, validated, $author$project$Types$GotSavedStudent);
@@ -21090,54 +21274,62 @@ var $author$project$Update$Students$update = F2(
 							_Utils_update(
 								model,
 								{
-									b_: $elm$core$Maybe$Just(
+									b0: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 151:
+			case 156:
 				var result = msg.a;
 				if (!result.$) {
 					var student = result.a;
-					var verb = (!_Utils_eq(model.dg, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.di, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							dg: $elm$core$Maybe$Nothing,
-							b_: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							di: $elm$core$Maybe$Nothing,
+							dP: $author$project$Types$Loading,
+							b0: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, student.M)),
-							e8: function () {
-								var _v17 = model._;
-								if (_v17.$ === 13) {
+							fa: function () {
+								var _v19 = model._;
+								if (_v19.$ === 13) {
 									return $elm$core$Maybe$Just(student);
 								} else {
-									return model.e8;
+									return model.fa;
 								}
 							}()
 						});
 					return _Utils_Tuple2(
 						fresh,
-						$author$project$Update$Loaders$loadStudents(fresh).b);
+						$elm$core$Platform$Cmd$batch(
+							A2(
+								$elm$core$List$cons,
+								$author$project$Update$Loaders$loadStudents(fresh).b,
+								A2(
+									$elm$core$List$cons,
+									$author$project$Update$Students$linkedStudentsRefresh(model),
+									$author$project$Update$Students$relatedCountRefresh(fresh)))));
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v18 = model.b_;
-						if (!_v18.$) {
-							var sf = _v18.a;
+						var _v20 = model.b0;
+						if (!_v20.$) {
+							var sf = _v20.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										b_: $elm$core$Maybe$Just(
+										b0: $elm$core$Maybe$Just(
 											_Utils_update(
 												sf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -21145,22 +21337,22 @@ var $author$project$Update$Students$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v19 = model.b_;
-						if (!_v19.$) {
-							var sf = _v19.a;
+						var _v21 = model.b0;
+						if (!_v21.$) {
+							var sf = _v21.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										b_: $elm$core$Maybe$Just(
+										b0: $elm$core$Maybe$Just(
 											_Utils_update(
 												sf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -21169,39 +21361,39 @@ var $author$project$Update$Students$update = F2(
 						}
 					}
 				}
-			case 152:
+			case 157:
 				var student = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a7: $elm$core$Maybe$Just(student)
+							a9: $elm$core$Maybe$Just(student)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 153:
+			case 158:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a7: $elm$core$Maybe$Nothing}),
+						{a9: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 154:
-				var _v20 = _Utils_Tuple2(model.a7, model.V);
-				if ((!_v20.a.$) && (!_v20.b.$)) {
-					var student = _v20.a.a;
-					var token = _v20.b.a;
+			case 159:
+				var _v22 = _Utils_Tuple2(model.a9, model.V);
+				if ((!_v22.a.$) && (!_v22.b.$)) {
+					var student = _v22.a.a;
+					var token = _v22.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteStudent, token, student.ah, $author$project$Types$GotDeletedStudent));
+						A3($author$project$Api$deleteStudent, token, student.aj, $author$project$Types$GotDeletedStudent));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 155:
+			case 160:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v24 = model.a7;
-						if (!_v24.$) {
-							var s = _v24.a;
+						var _v26 = model.a9;
+						if (!_v26.$) {
+							var s = _v26.a;
 							return s.M;
 						} else {
 							return 'student';
@@ -21210,23 +21402,23 @@ var $author$project$Update$Students$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a7: $elm$core$Maybe$Nothing,
+							a9: $elm$core$Maybe$Nothing,
 							_: function () {
-								var _v22 = model._;
-								if (_v22.$ === 13) {
+								var _v24 = model._;
+								if (_v24.$ === 13) {
 									return $author$project$Types$Students;
 								} else {
 									return model._;
 								}
 							}(),
-							eH: $author$project$Types$NotAsked,
-							aC: $elm$core$Maybe$Just('Deleted ' + name),
-							e8: function () {
-								var _v23 = model._;
-								if (_v23.$ === 13) {
+							eL: $author$project$Types$NotAsked,
+							aE: $elm$core$Maybe$Just('Deleted ' + name),
+							fa: function () {
+								var _v25 = model._;
+								if (_v25.$ === 13) {
 									return $elm$core$Maybe$Nothing;
 								} else {
-									return model.e8;
+									return model.fa;
 								}
 							}()
 						});
@@ -21239,8 +21431,8 @@ var $author$project$Update$Students$update = F2(
 						_Utils_update(
 							model,
 							{
-								a7: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								a9: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -21249,13 +21441,13 @@ var $author$project$Update$Students$update = F2(
 		}
 	});
 var $author$project$Types$GotDeletedTask = function (a) {
-	return {$: 119, a: a};
+	return {$: 121, a: a};
 };
 var $author$project$Types$GotSavedTask = function (a) {
-	return {$: 113, a: a};
+	return {$: 115, a: a};
 };
 var $author$project$Types$GotToggledTask = function (a) {
-	return {$: 115, a: a};
+	return {$: 117, a: a};
 };
 var $author$project$Api$savedTaskExpect = function (toMsg) {
 	return A2(
@@ -21318,16 +21510,16 @@ var $author$project$Api$taskFormPayload = function (tf) {
 				$elm$json$Json$Encode$string(tf.J)),
 				_Utils_Tuple2(
 				'description',
-				$elm$json$Json$Encode$string(tf.c0)),
+				$elm$json$Json$Encode$string(tf.c2)),
 				_Utils_Tuple2(
 				'status',
-				$elm$json$Json$Encode$string(tf.aj)),
+				$elm$json$Json$Encode$string(tf.al)),
 				_Utils_Tuple2(
 				'dueDate',
-				$elm$json$Json$Encode$string(tf.c6)),
+				$elm$json$Json$Encode$string(tf.c8)),
 				_Utils_Tuple2(
 				'contactId',
-				$elm$json$Json$Encode$string(tf.ae)),
+				$elm$json$Json$Encode$string(tf.ag)),
 				_Utils_Tuple2(
 				'owner',
 				$elm$json$Json$Encode$string(tf.R))
@@ -21406,13 +21598,13 @@ var $author$project$Api$deleteTask = F3(
 				c: '/api/tasks/' + id
 			});
 	});
-var $author$project$Types$emptyTaskForm = {h: false, ae: '', c0: '', i: false, c6: '', dj: _List_Nil, R: '', aj: 'todo', eN: false, J: ''};
+var $author$project$Types$emptyTaskForm = {h: false, ag: '', c2: '', i: false, c8: '', dl: _List_Nil, R: '', al: 'todo', eP: false, J: ''};
 var $author$project$Api$fetchTasks = F4(
 	function (token, query, statusFilter, toMsg) {
 		return A5($author$project$Api$fetchTasksPage, token, query, statusFilter, 0, toMsg);
 	});
 var $author$project$Types$taskToForm = function (task) {
-	return {h: false, ae: task.ae, c0: task.c0, i: false, c6: task.c6, dj: _List_Nil, R: task.R, aj: task.aj, eN: false, J: task.J};
+	return {h: false, ag: task.ag, c2: task.c2, i: false, c8: task.c8, dl: _List_Nil, R: task.R, al: task.al, eP: false, J: task.J};
 };
 var $author$project$Api$updateTask = F4(
 	function (token, id, tf, toMsg) {
@@ -21459,25 +21651,25 @@ var $author$project$Api$updateTaskStatus = F4(
 var $author$project$Update$Tasks$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 102:
+			case 103:
 				var offset = msg.a;
 				return $author$project$Update$Loaders$loadTasks(
 					_Utils_update(
 						model,
 						{
-							eR: A2($elm$core$Basics$max, 0, offset)
+							eT: A2($elm$core$Basics$max, 0, offset)
 						}));
-			case 103:
+			case 104:
 				var result = msg.a;
 				if (!result.$) {
 					var _v2 = result.a;
 					var items = _v2.a;
 					var total = _v2.b;
 					var _v3 = function () {
-						var _v4 = model.eS;
+						var _v4 = model.eU;
 						if (_v4.$ === 2) {
 							var d = _v4.a;
-							return _Utils_Tuple2(d.D, d.eD);
+							return _Utils_Tuple2(d.D, d.eH);
 						} else {
 							return _Utils_Tuple2('', '');
 						}
@@ -21488,8 +21680,8 @@ var $author$project$Update$Tasks$update = F2(
 						_Utils_update(
 							model,
 							{
-								eS: $author$project$Types$Success(
-									{A: items, D: prevQ, eD: prevSt, y: total})
+								eU: $author$project$Types$Success(
+									{x: items, D: prevQ, eH: prevSt, t: total})
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -21498,14 +21690,14 @@ var $author$project$Update$Tasks$update = F2(
 						_Utils_update(
 							model,
 							{
-								eS: $author$project$Types$Failure(message)
+								eU: $author$project$Types$Failure(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 104:
+			case 105:
 				var q = msg.a;
 				var next = function () {
-					var _v5 = model.eS;
+					var _v5 = model.eU;
 					if (_v5.$ === 2) {
 						var data = _v5.a;
 						return $author$project$Types$Success(
@@ -21514,28 +21706,28 @@ var $author$project$Update$Tasks$update = F2(
 								{D: q}));
 					} else {
 						return $author$project$Types$Success(
-							{A: _List_Nil, D: q, eD: '', y: 0});
+							{x: _List_Nil, D: q, eH: '', t: 0});
 					}
 				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							bI: $elm$core$Maybe$Just(q),
-							eR: 0,
-							eS: next
+							bK: $elm$core$Maybe$Just(q),
+							eT: 0,
+							eU: next
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 123:
-				var _v6 = _Utils_Tuple2(model.V, model.bI);
+			case 125:
+				var _v6 = _Utils_Tuple2(model.V, model.bK);
 				if ((!_v6.a.$) && (!_v6.b.$)) {
 					var t = _v6.a.a;
 					var q = _v6.b.a;
 					var st = function () {
-						var _v7 = model.eS;
+						var _v7 = model.eU;
 						if (_v7.$ === 2) {
 							var d = _v7.a;
-							return d.eD;
+							return d.eH;
 						} else {
 							return '';
 						}
@@ -21543,22 +21735,22 @@ var $author$project$Update$Tasks$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bI: $elm$core$Maybe$Nothing}),
+							{bK: $elm$core$Maybe$Nothing}),
 						A4($author$project$Api$fetchTasks, t, q, st, $author$project$Types$GotTasks));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bI: $elm$core$Maybe$Nothing}),
+							{bK: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 105:
+			case 106:
 				var status = msg.a;
 				var _v8 = model.V;
 				if (!_v8.$) {
 					var t = _v8.a;
 					var q = function () {
-						var _v10 = model.eS;
+						var _v10 = model.eU;
 						if (_v10.$ === 2) {
 							var d = _v10.a;
 							return d.D;
@@ -21567,64 +21759,78 @@ var $author$project$Update$Tasks$update = F2(
 						}
 					}();
 					var next = function () {
-						var _v9 = model.eS;
+						var _v9 = model.eU;
 						if (_v9.$ === 2) {
 							var data = _v9.a;
 							return $author$project$Types$Success(
 								_Utils_update(
 									data,
-									{eD: status}));
+									{eH: status}));
 						} else {
 							return $author$project$Types$Success(
-								{A: _List_Nil, D: q, eD: status, y: 0});
+								{x: _List_Nil, D: q, eH: status, t: 0});
 						}
 					}();
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{eR: 0, eS: next}),
+							{eT: 0, eU: next}),
 						A4($author$project$Api$fetchTasks, t, q, status, $author$project$Types$GotTasks));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 106:
+			case 107:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dh: $elm$core$Maybe$Nothing,
-							b1: $elm$core$Maybe$Just($author$project$Types$emptyTaskForm),
-							aC: $elm$core$Maybe$Nothing
+							dj: $elm$core$Maybe$Nothing,
+							b3: $elm$core$Maybe$Just($author$project$Types$emptyTaskForm),
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 107:
+			case 108:
+				var contact = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							dj: $elm$core$Maybe$Nothing,
+							b3: $elm$core$Maybe$Just(
+								_Utils_update(
+									$author$project$Types$emptyTaskForm,
+									{ag: contact.aj})),
+							aE: $elm$core$Maybe$Nothing
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 109:
 				var task = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							dh: $elm$core$Maybe$Just(task.ah),
-							b1: $elm$core$Maybe$Just(
+							dj: $elm$core$Maybe$Just(task.aj),
+							b3: $elm$core$Maybe$Just(
 								$author$project$Types$taskToForm(task)),
-							aC: $elm$core$Maybe$Nothing
+							aE: $elm$core$Maybe$Nothing
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 108:
-				var _v11 = _Utils_Tuple2(model.b1, model.a8);
+			case 110:
+				var _v11 = _Utils_Tuple2(model.b3, model.ba);
 				if (!_v11.b.$) {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{a8: $elm$core$Maybe$Nothing}),
+							{ba: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					if (!_v11.a.$) {
 						var tf = _v11.a.a;
-						return (tf.i && (!tf.eN)) ? _Utils_Tuple2(
+						return (tf.i && (!tf.eP)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									b1: $elm$core$Maybe$Just(
+									b3: $elm$core$Maybe$Just(
 										_Utils_update(
 											tf,
 											{h: true}))
@@ -21632,27 +21838,27 @@ var $author$project$Update$Tasks$update = F2(
 							$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{dh: $elm$core$Maybe$Nothing, b1: $elm$core$Maybe$Nothing}),
+								{dj: $elm$core$Maybe$Nothing, b3: $elm$core$Maybe$Nothing}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				}
-			case 109:
+			case 111:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{dh: $elm$core$Maybe$Nothing, b1: $elm$core$Maybe$Nothing}),
+						{dj: $elm$core$Maybe$Nothing, b3: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 110:
-				var _v12 = model.b1;
+			case 112:
+				var _v12 = model.b3;
 				if (!_v12.$) {
 					var tf = _v12.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								b1: $elm$core$Maybe$Just(
+								b3: $elm$core$Maybe$Just(
 									_Utils_update(
 										tf,
 										{h: false}))
@@ -21661,10 +21867,10 @@ var $author$project$Update$Tasks$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 111:
+			case 113:
 				var field = msg.a;
 				var value = msg.b;
-				var _v13 = model.b1;
+				var _v13 = model.b3;
 				if (!_v13.$) {
 					var tf = _v13.a;
 					var updated = function () {
@@ -21676,19 +21882,19 @@ var $author$project$Update$Tasks$update = F2(
 							case 'description':
 								return _Utils_update(
 									tf,
-									{c0: value});
+									{c2: value});
 							case 'status':
 								return _Utils_update(
 									tf,
-									{aj: value});
+									{al: value});
 							case 'dueDate':
 								return _Utils_update(
 									tf,
-									{c6: value});
+									{c8: value});
 							case 'contactId':
 								return _Utils_update(
 									tf,
-									{ae: value});
+									{ag: value});
 							case 'owner':
 								return _Utils_update(
 									tf,
@@ -21701,26 +21907,26 @@ var $author$project$Update$Tasks$update = F2(
 						_Utils_update(
 							model,
 							{
-								b1: $elm$core$Maybe$Just(
+								b3: $elm$core$Maybe$Just(
 									_Utils_update(
 										updated,
 										{
 											i: true,
-											dj: A2(
+											dl: A2(
 												$elm$core$List$filter,
 												function (_v14) {
 													var f = _v14.a;
 													return !_Utils_eq(f, field);
 												},
-												updated.dj)
+												updated.dl)
 										}))
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 112:
-				var _v16 = _Utils_Tuple2(model.b1, model.V);
+			case 114:
+				var _v16 = _Utils_Tuple2(model.b3, model.V);
 				if ((!_v16.a.$) && (!_v16.b.$)) {
 					var tf = _v16.a.a;
 					var token = _v16.b.a;
@@ -21731,18 +21937,18 @@ var $author$project$Update$Tasks$update = F2(
 						]) : _List_Nil;
 					var validated = _Utils_update(
 						tf,
-						{dj: errs});
+						{dl: errs});
 					if (!$elm$core$List$isEmpty(errs)) {
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									b1: $elm$core$Maybe$Just(validated)
+									b3: $elm$core$Maybe$Just(validated)
 								}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						var cmd = function () {
-							var _v17 = model.dh;
+							var _v17 = model.dj;
 							if (!_v17.$) {
 								var id = _v17.a;
 								return A4($author$project$Api$updateTask, token, id, validated, $author$project$Types$GotSavedTask);
@@ -21754,27 +21960,27 @@ var $author$project$Update$Tasks$update = F2(
 							_Utils_update(
 								model,
 								{
-									b1: $elm$core$Maybe$Just(
+									b3: $elm$core$Maybe$Just(
 										_Utils_update(
 											validated,
-											{eN: true}))
+											{eP: true}))
 								}),
 							cmd);
 					}
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 113:
+			case 115:
 				var result = msg.a;
 				if (!result.$) {
 					var task = result.a;
-					var verb = (!_Utils_eq(model.dh, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
+					var verb = (!_Utils_eq(model.dj, $elm$core$Maybe$Nothing)) ? 'Updated ' : 'Added ';
 					var fresh = _Utils_update(
 						model,
 						{
-							dh: $elm$core$Maybe$Nothing,
-							b1: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just(
+							dj: $elm$core$Maybe$Nothing,
+							b3: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just(
 								_Utils_ap(verb, task.J))
 						});
 					return _Utils_Tuple2(
@@ -21783,17 +21989,17 @@ var $author$project$Update$Tasks$update = F2(
 				} else {
 					if (!result.a.$) {
 						var fields = result.a.a;
-						var _v19 = model.b1;
+						var _v19 = model.b3;
 						if (!_v19.$) {
 							var tf = _v19.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										b1: $elm$core$Maybe$Just(
+										b3: $elm$core$Maybe$Just(
 											_Utils_update(
 												tf,
-												{dj: fields, eN: false}))
+												{dl: fields, eP: false}))
 									}),
 								$elm$core$Platform$Cmd$none);
 						} else {
@@ -21801,22 +22007,22 @@ var $author$project$Update$Tasks$update = F2(
 						}
 					} else {
 						var message = result.a.a;
-						var _v20 = model.b1;
+						var _v20 = model.b3;
 						if (!_v20.$) {
 							var tf = _v20.a;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										b1: $elm$core$Maybe$Just(
+										b3: $elm$core$Maybe$Just(
 											_Utils_update(
 												tf,
 												{
-													dj: _List_fromArray(
+													dl: _List_fromArray(
 														[
 															_Utils_Tuple2('form', message)
 														]),
-													eN: false
+													eP: false
 												}))
 									}),
 								$elm$core$Platform$Cmd$none);
@@ -21825,7 +22031,7 @@ var $author$project$Update$Tasks$update = F2(
 						}
 					}
 				}
-			case 114:
+			case 116:
 				var task = msg.a;
 				var newStatus = msg.b;
 				var _v21 = model.V;
@@ -21833,18 +22039,18 @@ var $author$project$Update$Tasks$update = F2(
 					var token = _v21.a;
 					return _Utils_Tuple2(
 						model,
-						A4($author$project$Api$updateTaskStatus, token, task.ah, newStatus, $author$project$Types$GotToggledTask));
+						A4($author$project$Api$updateTaskStatus, token, task.aj, newStatus, $author$project$Types$GotToggledTask));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 115:
+			case 117:
 				var result = msg.a;
 				if (!result.$) {
 					var task = result.a;
 					var fresh = _Utils_update(
 						model,
 						{
-							aC: $elm$core$Maybe$Just(task.J + (' → ' + task.aj))
+							aE: $elm$core$Maybe$Just(task.J + (' → ' + task.al))
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -21863,41 +22069,41 @@ var $author$project$Update$Tasks$update = F2(
 						_Utils_update(
 							model,
 							{
-								aC: $elm$core$Maybe$Just(message)
+								aE: $elm$core$Maybe$Just(message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 116:
+			case 118:
 				var task = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							a8: $elm$core$Maybe$Just(task)
+							ba: $elm$core$Maybe$Just(task)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 117:
+			case 119:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a8: $elm$core$Maybe$Nothing}),
+						{ba: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 118:
-				var _v24 = _Utils_Tuple2(model.a8, model.V);
+			case 120:
+				var _v24 = _Utils_Tuple2(model.ba, model.V);
 				if ((!_v24.a.$) && (!_v24.b.$)) {
 					var task = _v24.a.a;
 					var token = _v24.b.a;
 					return _Utils_Tuple2(
 						model,
-						A3($author$project$Api$deleteTask, token, task.ah, $author$project$Types$GotDeletedTask));
+						A3($author$project$Api$deleteTask, token, task.aj, $author$project$Types$GotDeletedTask));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 119:
+			case 121:
 				var result = msg.a;
 				if (!result.$) {
 					var name = function () {
-						var _v26 = model.a8;
+						var _v26 = model.ba;
 						if (!_v26.$) {
 							var t = _v26.a;
 							return t.J;
@@ -21908,8 +22114,8 @@ var $author$project$Update$Tasks$update = F2(
 					var fresh = _Utils_update(
 						model,
 						{
-							a8: $elm$core$Maybe$Nothing,
-							aC: $elm$core$Maybe$Just('Deleted ' + name)
+							ba: $elm$core$Maybe$Nothing,
+							aE: $elm$core$Maybe$Just('Deleted ' + name)
 						});
 					return _Utils_Tuple2(
 						fresh,
@@ -21920,8 +22126,8 @@ var $author$project$Update$Tasks$update = F2(
 						_Utils_update(
 							model,
 							{
-								a8: $elm$core$Maybe$Nothing,
-								aC: $elm$core$Maybe$Just('Delete failed: ' + message)
+								ba: $elm$core$Maybe$Nothing,
+								aE: $elm$core$Maybe$Just('Delete failed: ' + message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -21970,7 +22176,7 @@ var $author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								bS: function () {
+								bU: function () {
 									if (!result.$) {
 										var summary = result.a;
 										return $author$project$Types$Success(summary);
@@ -21981,130 +22187,130 @@ var $author$project$Main$update = F2(
 								}()
 							}),
 						$elm$core$Platform$Cmd$none);
-				case 291:
-					if (model.bi !== '') {
+				case 296:
+					if (model.bk !== '') {
 						return A2($author$project$Update$Workspace$update, $author$project$Types$ClosedGlobalSearch, model);
 					} else {
-						if (model.ax) {
+						if (model.az) {
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{ax: false}),
+									{az: false}),
 								$elm$core$Platform$Cmd$none);
 						} else {
-							if (model.ar) {
+							if (model.at) {
 								return _Utils_Tuple2(
 									_Utils_update(
 										model,
-										{ar: false}),
+										{at: false}),
 									$elm$core$Platform$Cmd$none);
 							} else {
-								if (model.al) {
+								if (model.an) {
 									return _Utils_Tuple2(
 										_Utils_update(
 											model,
-											{al: false}),
+											{an: false}),
 										$elm$core$Platform$Cmd$none);
 								} else {
-									if (!_Utils_eq(model.aI, $elm$core$Maybe$Nothing)) {
+									if (!_Utils_eq(model.aK, $elm$core$Maybe$Nothing)) {
 										var $temp$msg = $author$project$Types$CancelledBulkMove,
 											$temp$model = model;
 										msg = $temp$msg;
 										model = $temp$model;
 										continue update;
 									} else {
-										if ((!_Utils_eq(model.aE, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.aZ, $elm$core$Maybe$Nothing))) {
+										if ((!_Utils_eq(model.aG, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a$, $elm$core$Maybe$Nothing))) {
 											var $temp$msg = $author$project$Types$RequestedCloseActivityForm,
 												$temp$model = model;
 											msg = $temp$msg;
 											model = $temp$model;
 											continue update;
 										} else {
-											if ((!_Utils_eq(model.aQ, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a0, $elm$core$Maybe$Nothing))) {
+											if ((!_Utils_eq(model.aS, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a2, $elm$core$Maybe$Nothing))) {
 												var $temp$msg = $author$project$Types$RequestedCloseContactForm,
 													$temp$model = model;
 												msg = $temp$msg;
 												model = $temp$model;
 												continue update;
 											} else {
-												if ((!_Utils_eq(model.aY, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a1, $elm$core$Maybe$Nothing))) {
+												if ((!_Utils_eq(model.a_, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a3, $elm$core$Maybe$Nothing))) {
 													var $temp$msg = $author$project$Types$RequestedCloseDealForm,
 														$temp$model = model;
 													msg = $temp$msg;
 													model = $temp$model;
 													continue update;
 												} else {
-													if ((!_Utils_eq(model.b1, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a8, $elm$core$Maybe$Nothing))) {
+													if ((!_Utils_eq(model.b3, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.ba, $elm$core$Maybe$Nothing))) {
 														var $temp$msg = $author$project$Types$RequestedCloseTaskForm,
 															$temp$model = model;
 														msg = $temp$msg;
 														model = $temp$model;
 														continue update;
 													} else {
-														if ((!_Utils_eq(model.bY, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a6, $elm$core$Maybe$Nothing))) {
+														if ((!_Utils_eq(model.b_, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a8, $elm$core$Maybe$Nothing))) {
 															var $temp$msg = $author$project$Types$RequestedCloseSchoolForm,
 																$temp$model = model;
 															msg = $temp$msg;
 															model = $temp$model;
 															continue update;
 														} else {
-															if ((!_Utils_eq(model.b_, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a7, $elm$core$Maybe$Nothing))) {
+															if ((!_Utils_eq(model.b0, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a9, $elm$core$Maybe$Nothing))) {
 																var $temp$msg = $author$project$Types$RequestedCloseStudentForm,
 																	$temp$model = model;
 																msg = $temp$msg;
 																model = $temp$model;
 																continue update;
 															} else {
-																if ((!_Utils_eq(model.aG, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a_, $elm$core$Maybe$Nothing))) {
+																if ((!_Utils_eq(model.aI, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a0, $elm$core$Maybe$Nothing))) {
 																	var $temp$msg = $author$project$Types$RequestedCloseAgentForm,
 																		$temp$model = model;
 																	msg = $temp$msg;
 																	model = $temp$model;
 																	continue update;
 																} else {
-																	if ((!_Utils_eq(model.bp, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a4, $elm$core$Maybe$Nothing))) {
+																	if ((!_Utils_eq(model.br, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a6, $elm$core$Maybe$Nothing))) {
 																		var $temp$msg = $author$project$Types$RequestedCloseLeadForm,
 																			$temp$model = model;
 																		msg = $temp$msg;
 																		model = $temp$model;
 																		continue update;
 																	} else {
-																		if ((!_Utils_eq(model.aJ, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a$, $elm$core$Maybe$Nothing))) {
+																		if ((!_Utils_eq(model.aL, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a1, $elm$core$Maybe$Nothing))) {
 																			var $temp$msg = $author$project$Types$RequestedCloseCaseForm,
 																				$temp$model = model;
 																			msg = $temp$msg;
 																			model = $temp$model;
 																			continue update;
 																		} else {
-																			if ((!_Utils_eq(model.ba, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a2, $elm$core$Maybe$Nothing))) {
+																			if ((!_Utils_eq(model.bc, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a4, $elm$core$Maybe$Nothing))) {
 																				var $temp$msg = $author$project$Types$RequestedCloseDocumentForm,
 																					$temp$model = model;
 																				msg = $temp$msg;
 																				model = $temp$model;
 																				continue update;
 																			} else {
-																				if ((!_Utils_eq(model.bl, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a3, $elm$core$Maybe$Nothing))) {
+																				if ((!_Utils_eq(model.bn, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a5, $elm$core$Maybe$Nothing))) {
 																					var $temp$msg = $author$project$Types$RequestedCloseInvoiceForm,
 																						$temp$model = model;
 																					msg = $temp$msg;
 																					model = $temp$model;
 																					continue update;
 																				} else {
-																					if (!_Utils_eq(model.by, $elm$core$Maybe$Nothing)) {
+																					if (!_Utils_eq(model.bA, $elm$core$Maybe$Nothing)) {
 																						var $temp$msg = $author$project$Types$ClosedPaymentForm,
 																							$temp$model = model;
 																						msg = $temp$msg;
 																						model = $temp$model;
 																						continue update;
 																					} else {
-																						if (!_Utils_eq(model.bO, $elm$core$Maybe$Nothing)) {
+																						if (!_Utils_eq(model.bQ, $elm$core$Maybe$Nothing)) {
 																							var $temp$msg = $author$project$Types$CancelledRefund,
 																								$temp$model = model;
 																							msg = $temp$msg;
 																							model = $temp$model;
 																							continue update;
 																						} else {
-																							if ((!_Utils_eq(model.bv, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a5, $elm$core$Maybe$Nothing))) {
+																							if ((!_Utils_eq(model.bx, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.a7, $elm$core$Maybe$Nothing))) {
 																								var $temp$msg = $author$project$Types$RequestedClosePartnerForm,
 																									$temp$model = model;
 																								msg = $temp$msg;
@@ -22131,18 +22337,18 @@ var $author$project$Main$update = F2(
 							}
 						}
 					}
-				case 290:
+				case 295:
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aC: $elm$core$Maybe$Nothing}),
+							{aE: $elm$core$Maybe$Nothing}),
 						$elm$core$Platform$Cmd$none);
-				case 293:
+				case 298:
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				default:
 					var oldRoute = model._;
 					var alreadySynced = function () {
-						if (msg.$ === 289) {
+						if (msg.$ === 294) {
 							return true;
 						} else {
 							return false;
@@ -22159,13 +22365,13 @@ var $author$project$Main$update = F2(
 									newCmds,
 									A2(
 									$elm$browser$Browser$Navigation$pushUrl,
-									newModel.bs,
+									newModel.bu,
 									$author$project$Router$routeToPath(newModel._))
 								]))) : _Utils_Tuple2(newModel, newCmds);
 			}
 		}
 	});
-var $author$project$Types$ToggledSideBar = {$: 292};
+var $author$project$Types$ToggledSideBar = {$: 297};
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
@@ -22386,7 +22592,7 @@ var $author$project$View$Layout$mobileNavigation = function (model) {
 				return route;
 		}
 	}();
-	var moreSelected = model.ax || (!A2(
+	var moreSelected = model.az || (!A2(
 		$elm$core$List$member,
 		selected,
 		_List_fromArray(
@@ -22416,7 +22622,7 @@ var $author$project$View$Layout$mobileNavigation = function (model) {
 						A2(
 						$elm$html$Html$Attributes$attribute,
 						'aria-expanded',
-						model.ax ? 'true' : 'false'),
+						model.az ? 'true' : 'false'),
 						A2($elm$html$Html$Attributes$attribute, 'aria-label', 'More navigation options')
 					]),
 				_List_fromArray(
@@ -22448,11 +22654,11 @@ var $elm$virtual_dom$VirtualDom$node = function (tag) {
 };
 var $elm$html$Html$node = $elm$virtual_dom$VirtualDom$node;
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$Types$NoOp = {$: 293};
-var $author$project$Types$SubmittedActivityForm = {$: 86};
+var $author$project$Types$NoOp = {$: 298};
+var $author$project$Types$SubmittedActivityForm = {$: 87};
 var $author$project$Types$UpdatedActivityFormField = F2(
 	function (a, b) {
-		return {$: 85, a: a, b: b};
+		return {$: 86, a: a, b: b};
 	});
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -22476,12 +22682,14 @@ var $author$project$View$Activity$activityFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					af.dj)));
+					af.dl)));
 	});
 var $author$project$View$Activity$activityKindLabel = function (kind) {
 	switch (kind) {
 		case 'email':
 			return 'Email';
+		case 'whatsapp':
+			return 'WhatsApp';
 		case 'call':
 			return 'Call';
 		case 'meeting':
@@ -22530,7 +22738,7 @@ var $author$project$View$Activity$activityKindPills = function (af) {
 				A2(
 					$elm$core$List$map,
 					function (k) {
-						var cls = _Utils_eq(af.dF, k) ? 'stage-pill stage-pill--active' : 'stage-pill';
+						var cls = _Utils_eq(af.dH, k) ? 'stage-pill stage-pill--active' : 'stage-pill';
 						return A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -22539,7 +22747,7 @@ var $author$project$View$Activity$activityKindPills = function (af) {
 									$elm$html$Html$Attributes$class(cls),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedActivityFormField, 'kind', k)),
-									$elm$html$Html$Attributes$disabled(af.eN)
+									$elm$html$Html$Attributes$disabled(af.eP)
 								]),
 							_List_fromArray(
 								[
@@ -22645,7 +22853,7 @@ var $author$project$View$Activity$activityFormView = function (af) {
 			return 'ecc-field';
 		}
 	}();
-	var submitLabel = af.eN ? 'Saving…' : 'Log activity';
+	var submitLabel = af.eP ? 'Saving…' : 'Log activity';
 	var formError = A2($author$project$View$Activity$activityFormFieldError, 'form', af);
 	return A2(
 		$elm$html$Html$form,
@@ -22692,7 +22900,7 @@ var $author$project$View$Activity$activityFormView = function (af) {
 								$elm$html$Html$Attributes$value(af.J),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedActivityFormField('title')),
-								$elm$html$Html$Attributes$disabled(af.eN),
+								$elm$html$Html$Attributes$disabled(af.eP),
 								$elm$html$Html$Attributes$autofocus(true)
 							]),
 						_List_Nil),
@@ -22739,10 +22947,10 @@ var $author$project$View$Activity$activityFormView = function (af) {
 								$elm$html$Html$Attributes$id('af-occurredAt'),
 								$elm$html$Html$Attributes$type_('date'),
 								$elm$html$Html$Attributes$placeholder(' '),
-								$elm$html$Html$Attributes$value(af.dV),
+								$elm$html$Html$Attributes$value(af.dY),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedActivityFormField('occurredAt')),
-								$elm$html$Html$Attributes$disabled(af.eN)
+								$elm$html$Html$Attributes$disabled(af.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -22783,7 +22991,7 @@ var $author$project$View$Activity$activityFormView = function (af) {
 								$elm$html$Html$Attributes$value(af.a),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedActivityFormField('body')),
-								$elm$html$Html$Attributes$disabled(af.eN),
+								$elm$html$Html$Attributes$disabled(af.eP),
 								$elm$html$Html$Attributes$rows(4)
 							]),
 						_List_Nil)
@@ -22803,7 +23011,7 @@ var $author$project$View$Activity$activityFormView = function (af) {
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 								$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseActivityForm),
-								$elm$html$Html$Attributes$disabled(af.eN)
+								$elm$html$Html$Attributes$disabled(af.eP)
 							]),
 						_List_fromArray(
 							[
@@ -22815,7 +23023,7 @@ var $author$project$View$Activity$activityFormView = function (af) {
 							[
 								$elm$html$Html$Attributes$type_('submit'),
 								$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-								$elm$html$Html$Attributes$disabled(af.eN)
+								$elm$html$Html$Attributes$disabled(af.eP)
 							]),
 						_List_fromArray(
 							[
@@ -22824,8 +23032,8 @@ var $author$project$View$Activity$activityFormView = function (af) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledCloseActivityForm = {$: 84};
-var $author$project$Types$ConfirmedCloseActivityForm = {$: 83};
+var $author$project$Types$CancelledCloseActivityForm = {$: 85};
+var $author$project$Types$ConfirmedCloseActivityForm = {$: 84};
 var $author$project$View$Activity$discardActivityConfirmView = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -22959,11 +23167,14 @@ var $author$project$View$Activity$activityFormModal = function (af) {
 					]))
 			]));
 };
+var $author$project$Types$OpenedAddStudentForAgent = function (a) {
+	return {$: 147, a: a};
+};
 var $author$project$Types$OpenedEditAgent = function (a) {
-	return {$: 161, a: a};
+	return {$: 166, a: a};
 };
 var $author$project$Types$RequestedDeleteAgent = function (a) {
-	return {$: 169, a: a};
+	return {$: 174, a: a};
 };
 var $elm$core$String$toLower = _String_toLower;
 var $author$project$View$Agents$agentStatusBadge = function (status) {
@@ -23030,47 +23241,6 @@ var $author$project$View$Helpers$detailCard = F3(
 						}()
 						])),
 					body
-				]));
-	});
-var $elm$html$Html$h4 = _VirtualDom_node('h4');
-var $author$project$View$Helpers$detailEmpty = F3(
-	function (icon, titleText, desc) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('detail-empty')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('detail-empty__icon')
-						]),
-					_List_fromArray(
-						[icon])),
-					A2(
-					$elm$html$Html$h4,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('detail-empty__title')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(titleText)
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('detail-empty__desc')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(desc)
-						]))
 				]));
 	});
 var $author$project$View$Helpers$detailStat = F3(
@@ -23223,25 +23393,6 @@ var $author$project$View$Icons$iconPin = A2(
 					A2($elm$html$Html$Attributes$attribute, 'r', '3')
 				]),
 			_List_Nil)
-		]));
-var $author$project$View$Icons$iconStudent = A2(
-	$author$project$View$Helpers$svgIcon,
-	_List_fromArray(
-		[
-			A2($elm$html$Html$Attributes$attribute, 'viewBox', '0 0 24 24'),
-			A2($elm$html$Html$Attributes$attribute, 'width', '18'),
-			A2($elm$html$Html$Attributes$attribute, 'height', '18'),
-			A2($elm$html$Html$Attributes$attribute, 'fill', 'none'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke-width', '1.8'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
-			A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round')
-		]),
-	_List_fromArray(
-		[
-			$author$project$View$Helpers$svgPath('M12 14l9-5-9-5-9 5 9 5z'),
-			$author$project$View$Helpers$svgPath('M12 14l6.16-3.42a12 12 0 0 1-12.32 0z'),
-			$author$project$View$Helpers$svgPath('M12 14v7')
 		]));
 var $author$project$View$Icons$iconTrash = A2(
 	$author$project$View$Helpers$svgIcon,
@@ -23480,16 +23631,417 @@ var $author$project$View$Helpers$initials = function (name) {
 					$elm$core$String$left(1),
 					$elm$core$String$words(name)))));
 };
+var $author$project$Types$OpenedEditStudent = function (a) {
+	return {$: 149, a: a};
+};
+var $author$project$Types$RequestedDeleteStudent = function (a) {
+	return {$: 157, a: a};
+};
+var $author$project$View$Students$studentStatusBadge = F2(
+	function (category, status) {
+		var cls = function () {
+			var _v0 = _Utils_Tuple2(
+				category,
+				$elm$core$String$toLower(status));
+			switch (_v0.a) {
+				case 'acceptance':
+					switch (_v0.b) {
+						case 'accepted':
+							return 'badge badge--success';
+						case 'rejected':
+							return 'badge badge--lost';
+						case 'waitlisted':
+							return 'badge badge--info';
+						default:
+							return 'badge badge--muted';
+					}
+				case 'visa':
+					switch (_v0.b) {
+						case 'approved':
+							return 'badge badge--success';
+						case 'denied':
+							return 'badge badge--lost';
+						case 'pending':
+							return 'badge badge--info';
+						default:
+							return 'badge badge--muted';
+					}
+				case 'invoice':
+					switch (_v0.b) {
+						case 'paid':
+							return 'badge badge--success';
+						case 'overdue':
+							return 'badge badge--lost';
+						case 'issued':
+							return 'badge badge--info';
+						default:
+							return 'badge badge--muted';
+					}
+				default:
+					return 'badge';
+			}
+		}();
+		return A2(
+			$elm$html$Html$span,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class(cls)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(status)
+				]));
+	});
+var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
+var $elm$html$Html$tr = _VirtualDom_node('tr');
+var $author$project$View$Students$studentRow = function (s) {
+	return A2(
+		$elm$html$Html$tr,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('contact-row')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('contact-name-cell')
+							]),
+						_List_fromArray(
+							[
+								A3(
+								$elm$html$Html$node,
+								'crm-record-photo',
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('contact-avatar'),
+										A2($elm$html$Html$Attributes$attribute, 'entity', 'students'),
+										A2($elm$html$Html$Attributes$attribute, 'record-id', s.aj),
+										A2(
+										$elm$html$Html$Attributes$attribute,
+										'initials',
+										$author$project$View$Helpers$initials(s.M)),
+										A2($elm$html$Html$Attributes$attribute, 'person-name', s.M)
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('contact-name-info')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$a,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('contact-name record-link'),
+												$elm$html$Html$Attributes$href(
+												$author$project$Router$routeToPath(
+													$author$project$Types$StudentDetail(s.aj)))
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(s.M)
+											])),
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('contact-email')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												$elm$core$String$isEmpty(s.eK) ? s.ej : s.eK)
+											]))
+									]))
+							]))
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(s.eu)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$isEmpty(s.cl) ? '—' : s.cl)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(s.ej)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2($author$project$View$Students$studentStatusBadge, 'acceptance', s.cd)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2($author$project$View$Students$studentStatusBadge, 'visa', s.fb)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('contact-actions-cell')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('row-action'),
+								$elm$html$Html$Attributes$type_('button'),
+								$elm$html$Html$Attributes$title('Edit'),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + s.M),
+								A2(
+								$elm$html$Html$Events$stopPropagationOn,
+								'click',
+								$elm$json$Json$Decode$succeed(
+									_Utils_Tuple2(
+										$author$project$Types$OpenedEditStudent(s),
+										true)))
+							]),
+						_List_fromArray(
+							[$author$project$View$Icons$iconEdit])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('row-action row-action--danger'),
+								$elm$html$Html$Attributes$type_('button'),
+								$elm$html$Html$Attributes$title('Delete'),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + s.M),
+								A2(
+								$elm$html$Html$Events$stopPropagationOn,
+								'click',
+								$elm$json$Json$Decode$succeed(
+									_Utils_Tuple2(
+										$author$project$Types$RequestedDeleteStudent(s),
+										true)))
+							]),
+						_List_fromArray(
+							[$author$project$View$Icons$iconTrash]))
+					]))
+			]));
+};
+var $elm$html$Html$table = _VirtualDom_node('table');
+var $elm$html$Html$tbody = _VirtualDom_node('tbody');
+var $elm$html$Html$th = _VirtualDom_node('th');
+var $elm$html$Html$thead = _VirtualDom_node('thead');
+var $author$project$View$Students$linkedStudentsView = F2(
+	function (model, parentId) {
+		var _v0 = model.dP;
+		switch (_v0.$) {
+			case 1:
+				return A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('activity-loading')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Loading linked students…')
+						]));
+			case 3:
+				var message = _v0.a;
+				return A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('activity-loading')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Could not load linked students: ' + message)
+						]));
+			case 2:
+				var data = _v0.a;
+				return (!_Utils_eq(data.d6, parentId)) ? A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('activity-loading')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Loading linked students…')
+						])) : ($elm$core$List$isEmpty(data.x) ? A2(
+					$elm$html$Html$p,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('detail-muted')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('No linked students yet.')
+						])) : A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('table-wrap')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$table,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('data-table')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$thead,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$tr,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Student')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('School')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Agent')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Program')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Acceptance')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Visa')
+																	])),
+																A2(
+																$elm$html$Html$th,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('th-actions')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('')
+																	]))
+															]))
+													])),
+												A2(
+												$elm$html$Html$tbody,
+												_List_Nil,
+												A2($elm$core$List$map, $author$project$View$Students$studentRow, data.x))
+											]))
+									]))
+							]),
+						(_Utils_cmp(
+							data.t,
+							$elm$core$List$length(data.x)) > 0) ? _List_fromArray(
+							[
+								A2(
+								$elm$html$Html$p,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('detail-muted')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										'Showing ' + ($elm$core$String$fromInt(
+											$elm$core$List$length(data.x)) + (' of ' + ($elm$core$String$fromInt(data.t) + ' linked students. Open the Students list to browse all records.'))))
+									]))
+							]) : _List_Nil)));
+			default:
+				return A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('activity-loading')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Linked students are not loaded.')
+						]));
+		}
+	});
 var $author$project$View$Agents$agentDetailView = F2(
-	function (_v0, a) {
+	function (model, a) {
+		var linkedCount = function () {
+			var _v0 = model.dP;
+			if (_v0.$ === 2) {
+				var data = _v0.a;
+				return _Utils_eq(data.d6, a.aj) ? data.t : a.ab;
+			} else {
+				return a.ab;
+			}
+		}();
 		var display = function (v) {
 			return $elm$core$String$isEmpty(v) ? '—' : v;
 		};
-		var ownerDisplay = display(a.z);
-		var createdDisplay = display(a.af);
-		var countryDisplay = display(a.ao);
-		var codeDisplay = display(a.ch);
+		var ownerDisplay = display(a.A);
+		var createdDisplay = display(a.ah);
+		var countryDisplay = display(a.aq);
+		var codeDisplay = display(a.cj);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -23563,7 +24115,7 @@ var $author$project$View$Agents$agentDetailView = F2(
 												[
 													$elm$html$Html$text(a.M)
 												])),
-											$author$project$View$Agents$agentStatusBadge(a.ck)
+											$author$project$View$Agents$agentStatusBadge(a.cm)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -23574,7 +24126,7 @@ var $author$project$View$Agents$agentDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											display(a.ao))
+											display(a.aq))
 										]))
 								])),
 							A2(
@@ -23635,13 +24187,13 @@ var $author$project$View$Agents$agentDetailView = F2(
 						]),
 					_List_fromArray(
 						[
-							A3($author$project$View$Helpers$detailStat, 'Contract', a.aT, 'Agreement'),
-							A3($author$project$View$Helpers$detailStat, 'Status', a.ck, 'Current'),
+							A3($author$project$View$Helpers$detailStat, 'Contract', a.aV, 'Agreement'),
+							A3($author$project$View$Helpers$detailStat, 'Status', a.cm, 'Current'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Students referred',
-							$elm$core$String$fromInt(a.eM),
-							'Total'),
+							$elm$core$String$fromInt(linkedCount),
+							'Linked student records'),
 							A3($author$project$View$Helpers$detailStat, 'Country', countryDisplay, 'Location')
 						])),
 					A2(
@@ -23674,7 +24226,7 @@ var $author$project$View$Agents$agentDetailView = F2(
 											[
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconUserTiny, 'Agent code', codeDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconPin, 'Country', countryDisplay),
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Contract', a.aT),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Contract', a.aV),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Created', createdDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconContacts, 'Added by', ownerDisplay)
 											]))),
@@ -23720,24 +24272,43 @@ var $author$project$View$Agents$agentDetailView = F2(
 												[
 													$elm$html$Html$Attributes$class('detail-card__action'),
 													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(true),
-													$elm$html$Html$Attributes$title('Coming soon')
+													$elm$html$Html$Events$onClick(
+													$author$project$Types$OpenedAddStudentForAgent(a))
 												]),
 											_List_fromArray(
 												[
 													$elm$html$Html$text('Add referral')
 												]))),
-									A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconStudent, 'No referrals yet', 'Students referred by this agent will appear here once linked.'))
+									A2(
+										$elm$html$Html$div,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2($author$project$View$Students$linkedStudentsView, model, a.aj),
+												A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
+														$elm$html$Html$Attributes$type_('button'),
+														$elm$html$Html$Events$onClick(
+														$author$project$Types$NavigatedTo($author$project$Types$Students))
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Open students')
+													]))
+											])))
 								]))
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseAgentForm = {$: 165};
-var $author$project$Types$ConfirmedCloseAgentForm = {$: 164};
-var $author$project$Types$SubmittedAgentForm = {$: 167};
+var $author$project$Types$CancelledCloseAgentForm = {$: 170};
+var $author$project$Types$ConfirmedCloseAgentForm = {$: 169};
+var $author$project$Types$SubmittedAgentForm = {$: 172};
 var $author$project$Types$UpdatedAgentFormField = F2(
 	function (a, b) {
-		return {$: 166, a: a, b: b};
+		return {$: 171, a: a, b: b};
 	});
 var $author$project$View$Agents$agentFormFieldError = F2(
 	function (field, af) {
@@ -23751,7 +24322,7 @@ var $author$project$View$Agents$agentFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					af.dj)));
+					af.dl)));
 	});
 var $author$project$View$Agents$agentRichField = F4(
 	function (af, fieldId, labelText, inputType) {
@@ -23761,11 +24332,11 @@ var $author$project$View$Agents$agentRichField = F4(
 				case 'name':
 					return af.M;
 				case 'agentCode':
-					return af.ch;
+					return af.cj;
 				case 'countryCode':
-					return af.ao;
+					return af.aq;
 				case 'studentsReferred':
-					return af.eM;
+					return af.ab;
 				default:
 					return '';
 			}
@@ -23796,7 +24367,7 @@ var $author$project$View$Agents$agentRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedAgentFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(af.eN)
+								$elm$html$Html$Attributes$disabled(af.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -23881,7 +24452,7 @@ var $author$project$View$Agents$agentStatusPills = F5(
 	});
 var $author$project$View$Agents$agentFormView = F2(
 	function (af, isEdit) {
-		var submitLabel = af.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save agent');
+		var submitLabel = af.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save agent');
 		var formError = A2($author$project$View$Agents$agentFormFieldError, 'form', af);
 		return A2(
 			$elm$html$Html$form,
@@ -23919,23 +24490,22 @@ var $author$project$View$Agents$agentFormView = F2(
 						[
 							A4($author$project$View$Agents$agentRichField, af, 'name', 'Agent full name', 'text'),
 							A4($author$project$View$Agents$agentRichField, af, 'agentCode', 'Agent ID code', 'text'),
-							A4($author$project$View$Agents$agentRichField, af, 'countryCode', 'Country code (e.g. IN)', 'text'),
-							A4($author$project$View$Agents$agentRichField, af, 'studentsReferred', 'Students referred', 'number')
+							A4($author$project$View$Agents$agentRichField, af, 'countryCode', 'Country code (e.g. IN)', 'text')
 						])),
 					A5(
 					$author$project$View$Agents$agentStatusPills,
 					'Contract status',
-					af.aT,
+					af.aV,
 					$author$project$Types$agentContractStatuses,
 					$author$project$Types$UpdatedAgentFormField('contractStatus'),
-					af.eN),
+					af.eP),
 					A5(
 					$author$project$View$Agents$agentStatusPills,
 					'Agent status',
-					af.ck,
+					af.cm,
 					$author$project$Types$agentStatuses,
 					$author$project$Types$UpdatedAgentFormField('agentStatus'),
-					af.eN),
+					af.eP),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -23963,7 +24533,7 @@ var $author$project$View$Agents$agentFormView = F2(
 									$elm$html$Html$Attributes$value(af.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedAgentFormField('notes')),
-									$elm$html$Html$Attributes$disabled(af.eN),
+									$elm$html$Html$Attributes$disabled(af.eP),
 									$elm$html$Html$Attributes$rows(4)
 								]),
 							_List_Nil)
@@ -23983,7 +24553,7 @@ var $author$project$View$Agents$agentFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseAgentForm),
-									$elm$html$Html$Attributes$disabled(af.eN)
+									$elm$html$Html$Attributes$disabled(af.eP)
 								]),
 							_List_fromArray(
 								[
@@ -23995,7 +24565,7 @@ var $author$project$View$Agents$agentFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(af.eN || (!af.i))
+									$elm$html$Html$Attributes$disabled(af.eP || (!af.i))
 								]),
 							_List_fromArray(
 								[
@@ -24006,7 +24576,7 @@ var $author$project$View$Agents$agentFormView = F2(
 	});
 var $author$project$View$Agents$agentFormModal = F2(
 	function (model, af) {
-		var isEdit = !_Utils_eq(model.c7, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.c9, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit agent' : 'Add agent';
 		return A2(
 			$elm$html$Html$div,
@@ -24138,14 +24708,11 @@ var $author$project$View$Agents$agentFormModal = F2(
 				]));
 	});
 var $author$project$Types$AgentsPageChanged = function (a) {
-	return {$: 173, a: a};
+	return {$: 178, a: a};
 };
-var $author$project$Types$OpenedAddAgent = {$: 160};
+var $author$project$Types$OpenedAddAgent = {$: 165};
 var $author$project$Types$UpdatedAgentsQuery = function (a) {
-	return {$: 159, a: a};
-};
-var $author$project$Types$OpenedAgentDetail = function (a) {
-	return {$: 162, a: a};
+	return {$: 164, a: a};
 };
 var $author$project$View$Agents$agentContractBadge = function (status) {
 	var cls = function () {
@@ -24172,16 +24739,12 @@ var $author$project$View$Agents$agentContractBadge = function (status) {
 				$elm$html$Html$text(status)
 			]));
 };
-var $elm$html$Html$td = _VirtualDom_node('td');
-var $elm$html$Html$tr = _VirtualDom_node('tr');
-var $author$project$View$Agents$agentRow = function (a) {
+var $author$project$View$Agents$agentRow = function (agent) {
 	return A2(
 		$elm$html$Html$tr,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('contact-row'),
-				$elm$html$Html$Events$onClick(
-				$author$project$Types$OpenedAgentDetail(a))
+				$elm$html$Html$Attributes$class('contact-row')
 			]),
 		_List_fromArray(
 			[
@@ -24207,7 +24770,7 @@ var $author$project$View$Agents$agentRow = function (a) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(a.M))
+										$author$project$View$Helpers$initials(agent.M))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -24218,14 +24781,17 @@ var $author$project$View$Agents$agentRow = function (a) {
 								_List_fromArray(
 									[
 										A2(
-										$elm$html$Html$span,
+										$elm$html$Html$a,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('contact-name')
+												$elm$html$Html$Attributes$class('contact-name record-link'),
+												$elm$html$Html$Attributes$href(
+												$author$project$Router$routeToPath(
+													$author$project$Types$AgentDetail(agent.aj)))
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(a.M)
+												$elm$html$Html$text(agent.M)
 											])),
 										A2(
 										$elm$html$Html$span,
@@ -24236,7 +24802,7 @@ var $author$project$View$Agents$agentRow = function (a) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$elm$core$String$isEmpty(a.ch) ? a.ao : a.ch)
+												$elm$core$String$isEmpty(agent.cj) ? agent.aq : agent.cj)
 											]))
 									]))
 							]))
@@ -24246,21 +24812,21 @@ var $author$project$View$Agents$agentRow = function (a) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(a.ao)
+						$elm$html$Html$text(agent.aq)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Agents$agentContractBadge(a.aT)
+						$author$project$View$Agents$agentContractBadge(agent.aV)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Agents$agentStatusBadge(a.ck)
+						$author$project$View$Agents$agentStatusBadge(agent.cm)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -24268,7 +24834,7 @@ var $author$project$View$Agents$agentRow = function (a) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(a.eM))
+						$elm$core$String$fromInt(agent.ab))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -24285,13 +24851,13 @@ var $author$project$View$Agents$agentRow = function (a) {
 								$elm$html$Html$Attributes$class('row-action'),
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$title('Edit'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + a.M),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + agent.M),
 								A2(
 								$elm$html$Html$Events$stopPropagationOn,
 								'click',
 								$elm$json$Json$Decode$succeed(
 									_Utils_Tuple2(
-										$author$project$Types$OpenedEditAgent(a),
+										$author$project$Types$OpenedEditAgent(agent),
 										true)))
 							]),
 						_List_fromArray(
@@ -24303,13 +24869,13 @@ var $author$project$View$Agents$agentRow = function (a) {
 								$elm$html$Html$Attributes$class('row-action row-action--danger'),
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$title('Delete'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + a.M),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + agent.M),
 								A2(
 								$elm$html$Html$Events$stopPropagationOn,
 								'click',
 								$elm$json$Json$Decode$succeed(
 									_Utils_Tuple2(
-										$author$project$Types$RequestedDeleteAgent(a),
+										$author$project$Types$RequestedDeleteAgent(agent),
 										true)))
 							]),
 						_List_fromArray(
@@ -24482,12 +25048,8 @@ var $author$project$View$Helpers$paginationBar = F4(
 						]))
 				]));
 	});
-var $elm$html$Html$table = _VirtualDom_node('table');
-var $elm$html$Html$tbody = _VirtualDom_node('tbody');
-var $elm$html$Html$th = _VirtualDom_node('th');
-var $elm$html$Html$thead = _VirtualDom_node('thead');
 var $author$project$View$Agents$agentsView = function (model) {
-	var _v0 = model.cl;
+	var _v0 = model.cn;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Agents$agentsSkeleton;
@@ -24521,7 +25083,7 @@ var $author$project$View$Agents$agentsView = function (model) {
 			var data = _v0.a;
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var filtered = data.A;
+			var filtered = data.x;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -24574,7 +25136,8 @@ var $author$project$View$Agents$agentsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search agents'),
 												$elm$html$Html$Attributes$placeholder('Search agents…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedAgentsQuery)
@@ -24704,7 +25267,7 @@ var $author$project$View$Agents$agentsView = function (model) {
 														_List_Nil,
 														_List_fromArray(
 															[
-																$elm$html$Html$text('Referred')
+																$elm$html$Html$text('Linked students')
 															])),
 														A2(
 														$elm$html$Html$th,
@@ -24724,12 +25287,12 @@ var $author$project$View$Agents$agentsView = function (model) {
 										A2($elm$core$List$map, $author$project$View$Agents$agentRow, filtered))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$AgentsPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$AgentsPageChanged)
 					]));
 	}
 };
-var $author$project$Types$CancelledBulkDelete = {$: 76};
-var $author$project$Types$ConfirmedBulkDelete = {$: 77};
+var $author$project$Types$CancelledBulkDelete = {$: 77};
+var $author$project$Types$ConfirmedBulkDelete = {$: 78};
 var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$View$DealForm$bulkDeleteConfirmModal = function (n) {
 	return A2(
@@ -24834,9 +25397,9 @@ var $author$project$View$DealForm$bulkDeleteConfirmModal = function (n) {
 					]))
 			]));
 };
-var $author$project$Types$ConfirmedBulkMove = {$: 74};
+var $author$project$Types$ConfirmedBulkMove = {$: 75};
 var $author$project$Types$RequestedBulkMove = function (a) {
-	return {$: 72, a: a};
+	return {$: 73, a: a};
 };
 var $author$project$View$Deals$dealStageOptions = _List_fromArray(
 	['Lead', 'Qualified', 'Proposal', 'Negotiation', 'Won', 'Lost']);
@@ -24980,19 +25543,19 @@ var $author$project$View$DealForm$bulkMoveConfirmModal = F2(
 						]))
 				]));
 	});
-var $author$project$Types$OpenedAddDocument = {$: 212};
+var $author$project$Types$OpenedAddDocument = {$: 217};
 var $author$project$Types$OpenedEditCase = function (a) {
-	return {$: 197, a: a};
+	return {$: 202, a: a};
 };
 var $author$project$Types$RequestedDeleteCase = function (a) {
-	return {$: 205, a: a};
+	return {$: 210, a: a};
 };
 var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$View$Dashboard$activityPanel = function (entries) {
 	var sorted = A2(
 		$elm$core$List$map,
 		function ($) {
-			return $.e$;
+			return $.e1;
 		},
 		A2(
 			$elm$core$List$take,
@@ -25001,12 +25564,12 @@ var $author$project$View$Dashboard$activityPanel = function (entries) {
 				A2(
 					$elm$core$List$sortBy,
 					function ($) {
-						return $.af;
+						return $.ah;
 					},
 					A2(
 						$elm$core$List$filter,
 						function (e) {
-							return !$elm$core$String$isEmpty(e.af);
+							return !$elm$core$String$isEmpty(e.ah);
 						},
 						entries)))));
 	return A2(
@@ -25058,11 +25621,11 @@ var $author$project$View$Dashboard$alertItemView = function (alert) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('alert-item ' + alert.x),
+				$elm$html$Html$Attributes$class('alert-item ' + alert.z),
 				A2($elm$html$Html$Attributes$attribute, 'role', 'button'),
 				A2($elm$html$Html$Attributes$attribute, 'tabindex', '0'),
-				$author$project$View$Helpers$onEnter(alert.cc),
-				$elm$html$Html$Events$onClick(alert.cc)
+				$author$project$View$Helpers$onEnter(alert.ce),
+				$elm$html$Html$Events$onClick(alert.ce)
 			]),
 		_List_fromArray(
 			[
@@ -25074,7 +25637,7 @@ var $author$project$View$Dashboard$alertItemView = function (alert) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(alert.v)
+						$elm$html$Html$text(alert.w)
 					])),
 				A2(
 				$elm$html$Html$div,
@@ -25094,7 +25657,7 @@ var $author$project$View$Dashboard$alertItemView = function (alert) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(alert.t)
+										$elm$html$Html$text(alert.u)
 									])),
 								$elm$html$Html$text(' — ' + alert.a)
 							])),
@@ -25106,7 +25669,7 @@ var $author$project$View$Dashboard$alertItemView = function (alert) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(alert.w)
+								$elm$html$Html$text(alert.y)
 							]))
 					]))
 			]));
@@ -25145,6 +25708,7 @@ var $author$project$View$Dashboard$alertsPanel = function (alerts) {
 					A2($elm$core$List$take, 4, alerts)))
 			]));
 };
+var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $author$project$View$Dashboard$activityRow = F5(
 	function (badgeText, msg, kindText, timeText, titleText) {
 		return A2(
@@ -25237,21 +25801,21 @@ var $author$project$View$Dashboard$activityRow = F5(
 	});
 var $author$project$View$Dashboard$documentEntry = function (d) {
 	return {
-		af: d.af,
-		e$: A5(
+		ah: d.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Document',
 			$author$project$Types$NavigatedTo($author$project$Types$Cases),
 			_Utils_ap(
-				d.aj,
-				$elm$core$String$isEmpty(d.cE) ? '' : (' · ' + d.cE)),
-			A2($elm$core$String$left, 10, d.af),
-			d.a9)
+				d.al,
+				$elm$core$String$isEmpty(d.cG) ? '' : (' · ' + d.cG)),
+			A2($elm$core$String$left, 10, d.ah),
+			d.bb)
 	};
 };
 var $author$project$View$Cases$caseActivity = F2(
 	function (model, _v0) {
-		var _v1 = model.cC;
+		var _v1 = model.cE;
 		if (_v1.$ === 2) {
 			var docs = _v1.a;
 			return A2($elm$core$List$map, $author$project$View$Dashboard$documentEntry, docs);
@@ -25261,45 +25825,45 @@ var $author$project$View$Cases$caseActivity = F2(
 	});
 var $author$project$View$Dashboard$documentCorrectionAlert = function (d) {
 	return {
-		cc: $author$project$Types$NavigatedTo($author$project$Types$Cases),
+		ce: $author$project$Types$NavigatedTo($author$project$Types$Cases),
 		a: 'correction required',
-		t: d.a9,
-		v: 'D',
-		w: 'Document · ' + d.cE,
-		x: 'urgent'
+		u: d.bb,
+		w: 'D',
+		y: 'Document · ' + d.cG,
+		z: 'urgent'
 	};
 };
 var $author$project$View$Dashboard$expiredDocumentAlert = function (d) {
 	return {
-		cc: $author$project$Types$NavigatedTo($author$project$Types$Cases),
+		ce: $author$project$Types$NavigatedTo($author$project$Types$Cases),
 		a: 'expired',
-		t: d.a9,
-		v: 'D',
-		w: 'Document · ' + d.cE,
-		x: ''
+		u: d.bb,
+		w: 'D',
+		y: 'Document · ' + d.cG,
+		z: ''
 	};
 };
 var $author$project$Types$OpenedCaseDetail = function (a) {
-	return {$: 198, a: a};
+	return {$: 203, a: a};
 };
 var $author$project$View$Dashboard$urgentCaseAlert = function (c) {
 	return {
-		cc: $author$project$Types$OpenedCaseDetail(c),
-		a: c.ew + ' marked urgent',
-		t: c.cE,
-		v: '!',
-		w: 'Case · ' + c.c1,
-		x: 'urgent'
+		ce: $author$project$Types$OpenedCaseDetail(c),
+		a: c.eA + ' marked urgent',
+		u: c.cG,
+		w: '!',
+		y: 'Case · ' + c.c3,
+		z: 'urgent'
 	};
 };
 var $author$project$View$Cases$caseAlerts = F2(
 	function (model, c) {
-		var selfAlert = (c.ec === 'Urgent') ? _List_fromArray(
+		var selfAlert = (c.eg === 'Urgent') ? _List_fromArray(
 			[
 				$author$project$View$Dashboard$urgentCaseAlert(c)
 			]) : _List_Nil;
 		var fromDocs = function () {
-			var _v0 = model.cC;
+			var _v0 = model.cE;
 			if (_v0.$ === 2) {
 				var docs = _v0.a;
 				var expired = A2(
@@ -25308,7 +25872,7 @@ var $author$project$View$Cases$caseAlerts = F2(
 					A2(
 						$elm$core$List$filter,
 						function (d) {
-							return d.aj === 'Expired';
+							return d.al === 'Expired';
 						},
 						docs));
 				var corrections = A2(
@@ -25317,7 +25881,7 @@ var $author$project$View$Cases$caseAlerts = F2(
 					A2(
 						$elm$core$List$filter,
 						function (d) {
-							return d.aj === 'Correction Required';
+							return d.al === 'Correction Required';
 						},
 						docs));
 				return _Utils_ap(corrections, expired);
@@ -25327,15 +25891,55 @@ var $author$project$View$Cases$caseAlerts = F2(
 		}();
 		return _Utils_ap(fromDocs, selfAlert);
 	});
+var $author$project$View$Helpers$detailEmpty = F3(
+	function (icon, titleText, desc) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('detail-empty')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('detail-empty__icon')
+						]),
+					_List_fromArray(
+						[icon])),
+					A2(
+					$elm$html$Html$h4,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('detail-empty__title')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(titleText)
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('detail-empty__desc')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(desc)
+						]))
+				]));
+	});
 var $author$project$Types$OpenedEditDocument = function (a) {
-	return {$: 213, a: a};
+	return {$: 218, a: a};
 };
 var $author$project$Types$RequestedDeleteDocument = function (a) {
-	return {$: 221, a: a};
+	return {$: 226, a: a};
 };
 var $author$project$Types$UpdatedDocumentStatus = F2(
 	function (a, b) {
-		return {$: 225, a: a, b: b};
+		return {$: 230, a: a, b: b};
 	});
 var $author$project$View$Cases$docStatusBadge = function (s) {
 	var cls = function () {
@@ -25405,8 +26009,8 @@ var $author$project$View$Cases$documentItem = function (d) {
 							]),
 						_List_fromArray(
 							[
-								$author$project$View$Cases$docStatusBadge(d.aj),
-								$elm$core$String$isEmpty(d.aW) ? $elm$html$Html$text('') : A2(
+								$author$project$View$Cases$docStatusBadge(d.al),
+								$elm$core$String$isEmpty(d.aY) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -25414,9 +26018,9 @@ var $author$project$View$Cases$documentItem = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Requested ' + d.aW)
+										$elm$html$Html$text('Requested ' + d.aY)
 									])),
-								$elm$core$String$isEmpty(d.b4) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(d.b6) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -25424,7 +26028,7 @@ var $author$project$View$Cases$documentItem = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('· Verified ' + d.b4)
+										$elm$html$Html$text('· Verified ' + d.b6)
 									]))
 							])),
 						A2(
@@ -25439,7 +26043,7 @@ var $author$project$View$Cases$documentItem = function (d) {
 								$elm$html$Html$a,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$href('#record-tools?tab=documents&document=' + d.ah),
+										$elm$html$Html$Attributes$href('#record-tools?tab=documents&document=' + d.aj),
 										$elm$html$Html$Attributes$target('_self')
 									]),
 								_List_fromArray(
@@ -25454,7 +26058,7 @@ var $author$project$View$Cases$documentItem = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(d.a9)
+										$elm$html$Html$text(d.bb)
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -25506,7 +26110,7 @@ var $author$project$View$Cases$documentItem = function (d) {
 										[
 											$elm$html$Html$Attributes$type_('button'),
 											$elm$html$Html$Attributes$class(
-											_Utils_eq(d.aj, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+											_Utils_eq(d.al, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 											$elm$html$Html$Events$onClick(
 											A2($author$project$Types$UpdatedDocumentStatus, d, s))
 										]),
@@ -25531,7 +26135,7 @@ var $author$project$View$Cases$documentItem = function (d) {
 };
 var $author$project$View$Cases$documentsPanel = F2(
 	function (model, _v0) {
-		var _v1 = model.cC;
+		var _v1 = model.cE;
 		switch (_v1.$) {
 			case 0:
 				return A2(
@@ -25803,7 +26407,7 @@ var $author$project$View$Cases$caseDetailView = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									$author$project$View$Helpers$initials(c.eJ))
+									$author$project$View$Helpers$initials(c.eN))
 								])),
 							A2(
 							$elm$html$Html$div,
@@ -25829,10 +26433,10 @@ var $author$project$View$Cases$caseDetailView = F2(
 												]),
 											_List_fromArray(
 												[
-													$elm$html$Html$text(c.cE)
+													$elm$html$Html$text(c.cG)
 												])),
-											$author$project$View$Cases$stageBadge(c.cV),
-											$author$project$View$Cases$priorityBadge(c.ec)
+											$author$project$View$Cases$stageBadge(c.cX),
+											$author$project$View$Cases$priorityBadge(c.eg)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -25843,7 +26447,7 @@ var $author$project$View$Cases$caseDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											display(c.eJ) + (' · ' + c.ew))
+											display(c.eN) + (' · ' + c.eA))
 										]))
 								])),
 							A2(
@@ -25907,22 +26511,22 @@ var $author$project$View$Cases$caseDetailView = F2(
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Destination',
-							display(c.c1),
+							display(c.c3),
 							'Country'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Visa type',
-							display(c.fa),
+							display(c.fc),
 							'Category'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Next deadline',
-							display(c.dU),
+							display(c.dX),
 							'Target'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Assigned',
-							display(c.cv),
+							display(c.cx),
 							'Officer')
 						])),
 					A2(
@@ -25957,63 +26561,63 @@ var $author$project$View$Cases$caseDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Student',
-												display(c.eJ)),
+												display(c.eN)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Contact',
-												display(c.aM)),
+												display(c.aO)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconTasks,
 												'Service',
-												display(c.ew)),
+												display(c.eA)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPin,
 												'Destination',
-												display(c.c1)),
+												display(c.c3)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Visa type',
-												display(c.fa)),
+												display(c.fc)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconContacts,
 												'School/Employer',
-												display(c.er)),
+												display(c.ev)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Adviser',
-												display(c.$7)),
+												display(c.dq)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Opened',
-												display(c.cX)),
+												display(c.cZ)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Target submission',
-												display(c.eQ)),
+												display(c.eS)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Actual submission',
-												display(c.cg)),
+												display(c.ci)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconTasks,
 												'Gov reference',
-												display(c.du))
+												display(c.dw))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
 									'Workflow Progress',
 									$elm$core$Maybe$Nothing,
-									A2($author$project$View$Workflow$workflowView, $author$project$Types$caseStages, c.cV)),
+									A2($author$project$View$Workflow$workflowView, $author$project$Types$caseStages, c.cX)),
 									A3(
 									$author$project$View$Helpers$detailCard,
 									'Change stage',
@@ -26033,12 +26637,12 @@ var $author$project$View$Cases$caseDetailView = F2(
 														[
 															$elm$html$Html$Attributes$type_('button'),
 															$elm$html$Html$Attributes$class(
-															_Utils_eq(c.cV, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+															_Utils_eq(c.cX, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 															$elm$html$Html$Events$onClick(
 															$author$project$Types$OpenedEditCase(
 																_Utils_update(
 																	c,
-																	{cV: s})))
+																	{cX: s})))
 														]),
 													_List_fromArray(
 														[
@@ -26099,7 +26703,7 @@ var $author$project$View$Cases$caseDetailView = F2(
 									$author$project$View$Helpers$detailCard,
 									'Next action',
 									$elm$core$Maybe$Nothing,
-									$elm$core$String$isEmpty(c.dT) ? A2(
+									$elm$core$String$isEmpty(c.dW) ? A2(
 										$elm$html$Html$p,
 										_List_fromArray(
 											[
@@ -26116,12 +26720,12 @@ var $author$project$View$Cases$caseDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Action', c.dT),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Action', c.dW),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Deadline',
-												display(c.dU))
+												display(c.dX))
 											])))
 								]))
 						])),
@@ -26140,12 +26744,12 @@ var $author$project$View$Cases$caseDetailView = F2(
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseCaseForm = {$: 201};
-var $author$project$Types$ConfirmedCloseCaseForm = {$: 200};
-var $author$project$Types$SubmittedCaseForm = {$: 203};
+var $author$project$Types$CancelledCloseCaseForm = {$: 206};
+var $author$project$Types$ConfirmedCloseCaseForm = {$: 205};
+var $author$project$Types$SubmittedCaseForm = {$: 208};
 var $author$project$Types$UpdatedCaseFormField = F2(
 	function (a, b) {
-		return {$: 202, a: a, b: b};
+		return {$: 207, a: a, b: b};
 	});
 var $author$project$View$Cases$caseFormFieldError = F2(
 	function (field, cf) {
@@ -26159,7 +26763,7 @@ var $author$project$View$Cases$caseFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					cf.dj)));
+					cf.dl)));
 	});
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
@@ -26167,7 +26771,7 @@ var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty(
 var $author$project$View$Cases$caseClientSelect = F2(
 	function (model, cf) {
 		var opts = function () {
-			var _v2 = model.cP;
+			var _v2 = model.cR;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return A2(
@@ -26175,7 +26779,7 @@ var $author$project$View$Cases$caseClientSelect = F2(
 					function ($) {
 						return $.M;
 					},
-					d.A);
+					d.x);
 			} else {
 				return _List_Nil;
 			}
@@ -26204,7 +26808,7 @@ var $author$project$View$Cases$caseClientSelect = F2(
 								$elm$html$Html$Attributes$id('cf-clientId'),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedCaseFormField('clientId')),
-								$elm$html$Html$Attributes$disabled(cf.eN)
+								$elm$html$Html$Attributes$disabled(cf.eP)
 							]),
 						A2(
 							$elm$core$List$cons,
@@ -26213,7 +26817,7 @@ var $author$project$View$Cases$caseClientSelect = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(''),
-										$elm$html$Html$Attributes$selected(cf.aL === '')
+										$elm$html$Html$Attributes$selected(cf.aN === '')
 									]),
 								_List_fromArray(
 									[
@@ -26226,9 +26830,9 @@ var $author$project$View$Cases$caseClientSelect = F2(
 										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value(c.ah),
+												$elm$html$Html$Attributes$value(c.aj),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(cf.aL, c.ah))
+												_Utils_eq(cf.aN, c.aj))
 											]),
 										_List_fromArray(
 											[
@@ -26302,10 +26906,10 @@ var $author$project$View$Cases$casePriorityPills = function (cf) {
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									_Utils_eq(cf.ec, p) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+									_Utils_eq(cf.eg, p) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedCaseFormField, 'priority', p)),
-									$elm$html$Html$Attributes$disabled(cf.eN)
+									$elm$html$Html$Attributes$disabled(cf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -26321,35 +26925,35 @@ var $author$project$View$Cases$caseRichField = F4(
 		var currentValue = function () {
 			switch (fieldId) {
 				case 'caseNumber':
-					return cf.cE;
+					return cf.cG;
 				case 'serviceCategory':
-					return cf.ew;
+					return cf.eA;
 				case 'destinationCountry':
-					return cf.c1;
+					return cf.c3;
 				case 'visaType':
-					return cf.fa;
+					return cf.fc;
 				case 'schoolOrEmployer':
-					return cf.er;
+					return cf.ev;
 				case 'assignedOfficer':
-					return cf.cv;
+					return cf.cx;
 				case 'externalAdviser':
-					return cf.$7;
+					return cf.dq;
 				case 'dateOpened':
-					return cf.cX;
+					return cf.cZ;
 				case 'targetSubmission':
-					return cf.eQ;
+					return cf.eS;
 				case 'actualSubmission':
-					return cf.cg;
+					return cf.ci;
 				case 'governmentRef':
-					return cf.du;
+					return cf.dw;
 				case 'nextAction':
-					return cf.dT;
+					return cf.dW;
 				case 'nextDeadline':
-					return cf.dU;
+					return cf.dX;
 				case 'result':
-					return cf.el;
+					return cf.ep;
 				case 'closureDate':
-					return cf.cJ;
+					return cf.cL;
 				default:
 					return '';
 			}
@@ -26380,7 +26984,7 @@ var $author$project$View$Cases$caseRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedCaseFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(cf.eN)
+								$elm$html$Html$Attributes$disabled(cf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -26449,10 +27053,10 @@ var $author$project$View$Cases$caseStagePills = function (cf) {
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									_Utils_eq(cf.cV, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+									_Utils_eq(cf.cX, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedCaseFormField, 'currentStage', s)),
-									$elm$html$Html$Attributes$disabled(cf.eN)
+									$elm$html$Html$Attributes$disabled(cf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -26465,7 +27069,7 @@ var $author$project$View$Cases$caseStagePills = function (cf) {
 var $author$project$View$Cases$caseStudentSelect = F2(
 	function (model, cf) {
 		var opts = function () {
-			var _v0 = model.eK;
+			var _v0 = model.eO;
 			if (_v0.$ === 2) {
 				var d = _v0.a;
 				return A2(
@@ -26473,7 +27077,7 @@ var $author$project$View$Cases$caseStudentSelect = F2(
 					function ($) {
 						return $.M;
 					},
-					d.A);
+					d.x);
 			} else {
 				return _List_Nil;
 			}
@@ -26493,7 +27097,7 @@ var $author$project$View$Cases$caseStudentSelect = F2(
 							$elm$html$Html$Attributes$id('cf-studentId'),
 							$elm$html$Html$Events$onInput(
 							$author$project$Types$UpdatedCaseFormField('studentId')),
-							$elm$html$Html$Attributes$disabled(cf.eN)
+							$elm$html$Html$Attributes$disabled(cf.eP)
 						]),
 					A2(
 						$elm$core$List$cons,
@@ -26502,7 +27106,7 @@ var $author$project$View$Cases$caseStudentSelect = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$value(''),
-									$elm$html$Html$Attributes$selected(cf.eI === '')
+									$elm$html$Html$Attributes$selected(cf.eM === '')
 								]),
 							_List_fromArray(
 								[
@@ -26515,9 +27119,9 @@ var $author$project$View$Cases$caseStudentSelect = F2(
 									$elm$html$Html$option,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$value(s.ah),
+											$elm$html$Html$Attributes$value(s.aj),
 											$elm$html$Html$Attributes$selected(
-											_Utils_eq(cf.eI, s.ah))
+											_Utils_eq(cf.eM, s.aj))
 										]),
 									_List_fromArray(
 										[
@@ -26539,7 +27143,7 @@ var $author$project$View$Cases$caseStudentSelect = F2(
 	});
 var $author$project$View$Cases$caseFormView = F3(
 	function (model, cf, isEdit) {
-		var submitLabel = cf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save case');
+		var submitLabel = cf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save case');
 		var formError = A2($author$project$View$Cases$caseFormFieldError, 'form', cf);
 		return A2(
 			$elm$html$Html$form,
@@ -26622,7 +27226,7 @@ var $author$project$View$Cases$caseFormView = F3(
 									$elm$html$Html$Attributes$value(cf.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedCaseFormField('notes')),
-									$elm$html$Html$Attributes$disabled(cf.eN),
+									$elm$html$Html$Attributes$disabled(cf.eP),
 									$elm$html$Html$Attributes$rows(4)
 								]),
 							_List_Nil)
@@ -26642,7 +27246,7 @@ var $author$project$View$Cases$caseFormView = F3(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseCaseForm),
-									$elm$html$Html$Attributes$disabled(cf.eN)
+									$elm$html$Html$Attributes$disabled(cf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -26654,7 +27258,7 @@ var $author$project$View$Cases$caseFormView = F3(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(cf.eN || (!cf.i))
+									$elm$html$Html$Attributes$disabled(cf.eP || (!cf.i))
 								]),
 							_List_fromArray(
 								[
@@ -26665,7 +27269,7 @@ var $author$project$View$Cases$caseFormView = F3(
 	});
 var $author$project$View$Cases$caseFormModal = F2(
 	function (model, cf) {
-		var isEdit = !_Utils_eq(model.c8, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.da, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit case' : 'Add case';
 		return A2(
 			$elm$html$Html$div,
@@ -26797,14 +27401,14 @@ var $author$project$View$Cases$caseFormModal = F2(
 				]));
 	});
 var $author$project$Types$CasesPageChanged = function (a) {
-	return {$: 209, a: a};
+	return {$: 214, a: a};
 };
-var $author$project$Types$OpenedAddCase = {$: 195};
+var $author$project$Types$OpenedAddCase = {$: 200};
 var $author$project$Types$UpdatedCasesQuery = function (a) {
-	return {$: 193, a: a};
+	return {$: 198, a: a};
 };
 var $author$project$Types$UpdatedCasesStageFilter = function (a) {
-	return {$: 194, a: a};
+	return {$: 199, a: a};
 };
 var $author$project$View$Cases$caseRow = function (c) {
 	return A2(
@@ -26839,7 +27443,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(c.eJ))
+										$author$project$View$Helpers$initials(c.eN))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -26857,7 +27461,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(c.eJ)
+												$elm$html$Html$text(c.eN)
 											])),
 										A2(
 										$elm$html$Html$span,
@@ -26867,7 +27471,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(c.cE)
+												$elm$html$Html$text(c.cG)
 											]))
 									]))
 							]))
@@ -26877,28 +27481,28 @@ var $author$project$View$Cases$caseRow = function (c) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(c.ew)
+						$elm$html$Html$text(c.eA)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(c.c1)
+						$elm$html$Html$text(c.c3)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Cases$stageBadge(c.cV)
+						$author$project$View$Cases$stageBadge(c.cX)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Cases$priorityBadge(c.ec)
+						$author$project$View$Cases$priorityBadge(c.eg)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -26909,7 +27513,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$isEmpty(c.dU) ? '—' : c.dU)
+						$elm$core$String$isEmpty(c.dX) ? '—' : c.dX)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -26926,7 +27530,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 								$elm$html$Html$Attributes$class('row-action'),
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$title('Edit'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + c.cE),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + c.cG),
 								A2(
 								$elm$html$Html$Events$stopPropagationOn,
 								'click',
@@ -26944,7 +27548,7 @@ var $author$project$View$Cases$caseRow = function (c) {
 								$elm$html$Html$Attributes$class('row-action row-action--danger'),
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$title('Delete'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + c.cE),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + c.cG),
 								A2(
 								$elm$html$Html$Events$stopPropagationOn,
 								'click',
@@ -27024,7 +27628,7 @@ var $author$project$View$Cases$casesSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Cases$casesView = function (model) {
-	var _v0 = model.cF;
+	var _v0 = model.cH;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Cases$casesSkeleton;
@@ -27083,7 +27687,8 @@ var $author$project$View$Cases$casesView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search cases'),
 												$elm$html$Html$Attributes$placeholder('Search cases…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedCasesQuery)
@@ -27118,7 +27723,7 @@ var $author$project$View$Cases$casesView = function (model) {
 									[
 										$elm$html$Html$Attributes$type_('button'),
 										$elm$html$Html$Attributes$class(
-										(data.eB === '') ? 'stage-pill stage-pill--active' : 'stage-pill'),
+										(data.eF === '') ? 'stage-pill stage-pill--active' : 'stage-pill'),
 										$elm$html$Html$Events$onClick(
 										$author$project$Types$UpdatedCasesStageFilter(''))
 									]),
@@ -27135,7 +27740,7 @@ var $author$project$View$Cases$casesView = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('button'),
 												$elm$html$Html$Attributes$class(
-												_Utils_eq(data.eB, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+												_Utils_eq(data.eF, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 												$elm$html$Html$Events$onClick(
 												$author$project$Types$UpdatedCasesStageFilter(s))
 											]),
@@ -27145,7 +27750,7 @@ var $author$project$View$Cases$casesView = function (model) {
 											]));
 								},
 								$author$project$Types$caseStages))),
-						$elm$core$List$isEmpty(data.A) ? A2(
+						$elm$core$List$isEmpty(data.x) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -27162,7 +27767,7 @@ var $author$project$View$Cases$casesView = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										(isQueryEmpty && $elm$core$String$isEmpty(data.eB)) ? 'No cases yet' : 'No cases match')
+										(isQueryEmpty && $elm$core$String$isEmpty(data.eF)) ? 'No cases yet' : 'No cases match')
 									])),
 								A2(
 								$elm$html$Html$p,
@@ -27173,7 +27778,7 @@ var $author$project$View$Cases$casesView = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										(isQueryEmpty && $elm$core$String$isEmpty(data.eB)) ? 'Add your first case to track submissions and visa progress.' : 'Try a different search or clear the stage filter.')
+										(isQueryEmpty && $elm$core$String$isEmpty(data.eF)) ? 'Add your first case to track submissions and visa progress.' : 'Try a different search or clear the stage filter.')
 									]))
 							])) : A2(
 						$elm$html$Html$div,
@@ -27258,14 +27863,20 @@ var $author$project$View$Cases$casesView = function (model) {
 										A2(
 										$elm$html$Html$tbody,
 										_List_Nil,
-										A2($elm$core$List$map, $author$project$View$Cases$caseRow, data.A))
+										A2($elm$core$List$map, $author$project$View$Cases$caseRow, data.x))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$CasesPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$CasesPageChanged)
 					]));
 	}
 };
-var $author$project$Types$OpenedActivityForm = {$: 81};
+var $author$project$Types$OpenedActivityForm = {$: 82};
+var $author$project$Types$OpenedAddDealForContact = function (a) {
+	return {$: 44, a: a};
+};
+var $author$project$Types$OpenedAddTaskForContact = function (a) {
+	return {$: 108, a: a};
+};
 var $author$project$Types$OpenedEditContact = function (a) {
 	return {$: 29, a: a};
 };
@@ -27273,7 +27884,7 @@ var $author$project$Types$RequestedDeleteContact = function (a) {
 	return {$: 38, a: a};
 };
 var $author$project$Types$RequestedDeleteActivity = function (a) {
-	return {$: 88, a: a};
+	return {$: 89, a: a};
 };
 var $author$project$View$Activity$activityItemView = function (a) {
 	return A2(
@@ -27289,7 +27900,7 @@ var $author$project$View$Activity$activityItemView = function (a) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('activity-item__marker'),
-						$elm$html$Html$Attributes$class('activity-item__marker--' + a.dF)
+						$elm$html$Html$Attributes$class('activity-item__marker--' + a.dH)
 					]),
 				_List_Nil),
 				A2(
@@ -27317,7 +27928,7 @@ var $author$project$View$Activity$activityItemView = function (a) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$Activity$activityKindLabel(a.dF))
+										$author$project$View$Activity$activityKindLabel(a.dH))
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -27327,9 +27938,9 @@ var $author$project$View$Activity$activityItemView = function (a) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(a.dV)
+										$elm$html$Html$text(a.dY)
 									])),
-								$elm$core$String$isEmpty(a.z) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(a.A) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -27337,7 +27948,7 @@ var $author$project$View$Activity$activityItemView = function (a) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('· ' + a.z)
+										$elm$html$Html$text('· ' + a.A)
 									]))
 							])),
 						A2(
@@ -27386,7 +27997,7 @@ var $author$project$View$Activity$activityItemView = function (a) {
 			]));
 };
 var $author$project$View$Activity$activityFeed = function (model) {
-	var _v0 = model.ce;
+	var _v0 = model.cg;
 	switch (_v0.$) {
 		case 0:
 			return A2(
@@ -27485,7 +28096,7 @@ var $author$project$View$Icons$iconPhone = A2(
 			$author$project$View$Helpers$svgPath('M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z')
 		]));
 var $author$project$Types$OpenedDealDetail = function (a) {
-	return {$: 46, a: a};
+	return {$: 47, a: a};
 };
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -27608,7 +28219,7 @@ var $author$project$View$ContactDetail$openDealRow = function (d) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										A2($author$project$View$Format$formatCurrencyWith, d.ap, d.aD))
+										A2($author$project$View$Format$formatCurrencyWith, d.ar, d.aF))
 									]))
 							])),
 						A2(
@@ -27638,7 +28249,7 @@ var $author$project$View$ContactDetail$openDealRow = function (d) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$isEmpty(d.am) ? 'No close date' : ('Closes ' + d.am))
+										$elm$core$String$isEmpty(d.ao) ? 'No close date' : ('Closes ' + d.ao))
 									]))
 							]))
 					]))
@@ -27748,12 +28359,12 @@ var $author$project$View$ContactDetail$taskRow = function (t) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class(
-										$author$project$View$ContactDetail$taskStatusClass(t.aj))
+										$author$project$View$ContactDetail$taskStatusClass(t.al))
 									]),
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$ContactDetail$taskStatusLabel(t.aj))
+										$author$project$View$ContactDetail$taskStatusLabel(t.al))
 									]))
 							])),
 						A2(
@@ -27773,7 +28384,7 @@ var $author$project$View$ContactDetail$taskRow = function (t) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$isEmpty(t.c6) ? 'No due date' : ('Due ' + t.c6))
+										$elm$core$String$isEmpty(t.c8) ? 'No due date' : ('Due ' + t.c8))
 									])),
 								$elm$core$String$isEmpty(t.R) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
@@ -27792,44 +28403,44 @@ var $author$project$View$ContactDetail$taskRow = function (t) {
 var $author$project$View$ContactDetail$contactDetailView = F2(
 	function (model, c) {
 		var tasksDue = function () {
-			var _v2 = model.eS;
+			var _v2 = model.eU;
 			if (_v2.$ === 2) {
 				var t = _v2.a;
 				return A2(
 					$elm$core$List$filter,
 					function (x) {
-						return _Utils_eq(x.ae, c.ah) && (x.aj !== 'done');
+						return _Utils_eq(x.ag, c.aj) && (x.al !== 'done');
 					},
-					t.A);
+					t.x);
 			} else {
 				return _List_Nil;
 			}
 		}();
 		var tasksDueHint = $elm$core$List$isEmpty(tasksDue) ? 'All clear' : 'Pending';
 		var openDeals = function () {
-			var _v1 = model.c_;
+			var _v1 = model.c0;
 			if (_v1.$ === 2) {
 				var d = _v1.a;
 				return A2(
 					$elm$core$List$filter,
 					function (x) {
-						return _Utils_eq(x.ae, c.ah) && ((x.T !== 'Won') && (x.T !== 'Lost'));
+						return _Utils_eq(x.ag, c.aj) && ((x.T !== 'Won') && (x.T !== 'Lost'));
 					},
-					d.A);
+					d.x);
 			} else {
 				return _List_Nil;
 			}
 		}();
 		var openDealsHint = $elm$core$List$isEmpty(openDeals) ? 'No open deals' : 'Active';
 		var displayTitle = $elm$core$String$isEmpty(c.J) ? '' : c.J;
-		var displayPhone = $elm$core$String$isEmpty(c.ai) ? '—' : c.ai;
+		var displayPhone = $elm$core$String$isEmpty(c.ak) ? '—' : c.ak;
 		var displayOwner = $elm$core$String$isEmpty(c.R) ? 'Unassigned' : c.R;
-		var displayLocation = $elm$core$String$isEmpty(c.aq) ? '—' : c.aq;
-		var displayCreated = $elm$core$String$isEmpty(c.af) ? '—' : c.af;
-		var displayCompany = $elm$core$String$isEmpty(c.an) ? '—' : c.an;
+		var displayLocation = $elm$core$String$isEmpty(c.as) ? '—' : c.as;
+		var displayCreated = $elm$core$String$isEmpty(c.ah) ? '—' : c.ah;
+		var displayCompany = $elm$core$String$isEmpty(c.ap) ? '—' : c.ap;
 		var roleLine = $elm$core$String$isEmpty(displayTitle) ? displayCompany : (displayTitle + (' · ' + displayCompany));
 		var activityCount = function () {
-			var _v0 = model.ce;
+			var _v0 = model.cg;
 			if (_v0.$ === 2) {
 				var items = _v0.a;
 				return $elm$core$List$length(items);
@@ -27873,17 +28484,32 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 						]),
 					_List_fromArray(
 						[
-							A2(
-							$elm$html$Html$div,
+							A3(
+							$elm$html$Html$node,
+							'crm-record-photo',
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('detail-hero__avatar')
+									$elm$html$Html$Attributes$class('detail-hero__avatar'),
+									A2($elm$html$Html$Attributes$attribute, 'entity', 'contacts'),
+									A2($elm$html$Html$Attributes$attribute, 'record-id', c.aj),
+									A2(
+									$elm$html$Html$Attributes$attribute,
+									'initials',
+									$author$project$View$Helpers$initials(c.M)),
+									A2(
+									$elm$html$Html$Attributes$attribute,
+									'editable',
+									A2(
+										$elm$core$Maybe$withDefault,
+										false,
+										A2(
+											$elm$core$Maybe$map,
+											function (u) {
+												return u.es !== 'viewer';
+											},
+											model.b5)) ? 'true' : 'false')
 								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(
-									$author$project$View$Helpers$initials(c.M))
-								])),
+							_List_Nil),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -27935,7 +28561,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('detail-hero__chip'),
-													$elm$html$Html$Attributes$href('mailto:' + c.ag)
+													$elm$html$Html$Attributes$href('mailto:' + c.ai)
 												]),
 											_List_fromArray(
 												[
@@ -27945,15 +28571,15 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(c.ag)
+															$elm$html$Html$text(c.ai)
 														]))
 												])),
-											$elm$core$String$isEmpty(c.ai) ? $elm$html$Html$text('') : A2(
+											$elm$core$String$isEmpty(c.ak) ? $elm$html$Html$text('') : A2(
 											$elm$html$Html$a,
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('detail-hero__chip'),
-													$elm$html$Html$Attributes$href('tel:' + c.ai)
+													$elm$html$Html$Attributes$href('tel:' + c.ak)
 												]),
 											_List_fromArray(
 												[
@@ -27963,10 +28589,10 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(c.ai)
+															$elm$html$Html$text(c.ak)
 														]))
 												])),
-											$elm$core$String$isEmpty(c.aq) ? $elm$html$Html$text('') : A2(
+											$elm$core$String$isEmpty(c.as) ? $elm$html$Html$text('') : A2(
 											$elm$html$Html$span,
 											_List_fromArray(
 												[
@@ -27980,7 +28606,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(c.aq)
+															$elm$html$Html$text(c.as)
 														]))
 												]))
 										]))
@@ -28060,7 +28686,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 							$elm$core$String$fromInt(
 								$elm$core$List$length(tasksDue)),
 							tasksDueHint),
-							A3($author$project$View$Helpers$detailStat, 'Last contact', c.bo, 'Last touch')
+							A3($author$project$View$Helpers$detailStat, 'Last contact', c.bq, 'Last touch')
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -28090,7 +28716,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconMail, 'Email', c.ag),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconMail, 'Email', c.ai),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconPhone, 'Phone', displayPhone),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconPin, 'Location', displayLocation),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Created', displayCreated),
@@ -28100,7 +28726,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 									$author$project$View$Helpers$detailCard,
 									'Tags',
 									$elm$core$Maybe$Nothing,
-									$elm$core$List$isEmpty(c.aB) ? A2(
+									$elm$core$List$isEmpty(c.aD) ? A2(
 										$elm$html$Html$p,
 										_List_fromArray(
 											[
@@ -28129,7 +28755,7 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 															$elm$html$Html$text(t)
 														]));
 											},
-											c.aB))),
+											c.aD))),
 									A3(
 									$author$project$View$Helpers$detailCard,
 									'Notes',
@@ -28189,8 +28815,8 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 												[
 													$elm$html$Html$Attributes$class('detail-card__action'),
 													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(true),
-													$elm$html$Html$Attributes$title('Coming soon')
+													$elm$html$Html$Events$onClick(
+													$author$project$Types$OpenedAddDealForContact(c))
 												]),
 											_List_fromArray(
 												[
@@ -28213,8 +28839,8 @@ var $author$project$View$ContactDetail$contactDetailView = F2(
 												[
 													$elm$html$Html$Attributes$class('detail-card__action'),
 													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(true),
-													$elm$html$Html$Attributes$title('Coming soon')
+													$elm$html$Html$Events$onClick(
+													$author$project$Types$OpenedAddTaskForContact(c))
 												]),
 											_List_fromArray(
 												[
@@ -28244,7 +28870,7 @@ var $author$project$View$ContactForm$contactFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					cf.dj)));
+					cf.dl)));
 	});
 var $author$project$Types$UpdatedContactFormField = F2(
 	function (a, b) {
@@ -28278,7 +28904,7 @@ var $author$project$View$ContactForm$notesField = function (cf) {
 						$elm$html$Html$Attributes$value(cf.n),
 						$elm$html$Html$Events$onInput(
 						$author$project$Types$UpdatedContactFormField('notes')),
-						$elm$html$Html$Attributes$disabled(cf.eN),
+						$elm$html$Html$Attributes$disabled(cf.eP),
 						$elm$html$Html$Attributes$rows(4)
 					]),
 				_List_Nil)
@@ -28292,15 +28918,15 @@ var $author$project$View$ContactForm$richField = F5(
 				case 'name':
 					return cf.M;
 				case 'email':
-					return cf.ag;
+					return cf.ai;
 				case 'company':
-					return cf.an;
+					return cf.ap;
 				case 'title':
 					return cf.J;
 				case 'phone':
-					return cf.ai;
+					return cf.ak;
 				case 'location':
-					return cf.aq;
+					return cf.as;
 				default:
 					return '';
 			}
@@ -28320,7 +28946,7 @@ var $author$project$View$ContactForm$richField = F5(
 				$elm$html$Html$Attributes$value(currentValue),
 				$elm$html$Html$Events$onInput(
 				$author$project$Types$UpdatedContactFormField(fieldId)),
-				$elm$html$Html$Attributes$disabled(cf.eN)
+				$elm$html$Html$Attributes$disabled(cf.eP)
 			]);
 		var finalAttrs = shouldFocus ? _Utils_ap(
 			baseAttrs,
@@ -28409,7 +29035,7 @@ var $author$project$View$ContactForm$stagePills = function (cf) {
 									$elm$html$Html$Attributes$class(cls),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedContactFormField, 'stage', s)),
-									$elm$html$Html$Attributes$disabled(cf.eN)
+									$elm$html$Html$Attributes$disabled(cf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -28457,11 +29083,11 @@ var $author$project$View$ContactForm$tagsField = function (cf) {
 								$elm$html$Html$Attributes$type_('text'),
 								$elm$html$Html$Attributes$id('cf-tagInput'),
 								$elm$html$Html$Attributes$placeholder('Add a tag…'),
-								$elm$html$Html$Attributes$value(cf.aA),
+								$elm$html$Html$Attributes$value(cf.aC),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedContactFormField('tagInput')),
 								$author$project$View$Helpers$onEnter($author$project$Types$AddedContactTag),
-								$elm$html$Html$Attributes$disabled(cf.eN)
+								$elm$html$Html$Attributes$disabled(cf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -28471,14 +29097,14 @@ var $author$project$View$ContactForm$tagsField = function (cf) {
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Attributes$class('tag-add-btn'),
 								$elm$html$Html$Events$onClick($author$project$Types$AddedContactTag),
-								$elm$html$Html$Attributes$disabled(cf.eN)
+								$elm$html$Html$Attributes$disabled(cf.eP)
 							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text('Add')
 							]))
 					])),
-				$elm$core$List$isEmpty(cf.aB) ? $elm$html$Html$text('') : A2(
+				$elm$core$List$isEmpty(cf.aD) ? $elm$html$Html$text('') : A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -28504,7 +29130,7 @@ var $author$project$View$ContactForm$tagsField = function (cf) {
 											$elm$html$Html$Attributes$class('tag-chip__remove'),
 											$elm$html$Html$Events$onClick(
 											$author$project$Types$RemovedContactTag(t)),
-											$elm$html$Html$Attributes$disabled(cf.eN),
+											$elm$html$Html$Attributes$disabled(cf.eP),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Remove tag ' + t)
 										]),
 									_List_fromArray(
@@ -28513,12 +29139,12 @@ var $author$project$View$ContactForm$tagsField = function (cf) {
 										]))
 								]));
 					},
-					cf.aB))
+					cf.aD))
 			]));
 };
 var $author$project$View$ContactForm$contactFormView = F2(
 	function (cf, isEdit) {
-		var submitLabel = cf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save contact');
+		var submitLabel = cf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save contact');
 		var formError = A2($author$project$View$ContactForm$contactFormFieldError, 'form', cf);
 		return A2(
 			$elm$html$Html$form,
@@ -28579,7 +29205,7 @@ var $author$project$View$ContactForm$contactFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseContactForm),
-									$elm$html$Html$Attributes$disabled(cf.eN)
+									$elm$html$Html$Attributes$disabled(cf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -28591,7 +29217,7 @@ var $author$project$View$ContactForm$contactFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(cf.eN || (!cf.i))
+									$elm$html$Html$Attributes$disabled(cf.eP || (!cf.i))
 								]),
 							_List_fromArray(
 								[
@@ -28656,7 +29282,7 @@ var $author$project$View$ContactForm$discardConfirmView = A2(
 		]));
 var $author$project$View$ContactForm$contactFormModal = F2(
 	function (model, cf) {
-		var isEdit = !_Utils_eq(model.db, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.dd, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit contact' : 'Add contact';
 		return A2(
 			$elm$html$Html$div,
@@ -28737,7 +29363,7 @@ var $author$project$View$ContactForm$contactFormModal = F2(
 				]));
 	});
 var $author$project$Types$ContactsPageChanged = function (a) {
-	return {$: 120, a: a};
+	return {$: 122, a: a};
 };
 var $author$project$Types$OpenedAddContact = {$: 28};
 var $author$project$Types$UpdatedContactsQuery = function (a) {
@@ -28765,17 +29391,21 @@ var $author$project$View$Contacts$contactRow = function (c) {
 							]),
 						_List_fromArray(
 							[
-								A2(
-								$elm$html$Html$div,
+								A3(
+								$elm$html$Html$node,
+								'crm-record-photo',
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('contact-avatar')
+										$elm$html$Html$Attributes$class('contact-avatar'),
+										A2($elm$html$Html$Attributes$attribute, 'entity', 'contacts'),
+										A2($elm$html$Html$Attributes$attribute, 'record-id', c.aj),
+										A2(
+										$elm$html$Html$Attributes$attribute,
+										'initials',
+										$author$project$View$Helpers$initials(c.M)),
+										A2($elm$html$Html$Attributes$attribute, 'person-name', c.M)
 									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(c.M))
-									])),
+								_List_Nil),
 								A2(
 								$elm$html$Html$div,
 								_List_fromArray(
@@ -28791,7 +29421,7 @@ var $author$project$View$Contacts$contactRow = function (c) {
 												$elm$html$Html$Attributes$class('contact-name record-link'),
 												$elm$html$Html$Attributes$href(
 												$author$project$Router$routeToPath(
-													$author$project$Types$ContactDetail(c.ah)))
+													$author$project$Types$ContactDetail(c.aj)))
 											]),
 										_List_fromArray(
 											[
@@ -28805,7 +29435,7 @@ var $author$project$View$Contacts$contactRow = function (c) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(c.ag)
+												$elm$html$Html$text(c.ai)
 											]))
 									]))
 							]))
@@ -28815,7 +29445,7 @@ var $author$project$View$Contacts$contactRow = function (c) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(c.an)
+						$elm$html$Html$text(c.ap)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -28832,7 +29462,7 @@ var $author$project$View$Contacts$contactRow = function (c) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(c.bo)
+						$elm$html$Html$text(c.bq)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -28954,7 +29584,7 @@ var $author$project$View$Contacts$contactsSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Contacts$contactsView = function (model) {
-	var _v0 = model.cP;
+	var _v0 = model.cR;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Contacts$contactsSkeleton;
@@ -28988,7 +29618,7 @@ var $author$project$View$Contacts$contactsView = function (model) {
 			var data = _v0.a;
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var filtered = data.A;
+			var filtered = data.x;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -29041,7 +29671,8 @@ var $author$project$View$Contacts$contactsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search contacts'),
 												$elm$html$Html$Attributes$placeholder('Search contacts…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedContactsQuery)
@@ -29222,7 +29853,7 @@ var $author$project$View$Contacts$contactsView = function (model) {
 										A2($elm$core$List$map, $author$project$View$Contacts$contactRow, filtered))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$ContactsPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$ContactsPageChanged)
 					]));
 	}
 };
@@ -29230,10 +29861,10 @@ var $author$project$Types$OpenedContactDetail = function (a) {
 	return {$: 27, a: a};
 };
 var $author$project$Types$OpenedEditDeal = function (a) {
-	return {$: 45, a: a};
+	return {$: 46, a: a};
 };
 var $author$project$Types$RequestedDeleteDeal = function (a) {
-	return {$: 56, a: a};
+	return {$: 57, a: a};
 };
 var $author$project$View$Contacts$contactById = F2(
 	function (contacts, id) {
@@ -29241,47 +29872,47 @@ var $author$project$View$Contacts$contactById = F2(
 			A2(
 				$elm$core$List$filter,
 				function (c) {
-					return _Utils_eq(c.ah, id);
+					return _Utils_eq(c.aj, id);
 				},
 				contacts));
 	});
 var $author$project$View$Contacts$contactList = function (model) {
-	var _v0 = model.cP;
+	var _v0 = model.cR;
 	if (_v0.$ === 2) {
 		var data = _v0.a;
-		return data.A;
+		return data.x;
 	} else {
 		return _List_Nil;
 	}
 };
 var $author$project$View$Dashboard$dealEntry = function (d) {
 	return {
-		af: d.af,
-		e$: A5(
+		ah: d.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Deal',
 			$author$project$Types$OpenedDealDetail(d),
 			_Utils_ap(
 				d.T,
 				$elm$core$String$isEmpty(d.R) ? '' : (' · ' + d.R)),
-			A2($elm$core$String$left, 10, d.af),
+			A2($elm$core$String$left, 10, d.ah),
 			d.J)
 	};
 };
 var $author$project$View$DealDetail$dealActivity = F2(
 	function (model, d) {
-		var _v0 = model.c_;
+		var _v0 = model.c0;
 		if (_v0.$ === 2) {
 			var data = _v0.a;
-			return $elm$core$String$isEmpty(d.ae) ? _List_Nil : A2(
+			return $elm$core$String$isEmpty(d.ag) ? _List_Nil : A2(
 				$elm$core$List$map,
 				$author$project$View$Dashboard$dealEntry,
 				A2(
 					$elm$core$List$filter,
 					function (x) {
-						return _Utils_eq(x.ae, d.ae) && (!_Utils_eq(x.ah, d.ah));
+						return _Utils_eq(x.ag, d.ag) && (!_Utils_eq(x.aj, d.aj));
 					},
-					data.A));
+					data.x));
 		} else {
 			return _List_Nil;
 		}
@@ -29373,22 +30004,22 @@ var $author$project$View$Format$dealAgeLabel = function (maybeDays) {
 };
 var $author$project$View$Dashboard$closingSoonAlert = function (d) {
 	return {
-		cc: $author$project$Types$OpenedDealDetail(d),
-		a: 'closes ' + d.am,
-		t: d.J,
-		v: '!',
-		w: 'Deal · ' + d.T,
-		x: 'urgent'
+		ce: $author$project$Types$OpenedDealDetail(d),
+		a: 'closes ' + d.ao,
+		u: d.J,
+		w: '!',
+		y: 'Deal · ' + d.T,
+		z: 'urgent'
 	};
 };
 var $author$project$View$Dashboard$overdueTaskAlert = function (t) {
 	return {
-		cc: $author$project$Types$NavigatedTo($author$project$Types$Tasks),
+		ce: $author$project$Types$NavigatedTo($author$project$Types$Tasks),
 		a: 'overdue',
-		t: t.J,
-		v: 'T',
-		w: 'Task · due ' + t.c6,
-		x: 'urgent'
+		u: t.J,
+		w: 'T',
+		y: 'Task · due ' + t.c8,
+		z: 'urgent'
 	};
 };
 var $author$project$View$Dashboard$daysBetween = F2(
@@ -29407,14 +30038,14 @@ var $author$project$View$Dashboard$staleDealAlert = F2(
 		var days = A2(
 			$elm$core$Maybe$withDefault,
 			0,
-			A2($author$project$View$Dashboard$daysBetween, d.af, today));
+			A2($author$project$View$Dashboard$daysBetween, d.ah, today));
 		return {
-			cc: $author$project$Types$OpenedDealDetail(d),
+			ce: $author$project$Types$OpenedDealDetail(d),
 			a: 'no movement in ' + ($elm$core$String$fromInt(days) + ' days'),
-			t: d.J,
-			v: '!',
-			w: 'Deal · ' + d.T,
-			x: 'urgent'
+			u: d.J,
+			w: '!',
+			y: 'Deal · ' + d.T,
+			z: 'urgent'
 		};
 	});
 var $author$project$View$DealDetail$dealAlerts = F2(
@@ -29425,17 +30056,17 @@ var $author$project$View$DealDetail$dealAlerts = F2(
 				var age = A2(
 					$elm$core$Maybe$withDefault,
 					0,
-					A2($author$project$View$Format$dealAgeDays, model.ak, d.af));
+					A2($author$project$View$Format$dealAgeDays, model.am, d.ah));
 				return (age >= 45) ? _List_fromArray(
 					[
-						A2($author$project$View$Dashboard$staleDealAlert, model.ak, d)
+						A2($author$project$View$Dashboard$staleDealAlert, model.am, d)
 					]) : _List_Nil;
 			} else {
 				return _List_Nil;
 			}
 		}();
 		var fromTasks = function () {
-			var _v1 = _Utils_Tuple2(model.eS, d.ae);
+			var _v1 = _Utils_Tuple2(model.eU, d.ag);
 			if (_v1.a.$ === 2) {
 				var data = _v1.a.a;
 				var cid = _v1.b;
@@ -29445,18 +30076,18 @@ var $author$project$View$DealDetail$dealAlerts = F2(
 					A2(
 						$elm$core$List$filter,
 						function (t) {
-							return _Utils_eq(t.ae, cid) && (t.aj !== 'done');
+							return _Utils_eq(t.ag, cid) && (t.al !== 'done');
 						},
-						data.A));
+						data.x));
 			} else {
 				return _List_Nil;
 			}
 		}();
 		var closingAlert = function () {
-			if (isOpen && (!$elm$core$String$isEmpty(d.am))) {
+			if (isOpen && (!$elm$core$String$isEmpty(d.ao))) {
 				var _v0 = _Utils_Tuple2(
-					$author$project$View$Format$dateToDays(model.ak),
-					$author$project$View$Format$dateToDays(d.am));
+					$author$project$View$Format$dateToDays(model.am),
+					$author$project$View$Format$dateToDays(d.ao));
 				if ((!_v0.a.$) && (!_v0.b.$)) {
 					var t = _v0.a.a;
 					var c = _v0.b.a;
@@ -29477,7 +30108,7 @@ var $author$project$View$DealDetail$dealAlerts = F2(
 	});
 var $author$project$Types$MovedDeal = F2(
 	function (a, b) {
-		return {$: 54, a: a, b: b};
+		return {$: 55, a: a, b: b};
 	});
 var $author$project$View$DealDetail$dealStagePillsDetail = F2(
 	function (isMoving, d) {
@@ -29512,13 +30143,13 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 	function (model, d) {
 		var ownerDisplay = $elm$core$String$isEmpty(d.R) ? 'Unassigned' : d.R;
 		var isMoving = _Utils_eq(
-			model.dQ,
-			$elm$core$Maybe$Just(d.ah));
-		var createdDisplay = $elm$core$String$isEmpty(d.af) ? '—' : d.af;
+			model.dT,
+			$elm$core$Maybe$Just(d.aj));
+		var createdDisplay = $elm$core$String$isEmpty(d.ah) ? '—' : d.ah;
 		var contacts = $author$project$View$Contacts$contactList(model);
-		var linkedContact = A2($author$project$View$Contacts$contactById, contacts, d.ae);
-		var closeDateDisplay = $elm$core$String$isEmpty(d.am) ? '—' : d.am;
-		var ageDays = A2($author$project$View$Format$dealAgeDays, model.ak, d.af);
+		var linkedContact = A2($author$project$View$Contacts$contactById, contacts, d.ag);
+		var closeDateDisplay = $elm$core$String$isEmpty(d.ao) ? '—' : d.ao;
+		var ageDays = A2($author$project$View$Format$dealAgeDays, model.am, d.ah);
 		var ageLabel = $author$project$View$Format$dealAgeLabel(ageDays);
 		return A2(
 			$elm$html$Html$div,
@@ -29565,7 +30196,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									A2($author$project$View$Format$formatCurrencyWith, d.ap, d.aD))
+									A2($author$project$View$Format$formatCurrencyWith, d.ar, d.aF))
 								])),
 							A2(
 							$elm$html$Html$div,
@@ -29604,7 +30235,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$isEmpty(d.aR) ? 'No contact linked' : ('Linked to ' + d.aR))
+											$elm$core$String$isEmpty(d.aT) ? 'No contact linked' : ('Linked to ' + d.aT))
 										])),
 									A2(
 									$elm$html$Html$div,
@@ -29614,7 +30245,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$core$String$isEmpty(d.am) ? $elm$html$Html$text('') : A2(
+											$elm$core$String$isEmpty(d.ao) ? $elm$html$Html$text('') : A2(
 											$elm$html$Html$span,
 											_List_fromArray(
 												[
@@ -29628,7 +30259,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text('Closes ' + d.am)
+															$elm$html$Html$text('Closes ' + d.ao)
 														]))
 												])),
 											$elm$core$String$isEmpty(d.R) ? $elm$html$Html$text('') : A2(
@@ -29711,7 +30342,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Value',
-							A2($author$project$View$Format$formatCurrencyWith, d.ap, d.aD),
+							A2($author$project$View$Format$formatCurrencyWith, d.ar, d.aF),
 							'Deal value'),
 							A3($author$project$View$Helpers$detailStat, 'Stage', d.T, 'Current stage'),
 							A3($author$project$View$Helpers$detailStat, 'Close date', closeDateDisplay, 'Expected'),
@@ -29790,7 +30421,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 																	]),
 																_List_fromArray(
 																	[
-																		$elm$html$Html$text(c.ag)
+																		$elm$html$Html$text(c.ai)
 																	]))
 															])),
 														A2(
@@ -29805,7 +30436,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 															]))
 													]));
 										} else {
-											return $elm$core$String$isEmpty(d.aR) ? A2(
+											return $elm$core$String$isEmpty(d.aT) ? A2(
 												$elm$html$Html$p,
 												_List_fromArray(
 													[
@@ -29822,7 +30453,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 													]),
 												_List_fromArray(
 													[
-														$elm$html$Html$text(d.aR)
+														$elm$html$Html$text(d.aT)
 													]));
 										}
 									}()),
@@ -29851,7 +30482,7 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Close date', closeDateDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconUserTiny, 'Owner', ownerDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Created', createdDisplay),
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Currency', d.ap)
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Currency', d.ar)
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -29887,22 +30518,47 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 								[
 									A3(
 									$author$project$View$Helpers$detailCard,
-									'Recent activity',
-									$elm$core$Maybe$Just(
-										A2(
-											$elm$html$Html$button,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('detail-card__action'),
-													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(true),
-													$elm$html$Html$Attributes$title('Coming soon')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Log activity')
-												]))),
-									A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconTasks, 'No activity yet', 'Activity on this deal will appear here once it\u0027s linked to a contact.'))
+									'Contact activity',
+									function () {
+										if (!linkedContact.$) {
+											var contact = linkedContact.a;
+											return $elm$core$Maybe$Just(
+												A2(
+													$elm$html$Html$button,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('detail-card__action'),
+															$elm$html$Html$Attributes$type_('button'),
+															$elm$html$Html$Events$onClick(
+															$author$project$Types$OpenedContactDetail(contact))
+														]),
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Open contact activity')
+														])));
+										} else {
+											return $elm$core$Maybe$Nothing;
+										}
+									}(),
+									A3(
+										$author$project$View$Helpers$detailEmpty,
+										$author$project$View$Icons$iconTasks,
+										function () {
+											if (!linkedContact.$) {
+												var contact = linkedContact.a;
+												return 'Activity is logged on the linked contact';
+											} else {
+												return 'No contact linked';
+											}
+										}(),
+										function () {
+											if (!linkedContact.$) {
+												var contact = linkedContact.a;
+												return 'Open ' + (contact.M + ' to review or log calls, emails, meetings, and notes.');
+											} else {
+												return 'Edit this deal to link a contact before logging related activity.';
+											}
+										}()))
 								]))
 						])),
 					A2(
@@ -29920,24 +30576,42 @@ var $author$project$View$DealDetail$dealDetailView = F2(
 						]))
 				]));
 	});
-var $author$project$Types$SubmittedDealForm = {$: 51};
+var $author$project$Types$SubmittedDealForm = {$: 52};
 var $author$project$Types$UpdatedDealFormField = F2(
 	function (a, b) {
-		return {$: 50, a: a, b: b};
+		return {$: 51, a: a, b: b};
 	});
 var $author$project$View$DealForm$contactsForSelect = function (model) {
-	var _v0 = model.cP;
-	if (_v0.$ === 2) {
-		var data = _v0.a;
-		return A2(
-			$elm$core$List$sortBy,
-			function ($) {
-				return $.M;
-			},
-			data.A);
-	} else {
-		return _List_Nil;
-	}
+	var loaded = function () {
+		var _v1 = model.cR;
+		if (_v1.$ === 2) {
+			var data = _v1.a;
+			return data.x;
+		} else {
+			return _List_Nil;
+		}
+	}();
+	var current = function () {
+		var _v0 = model.e4;
+		if (!_v0.$) {
+			var contact = _v0.a;
+			return A2(
+				$elm$core$List$any,
+				function (item) {
+					return _Utils_eq(item.aj, contact.aj);
+				},
+				loaded) ? _List_Nil : _List_fromArray(
+				[contact]);
+		} else {
+			return _List_Nil;
+		}
+	}();
+	return A2(
+		$elm$core$List$sortBy,
+		function ($) {
+			return $.M;
+		},
+		_Utils_ap(loaded, current));
 };
 var $author$project$View$DealForm$dealFormFieldError = F2(
 	function (field, df) {
@@ -29951,7 +30625,7 @@ var $author$project$View$DealForm$dealFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					df.dj)));
+					df.dl)));
 	});
 var $author$project$View$DealForm$dealContactSelect = F2(
 	function (model, df) {
@@ -29980,7 +30654,7 @@ var $author$project$View$DealForm$dealContactSelect = F2(
 								$elm$html$Html$Attributes$id('df-contactId'),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedDealFormField('contactId')),
-								$elm$html$Html$Attributes$disabled(df.eN)
+								$elm$html$Html$Attributes$disabled(df.eP)
 							]),
 						A2(
 							$elm$core$List$cons,
@@ -29989,7 +30663,7 @@ var $author$project$View$DealForm$dealContactSelect = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(''),
-										$elm$html$Html$Attributes$selected(df.ae === '')
+										$elm$html$Html$Attributes$selected(df.ag === '')
 									]),
 								_List_fromArray(
 									[
@@ -30002,9 +30676,9 @@ var $author$project$View$DealForm$dealContactSelect = F2(
 										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value(c.ah),
+												$elm$html$Html$Attributes$value(c.aj),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(df.ae, c.ah))
+												_Utils_eq(df.ag, c.aj))
 											]),
 										_List_fromArray(
 											[
@@ -30070,7 +30744,7 @@ var $author$project$View$DealForm$dealCurrencySelect = function (df) {
 								[
 									$elm$html$Html$Attributes$value(c),
 									$elm$html$Html$Attributes$selected(
-									_Utils_eq(df.ap, c))
+									_Utils_eq(df.ar, c))
 								]),
 							_List_fromArray(
 								[
@@ -30119,7 +30793,7 @@ var $author$project$View$DealForm$dealNotesField = function (df) {
 						$elm$html$Html$Attributes$value(df.n),
 						$elm$html$Html$Events$onInput(
 						$author$project$Types$UpdatedDealFormField('notes')),
-						$elm$html$Html$Attributes$disabled(df.eN),
+						$elm$html$Html$Attributes$disabled(df.eP),
 						$elm$html$Html$Attributes$rows(4)
 					]),
 				_List_Nil)
@@ -30133,11 +30807,11 @@ var $author$project$View$DealForm$dealRichField = F5(
 				case 'title':
 					return df.J;
 				case 'value':
-					return df.aD;
+					return df.aF;
 				case 'currency':
-					return df.ap;
+					return df.ar;
 				case 'closeDate':
-					return df.am;
+					return df.ao;
 				case 'owner':
 					return df.R;
 				default:
@@ -30159,7 +30833,7 @@ var $author$project$View$DealForm$dealRichField = F5(
 				$elm$html$Html$Attributes$value(currentValue),
 				$elm$html$Html$Events$onInput(
 				$author$project$Types$UpdatedDealFormField(fieldId)),
-				$elm$html$Html$Attributes$disabled(df.eN)
+				$elm$html$Html$Attributes$disabled(df.eP)
 			]);
 		var finalAttrs = shouldFocus ? _Utils_ap(
 			baseAttrs,
@@ -30246,7 +30920,7 @@ var $author$project$View$DealForm$dealStagePills = function (df) {
 									$elm$html$Html$Attributes$class(cls),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedDealFormField, 'stage', s)),
-									$elm$html$Html$Attributes$disabled(df.eN)
+									$elm$html$Html$Attributes$disabled(df.eP)
 								]),
 							_List_fromArray(
 								[
@@ -30258,7 +30932,7 @@ var $author$project$View$DealForm$dealStagePills = function (df) {
 };
 var $author$project$View$DealForm$dealFormView = F3(
 	function (model, df, isEdit) {
-		var submitLabel = df.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save deal');
+		var submitLabel = df.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save deal');
 		var formError = A2($author$project$View$DealForm$dealFormFieldError, 'form', df);
 		return A2(
 			$elm$html$Html$form,
@@ -30318,7 +30992,7 @@ var $author$project$View$DealForm$dealFormView = F3(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseDealForm),
-									$elm$html$Html$Attributes$disabled(df.eN)
+									$elm$html$Html$Attributes$disabled(df.eP)
 								]),
 							_List_fromArray(
 								[
@@ -30330,7 +31004,7 @@ var $author$project$View$DealForm$dealFormView = F3(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(df.eN || (!df.i))
+									$elm$html$Html$Attributes$disabled(df.eP || (!df.i))
 								]),
 							_List_fromArray(
 								[
@@ -30339,8 +31013,8 @@ var $author$project$View$DealForm$dealFormView = F3(
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseDealForm = {$: 49};
-var $author$project$Types$ConfirmedCloseDealForm = {$: 48};
+var $author$project$Types$CancelledCloseDealForm = {$: 50};
+var $author$project$Types$ConfirmedCloseDealForm = {$: 49};
 var $author$project$View$DealForm$discardDealConfirmView = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -30395,7 +31069,7 @@ var $author$project$View$DealForm$discardDealConfirmView = A2(
 		]));
 var $author$project$View$DealForm$dealFormModal = F2(
 	function (model, df) {
-		var isEdit = !_Utils_eq(model.c9, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.db, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit deal' : 'Add deal';
 		return A2(
 			$elm$html$Html$div,
@@ -30475,21 +31149,21 @@ var $author$project$View$DealForm$dealFormModal = F2(
 						]))
 				]));
 	});
-var $author$project$Types$ClearedDealFilters = {$: 71};
-var $author$project$Types$ClearedDealSelection = {$: 67};
+var $author$project$Types$ClearedDealFilters = {$: 72};
+var $author$project$Types$ClearedDealSelection = {$: 68};
 var $author$project$Types$OpenedAddDeal = {$: 43};
-var $author$project$Types$RequestedBulkDelete = {$: 75};
+var $author$project$Types$RequestedBulkDelete = {$: 76};
 var $author$project$Types$UpdatedDateFromFilter = function (a) {
-	return {$: 69, a: a};
-};
-var $author$project$Types$UpdatedDateToFilter = function (a) {
 	return {$: 70, a: a};
 };
+var $author$project$Types$UpdatedDateToFilter = function (a) {
+	return {$: 71, a: a};
+};
 var $author$project$Types$UpdatedDealsQuery = function (a) {
-	return {$: 53, a: a};
+	return {$: 54, a: a};
 };
 var $author$project$Types$UpdatedOwnerFilter = function (a) {
-	return {$: 68, a: a};
+	return {$: 69, a: a};
 };
 var $author$project$View$Deals$columnDisplayCurrency = function (deals) {
 	var currencies = A3(
@@ -30507,7 +31181,7 @@ var $author$project$View$Deals$columnDisplayCurrency = function (deals) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.ap;
+					return $.ar;
 				},
 				deals)));
 	if (!currencies.b) {
@@ -30540,7 +31214,7 @@ var $author$project$View$Deals$currencyTotals = F2(
 							function (deal, totals) {
 								return A3(
 									$elm$core$Dict$update,
-									$elm$core$String$isEmpty(deal.ap) ? 'USD' : deal.ap,
+									$elm$core$String$isEmpty(deal.ar) ? 'USD' : deal.ar,
 									function (current) {
 										return $elm$core$Maybe$Just(
 											A2($elm$core$Maybe$withDefault, 0, current) + amount(deal));
@@ -30650,28 +31324,28 @@ var $author$project$View$Deals$kpiCard = F4(
 	});
 var $author$project$View$Filters$passesFilters = F2(
 	function (model, d) {
-		var ownerOk = $elm$core$String$isEmpty(model.d0) ? true : ((model.d0 === '__mine__') ? _Utils_eq(
-			$elm$core$Maybe$Just(d.d1),
+		var ownerOk = $elm$core$String$isEmpty(model.d3) ? true : ((model.d3 === '__mine__') ? _Utils_eq(
+			$elm$core$Maybe$Just(d.d4),
 			A2(
 				$elm$core$Maybe$map,
 				function ($) {
-					return $.ah;
+					return $.aj;
 				},
-				model.b3)) : _Utils_eq(d.R, model.d0));
+				model.b5)) : _Utils_eq(d.R, model.d3));
 		var closeDateOk = function () {
-			if ($elm$core$String$isEmpty(model.cW) && $elm$core$String$isEmpty(model.cY)) {
+			if ($elm$core$String$isEmpty(model.cY) && $elm$core$String$isEmpty(model.c_)) {
 				return true;
 			} else {
-				var _v0 = $author$project$View$Format$dateToDays(d.am);
+				var _v0 = $author$project$View$Format$dateToDays(d.ao);
 				if (_v0.$ === 1) {
 					return false;
 				} else {
 					var cd = _v0.a;
 					var toOk = function () {
-						if ($elm$core$String$isEmpty(model.cY)) {
+						if ($elm$core$String$isEmpty(model.c_)) {
 							return true;
 						} else {
-							var _v2 = $author$project$View$Format$dateToDays(model.cY);
+							var _v2 = $author$project$View$Format$dateToDays(model.c_);
 							if (!_v2.$) {
 								var td = _v2.a;
 								return _Utils_cmp(cd, td) < 1;
@@ -30681,10 +31355,10 @@ var $author$project$View$Filters$passesFilters = F2(
 						}
 					}();
 					var fromOk = function () {
-						if ($elm$core$String$isEmpty(model.cW)) {
+						if ($elm$core$String$isEmpty(model.cY)) {
 							return true;
 						} else {
-							var _v1 = $author$project$View$Format$dateToDays(model.cW);
+							var _v1 = $author$project$View$Format$dateToDays(model.cY);
 							if (!_v1.$) {
 								var fd = _v1.a;
 								return _Utils_cmp(cd, fd) > -1;
@@ -30700,21 +31374,21 @@ var $author$project$View$Filters$passesFilters = F2(
 		return ownerOk && closeDateOk;
 	});
 var $author$project$Types$DealDroppedOnStage = function (a) {
-	return {$: 64, a: a};
+	return {$: 65, a: a};
 };
 var $author$project$Types$DropTargetEntered = function (a) {
-	return {$: 62, a: a};
+	return {$: 63, a: a};
 };
-var $author$project$Types$DropTargetLeft = {$: 63};
+var $author$project$Types$DropTargetLeft = {$: 64};
 var $author$project$Types$OpenedAddDealWithStage = function (a) {
-	return {$: 44, a: a};
+	return {$: 45, a: a};
 };
-var $author$project$Types$DraggingDealEnded = {$: 61};
+var $author$project$Types$DraggingDealEnded = {$: 62};
 var $author$project$Types$DraggingDealStarted = function (a) {
-	return {$: 60, a: a};
+	return {$: 61, a: a};
 };
 var $author$project$Types$ToggledDealSelection = function (a) {
-	return {$: 65, a: a};
+	return {$: 66, a: a};
 };
 var $author$project$View$Format$dealAgeClass = function (maybeDays) {
 	if (!maybeDays.$) {
@@ -30798,7 +31472,7 @@ var $author$project$View$Deals$dealCard = F4(
 			$elm$html$Html$Events$on,
 			'dragstart',
 			$elm$json$Json$Decode$succeed(
-				$author$project$Types$DraggingDealStarted(d.ah)));
+				$author$project$Types$DraggingDealStarted(d.aj)));
 		var onDragEnd = A2(
 			$elm$html$Html$Events$on,
 			'dragend',
@@ -30832,7 +31506,7 @@ var $author$project$View$Deals$dealCard = F4(
 				$elm$core$Basics$identity,
 				_List_fromArray(
 					[
-						$elm$core$String$isEmpty(d.am) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
+						$elm$core$String$isEmpty(d.ao) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
 						A2(
 							$elm$html$Html$span,
 							_List_fromArray(
@@ -30849,7 +31523,7 @@ var $author$project$View$Deals$dealCard = F4(
 										]),
 									_List_fromArray(
 										[$author$project$View$Icons$iconCalendar])),
-									$elm$html$Html$text(d.am)
+									$elm$html$Html$text(d.ao)
 								]))),
 						$elm$core$String$isEmpty(d.R) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
 						A2(
@@ -30871,14 +31545,14 @@ var $author$project$View$Deals$dealCard = F4(
 									$elm$html$Html$text(d.R)
 								])))
 					])));
-		var linkedContact = A2($author$project$View$Contacts$contactById, contacts, d.ae);
-		var isSelected = A2($elm$core$Set$member, d.ah, model.eu);
+		var linkedContact = A2($author$project$View$Contacts$contactById, contacts, d.ag);
+		var isSelected = A2($elm$core$Set$member, d.aj, model.ey);
 		var isMoving = _Utils_eq(
 			movingId,
-			$elm$core$Maybe$Just(d.ah));
+			$elm$core$Maybe$Just(d.aj));
 		var isDragging = _Utils_eq(
-			model.c4,
-			$elm$core$Maybe$Just(d.ah));
+			model.c6,
+			$elm$core$Maybe$Just(d.aj));
 		var cardClass = A2(
 			$elm$core$String$join,
 			' ',
@@ -30890,7 +31564,7 @@ var $author$project$View$Deals$dealCard = F4(
 					isSelected ? 'deal-card--selected' : '',
 					'deal-card--selectable'
 				]));
-		var ageDays = A2($author$project$View$Format$dealAgeDays, model.ak, d.af);
+		var ageDays = A2($author$project$View$Format$dealAgeDays, model.am, d.ah);
 		var ageLabel = $author$project$View$Format$dealAgeLabel(ageDays);
 		var ageClass = $author$project$View$Format$dealAgeClass(ageDays);
 		var _v0 = $author$project$View$Deals$stageNeighbors(d.T);
@@ -30946,7 +31620,7 @@ var $author$project$View$Deals$dealCard = F4(
 							'click',
 							$elm$json$Json$Decode$succeed(
 								_Utils_Tuple2(
-									$author$project$Types$ToggledDealSelection(d.ah),
+									$author$project$Types$ToggledDealSelection(d.aj),
 									true)))
 						]),
 					_List_fromArray(
@@ -31020,12 +31694,12 @@ var $author$project$View$Deals$dealCard = F4(
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$class(
-									(!d.aD) ? 'deal-card__value-amount deal-card__value-amount--zero' : 'deal-card__value-amount')
+									(!d.aF) ? 'deal-card__value-amount deal-card__value-amount--zero' : 'deal-card__value-amount')
 								]),
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									(!d.aD) ? 'No value' : A2($author$project$View$Format$formatCurrencyWith, d.ap, d.aD))
+									(!d.aF) ? 'No value' : A2($author$project$View$Format$formatCurrencyWith, d.ar, d.aF))
 								]))
 						])),
 					A2(
@@ -31039,7 +31713,7 @@ var $author$project$View$Deals$dealCard = F4(
 							$elm$html$Html$text(d.J)
 						])),
 					function () {
-					if ($elm$core$String$isEmpty(d.aR)) {
+					if ($elm$core$String$isEmpty(d.aT)) {
 						return $elm$html$Html$text('');
 					} else {
 						if (!linkedContact.$) {
@@ -31114,7 +31788,7 @@ var $author$project$View$Deals$dealCard = F4(
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$author$project$View$Helpers$initials(d.aR))
+												$author$project$View$Helpers$initials(d.aT))
 											])),
 										A2(
 										$elm$html$Html$span,
@@ -31124,7 +31798,7 @@ var $author$project$View$Deals$dealCard = F4(
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(d.aR)
+												$elm$html$Html$text(d.aT)
 											]))
 									]));
 						}
@@ -31263,10 +31937,10 @@ var $author$project$View$Deals$weightedValue = function (deals) {
 		A2(
 			$elm$core$List$map,
 			function (d) {
-				return d.aD * A2(
+				return d.aF * A2(
 					$elm$core$Maybe$withDefault,
 					$author$project$View$Deals$stageProbability(d.T),
-					d.ed);
+					d.eh);
 			},
 			deals));
 };
@@ -31277,7 +31951,7 @@ var $author$project$View$Deals$dealColumn = F5(
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.aD;
+					return $.aF;
 				},
 				deals));
 		var onDropEvent = A2(
@@ -31302,7 +31976,7 @@ var $author$project$View$Deals$dealColumn = F5(
 		var isEmpty = $elm$core$List$isEmpty(deals);
 		var totalClass = isEmpty ? 'pipeline-col__total pipeline-col__total--muted' : 'pipeline-col__total';
 		var isDropTarget = _Utils_eq(
-			model.c5,
+			model.c7,
 			$elm$core$Maybe$Just(stageName));
 		var count = $elm$core$List$length(deals);
 		var colClass = A2(
@@ -31430,7 +32104,7 @@ var $author$project$View$Deals$dealColumn = F5(
 									isEmpty ? '—' : A2(
 										$author$project$View$Deals$currencyTotals,
 										function ($) {
-											return $.aD;
+											return $.aF;
 										},
 										deals))
 								])),
@@ -31452,10 +32126,10 @@ var $author$project$View$Deals$dealColumn = F5(
 											A2(
 												$author$project$View$Deals$currencyTotals,
 												function (d) {
-													return d.aD * A2(
+													return d.aF * A2(
 														$elm$core$Maybe$withDefault,
 														$author$project$View$Deals$stageProbability(d.T),
-														d.ed);
+														d.eh);
 												},
 												deals))
 										]))
@@ -31581,7 +32255,7 @@ var $author$project$View$Deals$wonValue = function (deals) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.aD;
+				return $.aF;
 			},
 			A2(
 				$elm$core$List$filter,
@@ -31591,7 +32265,7 @@ var $author$project$View$Deals$wonValue = function (deals) {
 				deals)));
 };
 var $author$project$View$Deals$dealsView = function (model) {
-	var _v0 = model.c_;
+	var _v0 = model.c0;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Deals$dealsSkeleton;
@@ -31626,7 +32300,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 			var visibleDeals = A2(
 				$elm$core$List$filter,
 				$author$project$View$Filters$passesFilters(model),
-				data.A);
+				data.x);
 			var weighted = $author$project$View$Deals$weightedValue(visibleDeals);
 			var wonCount = $elm$core$List$length(
 				A2(
@@ -31640,16 +32314,16 @@ var $author$project$View$Deals$dealsView = function (model) {
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.aD;
+						return $.aF;
 					},
 					visibleDeals));
-			var selectionCount = $elm$core$Set$size(model.eu);
-			var owners = $author$project$View$Filters$distinctOwners(data.A);
-			var isSearching = !_Utils_eq(model.bC, $elm$core$Maybe$Nothing);
+			var selectionCount = $elm$core$Set$size(model.ey);
+			var owners = $author$project$View$Filters$distinctOwners(data.x);
+			var isSearching = !_Utils_eq(model.bE, $elm$core$Maybe$Nothing);
 			var summaryClass = isSearching ? 'deals-summary deals-summary--loading' : 'deals-summary';
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var hasActiveFilters = (!$elm$core$String$isEmpty(model.d0)) || ((!$elm$core$String$isEmpty(model.cW)) || (!$elm$core$String$isEmpty(model.cY)));
+			var hasActiveFilters = (!$elm$core$String$isEmpty(model.d3)) || ((!$elm$core$String$isEmpty(model.cY)) || (!$elm$core$String$isEmpty(model.c_)));
 			var count = $elm$core$List$length(visibleDeals);
 			var conversionRate = (!count) ? 0 : ((wonCount / count) * 100);
 			var avgValue = (!count) ? 0 : (totalValue / count);
@@ -31705,7 +32379,8 @@ var $author$project$View$Deals$dealsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search deals'),
 												$elm$html$Html$Attributes$placeholder('Search deals…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedDealsQuery)
@@ -31775,7 +32450,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedOwnerFilter),
-												$elm$html$Html$Attributes$value(model.d0)
+												$elm$html$Html$Attributes$value(model.d3)
 											]),
 										A2(
 											$elm$core$List$cons,
@@ -31810,7 +32485,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 																[
 																	$elm$html$Html$Attributes$value(o),
 																	$elm$html$Html$Attributes$selected(
-																	_Utils_eq(model.d0, o))
+																	_Utils_eq(model.d3, o))
 																]),
 															_List_fromArray(
 																[
@@ -31842,7 +32517,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$type_('date'),
-												$elm$html$Html$Attributes$value(model.cW),
+												$elm$html$Html$Attributes$value(model.cY),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedDateFromFilter)
 											]),
 										_List_Nil)
@@ -31870,7 +32545,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$type_('date'),
-												$elm$html$Html$Attributes$value(model.cY),
+												$elm$html$Html$Attributes$value(model.c_),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedDateToFilter)
 											]),
 										_List_Nil)
@@ -31884,7 +32559,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										hasActiveFilters ? ($elm$core$String$fromInt(count) + (' of ' + ($elm$core$String$fromInt(data.y) + ' shown'))) : ($elm$core$String$fromInt(data.y) + (' deal' + ((data.y === 1) ? '' : 's'))))
+										hasActiveFilters ? ($elm$core$String$fromInt(count) + (' of ' + ($elm$core$String$fromInt(data.t) + ' shown'))) : ($elm$core$String$fromInt(data.t) + (' deal' + ((data.t === 1) ? '' : 's'))))
 									])),
 								hasActiveFilters ? A2(
 								$elm$html$Html$button,
@@ -31987,7 +32662,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 								A2(
 									$author$project$View$Deals$currencyTotals,
 									function ($) {
-										return $.aD;
+										return $.aF;
 									},
 									visibleDeals),
 								'deals-summary__kpi--total',
@@ -32002,10 +32677,10 @@ var $author$project$View$Deals$dealsView = function (model) {
 								A2(
 									$author$project$View$Deals$currencyTotals,
 									function (d) {
-										return d.aD * A2(
+										return d.aF * A2(
 											$elm$core$Maybe$withDefault,
 											$author$project$View$Deals$stageProbability(d.T),
-											d.ed);
+											d.eh);
 									},
 									visibleDeals),
 								'deals-summary__kpi--weighted',
@@ -32019,7 +32694,7 @@ var $author$project$View$Deals$dealsView = function (model) {
 								A2(
 									$author$project$View$Deals$currencyTotals,
 									function ($) {
-										return $.aD;
+										return $.aF;
 									},
 									A2(
 										$elm$core$List$filter,
@@ -32111,13 +32786,13 @@ var $author$project$View$Deals$dealsView = function (model) {
 						$author$project$View$Deals$pipelineBoard,
 						model,
 						$author$project$View$Contacts$contactList(model),
-						model.dQ,
+						model.dT,
 						visibleDeals)
 					]));
 	}
 };
-var $author$project$Types$CancelledDeleteActivity = {$: 89};
-var $author$project$Types$ConfirmedDeleteActivity = {$: 90};
+var $author$project$Types$CancelledDeleteActivity = {$: 90};
+var $author$project$Types$ConfirmedDeleteActivity = {$: 91};
 var $author$project$View$Activity$deleteActivityConfirmModal = function (a) {
 	return A2(
 		$elm$html$Html$div,
@@ -32247,8 +32922,8 @@ var $author$project$View$Activity$deleteActivityConfirmModal = function (a) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteAgent = {$: 170};
-var $author$project$Types$ConfirmedDeleteAgent = {$: 171};
+var $author$project$Types$CancelledDeleteAgent = {$: 175};
+var $author$project$Types$ConfirmedDeleteAgent = {$: 176};
 var $author$project$View$Agents$deleteAgentConfirmModal = function (agent) {
 	return A2(
 		$elm$html$Html$div,
@@ -32378,8 +33053,8 @@ var $author$project$View$Agents$deleteAgentConfirmModal = function (agent) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteCase = {$: 206};
-var $author$project$Types$ConfirmedDeleteCase = {$: 207};
+var $author$project$Types$CancelledDeleteCase = {$: 211};
+var $author$project$Types$ConfirmedDeleteCase = {$: 212};
 var $author$project$View$Cases$deleteCaseConfirmModal = function (c) {
 	return A2(
 		$elm$html$Html$div,
@@ -32469,7 +33144,7 @@ var $author$project$View$Cases$deleteCaseConfirmModal = function (c) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(c.cE)
+										$elm$html$Html$text(c.cG)
 									])),
 								$elm$html$Html$text('? This cannot be undone.')
 							])),
@@ -32640,8 +33315,8 @@ var $author$project$View$ContactForm$deleteConfirmModal = function (contact) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteDeal = {$: 57};
-var $author$project$Types$ConfirmedDeleteDeal = {$: 58};
+var $author$project$Types$CancelledDeleteDeal = {$: 58};
+var $author$project$Types$ConfirmedDeleteDeal = {$: 59};
 var $author$project$View$DealForm$deleteDealConfirmModal = function (deal) {
 	return A2(
 		$elm$html$Html$div,
@@ -32771,8 +33446,8 @@ var $author$project$View$DealForm$deleteDealConfirmModal = function (deal) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteDocument = {$: 222};
-var $author$project$Types$ConfirmedDeleteDocument = {$: 223};
+var $author$project$Types$CancelledDeleteDocument = {$: 227};
+var $author$project$Types$ConfirmedDeleteDocument = {$: 228};
 var $author$project$View$Cases$deleteDocumentConfirmModal = function (d) {
 	return A2(
 		$elm$html$Html$div,
@@ -32832,7 +33507,7 @@ var $author$project$View$Cases$deleteDocumentConfirmModal = function (d) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(d.a9)
+										$elm$html$Html$text(d.bb)
 									])),
 								$elm$html$Html$text('?')
 							])),
@@ -32872,8 +33547,8 @@ var $author$project$View$Cases$deleteDocumentConfirmModal = function (d) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteInvoice = {$: 239};
-var $author$project$Types$ConfirmedDeleteInvoice = {$: 240};
+var $author$project$Types$CancelledDeleteInvoice = {$: 244};
+var $author$project$Types$ConfirmedDeleteInvoice = {$: 245};
 var $author$project$View$Invoices$deleteInvoiceConfirmModal = function (inv) {
 	return A2(
 		$elm$html$Html$div,
@@ -32933,7 +33608,7 @@ var $author$project$View$Invoices$deleteInvoiceConfirmModal = function (inv) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(inv.dB)
+										$elm$html$Html$text(inv.dD)
 									])),
 								$elm$html$Html$text('?')
 							])),
@@ -32973,8 +33648,8 @@ var $author$project$View$Invoices$deleteInvoiceConfirmModal = function (inv) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteLead = {$: 187};
-var $author$project$Types$ConfirmedDeleteLead = {$: 188};
+var $author$project$Types$CancelledDeleteLead = {$: 192};
+var $author$project$Types$ConfirmedDeleteLead = {$: 193};
 var $author$project$View$Leads$deleteLeadConfirmModal = function (lead) {
 	return A2(
 		$elm$html$Html$div,
@@ -33104,8 +33779,8 @@ var $author$project$View$Leads$deleteLeadConfirmModal = function (lead) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeletePartner = {$: 272};
-var $author$project$Types$ConfirmedDeletePartner = {$: 273};
+var $author$project$Types$CancelledDeletePartner = {$: 277};
+var $author$project$Types$ConfirmedDeletePartner = {$: 278};
 var $author$project$View$Partners$deletePartnerConfirmModal = function (partner) {
 	return A2(
 		$elm$html$Html$div,
@@ -33165,7 +33840,7 @@ var $author$project$View$Partners$deletePartnerConfirmModal = function (partner)
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(partner.dK)
+										$elm$html$Html$text(partner.dM)
 									])),
 								$elm$html$Html$text('?')
 							])),
@@ -33205,8 +33880,8 @@ var $author$project$View$Partners$deletePartnerConfirmModal = function (partner)
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeletePayment = {$: 251};
-var $author$project$Types$ConfirmedDeletePayment = {$: 252};
+var $author$project$Types$CancelledDeletePayment = {$: 256};
+var $author$project$Types$ConfirmedDeletePayment = {$: 257};
 var $author$project$View$Invoices$deletePaymentConfirmModal = function (pmt) {
 	return A2(
 		$elm$html$Html$div,
@@ -33267,7 +33942,7 @@ var $author$project$View$Invoices$deletePaymentConfirmModal = function (pmt) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										A2($author$project$View$Format$formatCurrencyWith, pmt.ap, pmt.cq))
+										A2($author$project$View$Format$formatCurrencyWith, pmt.ar, pmt.cs))
 									])),
 								$elm$html$Html$text('?')
 							])),
@@ -33307,8 +33982,8 @@ var $author$project$View$Invoices$deletePaymentConfirmModal = function (pmt) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteSchool = {$: 136};
-var $author$project$Types$ConfirmedDeleteSchool = {$: 137};
+var $author$project$Types$CancelledDeleteSchool = {$: 138};
+var $author$project$Types$ConfirmedDeleteSchool = {$: 139};
 var $author$project$View$Schools$deleteSchoolConfirmModal = function (school) {
 	return A2(
 		$elm$html$Html$div,
@@ -33438,8 +34113,8 @@ var $author$project$View$Schools$deleteSchoolConfirmModal = function (school) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteStudent = {$: 153};
-var $author$project$Types$ConfirmedDeleteStudent = {$: 154};
+var $author$project$Types$CancelledDeleteStudent = {$: 158};
+var $author$project$Types$ConfirmedDeleteStudent = {$: 159};
 var $author$project$View$Students$deleteStudentConfirmModal = function (student) {
 	return A2(
 		$elm$html$Html$div,
@@ -33569,8 +34244,8 @@ var $author$project$View$Students$deleteStudentConfirmModal = function (student)
 					]))
 			]));
 };
-var $author$project$Types$CancelledDeleteTask = {$: 117};
-var $author$project$Types$ConfirmedDeleteTask = {$: 118};
+var $author$project$Types$CancelledDeleteTask = {$: 119};
+var $author$project$Types$ConfirmedDeleteTask = {$: 120};
 var $author$project$View$Tasks$deleteTaskConfirmModal = function (task) {
 	return A2(
 		$elm$html$Html$div,
@@ -33668,16 +34343,16 @@ var $author$project$View$Tasks$deleteTaskConfirmModal = function (task) {
 					]))
 			]));
 };
-var $author$project$Types$CancelledCloseDocumentForm = {$: 216};
-var $author$project$Types$ConfirmedCloseDocumentForm = {$: 215};
-var $author$project$Types$SubmittedDocumentForm = {$: 219};
+var $author$project$Types$CancelledCloseDocumentForm = {$: 221};
+var $author$project$Types$ConfirmedCloseDocumentForm = {$: 220};
+var $author$project$Types$SubmittedDocumentForm = {$: 224};
 var $author$project$Types$ToggledDocumentBool = F2(
 	function (a, b) {
-		return {$: 218, a: a, b: b};
+		return {$: 223, a: a, b: b};
 	});
 var $author$project$Types$UpdatedDocumentFormField = F2(
 	function (a, b) {
-		return {$: 217, a: a, b: b};
+		return {$: 222, a: a, b: b};
 	});
 var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
 var $author$project$View$Cases$documentFormFieldError = F2(
@@ -33692,7 +34367,7 @@ var $author$project$View$Cases$documentFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					df.dj)));
+					df.dl)));
 	});
 var $author$project$View$Cases$documentRichField = F4(
 	function (df, fieldId, labelText, inputType) {
@@ -33700,21 +34375,21 @@ var $author$project$View$Cases$documentRichField = F4(
 		var currentValue = function () {
 			switch (fieldId) {
 				case 'docName':
-					return df.a9;
+					return df.bb;
 				case 'dateRequested':
-					return df.aW;
+					return df.aY;
 				case 'dateReceived':
-					return df.aV;
+					return df.aX;
 				case 'expiryDate':
-					return df.be;
-				case 'verifiedBy':
-					return df.b5;
-				case 'verificationDate':
-					return df.b4;
-				case 'rejectionReason':
-					return df.bP;
-				case 'filePath':
 					return df.bg;
+				case 'verifiedBy':
+					return df.b7;
+				case 'verificationDate':
+					return df.b6;
+				case 'rejectionReason':
+					return df.bR;
+				case 'filePath':
+					return df.bi;
 				default:
 					return '';
 			}
@@ -33745,7 +34420,7 @@ var $author$project$View$Cases$documentRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedDocumentFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(df.eN)
+								$elm$html$Html$Attributes$disabled(df.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -33814,10 +34489,10 @@ var $author$project$View$Cases$documentStatusPills = function (df) {
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									_Utils_eq(df.aj, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+									_Utils_eq(df.al, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedDocumentFormField, 'status', s)),
-									$elm$html$Html$Attributes$disabled(df.eN)
+									$elm$html$Html$Attributes$disabled(df.eP)
 								]),
 							_List_fromArray(
 								[
@@ -33842,7 +34517,7 @@ var $author$project$View$Helpers$onCheck = function (toMsg) {
 };
 var $author$project$View$Cases$documentFormView = F2(
 	function (df, isEdit) {
-		var submitLabel = df.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save document');
+		var submitLabel = df.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save document');
 		var formError = A2($author$project$View$Cases$documentFormFieldError, 'form', df);
 		return A2(
 			$elm$html$Html$form,
@@ -33908,10 +34583,10 @@ var $author$project$View$Cases$documentFormView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$type_('checkbox'),
-											$elm$html$Html$Attributes$checked(df.bV),
+											$elm$html$Html$Attributes$checked(df.bX),
 											$author$project$View$Helpers$onCheck(
 											$author$project$Types$ToggledDocumentBool('required')),
-											$elm$html$Html$Attributes$disabled(df.eN)
+											$elm$html$Html$Attributes$disabled(df.eP)
 										]),
 									_List_Nil),
 									A2(
@@ -33944,10 +34619,10 @@ var $author$project$View$Cases$documentFormView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$type_('checkbox'),
-											$elm$html$Html$Attributes$checked(df.b2),
+											$elm$html$Html$Attributes$checked(df.b4),
 											$author$project$View$Helpers$onCheck(
 											$author$project$Types$ToggledDocumentBool('translationRequired')),
-											$elm$html$Html$Attributes$disabled(df.eN)
+											$elm$html$Html$Attributes$disabled(df.eP)
 										]),
 									_List_Nil),
 									A2(
@@ -33980,10 +34655,10 @@ var $author$project$View$Cases$documentFormView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$type_('checkbox'),
-											$elm$html$Html$Attributes$checked(df.bq),
+											$elm$html$Html$Attributes$checked(df.bs),
 											$author$project$View$Helpers$onCheck(
 											$author$project$Types$ToggledDocumentBool('legalizationRequired')),
-											$elm$html$Html$Attributes$disabled(df.eN)
+											$elm$html$Html$Attributes$disabled(df.eP)
 										]),
 									_List_Nil),
 									A2(
@@ -33995,7 +34670,7 @@ var $author$project$View$Cases$documentFormView = F2(
 										]))
 								]))
 						])),
-					(df.aj === 'Correction Required') ? A4($author$project$View$Cases$documentRichField, df, 'rejectionReason', 'Correction reason', 'text') : $elm$html$Html$text(''),
+					(df.al === 'Correction Required') ? A4($author$project$View$Cases$documentRichField, df, 'rejectionReason', 'Correction reason', 'text') : $elm$html$Html$text(''),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -34023,7 +34698,7 @@ var $author$project$View$Cases$documentFormView = F2(
 									$elm$html$Html$Attributes$value(df.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedDocumentFormField('notes')),
-									$elm$html$Html$Attributes$disabled(df.eN),
+									$elm$html$Html$Attributes$disabled(df.eP),
 									$elm$html$Html$Attributes$rows(3)
 								]),
 							_List_Nil)
@@ -34043,7 +34718,7 @@ var $author$project$View$Cases$documentFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseDocumentForm),
-									$elm$html$Html$Attributes$disabled(df.eN)
+									$elm$html$Html$Attributes$disabled(df.eP)
 								]),
 							_List_fromArray(
 								[
@@ -34055,7 +34730,7 @@ var $author$project$View$Cases$documentFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(df.eN || (!df.i))
+									$elm$html$Html$Attributes$disabled(df.eP || (!df.i))
 								]),
 							_List_fromArray(
 								[
@@ -34066,7 +34741,7 @@ var $author$project$View$Cases$documentFormView = F2(
 	});
 var $author$project$View$Cases$documentFormModal = F2(
 	function (model, df) {
-		var isEdit = !_Utils_eq(model.da, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.dc, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit document' : 'Add document';
 		return A2(
 			$elm$html$Html$div,
@@ -34367,10 +35042,10 @@ var $author$project$View$Heatmap$activityHeatmap = F2(
 				]));
 	});
 var $author$project$View$Home$allCreatedAt = function (model) {
-	var _v0 = model.bS;
+	var _v0 = model.bU;
 	if (_v0.$ === 2) {
 		var report = _v0.a;
-		return $elm$core$Dict$toList(report.cT);
+		return $elm$core$Dict$toList(report.cV);
 	} else {
 		return _List_Nil;
 	}
@@ -34384,7 +35059,7 @@ var $author$project$View$Charts$barChart = function (data) {
 			A2(
 				$elm$core$List$map,
 				function ($) {
-					return $.aD;
+					return $.aF;
 				},
 				data)));
 	var chartTop = 24;
@@ -34426,7 +35101,7 @@ var $author$project$View$Charts$barChart = function (data) {
 	var gap = slotW - barW;
 	var barAt = F2(
 		function (i, d) {
-			var y = yFor(d.aD);
+			var y = yFor(d.aF);
 			var x = (chartLeft + (i * slotW)) + (gap / 2);
 			var h = chartBottom - y;
 			var cx = x + (barW / 2);
@@ -34459,7 +35134,7 @@ var $author$project$View$Charts$barChart = function (data) {
 								$elm$core$String$fromFloat(
 									A2($elm$core$Basics$max, 0, h))),
 								A2($elm$html$Html$Attributes$attribute, 'rx', '4'),
-								A2($elm$html$Html$Attributes$attribute, 'fill', d.aO),
+								A2($elm$html$Html$Attributes$attribute, 'fill', d.aQ),
 								A2($elm$html$Html$Attributes$attribute, 'opacity', '0.92')
 							]),
 						_List_Nil),
@@ -34483,7 +35158,7 @@ var $author$project$View$Charts$barChart = function (data) {
 							[
 								$elm$html$Html$text(
 								$elm$core$String$fromInt(
-									$elm$core$Basics$round(d.aD)))
+									$elm$core$Basics$round(d.aF)))
 							])),
 						A3(
 						$elm$svg$Svg$node,
@@ -34502,7 +35177,7 @@ var $author$project$View$Charts$barChart = function (data) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(d.dG)
+								$elm$html$Html$text(d.dI)
 							]))
 					]));
 		});
@@ -34532,13 +35207,13 @@ var $author$project$View$Home$stageColors = _List_fromArray(
 	]);
 var $author$project$View$Home$stageValue = F2(
 	function (model, stage) {
-		var _v0 = model.bS;
+		var _v0 = model.bU;
 		if (_v0.$ === 2) {
 			var report = _v0.a;
 			return A2(
 				$elm$core$Maybe$withDefault,
 				0,
-				A2($elm$core$Dict$get, stage, report.eC));
+				A2($elm$core$Dict$get, stage, report.eG));
 		} else {
 			return 0;
 		}
@@ -34550,22 +35225,22 @@ var $author$project$View$Home$barData = function (model) {
 			var stage = _v0.a;
 			var color = _v0.b;
 			return {
-				aO: color,
-				dG: stage,
-				aD: A2($author$project$View$Home$stageValue, model, stage)
+				aQ: color,
+				dI: stage,
+				aF: A2($author$project$View$Home$stageValue, model, stage)
 			};
 		},
 		$author$project$View$Home$stageColors);
 };
 var $author$project$View$Home$stageCount = F2(
 	function (model, stage) {
-		var _v0 = model.bS;
+		var _v0 = model.bU;
 		if (_v0.$ === 2) {
 			var report = _v0.a;
 			return A2(
 				$elm$core$Maybe$withDefault,
 				0,
-				A2($elm$core$Dict$get, stage, report.eA));
+				A2($elm$core$Dict$get, stage, report.eE));
 		} else {
 			return 0;
 		}
@@ -34589,9 +35264,9 @@ var $author$project$View$Home$donutSlices = function (model) {
 			var stage = _v0.a;
 			var color = _v0.b;
 			return {
-				aO: color,
-				dG: stage,
-				aD: A2($author$project$View$Home$stageCount, model, stage)
+				aQ: color,
+				dI: stage,
+				aF: A2($author$project$View$Home$stageCount, model, stage)
 			};
 		},
 		$author$project$View$Home$stageColors);
@@ -34641,7 +35316,7 @@ var $author$project$View$Donut$total = function (slices) {
 		A2(
 			$elm$core$List$map,
 			function ($) {
-				return $.aD;
+				return $.aF;
 			},
 			slices));
 };
@@ -34654,12 +35329,12 @@ var $author$project$View$Donut$donut = F2(
 				function (s, _v1) {
 					var acc = _v1.a;
 					var startAngle = _v1.b;
-					var sweep = (!t) ? 0 : ((s.aD / t) * 360);
+					var sweep = (!t) ? 0 : ((s.aF / t) * 360);
 					var endAngle = startAngle + sweep;
 					return _Utils_Tuple2(
 						A2(
 							$elm$core$List$cons,
-							A4($author$project$View$Donut$arcPath, size, startAngle, endAngle, s.aO),
+							A4($author$project$View$Donut$arcPath, size, startAngle, endAngle, s.aQ),
 							acc),
 						endAngle);
 				}),
@@ -34686,7 +35361,7 @@ var $author$project$View$Donut$donut = F2(
 						A2(
 							$elm$core$List$map,
 							function (slice) {
-								return slice.dG + (' ' + $elm$core$String$fromFloat(slice.aD));
+								return slice.dI + (' ' + $elm$core$String$fromFloat(slice.aF));
 							},
 							slices)))
 				]),
@@ -34694,7 +35369,7 @@ var $author$project$View$Donut$donut = F2(
 	});
 var $author$project$View$Donut$legendRow = F2(
 	function (t, s) {
-		var pct = (!t) ? 0 : ((s.aD / t) * 100);
+		var pct = (!t) ? 0 : ((s.aF / t) * 100);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -34708,7 +35383,7 @@ var $author$project$View$Donut$legendRow = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('donut-legend__swatch'),
-							A2($elm$html$Html$Attributes$style, 'background', s.aO)
+							A2($elm$html$Html$Attributes$style, 'background', s.aQ)
 						]),
 					_List_Nil),
 					A2(
@@ -34719,7 +35394,7 @@ var $author$project$View$Donut$legendRow = F2(
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(s.dG)
+							$elm$html$Html$text(s.dI)
 						])),
 					A2(
 					$elm$html$Html$span,
@@ -34731,7 +35406,7 @@ var $author$project$View$Donut$legendRow = F2(
 						[
 							$elm$html$Html$text(
 							$elm$core$String$fromInt(
-								$elm$core$Basics$round(s.aD)))
+								$elm$core$Basics$round(s.aF)))
 						])),
 					A2(
 					$elm$html$Html$span,
@@ -34928,44 +35603,47 @@ var $author$project$View$Home$isPast = F2(
 		}
 	});
 var $author$project$Types$OpenedInvoiceDetail = function (a) {
-	return {$: 231, a: a};
+	return {$: 236, a: a};
 };
 var $author$project$View$Dashboard$outstandingInvoiceAlert = function (inv) {
 	return {
-		cc: $author$project$Types$OpenedInvoiceDetail(inv),
+		ce: $author$project$Types$OpenedInvoiceDetail(inv),
 		a: 'outstanding balance',
-		t: inv.dB,
-		v: '$',
-		w: 'Finance · ' + inv.aM,
-		x: ''
+		u: inv.dD,
+		w: '$',
+		y: 'Finance · ' + inv.aO,
+		z: ''
 	};
+};
+var $author$project$Types$OpenedAgentDetail = function (a) {
+	return {$: 167, a: a};
 };
 var $author$project$View$Dashboard$pendingAgentAlert = function (a) {
 	return {
-		cc: $author$project$Types$OpenedAgentDetail(a),
+		ce: $author$project$Types$OpenedAgentDetail(a),
 		a: 'contract not signed',
-		t: a.M,
-		v: 'A',
-		w: 'Agent · ' + a.ao,
-		x: ''
+		u: a.M,
+		w: 'A',
+		y: 'Agent · ' + a.aq,
+		z: ''
 	};
 };
 var $author$project$Types$OpenedSchoolDetail = function (a) {
-	return {$: 128, a: a};
+	return {$: 130, a: a};
 };
 var $author$project$View$Dashboard$pendingSchoolAlert = function (s) {
 	return {
-		cc: $author$project$Types$OpenedSchoolDetail(s),
+		ce: $author$project$Types$OpenedSchoolDetail(s),
 		a: 'contract pending',
-		t: s.M,
-		v: 'S',
-		w: 'School · ' + s.ao,
-		x: ''
+		u: s.M,
+		w: 'S',
+		y: 'School · ' + s.aq,
+		z: ''
 	};
 };
 var $author$project$View$Home$priorityAlerts = function (model) {
 	var fromTasks = function () {
-		var _v4 = model.eS;
+		var _v4 = model.eU;
 		if (_v4.$ === 2) {
 			var d = _v4.a;
 			return A2(
@@ -34974,15 +35652,15 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 				A2(
 					$elm$core$List$filter,
 					function (t) {
-						return (t.aj !== 'done') && A2($author$project$View$Home$isPast, model.ak, t.c6);
+						return (t.al !== 'done') && A2($author$project$View$Home$isPast, model.am, t.c8);
 					},
-					d.A));
+					d.x));
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromSchools = function () {
-		var _v3 = model.et;
+		var _v3 = model.ex;
 		if (_v3.$ === 2) {
 			var d = _v3.a;
 			return A2(
@@ -34991,15 +35669,15 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 				A2(
 					$elm$core$List$filter,
 					function (s) {
-						return s.aT === 'Pending';
+						return s.aV === 'Pending';
 					},
-					d.A));
+					d.x));
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromInvoices = function () {
-		var _v2 = model.dE;
+		var _v2 = model.dG;
 		if (_v2.$ === 2) {
 			var d = _v2.a;
 			return A2(
@@ -35008,15 +35686,15 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 				A2(
 					$elm$core$List$filter,
 					function (inv) {
-						return inv.cz > 0;
+						return inv.cB > 0;
 					},
-					d.A));
+					d.x));
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromCases = function () {
-		var _v1 = model.cF;
+		var _v1 = model.cH;
 		if (_v1.$ === 2) {
 			var d = _v1.a;
 			return A2(
@@ -35025,15 +35703,15 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 				A2(
 					$elm$core$List$filter,
 					function (c) {
-						return c.ec === 'Urgent';
+						return c.eg === 'Urgent';
 					},
-					d.A));
+					d.x));
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromAgents = function () {
-		var _v0 = model.cl;
+		var _v0 = model.cn;
 		if (_v0.$ === 2) {
 			var d = _v0.a;
 			return A2(
@@ -35042,9 +35720,9 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 				A2(
 					$elm$core$List$filter,
 					function (a) {
-						return a.aT === 'Not Signed';
+						return a.aV === 'Not Signed';
 					},
-					d.A));
+					d.x));
 		} else {
 			return _List_Nil;
 		}
@@ -35059,79 +35737,79 @@ var $author$project$View$Home$priorityAlerts = function (model) {
 };
 var $author$project$View$Dashboard$caseEntry = function (c) {
 	return {
-		af: c.af,
-		e$: A5(
+		ah: c.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Case',
 			$author$project$Types$OpenedCaseDetail(c),
-			c.c1 + (' · ' + c.cV),
-			A2($elm$core$String$left, 10, c.af),
-			c.cE)
+			c.c3 + (' · ' + c.cX),
+			A2($elm$core$String$left, 10, c.ah),
+			c.cG)
 	};
 };
 var $author$project$Types$OpenedLeadDetail = function (a) {
-	return {$: 179, a: a};
+	return {$: 184, a: a};
 };
 var $author$project$View$Dashboard$leadEntry = function (l) {
 	return {
-		af: l.af,
-		e$: A5(
+		ah: l.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Lead',
 			$author$project$Types$OpenedLeadDetail(l),
-			$elm$core$String$isEmpty(l.dy) ? '—' : l.dy,
-			A2($elm$core$String$left, 10, l.af),
+			$elm$core$String$isEmpty(l.dA) ? '—' : l.dA,
+			A2($elm$core$String$left, 10, l.ah),
 			l.M)
 	};
 };
 var $author$project$Types$OpenedStudentDetail = function (a) {
-	return {$: 145, a: a};
+	return {$: 150, a: a};
 };
 var $author$project$View$Dashboard$studentEntry = function (s) {
 	return {
-		af: s.af,
-		e$: A5(
+		ah: s.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Student',
 			$author$project$Types$OpenedStudentDetail(s),
-			$elm$core$String$isEmpty(s.ef) ? s.eq : s.ef,
-			A2($elm$core$String$left, 10, s.af),
+			$elm$core$String$isEmpty(s.ej) ? s.eu : s.ej,
+			A2($elm$core$String$left, 10, s.ah),
 			s.M)
 	};
 };
 var $author$project$View$Home$recentEntries = function (model) {
 	var fromStudents = function () {
-		var _v3 = model.eK;
+		var _v3 = model.eO;
 		if (_v3.$ === 2) {
 			var d = _v3.a;
-			return A2($elm$core$List$map, $author$project$View$Dashboard$studentEntry, d.A);
+			return A2($elm$core$List$map, $author$project$View$Dashboard$studentEntry, d.x);
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromLeads = function () {
-		var _v2 = model.dJ;
+		var _v2 = model.dL;
 		if (_v2.$ === 2) {
 			var d = _v2.a;
-			return A2($elm$core$List$map, $author$project$View$Dashboard$leadEntry, d.A);
+			return A2($elm$core$List$map, $author$project$View$Dashboard$leadEntry, d.x);
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromDeals = function () {
-		var _v1 = model.c_;
+		var _v1 = model.c0;
 		if (_v1.$ === 2) {
 			var d = _v1.a;
-			return A2($elm$core$List$map, $author$project$View$Dashboard$dealEntry, d.A);
+			return A2($elm$core$List$map, $author$project$View$Dashboard$dealEntry, d.x);
 		} else {
 			return _List_Nil;
 		}
 	}();
 	var fromCases = function () {
-		var _v0 = model.cF;
+		var _v0 = model.cH;
 		if (_v0.$ === 2) {
 			var d = _v0.a;
-			return A2($elm$core$List$map, $author$project$View$Dashboard$caseEntry, d.A);
+			return A2($elm$core$List$map, $author$project$View$Dashboard$caseEntry, d.x);
 		} else {
 			return _List_Nil;
 		}
@@ -35186,7 +35864,7 @@ var $author$project$View$Home$statCard = F3(
 	});
 var $author$project$View$Home$summaryText = F2(
 	function (model, format) {
-		var _v0 = model.bS;
+		var _v0 = model.bU;
 		switch (_v0.$) {
 			case 2:
 				var report = _v0.a;
@@ -35223,7 +35901,7 @@ var $author$project$View$Home$homeView = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							$elm$core$String$isEmpty(model.ak) ? 'Here\u0027s what\u0027s happening across your workspace today.' : (model.ak + ' · Here\u0027s what\u0027s happening across your workspace today.'))
+							$elm$core$String$isEmpty(model.am) ? 'Here\u0027s what\u0027s happening across your workspace today.' : (model.am + ' · Here\u0027s what\u0027s happening across your workspace today.'))
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -35242,7 +35920,7 @@ var $author$project$View$Home$homeView = F2(
 								function (report) {
 									return $elm$core$String$fromInt(
 										$elm$core$List$sum(
-											$elm$core$Dict$values(report.eA)));
+											$elm$core$Dict$values(report.eE)));
 								}),
 							A2(
 								$author$project$View$Home$summaryText,
@@ -35250,13 +35928,13 @@ var $author$project$View$Home$homeView = F2(
 								function (report) {
 									return $elm$core$String$fromInt(
 										($elm$core$List$sum(
-											$elm$core$Dict$values(report.eA)) - A2(
+											$elm$core$Dict$values(report.eE)) - A2(
 											$elm$core$Maybe$withDefault,
 											0,
-											A2($elm$core$Dict$get, 'Won', report.eA))) - A2(
+											A2($elm$core$Dict$get, 'Won', report.eE))) - A2(
 											$elm$core$Maybe$withDefault,
 											0,
-											A2($elm$core$Dict$get, 'Lost', report.eA))) + ' active';
+											A2($elm$core$Dict$get, 'Lost', report.eE))) + ' active';
 								})),
 							A3(
 							$author$project$View$Home$statCard,
@@ -35265,7 +35943,7 @@ var $author$project$View$Home$homeView = F2(
 								$author$project$View$Home$summaryText,
 								model,
 								function ($) {
-									return $.ea;
+									return $.ee;
 								}),
 							'All accessible opportunities'),
 							A3(
@@ -35275,13 +35953,13 @@ var $author$project$View$Home$homeView = F2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.dJ);
+									return $elm$core$String$fromInt(report.dL);
 								}),
 							A2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.dS) + ' new';
+									return $elm$core$String$fromInt(report.dV) + ' new';
 								})),
 							A3(
 							$author$project$View$Home$statCard,
@@ -35290,13 +35968,13 @@ var $author$project$View$Home$homeView = F2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.eK);
+									return $elm$core$String$fromInt(report.eO);
 								}),
 							A2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.ct) + ' approved';
+									return $elm$core$String$fromInt(report.cv) + ' approved';
 								})),
 							A3(
 							$author$project$View$Home$statCard,
@@ -35305,13 +35983,13 @@ var $author$project$View$Home$homeView = F2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.eT);
+									return $elm$core$String$fromInt(report.eV);
 								}),
 							A2(
 								$author$project$View$Home$summaryText,
 								model,
 								function (report) {
-									return $elm$core$String$fromInt(report.cd) + ' open';
+									return $elm$core$String$fromInt(report.cf) + ' open';
 								}))
 						])),
 					A2(
@@ -35445,7 +36123,7 @@ var $author$project$View$Home$homeView = F2(
 						])),
 					A2(
 					$author$project$View$Heatmap$activityHeatmap,
-					model.ak,
+					model.am,
 					$author$project$View$Home$allCreatedAt(model)),
 					A3(
 					$elm$html$Html$node,
@@ -35481,14 +36159,14 @@ var $author$project$View$Home$homeView = F2(
 				]));
 	});
 var $author$project$Types$OpenedEditInvoice = function (a) {
-	return {$: 230, a: a};
+	return {$: 235, a: a};
 };
-var $author$project$Types$OpenedPaymentForm = {$: 245};
+var $author$project$Types$OpenedPaymentForm = {$: 250};
 var $author$project$Types$RequestedDeleteInvoice = function (a) {
-	return {$: 238, a: a};
+	return {$: 243, a: a};
 };
 var $author$project$Types$RequestedRefund = function (a) {
-	return {$: 254, a: a};
+	return {$: 259, a: a};
 };
 var $author$project$View$Invoices$milestoneBadge = function (m) {
 	var cls = function () {
@@ -35518,7 +36196,7 @@ var $author$project$View$Invoices$milestoneBadge = function (m) {
 			]));
 };
 var $author$project$Types$RequestedDeletePayment = function (a) {
-	return {$: 250, a: a};
+	return {$: 255, a: a};
 };
 var $author$project$View$Invoices$paymentItem = function (pmt) {
 	return A2(
@@ -35561,9 +36239,9 @@ var $author$project$View$Invoices$paymentItem = function (pmt) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										A2($author$project$View$Format$formatCurrencyWith, pmt.ap, pmt.cq))
+										A2($author$project$View$Format$formatCurrencyWith, pmt.ar, pmt.cs))
 									])),
-								$elm$core$String$isEmpty(pmt.d2) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(pmt.d5) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -35571,7 +36249,7 @@ var $author$project$View$Invoices$paymentItem = function (pmt) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(pmt.d2)
+										$elm$html$Html$text(pmt.d5)
 									])),
 								$elm$core$String$isEmpty(pmt.d) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
@@ -35601,7 +36279,7 @@ var $author$project$View$Invoices$paymentItem = function (pmt) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$isEmpty(pmt.ei) ? 'Payment' : ('Ref: ' + pmt.ei))
+										$elm$core$String$isEmpty(pmt.em) ? 'Payment' : ('Ref: ' + pmt.em))
 									])),
 								A2(
 								$elm$html$Html$button,
@@ -35630,7 +36308,7 @@ var $author$project$View$Invoices$paymentItem = function (pmt) {
 			]));
 };
 var $author$project$View$Invoices$paymentsPanel = function (model) {
-	var _v0 = model.dC;
+	var _v0 = model.dE;
 	switch (_v0.$) {
 		case 0:
 			return A2(
@@ -35742,7 +36420,7 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 					$elm$html$Html$a,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$href('/api/invoices/' + (inv.ah + '/pdf')),
+							$elm$html$Html$Attributes$href('/api/invoices/' + (inv.aj + '/pdf')),
 							A2($elm$html$Html$Attributes$attribute, 'download', 'invoice.pdf'),
 							$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline')
 						]),
@@ -35767,7 +36445,7 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.cz))
+									A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.cB))
 								])),
 							A2(
 							$elm$html$Html$div,
@@ -35793,9 +36471,9 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 												]),
 											_List_fromArray(
 												[
-													$elm$html$Html$text(inv.dB)
+													$elm$html$Html$text(inv.dD)
 												])),
-											$author$project$View$Invoices$milestoneBadge(inv.d8)
+											$author$project$View$Invoices$milestoneBadge(inv.ec)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -35806,7 +36484,7 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											inv.aM + (' · ' + display(inv.cE)))
+											inv.aO + (' · ' + display(inv.cG)))
 										]))
 								])),
 							A2(
@@ -35870,22 +36548,22 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Total fee',
-							A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.eU),
+							A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.eW),
 							'Base'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Received',
-							A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.cs),
+							A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.cu),
 							'Collected'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Balance',
-							A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.cz),
+							A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.cB),
 							'Outstanding'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Gov fee',
-							A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.dt),
+							A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.dv),
 							'Pass-through')
 						])),
 					A2(
@@ -35916,47 +36594,47 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconUserTiny, 'Client', inv.aM),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconUserTiny, 'Client', inv.aO),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconTasks,
 												'Case',
-												display(inv.cE)),
+												display(inv.cG)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'School partner fee',
-												A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.es)),
+												A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.ew)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Referral commission',
-												A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.ej)),
+												A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.en)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Partner payable',
-												A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.d3)),
+												A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.d7)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconMail,
 												'Method',
-												display(inv.d7)),
+												display(inv.eb)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Receipt #',
-												display(inv.dW)),
+												display(inv.dZ)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Approved by',
-												display(inv.d6)),
+												display(inv.ea)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Created',
-												display(inv.af))
+												display(inv.ah))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -35970,14 +36648,14 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 													$elm$html$Html$Attributes$type_('button'),
 													$elm$html$Html$Events$onClick(
 													$author$project$Types$RequestedRefund(inv)),
-													$elm$html$Html$Attributes$disabled(inv.ek === 'Requested')
+													$elm$html$Html$Attributes$disabled(inv.eo === 'Requested')
 												]),
 											_List_fromArray(
 												[
 													$elm$html$Html$text(
-													(inv.ek === 'Requested') ? 'Refund requested' : 'Request refund')
+													(inv.eo === 'Requested') ? 'Refund requested' : 'Request refund')
 												]))),
-									$elm$core$String$isEmpty(inv.ek) ? A2(
+									$elm$core$String$isEmpty(inv.eo) ? A2(
 										$elm$html$Html$p,
 										_List_fromArray(
 											[
@@ -35994,7 +36672,7 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text('Status: ' + inv.ek)
+												$elm$html$Html$text('Status: ' + inv.eo)
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -36049,25 +36727,25 @@ var $author$project$View$Invoices$invoiceDetailView = F2(
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseInvoiceForm = {$: 234};
-var $author$project$Types$ConfirmedCloseInvoiceForm = {$: 233};
-var $author$project$Types$SubmittedInvoiceForm = {$: 236};
+var $author$project$Types$CancelledCloseInvoiceForm = {$: 239};
+var $author$project$Types$ConfirmedCloseInvoiceForm = {$: 238};
+var $author$project$Types$SubmittedInvoiceForm = {$: 241};
 var $author$project$Types$UpdatedInvoiceFormField = F2(
 	function (a, b) {
-		return {$: 235, a: a, b: b};
+		return {$: 240, a: a, b: b};
 	});
 var $author$project$View$Invoices$invoiceCaseSelect = F2(
 	function (model, inv) {
 		var opts = function () {
-			var _v0 = model.cF;
+			var _v0 = model.cH;
 			if (_v0.$ === 2) {
 				var d = _v0.a;
 				return A2(
 					$elm$core$List$sortBy,
 					function ($) {
-						return $.cE;
+						return $.cG;
 					},
-					d.A);
+					d.x);
 			} else {
 				return _List_Nil;
 			}
@@ -36087,7 +36765,7 @@ var $author$project$View$Invoices$invoiceCaseSelect = F2(
 							$elm$html$Html$Attributes$id('inv-caseId'),
 							$elm$html$Html$Events$onInput(
 							$author$project$Types$UpdatedInvoiceFormField('caseId')),
-							$elm$html$Html$Attributes$disabled(inv.eN)
+							$elm$html$Html$Attributes$disabled(inv.eP)
 						]),
 					A2(
 						$elm$core$List$cons,
@@ -36096,7 +36774,7 @@ var $author$project$View$Invoices$invoiceCaseSelect = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$value(''),
-									$elm$html$Html$Attributes$selected(inv.cD === '')
+									$elm$html$Html$Attributes$selected(inv.cF === '')
 								]),
 							_List_fromArray(
 								[
@@ -36109,13 +36787,13 @@ var $author$project$View$Invoices$invoiceCaseSelect = F2(
 									$elm$html$Html$option,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$value(c.ah),
+											$elm$html$Html$Attributes$value(c.aj),
 											$elm$html$Html$Attributes$selected(
-											_Utils_eq(inv.cD, c.ah))
+											_Utils_eq(inv.cF, c.aj))
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(c.cE)
+											$elm$html$Html$text(c.cG)
 										]));
 							},
 							opts))),
@@ -36143,12 +36821,12 @@ var $author$project$View$Invoices$invoiceFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					inv.dj)));
+					inv.dl)));
 	});
 var $author$project$View$Invoices$invoiceClientSelect = F2(
 	function (model, inv) {
 		var opts = function () {
-			var _v2 = model.cP;
+			var _v2 = model.cR;
 			if (_v2.$ === 2) {
 				var d = _v2.a;
 				return A2(
@@ -36156,7 +36834,7 @@ var $author$project$View$Invoices$invoiceClientSelect = F2(
 					function ($) {
 						return $.M;
 					},
-					d.A);
+					d.x);
 			} else {
 				return _List_Nil;
 			}
@@ -36185,7 +36863,7 @@ var $author$project$View$Invoices$invoiceClientSelect = F2(
 								$elm$html$Html$Attributes$id('inv-clientId'),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedInvoiceFormField('clientId')),
-								$elm$html$Html$Attributes$disabled(inv.eN)
+								$elm$html$Html$Attributes$disabled(inv.eP)
 							]),
 						A2(
 							$elm$core$List$cons,
@@ -36194,7 +36872,7 @@ var $author$project$View$Invoices$invoiceClientSelect = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(''),
-										$elm$html$Html$Attributes$selected(inv.aL === '')
+										$elm$html$Html$Attributes$selected(inv.aN === '')
 									]),
 								_List_fromArray(
 									[
@@ -36207,9 +36885,9 @@ var $author$project$View$Invoices$invoiceClientSelect = F2(
 										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value(c.ah),
+												$elm$html$Html$Attributes$value(c.aj),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(inv.aL, c.ah))
+												_Utils_eq(inv.aN, c.aj))
 											]),
 										_List_fromArray(
 											[
@@ -36255,27 +36933,27 @@ var $author$project$View$Invoices$invoiceRichField = F4(
 		var currentValue = function () {
 			switch (fieldId) {
 				case 'invoiceNumber':
-					return inv.dB;
+					return inv.dD;
 				case 'totalFee':
-					return inv.eU;
+					return inv.eW;
 				case 'governmentFee':
-					return inv.dt;
+					return inv.dv;
 				case 'schoolPartnerFee':
-					return inv.es;
+					return inv.ew;
 				case 'amountReceived':
-					return inv.cs;
+					return inv.cu;
 				case 'paymentMethod':
-					return inv.d7;
+					return inv.eb;
 				case 'officialReceiptNumber':
-					return inv.dW;
+					return inv.dZ;
 				case 'refundStatus':
-					return inv.ek;
+					return inv.eo;
 				case 'referralCommission':
-					return inv.ej;
+					return inv.en;
 				case 'partnerPayable':
-					return inv.d3;
+					return inv.d7;
 				case 'paymentApproval':
-					return inv.d6;
+					return inv.ea;
 				default:
 					return '';
 			}
@@ -36306,7 +36984,7 @@ var $author$project$View$Invoices$invoiceRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedInvoiceFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(inv.eN)
+								$elm$html$Html$Attributes$disabled(inv.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -36377,10 +37055,10 @@ var $author$project$View$Invoices$milestonePills = function (inv) {
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									_Utils_eq(inv.d8, m) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+									_Utils_eq(inv.ec, m) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedInvoiceFormField, 'paymentMilestone', m)),
-									$elm$html$Html$Attributes$disabled(inv.eN)
+									$elm$html$Html$Attributes$disabled(inv.eP)
 								]),
 							_List_fromArray(
 								[
@@ -36392,7 +37070,7 @@ var $author$project$View$Invoices$milestonePills = function (inv) {
 };
 var $author$project$View$Invoices$invoiceFormView = F3(
 	function (model, inv, isEdit) {
-		var submitLabel = inv.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save invoice');
+		var submitLabel = inv.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save invoice');
 		var formError = A2($author$project$View$Invoices$invoiceFormFieldError, 'form', inv);
 		return A2(
 			$elm$html$Html$form,
@@ -36470,7 +37148,7 @@ var $author$project$View$Invoices$invoiceFormView = F3(
 									$elm$html$Html$Attributes$value(inv.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedInvoiceFormField('notes')),
-									$elm$html$Html$Attributes$disabled(inv.eN),
+									$elm$html$Html$Attributes$disabled(inv.eP),
 									$elm$html$Html$Attributes$rows(3)
 								]),
 							_List_Nil)
@@ -36490,7 +37168,7 @@ var $author$project$View$Invoices$invoiceFormView = F3(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseInvoiceForm),
-									$elm$html$Html$Attributes$disabled(inv.eN)
+									$elm$html$Html$Attributes$disabled(inv.eP)
 								]),
 							_List_fromArray(
 								[
@@ -36502,7 +37180,7 @@ var $author$project$View$Invoices$invoiceFormView = F3(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(inv.eN || (!inv.i))
+									$elm$html$Html$Attributes$disabled(inv.eP || (!inv.i))
 								]),
 							_List_fromArray(
 								[
@@ -36513,7 +37191,7 @@ var $author$project$View$Invoices$invoiceFormView = F3(
 	});
 var $author$project$View$Invoices$invoiceFormModal = F2(
 	function (model, inv) {
-		var isEdit = !_Utils_eq(model.dc, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.de, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit invoice' : 'Add invoice';
 		return A2(
 			$elm$html$Html$div,
@@ -36645,11 +37323,11 @@ var $author$project$View$Invoices$invoiceFormModal = F2(
 				]));
 	});
 var $author$project$Types$InvoicesPageChanged = function (a) {
-	return {$: 242, a: a};
+	return {$: 247, a: a};
 };
-var $author$project$Types$OpenedAddInvoice = {$: 229};
+var $author$project$Types$OpenedAddInvoice = {$: 234};
 var $author$project$Types$UpdatedInvoicesQuery = function (a) {
-	return {$: 228, a: a};
+	return {$: 233, a: a};
 };
 var $author$project$View$Invoices$invoiceRow = function (inv) {
 	return A2(
@@ -36684,7 +37362,7 @@ var $author$project$View$Invoices$invoiceRow = function (inv) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(inv.aM))
+										$author$project$View$Helpers$initials(inv.aO))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -36702,7 +37380,7 @@ var $author$project$View$Invoices$invoiceRow = function (inv) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(inv.dB)
+												$elm$html$Html$text(inv.dD)
 											])),
 										A2(
 										$elm$html$Html$span,
@@ -36712,7 +37390,7 @@ var $author$project$View$Invoices$invoiceRow = function (inv) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(inv.aM)
+												$elm$html$Html$text(inv.aO)
 											]))
 									]))
 							]))
@@ -36722,7 +37400,7 @@ var $author$project$View$Invoices$invoiceRow = function (inv) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(inv.cE)
+						$elm$html$Html$text(inv.cG)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -36730,14 +37408,14 @@ var $author$project$View$Invoices$invoiceRow = function (inv) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.cz))
+						A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.cB))
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Invoices$milestoneBadge(inv.d8)
+						$author$project$View$Invoices$milestoneBadge(inv.ec)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -36850,7 +37528,7 @@ var $author$project$View$Invoices$invoicesSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Invoices$invoicesView = function (model) {
-	var _v0 = model.dE;
+	var _v0 = model.dG;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Invoices$invoicesSkeleton;
@@ -36909,7 +37587,8 @@ var $author$project$View$Invoices$invoicesView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search invoices'),
 												$elm$html$Html$Attributes$placeholder('Search invoices…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedInvoicesQuery)
@@ -36929,7 +37608,7 @@ var $author$project$View$Invoices$invoicesView = function (model) {
 										$elm$html$Html$text('Add invoice')
 									]))
 							])),
-						$elm$core$List$isEmpty(data.A) ? A2(
+						$elm$core$List$isEmpty(data.x) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -37027,18 +37706,18 @@ var $author$project$View$Invoices$invoicesView = function (model) {
 										A2(
 										$elm$html$Html$tbody,
 										_List_Nil,
-										A2($elm$core$List$map, $author$project$View$Invoices$invoiceRow, data.A))
+										A2($elm$core$List$map, $author$project$View$Invoices$invoiceRow, data.x))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$InvoicesPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$InvoicesPageChanged)
 					]));
 	}
 };
 var $author$project$Types$OpenedEditLead = function (a) {
-	return {$: 178, a: a};
+	return {$: 183, a: a};
 };
 var $author$project$Types$RequestedDeleteLead = function (a) {
-	return {$: 186, a: a};
+	return {$: 191, a: a};
 };
 var $author$project$View$Leads$leadStatusBadge = function (status) {
 	var cls = function () {
@@ -37151,7 +37830,7 @@ var $author$project$View$Leads$leadDetailView = F2(
 												[
 													$elm$html$Html$text(l.M)
 												])),
-											$author$project$View$Leads$leadStatusBadge(l.aj)
+											$author$project$View$Leads$leadStatusBadge(l.al)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -37162,7 +37841,7 @@ var $author$project$View$Leads$leadDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$isEmpty(l.dz) ? display(l.dy) : l.dz)
+											$elm$core$String$isEmpty(l.dB) ? display(l.dA) : l.dB)
 										])),
 									A2(
 									$elm$html$Html$div,
@@ -37172,12 +37851,12 @@ var $author$project$View$Leads$leadDetailView = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$core$String$isEmpty(l.ag) ? $elm$html$Html$text('') : A2(
+											$elm$core$String$isEmpty(l.ai) ? $elm$html$Html$text('') : A2(
 											$elm$html$Html$a,
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('detail-hero__chip'),
-													$elm$html$Html$Attributes$href('mailto:' + l.ag)
+													$elm$html$Html$Attributes$href('mailto:' + l.ai)
 												]),
 											_List_fromArray(
 												[
@@ -37187,15 +37866,15 @@ var $author$project$View$Leads$leadDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(l.ag)
+															$elm$html$Html$text(l.ai)
 														]))
 												])),
-											$elm$core$String$isEmpty(l.ai) ? $elm$html$Html$text('') : A2(
+											$elm$core$String$isEmpty(l.ak) ? $elm$html$Html$text('') : A2(
 											$elm$html$Html$a,
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('detail-hero__chip'),
-													$elm$html$Html$Attributes$href('tel:' + l.ai)
+													$elm$html$Html$Attributes$href('tel:' + l.ak)
 												]),
 											_List_fromArray(
 												[
@@ -37205,7 +37884,7 @@ var $author$project$View$Leads$leadDetailView = F2(
 													_List_Nil,
 													_List_fromArray(
 														[
-															$elm$html$Html$text(l.ai)
+															$elm$html$Html$text(l.ak)
 														]))
 												]))
 										]))
@@ -37268,21 +37947,21 @@ var $author$project$View$Leads$leadDetailView = F2(
 						]),
 					_List_fromArray(
 						[
-							A3($author$project$View$Helpers$detailStat, 'Source', l.ez, 'Channel'),
+							A3($author$project$View$Helpers$detailStat, 'Source', l.eD, 'Channel'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Destination',
-							display(l.dy),
+							display(l.dA),
 							'Interested'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Follow-up',
-							display(l.dq),
+							display(l.ds),
 							'Next touch'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Assigned to',
-							display(l.cw),
+							display(l.cy),
 							'Consultant')
 						])),
 					A2(
@@ -37317,42 +37996,42 @@ var $author$project$View$Leads$leadDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Lead number',
-												display(l.dI)),
+												display(l.dK)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconMail,
 												'Email',
-												display(l.ag)),
+												display(l.ai)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPhone,
 												'Phone',
-												display(l.ai)),
+												display(l.ak)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPin,
 												'Nationality',
-												display(l.dR)),
+												display(l.dU)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPin,
 												'Currently in',
-												display(l.cU)),
+												display(l.cW)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPin,
 												'Interested in',
-												display(l.dy)),
+												display(l.dA)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Service',
-												display(l.dz)),
+												display(l.dB)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Follow-up',
-												display(l.dq))
+												display(l.ds))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -37398,28 +38077,28 @@ var $author$project$View$Leads$leadDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Status', l.aj),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Status', l.al),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconContacts,
 												'Assigned to',
-												display(l.cw)),
+												display(l.cy)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Created',
-												display(l.af))
+												display(l.ah))
 											])))
 								]))
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseLeadForm = {$: 182};
-var $author$project$Types$ConfirmedCloseLeadForm = {$: 181};
-var $author$project$Types$SubmittedLeadForm = {$: 184};
+var $author$project$Types$CancelledCloseLeadForm = {$: 187};
+var $author$project$Types$ConfirmedCloseLeadForm = {$: 186};
+var $author$project$Types$SubmittedLeadForm = {$: 189};
 var $author$project$Types$UpdatedLeadFormField = F2(
 	function (a, b) {
-		return {$: 183, a: a, b: b};
+		return {$: 188, a: a, b: b};
 	});
 var $author$project$View$Leads$leadFormFieldError = F2(
 	function (field, lf) {
@@ -37433,7 +38112,7 @@ var $author$project$View$Leads$leadFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					lf.dj)));
+					lf.dl)));
 	});
 var $author$project$View$Leads$leadRichField = F4(
 	function (lf, fieldId, labelText, inputType) {
@@ -37441,25 +38120,25 @@ var $author$project$View$Leads$leadRichField = F4(
 		var currentValue = function () {
 			switch (fieldId) {
 				case 'leadNumber':
-					return lf.dI;
+					return lf.dK;
 				case 'name':
 					return lf.M;
 				case 'email':
-					return lf.ag;
-				case 'phone':
 					return lf.ai;
+				case 'phone':
+					return lf.ak;
 				case 'nationality':
-					return lf.dR;
+					return lf.dU;
 				case 'currentCountry':
-					return lf.cU;
+					return lf.cW;
 				case 'interestedCountry':
-					return lf.dy;
+					return lf.dA;
 				case 'interestedService':
-					return lf.dz;
+					return lf.dB;
 				case 'assignedTo':
-					return lf.cw;
+					return lf.cy;
 				case 'followUpDate':
-					return lf.dq;
+					return lf.ds;
 				default:
 					return '';
 			}
@@ -37490,7 +38169,7 @@ var $author$project$View$Leads$leadRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedLeadFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(lf.eN)
+								$elm$html$Html$Attributes$disabled(lf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -37575,7 +38254,7 @@ var $author$project$View$Leads$leadStatusPills = F5(
 	});
 var $author$project$View$Leads$leadFormView = F2(
 	function (lf, isEdit) {
-		var submitLabel = lf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save lead');
+		var submitLabel = lf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save lead');
 		var formError = A2($author$project$View$Leads$leadFormFieldError, 'form', lf);
 		return A2(
 			$elm$html$Html$form,
@@ -37625,17 +38304,17 @@ var $author$project$View$Leads$leadFormView = F2(
 					A5(
 					$author$project$View$Leads$leadStatusPills,
 					'Source',
-					lf.ez,
+					lf.eD,
 					$author$project$Types$leadSources,
 					$author$project$Types$UpdatedLeadFormField('source'),
-					lf.eN),
+					lf.eP),
 					A5(
 					$author$project$View$Leads$leadStatusPills,
 					'Status',
-					lf.aj,
+					lf.al,
 					$author$project$Types$leadStatuses,
 					$author$project$Types$UpdatedLeadFormField('status'),
-					lf.eN),
+					lf.eP),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -37663,7 +38342,7 @@ var $author$project$View$Leads$leadFormView = F2(
 									$elm$html$Html$Attributes$value(lf.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedLeadFormField('notes')),
-									$elm$html$Html$Attributes$disabled(lf.eN),
+									$elm$html$Html$Attributes$disabled(lf.eP),
 									$elm$html$Html$Attributes$rows(4)
 								]),
 							_List_Nil)
@@ -37683,7 +38362,7 @@ var $author$project$View$Leads$leadFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseLeadForm),
-									$elm$html$Html$Attributes$disabled(lf.eN)
+									$elm$html$Html$Attributes$disabled(lf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -37695,7 +38374,7 @@ var $author$project$View$Leads$leadFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(lf.eN || (!lf.i))
+									$elm$html$Html$Attributes$disabled(lf.eP || (!lf.i))
 								]),
 							_List_fromArray(
 								[
@@ -37706,7 +38385,7 @@ var $author$project$View$Leads$leadFormView = F2(
 	});
 var $author$project$View$Leads$leadFormModal = F2(
 	function (model, lf) {
-		var isEdit = !_Utils_eq(model.dd, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.df, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit lead' : 'Add lead';
 		return A2(
 			$elm$html$Html$div,
@@ -37838,11 +38517,11 @@ var $author$project$View$Leads$leadFormModal = F2(
 				]));
 	});
 var $author$project$Types$LeadsPageChanged = function (a) {
-	return {$: 190, a: a};
+	return {$: 195, a: a};
 };
-var $author$project$Types$OpenedAddLead = {$: 177};
+var $author$project$Types$OpenedAddLead = {$: 182};
 var $author$project$Types$UpdatedLeadsQuery = function (a) {
-	return {$: 176, a: a};
+	return {$: 181, a: a};
 };
 var $author$project$View$Leads$leadSourceBadge = function (source) {
 	var cls = function () {
@@ -37935,7 +38614,7 @@ var $author$project$View$Leads$leadRow = function (l) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$elm$core$String$isEmpty(l.ag) ? l.ai : l.ag)
+												$elm$core$String$isEmpty(l.ai) ? l.ak : l.ai)
 											]))
 									]))
 							]))
@@ -37945,21 +38624,21 @@ var $author$project$View$Leads$leadRow = function (l) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(l.dy)
+						$elm$html$Html$text(l.dA)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Leads$leadSourceBadge(l.ez)
+						$author$project$View$Leads$leadSourceBadge(l.eD)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Leads$leadStatusBadge(l.aj)
+						$author$project$View$Leads$leadStatusBadge(l.al)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -37970,7 +38649,7 @@ var $author$project$View$Leads$leadRow = function (l) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$isEmpty(l.dq) ? '—' : l.dq)
+						$elm$core$String$isEmpty(l.ds) ? '—' : l.ds)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -38085,7 +38764,7 @@ var $author$project$View$Leads$leadsSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Leads$leadsView = function (model) {
-	var _v0 = model.dJ;
+	var _v0 = model.dL;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Leads$leadsSkeleton;
@@ -38119,7 +38798,7 @@ var $author$project$View$Leads$leadsView = function (model) {
 			var data = _v0.a;
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var filtered = data.A;
+			var filtered = data.x;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -38172,7 +38851,8 @@ var $author$project$View$Leads$leadsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search leads'),
 												$elm$html$Html$Attributes$placeholder('Search leads…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedLeadsQuery)
@@ -38322,12 +39002,12 @@ var $author$project$View$Leads$leadsView = function (model) {
 										A2($elm$core$List$map, $author$project$View$Leads$leadRow, filtered))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$LeadsPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$LeadsPageChanged)
 					]));
 	}
 };
-var $author$project$Types$CancelledLogoutAll = {$: 99};
-var $author$project$Types$ConfirmedLogoutAll = {$: 100};
+var $author$project$Types$CancelledLogoutAll = {$: 100};
+var $author$project$Types$ConfirmedLogoutAll = {$: 101};
 var $author$project$View$Settings$logoutAllConfirmModal = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -38448,10 +39128,10 @@ var $author$project$View$Settings$logoutAllConfirmModal = A2(
 				]))
 		]));
 var $author$project$Types$OpenedEditPartner = function (a) {
-	return {$: 263, a: a};
+	return {$: 268, a: a};
 };
 var $author$project$Types$RequestedDeletePartner = function (a) {
-	return {$: 271, a: a};
+	return {$: 276, a: a};
 };
 var $author$project$View$Format$formatCurrency = $author$project$View$Format$formatCurrencyWith('USD');
 var $author$project$View$Partners$partnerTypeBadge = function (t) {
@@ -38516,7 +39196,7 @@ var $author$project$View$Partners$partnerDetailView = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									$author$project$View$Helpers$initials(partner.dK))
+									$author$project$View$Helpers$initials(partner.dM))
 								])),
 							A2(
 							$elm$html$Html$div,
@@ -38542,9 +39222,9 @@ var $author$project$View$Partners$partnerDetailView = F2(
 												]),
 											_List_fromArray(
 												[
-													$elm$html$Html$text(partner.dK)
+													$elm$html$Html$text(partner.dM)
 												])),
-											$author$project$View$Partners$partnerTypeBadge(partner.eX)
+											$author$project$View$Partners$partnerTypeBadge(partner.eZ)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -38555,7 +39235,7 @@ var $author$project$View$Partners$partnerDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											display(partner.cR))
+											display(partner.cT))
 										]))
 								])),
 							A2(
@@ -38619,22 +39299,22 @@ var $author$project$View$Partners$partnerDetailView = F2(
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Cases referred',
-							$elm$core$String$fromInt(partner.cH),
+							$elm$core$String$fromInt(partner.cJ),
 							'Total'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Converted',
-							$elm$core$String$fromInt(partner.cG),
+							$elm$core$String$fromInt(partner.cI),
 							'Won'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Amount payable',
-							$author$project$View$Format$formatCurrency(partner.cr),
+							$author$project$View$Format$formatCurrency(partner.ct),
 							'Outstanding'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Country',
-							display(partner.cR),
+							display(partner.cT),
 							'Location')
 						])),
 					A2(
@@ -38669,17 +39349,17 @@ var $author$project$View$Partners$partnerDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Person',
-												display(partner.aS)),
+												display(partner.aU)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconMail,
 												'Email',
-												display(partner.cN)),
+												display(partner.cP)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPhone,
 												'Phone',
-												display(partner.cO))
+												display(partner.cQ))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -38697,17 +39377,17 @@ var $author$project$View$Partners$partnerDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'License #',
-												display(partner.dM)),
+												display(partner.dO)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Expires',
-												display(partner.dL)),
+												display(partner.dN)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconContacts,
 												'Verified by',
-												display(partner.e_))
+												display(partner.e0))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -38725,27 +39405,27 @@ var $author$project$View$Partners$partnerDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Start',
-												display(partner.cn)),
+												display(partner.cp)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconCalendar,
 												'Expiry',
-												display(partner.cm)),
+												display(partner.co)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Services',
-												display(partner.ex)),
+												display(partner.eB)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Commission',
-												display(partner.cL)),
+												display(partner.cN)),
 												A3(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconDeals,
 												'Payment terms',
-												display(partner.d9))
+												display(partner.ed))
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -38783,7 +39463,7 @@ var $author$project$View$Partners$partnerDetailView = F2(
 									$author$project$View$Helpers$detailCard,
 									'Compliance',
 									$elm$core$Maybe$Nothing,
-									$elm$core$String$isEmpty(partner.cM) ? A2(
+									$elm$core$String$isEmpty(partner.cO) ? A2(
 										$elm$html$Html$p,
 										_List_fromArray(
 											[
@@ -38800,18 +39480,18 @@ var $author$project$View$Partners$partnerDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(partner.cM)
+												$elm$html$Html$text(partner.cO)
 											])))
 								]))
 						]))
 				]));
 	});
-var $author$project$Types$CancelledClosePartnerForm = {$: 267};
-var $author$project$Types$ConfirmedClosePartnerForm = {$: 266};
-var $author$project$Types$SubmittedPartnerForm = {$: 269};
+var $author$project$Types$CancelledClosePartnerForm = {$: 272};
+var $author$project$Types$ConfirmedClosePartnerForm = {$: 271};
+var $author$project$Types$SubmittedPartnerForm = {$: 274};
 var $author$project$Types$UpdatedPartnerFormField = F2(
 	function (a, b) {
-		return {$: 268, a: a, b: b};
+		return {$: 273, a: a, b: b};
 	});
 var $author$project$View$Partners$partnerFormFieldError = F2(
 	function (field, pf) {
@@ -38825,7 +39505,7 @@ var $author$project$View$Partners$partnerFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					pf.dj)));
+					pf.dl)));
 	});
 var $author$project$View$Partners$partnerRichField = F4(
 	function (pf, fieldId, labelText, inputType) {
@@ -38833,37 +39513,37 @@ var $author$project$View$Partners$partnerRichField = F4(
 		var currentValue = function () {
 			switch (fieldId) {
 				case 'legalCompanyName':
-					return pf.dK;
-				case 'country':
-					return pf.cR;
-				case 'licenseNumber':
 					return pf.dM;
+				case 'country':
+					return pf.cT;
+				case 'licenseNumber':
+					return pf.dO;
 				case 'licenseExpiry':
-					return pf.dL;
+					return pf.dN;
 				case 'verificationSource':
-					return pf.e_;
+					return pf.e0;
 				case 'contactPerson':
-					return pf.aS;
+					return pf.aU;
 				case 'contactEmail':
-					return pf.cN;
+					return pf.cP;
 				case 'contactPhone':
-					return pf.cO;
+					return pf.cQ;
 				case 'agreementStart':
-					return pf.cn;
+					return pf.cp;
 				case 'agreementExpiry':
-					return pf.cm;
+					return pf.co;
 				case 'servicesPermitted':
-					return pf.ex;
+					return pf.eB;
 				case 'commissionStructure':
-					return pf.cL;
+					return pf.cN;
 				case 'paymentTerms':
-					return pf.d9;
+					return pf.ed;
 				case 'casesReferred':
-					return pf.cH;
+					return pf.cJ;
 				case 'casesConverted':
-					return pf.cG;
+					return pf.cI;
 				case 'amountPayable':
-					return pf.cr;
+					return pf.ct;
 				default:
 					return '';
 			}
@@ -38894,7 +39574,7 @@ var $author$project$View$Partners$partnerRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedPartnerFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(pf.eN)
+								$elm$html$Html$Attributes$disabled(pf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -38965,10 +39645,10 @@ var $author$project$View$Partners$partnerTypePills = function (pf) {
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									_Utils_eq(pf.eX, t) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+									_Utils_eq(pf.eZ, t) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedPartnerFormField, 'type', t)),
-									$elm$html$Html$Attributes$disabled(pf.eN)
+									$elm$html$Html$Attributes$disabled(pf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -38980,7 +39660,7 @@ var $author$project$View$Partners$partnerTypePills = function (pf) {
 };
 var $author$project$View$Partners$partnerFormView = F2(
 	function (pf, isEdit) {
-		var submitLabel = pf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save partner');
+		var submitLabel = pf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save partner');
 		var formError = A2($author$project$View$Partners$partnerFormFieldError, 'form', pf);
 		return A2(
 			$elm$html$Html$form,
@@ -39056,10 +39736,10 @@ var $author$project$View$Partners$partnerFormView = F2(
 							$elm$html$Html$textarea,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$value(pf.cM),
+									$elm$html$Html$Attributes$value(pf.cO),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedPartnerFormField('complianceNotes')),
-									$elm$html$Html$Attributes$disabled(pf.eN),
+									$elm$html$Html$Attributes$disabled(pf.eP),
 									$elm$html$Html$Attributes$rows(2)
 								]),
 							_List_Nil)
@@ -39089,7 +39769,7 @@ var $author$project$View$Partners$partnerFormView = F2(
 									$elm$html$Html$Attributes$value(pf.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedPartnerFormField('notes')),
-									$elm$html$Html$Attributes$disabled(pf.eN),
+									$elm$html$Html$Attributes$disabled(pf.eP),
 									$elm$html$Html$Attributes$rows(2)
 								]),
 							_List_Nil)
@@ -39109,7 +39789,7 @@ var $author$project$View$Partners$partnerFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedClosePartnerForm),
-									$elm$html$Html$Attributes$disabled(pf.eN)
+									$elm$html$Html$Attributes$disabled(pf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -39121,7 +39801,7 @@ var $author$project$View$Partners$partnerFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(pf.eN || (!pf.i))
+									$elm$html$Html$Attributes$disabled(pf.eP || (!pf.i))
 								]),
 							_List_fromArray(
 								[
@@ -39132,7 +39812,7 @@ var $author$project$View$Partners$partnerFormView = F2(
 	});
 var $author$project$View$Partners$partnerFormModal = F2(
 	function (model, pf) {
-		var isEdit = !_Utils_eq(model.de, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.dg, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit partner' : 'Add partner';
 		return A2(
 			$elm$html$Html$div,
@@ -39263,18 +39943,18 @@ var $author$project$View$Partners$partnerFormModal = F2(
 						]))
 				]));
 	});
-var $author$project$Types$OpenedAddPartner = {$: 262};
+var $author$project$Types$OpenedAddPartner = {$: 267};
 var $author$project$Types$PartnersPageChanged = function (a) {
-	return {$: 275, a: a};
+	return {$: 280, a: a};
 };
 var $author$project$Types$UpdatedPartnersQuery = function (a) {
-	return {$: 259, a: a};
+	return {$: 264, a: a};
 };
 var $author$project$Types$UpdatedPartnersTypeFilter = function (a) {
-	return {$: 260, a: a};
+	return {$: 265, a: a};
 };
 var $author$project$Types$OpenedPartnerDetail = function (a) {
-	return {$: 264, a: a};
+	return {$: 269, a: a};
 };
 var $author$project$View$Partners$partnerRow = function (partner) {
 	return A2(
@@ -39309,7 +39989,7 @@ var $author$project$View$Partners$partnerRow = function (partner) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(partner.dK))
+										$author$project$View$Helpers$initials(partner.dM))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -39327,7 +40007,7 @@ var $author$project$View$Partners$partnerRow = function (partner) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(partner.dK)
+												$elm$html$Html$text(partner.dM)
 											])),
 										A2(
 										$elm$html$Html$span,
@@ -39338,7 +40018,7 @@ var $author$project$View$Partners$partnerRow = function (partner) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$elm$core$String$isEmpty(partner.aS) ? partner.cR : partner.aS)
+												$elm$core$String$isEmpty(partner.aU) ? partner.cT : partner.aU)
 											]))
 									]))
 							]))
@@ -39348,29 +40028,21 @@ var $author$project$View$Partners$partnerRow = function (partner) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Partners$partnerTypeBadge(partner.eX)
+						$author$project$View$Partners$partnerTypeBadge(partner.eZ)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(partner.cR)
+						$elm$html$Html$text(partner.cT)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(partner.dM)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$elm$core$String$fromInt(partner.cH))
+						$elm$html$Html$text(partner.dO)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -39378,7 +40050,15 @@ var $author$project$View$Partners$partnerRow = function (partner) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(partner.cG))
+						$elm$core$String$fromInt(partner.cJ))
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(partner.cI))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -39491,7 +40171,7 @@ var $author$project$View$Partners$partnersSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Partners$partnersView = function (model) {
-	var _v0 = model.d4;
+	var _v0 = model.d8;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Partners$partnersSkeleton;
@@ -39550,7 +40230,8 @@ var $author$project$View$Partners$partnersView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search partners'),
 												$elm$html$Html$Attributes$placeholder('Search partners…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedPartnersQuery)
@@ -39585,7 +40266,7 @@ var $author$project$View$Partners$partnersView = function (model) {
 									[
 										$elm$html$Html$Attributes$type_('button'),
 										$elm$html$Html$Attributes$class(
-										(data.eW === '') ? 'stage-pill stage-pill--active' : 'stage-pill'),
+										(data.eY === '') ? 'stage-pill stage-pill--active' : 'stage-pill'),
 										$elm$html$Html$Events$onClick(
 										$author$project$Types$UpdatedPartnersTypeFilter(''))
 									]),
@@ -39602,7 +40283,7 @@ var $author$project$View$Partners$partnersView = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('button'),
 												$elm$html$Html$Attributes$class(
-												_Utils_eq(data.eW, t) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+												_Utils_eq(data.eY, t) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 												$elm$html$Html$Events$onClick(
 												$author$project$Types$UpdatedPartnersTypeFilter(t))
 											]),
@@ -39612,7 +40293,7 @@ var $author$project$View$Partners$partnersView = function (model) {
 											]));
 								},
 								$author$project$Types$partnerTypes))),
-						$elm$core$List$isEmpty(data.A) ? A2(
+						$elm$core$List$isEmpty(data.x) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -39724,17 +40405,17 @@ var $author$project$View$Partners$partnersView = function (model) {
 										A2(
 										$elm$html$Html$tbody,
 										_List_Nil,
-										A2($elm$core$List$map, $author$project$View$Partners$partnerRow, data.A))
+										A2($elm$core$List$map, $author$project$View$Partners$partnerRow, data.x))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$PartnersPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$PartnersPageChanged)
 					]));
 	}
 };
-var $author$project$Types$SubmittedPaymentForm = {$: 248};
+var $author$project$Types$SubmittedPaymentForm = {$: 253};
 var $author$project$Types$UpdatedPaymentFormField = F2(
 	function (a, b) {
-		return {$: 247, a: a, b: b};
+		return {$: 252, a: a, b: b};
 	});
 var $author$project$View$Invoices$paymentFormModal = function (pf) {
 	var fieldErr = function (field) {
@@ -39748,7 +40429,7 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 						var f = _v3.a;
 						return _Utils_eq(f, field);
 					},
-					pf.dj)));
+					pf.dl)));
 	};
 	return A2(
 		$elm$html$Html$div,
@@ -39852,10 +40533,10 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 														$elm$html$Html$Attributes$id('pf-amount'),
 														$elm$html$Html$Attributes$type_('number'),
 														$elm$html$Html$Attributes$placeholder(' '),
-														$elm$html$Html$Attributes$value(pf.cq),
+														$elm$html$Html$Attributes$value(pf.cs),
 														$elm$html$Html$Events$onInput(
 														$author$project$Types$UpdatedPaymentFormField('amount')),
-														$elm$html$Html$Attributes$disabled(pf.eN),
+														$elm$html$Html$Attributes$disabled(pf.eP),
 														$elm$html$Html$Attributes$autofocus(true)
 													]),
 												_List_Nil),
@@ -39903,10 +40584,10 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 														$elm$html$Html$Attributes$id('pf-paidOn'),
 														$elm$html$Html$Attributes$type_('date'),
 														$elm$html$Html$Attributes$placeholder(' '),
-														$elm$html$Html$Attributes$value(pf.d2),
+														$elm$html$Html$Attributes$value(pf.d5),
 														$elm$html$Html$Events$onInput(
 														$author$project$Types$UpdatedPaymentFormField('paidOn')),
-														$elm$html$Html$Attributes$disabled(pf.eN)
+														$elm$html$Html$Attributes$disabled(pf.eP)
 													]),
 												_List_Nil),
 												A2(
@@ -39938,7 +40619,7 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 														$elm$html$Html$Attributes$value(pf.d),
 														$elm$html$Html$Events$onInput(
 														$author$project$Types$UpdatedPaymentFormField('method')),
-														$elm$html$Html$Attributes$disabled(pf.eN)
+														$elm$html$Html$Attributes$disabled(pf.eP)
 													]),
 												_List_Nil),
 												A2(
@@ -39967,10 +40648,10 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 														$elm$html$Html$Attributes$id('pf-reference'),
 														$elm$html$Html$Attributes$type_('text'),
 														$elm$html$Html$Attributes$placeholder(' '),
-														$elm$html$Html$Attributes$value(pf.ei),
+														$elm$html$Html$Attributes$value(pf.em),
 														$elm$html$Html$Events$onInput(
 														$author$project$Types$UpdatedPaymentFormField('reference')),
-														$elm$html$Html$Attributes$disabled(pf.eN)
+														$elm$html$Html$Attributes$disabled(pf.eP)
 													]),
 												_List_Nil),
 												A2(
@@ -40010,7 +40691,7 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 												$elm$html$Html$Attributes$value(pf.n),
 												$elm$html$Html$Events$onInput(
 												$author$project$Types$UpdatedPaymentFormField('notes')),
-												$elm$html$Html$Attributes$disabled(pf.eN),
+												$elm$html$Html$Attributes$disabled(pf.eP),
 												$elm$html$Html$Attributes$rows(2)
 											]),
 										_List_Nil)
@@ -40030,7 +40711,7 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 												$elm$html$Html$Attributes$type_('button'),
 												$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 												$elm$html$Html$Events$onClick($author$project$Types$ClosedPaymentForm),
-												$elm$html$Html$Attributes$disabled(pf.eN)
+												$elm$html$Html$Attributes$disabled(pf.eP)
 											]),
 										_List_fromArray(
 											[
@@ -40042,7 +40723,7 @@ var $author$project$View$Invoices$paymentFormModal = function (pf) {
 											[
 												$elm$html$Html$Attributes$type_('submit'),
 												$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-												$elm$html$Html$Attributes$disabled(pf.eN)
+												$elm$html$Html$Attributes$disabled(pf.eP)
 											]),
 										_List_fromArray(
 											[
@@ -40099,7 +40780,7 @@ var $author$project$Views$recordTools = function (route) {
 			return $elm$html$Html$text('');
 	}
 };
-var $author$project$Types$ConfirmedRefund = {$: 256};
+var $author$project$Types$ConfirmedRefund = {$: 261};
 var $author$project$View$Invoices$refundConfirmModal = function (inv) {
 	return A2(
 		$elm$html$Html$div,
@@ -40159,7 +40840,7 @@ var $author$project$View$Invoices$refundConfirmModal = function (inv) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(inv.dB)
+										$elm$html$Html$text(inv.dD)
 									])),
 								$elm$html$Html$text('?')
 							])),
@@ -40275,7 +40956,7 @@ var $author$project$View$Reports$auditView = function (model) {
 							[$author$project$View$Icons$iconRefresh]))
 					])),
 				function () {
-				var _v0 = model.cx;
+				var _v0 = model.cz;
 				switch (_v0.$) {
 					case 2:
 						var data = _v0.a;
@@ -40284,7 +40965,7 @@ var $author$project$View$Reports$auditView = function (model) {
 							_List_Nil,
 							_List_fromArray(
 								[
-									$elm$core$List$isEmpty(data.dk) ? A2(
+									$elm$core$List$isEmpty(data.dm) ? A2(
 									$elm$html$Html$p,
 									_List_Nil,
 									_List_fromArray(
@@ -40311,14 +40992,14 @@ var $author$project$View$Reports$auditView = function (model) {
 														$elm$html$Html$span,
 														_List_fromArray(
 															[
-																$elm$html$Html$Attributes$class('audit-entry__marker audit-entry__marker--' + event.cc),
+																$elm$html$Html$Attributes$class('audit-entry__marker audit-entry__marker--' + event.ce),
 																A2($elm$html$Html$Attributes$attribute, 'aria-hidden', 'true')
 															]),
 														_List_fromArray(
 															[
 																$elm$html$Html$text(
 																function () {
-																	var _v1 = event.cc;
+																	var _v1 = event.ce;
 																	switch (_v1) {
 																		case 'created':
 																			return '+';
@@ -40350,21 +41031,21 @@ var $author$project$View$Reports$auditView = function (model) {
 																		_List_Nil,
 																		_List_fromArray(
 																			[
-																				$elm$html$Html$text(event.dG)
+																				$elm$html$Html$text(event.dI)
 																			])),
 																		A2(
 																		$elm$html$Html$span,
 																		_List_fromArray(
 																			[
-																				$elm$html$Html$Attributes$class('audit-action audit-action--' + event.cc)
+																				$elm$html$Html$Attributes$class('audit-action audit-action--' + event.ce)
 																			]),
 																		_List_fromArray(
 																			[
 																				$elm$html$Html$text(
 																				_Utils_ap(
 																					$elm$core$String$toUpper(
-																						A2($elm$core$String$left, 1, event.cc)),
-																					A2($elm$core$String$dropLeft, 1, event.cc)))
+																						A2($elm$core$String$left, 1, event.ce)),
+																					A2($elm$core$String$dropLeft, 1, event.ce)))
 																			]))
 																	])),
 																A2(
@@ -40375,24 +41056,24 @@ var $author$project$View$Reports$auditView = function (model) {
 																	]),
 																_List_fromArray(
 																	[
-																		$elm$html$Html$text(event.bc + (' · ' + event.cf))
+																		$elm$html$Html$text(event.be + (' · ' + event.ch))
 																	])),
 																A2(
 																$elm$html$Html$time,
 																_List_fromArray(
 																	[
 																		$elm$html$Html$Attributes$class('audit-entry__time'),
-																		A2($elm$html$Html$Attributes$attribute, 'datetime', event.dV)
+																		A2($elm$html$Html$Attributes$attribute, 'datetime', event.dY)
 																	]),
 																_List_fromArray(
 																	[
 																		$elm$html$Html$text(
-																		A2($elm$core$String$left, 10, event.dV) + (' · ' + (A3($elm$core$String$slice, 11, 19, event.dV) + ' UTC')))
+																		A2($elm$core$String$left, 10, event.dY) + (' · ' + (A3($elm$core$String$slice, 11, 19, event.dY) + ' UTC')))
 																	]))
 															]))
 													]));
 										},
-										data.dk)),
+										data.dm)),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
@@ -40407,9 +41088,9 @@ var $author$project$View$Reports$auditView = function (model) {
 												[
 													$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost'),
 													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(!model.cy),
+													$elm$html$Html$Attributes$disabled(!model.cA),
 													$elm$html$Html$Events$onClick(
-													$author$project$Types$RequestedAuditPage(model.cy - 25))
+													$author$project$Types$RequestedAuditPage(model.cA - 25))
 												]),
 											_List_fromArray(
 												[
@@ -40422,8 +41103,8 @@ var $author$project$View$Reports$auditView = function (model) {
 												[
 													$elm$html$Html$text(
 													$elm$core$String$fromInt(
-														A2($elm$core$Basics$min, data.y, model.cy + 1)) + ('–' + ($elm$core$String$fromInt(
-														A2($elm$core$Basics$min, data.y, model.cy + 25)) + (' of ' + $elm$core$String$fromInt(data.y)))))
+														A2($elm$core$Basics$min, data.t, model.cA + 1)) + ('–' + ($elm$core$String$fromInt(
+														A2($elm$core$Basics$min, data.t, model.cA + 25)) + (' of ' + $elm$core$String$fromInt(data.t)))))
 												])),
 											A2(
 											$elm$html$Html$button,
@@ -40432,9 +41113,9 @@ var $author$project$View$Reports$auditView = function (model) {
 													$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost'),
 													$elm$html$Html$Attributes$type_('button'),
 													$elm$html$Html$Attributes$disabled(
-													_Utils_cmp(model.cy + 25, data.y) > -1),
+													_Utils_cmp(model.cA + 25, data.t) > -1),
 													$elm$html$Html$Events$onClick(
-													$author$project$Types$RequestedAuditPage(model.cy + 25))
+													$author$project$Types$RequestedAuditPage(model.cA + 25))
 												]),
 											_List_fromArray(
 												[
@@ -40550,7 +41231,7 @@ var $author$project$View$Reports$exportsView = function (model) {
 						$elm$html$Html$select,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$value(model.dl),
+								$elm$html$Html$Attributes$value(model.dn),
 								$elm$html$Html$Events$onInput($author$project$Types$SelectedExportEntity),
 								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Records to export')
 							]),
@@ -40563,7 +41244,7 @@ var $author$project$View$Reports$exportsView = function (model) {
 										[
 											$elm$html$Html$Attributes$value(entity),
 											$elm$html$Html$Attributes$selected(
-											_Utils_eq(entity, model.dl))
+											_Utils_eq(entity, model.dn))
 										]),
 									_List_fromArray(
 										[
@@ -40584,12 +41265,12 @@ var $author$project$View$Reports$exportsView = function (model) {
 								$elm$html$Html$Attributes$type_('button'),
 								$elm$html$Html$Events$onClick($author$project$Types$RequestedExport),
 								$elm$html$Html$Attributes$disabled(
-								!_Utils_eq(model.dn, $elm$core$Maybe$Nothing))
+								!_Utils_eq(model.dp, $elm$core$Maybe$Nothing))
 							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								(!_Utils_eq(model.dn, $elm$core$Maybe$Nothing)) ? 'Preparing export…' : 'Download CSV')
+								(!_Utils_eq(model.dp, $elm$core$Maybe$Nothing)) ? 'Preparing export…' : 'Download CSV')
 							]))
 					]))
 			]));
@@ -40634,7 +41315,7 @@ var $author$project$View$Reports$reportsView = function (model) {
 							]))
 					])),
 				function () {
-				var _v0 = model.bS;
+				var _v0 = model.bU;
 				switch (_v0.$) {
 					case 2:
 						var report = _v0.a;
@@ -40649,26 +41330,26 @@ var $author$project$View$Reports$reportsView = function (model) {
 									A2(
 									$author$project$View$Reports$card,
 									'Contacts',
-									$elm$core$String$fromInt(report.cP)),
+									$elm$core$String$fromInt(report.cR)),
 									A2(
 									$author$project$View$Reports$card,
 									'Students',
-									$elm$core$String$fromInt(report.eK)),
+									$elm$core$String$fromInt(report.eO)),
 									A2(
 									$author$project$View$Reports$card,
 									'Leads',
-									$elm$core$String$fromInt(report.dJ)),
+									$elm$core$String$fromInt(report.dL)),
 									A2(
 									$author$project$View$Reports$card,
 									'Active cases',
-									$elm$core$String$fromInt(report.cd)),
+									$elm$core$String$fromInt(report.cf)),
 									A2(
 									$author$project$View$Reports$card,
 									'Open tasks',
-									$elm$core$String$fromInt(report.d_)),
-									A2($author$project$View$Reports$card, 'Open pipeline', report.ea),
-									A2($author$project$View$Reports$card, 'Won deal value', report.fc),
-									A2($author$project$View$Reports$card, 'Outstanding invoices', report.cA)
+									$elm$core$String$fromInt(report.d1)),
+									A2($author$project$View$Reports$card, 'Open pipeline', report.ee),
+									A2($author$project$View$Reports$card, 'Won deal value', report.fe),
+									A2($author$project$View$Reports$card, 'Outstanding invoices', report.cC)
 								]));
 					case 3:
 						var message = _v0.a;
@@ -40709,11 +41390,14 @@ var $author$project$View$Reports$reportsView = function (model) {
 					]))
 			]));
 };
+var $author$project$Types$OpenedAddStudentForSchool = function (a) {
+	return {$: 148, a: a};
+};
 var $author$project$Types$OpenedEditSchool = function (a) {
-	return {$: 127, a: a};
+	return {$: 129, a: a};
 };
 var $author$project$Types$RequestedDeleteSchool = function (a) {
-	return {$: 135, a: a};
+	return {$: 137, a: a};
 };
 var $author$project$View$Schools$contractStatusBadge = function (status) {
 	var cls = function () {
@@ -40741,15 +41425,24 @@ var $author$project$View$Schools$contractStatusBadge = function (status) {
 			]));
 };
 var $author$project$View$Schools$schoolDetailView = F2(
-	function (_v0, s) {
+	function (model, s) {
+		var linkedCount = function () {
+			var _v0 = model.dP;
+			if (_v0.$ === 2) {
+				var data = _v0.a;
+				return _Utils_eq(data.d6, s.aj) ? data.t : s.aa;
+			} else {
+				return s.aa;
+			}
+		}();
 		var display = function (v) {
 			return $elm$core$String$isEmpty(v) ? '—' : v;
 		};
-		var ownerDisplay = display(s.z);
-		var websiteDisplay = display(s.fb);
-		var createdDisplay = display(s.af);
-		var contactDisplay = display(s.aS);
-		var commissionDisplay = display(s.cK);
+		var ownerDisplay = display(s.A);
+		var websiteDisplay = display(s.fd);
+		var createdDisplay = display(s.ah);
+		var contactDisplay = display(s.aU);
+		var commissionDisplay = display(s.cM);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -40823,7 +41516,7 @@ var $author$project$View$Schools$schoolDetailView = F2(
 												[
 													$elm$html$Html$text(s.M)
 												])),
-											$author$project$View$Schools$contractStatusBadge(s.aT)
+											$author$project$View$Schools$contractStatusBadge(s.aV)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -40834,7 +41527,7 @@ var $author$project$View$Schools$schoolDetailView = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											display(s.ao))
+											display(s.aq))
 										]))
 								])),
 							A2(
@@ -40897,14 +41590,14 @@ var $author$project$View$Schools$schoolDetailView = F2(
 						[
 							A3(
 							$author$project$View$Helpers$detailStat,
-							'Students enrolled',
-							$elm$core$String$fromInt(s.eL),
-							'Referred'),
+							'Linked students',
+							$elm$core$String$fromInt(linkedCount),
+							'Applications associated'),
 							A3($author$project$View$Helpers$detailStat, 'Commission', commissionDisplay, 'Rate'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Country',
-							display(s.ao),
+							display(s.aq),
 							'Location'),
 							A3($author$project$View$Helpers$detailStat, 'Created', createdDisplay, 'Added to CRM')
 						])),
@@ -40940,7 +41633,7 @@ var $author$project$View$Schools$schoolDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconPin,
 												'Country',
-												display(s.ao)),
+												display(s.aq)),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconUserTiny, 'Contact', contactDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Commission', commissionDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Created', createdDisplay),
@@ -40950,7 +41643,7 @@ var $author$project$View$Schools$schoolDetailView = F2(
 									$author$project$View$Helpers$detailCard,
 									'Website',
 									$elm$core$Maybe$Nothing,
-									$elm$core$String$isEmpty(s.fb) ? A2(
+									$elm$core$String$isEmpty(s.fd) ? A2(
 										$elm$html$Html$p,
 										_List_fromArray(
 											[
@@ -40971,11 +41664,11 @@ var $author$project$View$Schools$schoolDetailView = F2(
 												$elm$html$Html$a,
 												_List_fromArray(
 													[
-														$elm$html$Html$Attributes$href(s.fb)
+														$elm$html$Html$Attributes$href(s.fd)
 													]),
 												_List_fromArray(
 													[
-														$elm$html$Html$text(s.fb)
+														$elm$html$Html$text(s.fd)
 													]))
 											]))),
 									A3(
@@ -41020,24 +41713,43 @@ var $author$project$View$Schools$schoolDetailView = F2(
 												[
 													$elm$html$Html$Attributes$class('detail-card__action'),
 													$elm$html$Html$Attributes$type_('button'),
-													$elm$html$Html$Attributes$disabled(true),
-													$elm$html$Html$Attributes$title('Coming soon')
+													$elm$html$Html$Events$onClick(
+													$author$project$Types$OpenedAddStudentForSchool(s))
 												]),
 											_List_fromArray(
 												[
 													$elm$html$Html$text('Add student')
 												]))),
-									A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconContacts, 'No students yet', 'Students referred to this school will appear here.'))
+									A2(
+										$elm$html$Html$div,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2($author$project$View$Students$linkedStudentsView, model, s.aj),
+												A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
+														$elm$html$Html$Attributes$type_('button'),
+														$elm$html$Html$Events$onClick(
+														$author$project$Types$NavigatedTo($author$project$Types$Students))
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Open students')
+													]))
+											])))
 								]))
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseSchoolForm = {$: 131};
-var $author$project$Types$ConfirmedCloseSchoolForm = {$: 130};
-var $author$project$Types$SubmittedSchoolForm = {$: 133};
+var $author$project$Types$CancelledCloseSchoolForm = {$: 133};
+var $author$project$Types$ConfirmedCloseSchoolForm = {$: 132};
+var $author$project$Types$SubmittedSchoolForm = {$: 135};
 var $author$project$Types$UpdatedSchoolFormField = F2(
 	function (a, b) {
-		return {$: 132, a: a, b: b};
+		return {$: 134, a: a, b: b};
 	});
 var $author$project$View$Schools$schoolFormFieldError = F2(
 	function (field, sf) {
@@ -41051,7 +41763,7 @@ var $author$project$View$Schools$schoolFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					sf.dj)));
+					sf.dl)));
 	});
 var $author$project$View$Schools$schoolContractPills = function (sf) {
 	return A2(
@@ -41081,7 +41793,7 @@ var $author$project$View$Schools$schoolContractPills = function (sf) {
 				A2(
 					$elm$core$List$map,
 					function (s) {
-						var cls = _Utils_eq(sf.aT, s) ? 'stage-pill stage-pill--active' : 'stage-pill';
+						var cls = _Utils_eq(sf.aV, s) ? 'stage-pill stage-pill--active' : 'stage-pill';
 						return A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -41090,7 +41802,7 @@ var $author$project$View$Schools$schoolContractPills = function (sf) {
 									$elm$html$Html$Attributes$class(cls),
 									$elm$html$Html$Events$onClick(
 									A2($author$project$Types$UpdatedSchoolFormField, 'contractStatus', s)),
-									$elm$html$Html$Attributes$disabled(sf.eN)
+									$elm$html$Html$Attributes$disabled(sf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -41127,15 +41839,15 @@ var $author$project$View$Schools$schoolRichField = F4(
 				case 'name':
 					return sf.M;
 				case 'countryCode':
-					return sf.ao;
+					return sf.aq;
 				case 'commissionRate':
-					return sf.cK;
+					return sf.cM;
 				case 'studentsEnrolled':
-					return sf.eL;
+					return sf.aa;
 				case 'contactPerson':
-					return sf.aS;
+					return sf.aU;
 				case 'website':
-					return sf.fb;
+					return sf.fd;
 				default:
 					return '';
 			}
@@ -41166,7 +41878,7 @@ var $author$project$View$Schools$schoolRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedSchoolFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(sf.eN)
+								$elm$html$Html$Attributes$disabled(sf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -41203,7 +41915,7 @@ var $author$project$View$Schools$schoolRichField = F4(
 	});
 var $author$project$View$Schools$schoolFormView = F2(
 	function (sf, isEdit) {
-		var submitLabel = sf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save school');
+		var submitLabel = sf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save school');
 		var formError = A2($author$project$View$Schools$schoolFormFieldError, 'form', sf);
 		return A2(
 			$elm$html$Html$form,
@@ -41242,7 +41954,6 @@ var $author$project$View$Schools$schoolFormView = F2(
 							A4($author$project$View$Schools$schoolRichField, sf, 'name', 'School name', 'text'),
 							A4($author$project$View$Schools$schoolRichField, sf, 'countryCode', 'Country code (e.g. CA)', 'text'),
 							A4($author$project$View$Schools$schoolRichField, sf, 'commissionRate', 'Commission (e.g. 15%)', 'text'),
-							A4($author$project$View$Schools$schoolRichField, sf, 'studentsEnrolled', 'Students enrolled', 'number'),
 							A4($author$project$View$Schools$schoolRichField, sf, 'contactPerson', 'Contact person', 'text'),
 							A4($author$project$View$Schools$schoolRichField, sf, 'website', 'Website', 'url')
 						])),
@@ -41274,7 +41985,7 @@ var $author$project$View$Schools$schoolFormView = F2(
 									$elm$html$Html$Attributes$value(sf.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedSchoolFormField('notes')),
-									$elm$html$Html$Attributes$disabled(sf.eN),
+									$elm$html$Html$Attributes$disabled(sf.eP),
 									$elm$html$Html$Attributes$rows(4)
 								]),
 							_List_Nil)
@@ -41294,7 +42005,7 @@ var $author$project$View$Schools$schoolFormView = F2(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseSchoolForm),
-									$elm$html$Html$Attributes$disabled(sf.eN)
+									$elm$html$Html$Attributes$disabled(sf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -41306,7 +42017,7 @@ var $author$project$View$Schools$schoolFormView = F2(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(sf.eN || (!sf.i))
+									$elm$html$Html$Attributes$disabled(sf.eP || (!sf.i))
 								]),
 							_List_fromArray(
 								[
@@ -41317,7 +42028,7 @@ var $author$project$View$Schools$schoolFormView = F2(
 	});
 var $author$project$View$Schools$schoolFormModal = F2(
 	function (model, sf) {
-		var isEdit = !_Utils_eq(model.df, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.dh, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit school' : 'Add school';
 		return A2(
 			$elm$html$Html$div,
@@ -41448,21 +42159,19 @@ var $author$project$View$Schools$schoolFormModal = F2(
 						]))
 				]));
 	});
-var $author$project$Types$OpenedAddSchool = {$: 126};
+var $author$project$Types$OpenedAddSchool = {$: 128};
 var $author$project$Types$SchoolsPageChanged = function (a) {
-	return {$: 139, a: a};
+	return {$: 141, a: a};
 };
 var $author$project$Types$UpdatedSchoolsQuery = function (a) {
-	return {$: 125, a: a};
+	return {$: 127, a: a};
 };
 var $author$project$View$Schools$schoolRow = function (s) {
 	return A2(
 		$elm$html$Html$tr,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('contact-row'),
-				$elm$html$Html$Events$onClick(
-				$author$project$Types$OpenedSchoolDetail(s))
+				$elm$html$Html$Attributes$class('contact-row')
 			]),
 		_List_fromArray(
 			[
@@ -41499,10 +42208,13 @@ var $author$project$View$Schools$schoolRow = function (s) {
 								_List_fromArray(
 									[
 										A2(
-										$elm$html$Html$span,
+										$elm$html$Html$a,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('contact-name')
+												$elm$html$Html$Attributes$class('contact-name record-link'),
+												$elm$html$Html$Attributes$href(
+												$author$project$Router$routeToPath(
+													$author$project$Types$SchoolDetail(s.aj)))
 											]),
 										_List_fromArray(
 											[
@@ -41517,7 +42229,7 @@ var $author$project$View$Schools$schoolRow = function (s) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												$elm$core$String$isEmpty(s.fb) ? s.ao : s.fb)
+												$elm$core$String$isEmpty(s.fd) ? s.aq : s.fd)
 											]))
 									]))
 							]))
@@ -41527,21 +42239,21 @@ var $author$project$View$Schools$schoolRow = function (s) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(s.ao)
+						$elm$html$Html$text(s.aq)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(s.cK)
+						$elm$html$Html$text(s.cM)
 					])),
 				A2(
 				$elm$html$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$View$Schools$contractStatusBadge(s.aT)
+						$author$project$View$Schools$contractStatusBadge(s.aV)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -41549,7 +42261,7 @@ var $author$project$View$Schools$schoolRow = function (s) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(s.eL))
+						$elm$core$String$fromInt(s.aa))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -41664,7 +42376,7 @@ var $author$project$View$Schools$schoolsSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Schools$schoolsView = function (model) {
-	var _v0 = model.et;
+	var _v0 = model.ex;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Schools$schoolsSkeleton;
@@ -41698,7 +42410,7 @@ var $author$project$View$Schools$schoolsView = function (model) {
 			var data = _v0.a;
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var filtered = data.A;
+			var filtered = data.x;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -41751,7 +42463,8 @@ var $author$project$View$Schools$schoolsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search schools'),
 												$elm$html$Html$Attributes$placeholder('Search schools…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedSchoolsQuery)
@@ -41881,7 +42594,7 @@ var $author$project$View$Schools$schoolsView = function (model) {
 														_List_Nil,
 														_List_fromArray(
 															[
-																$elm$html$Html$text('Students')
+																$elm$html$Html$text('Linked students')
 															])),
 														A2(
 														$elm$html$Html$th,
@@ -41901,14 +42614,14 @@ var $author$project$View$Schools$schoolsView = function (model) {
 										A2($elm$core$List$map, $author$project$View$Schools$schoolRow, filtered))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$SchoolsPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$SchoolsPageChanged)
 					]));
 	}
 };
-var $author$project$Types$SubmittedPassword = {$: 96};
+var $author$project$Types$SubmittedPassword = {$: 97};
 var $author$project$Types$UpdatedPasswordField = F2(
 	function (a, b) {
-		return {$: 95, a: a, b: b};
+		return {$: 96, a: a, b: b};
 	});
 var $author$project$View$Settings$settingsFieldError = F2(
 	function (field, errors) {
@@ -41959,8 +42672,9 @@ var $author$project$View$Settings$settingsStatus = F2(
 			}
 		}
 	});
-var $author$project$View$Settings$settingsTextField = F7(
-	function (fieldId, labelText, inputType, currentValue, isDisabled, toMsg, err) {
+var $author$project$Types$ToggledShowPassword = {$: 3};
+var $author$project$View$Settings$settingsTextField = F8(
+	function (fieldId, labelText, inputType, currentValue, isDisabled, reveal, toMsg, err) {
 		var cls = function () {
 			if (!err.$) {
 				return 'ecc-field ecc-field--error';
@@ -41982,7 +42696,8 @@ var $author$project$View$Settings$settingsTextField = F7(
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$id(fieldId),
-								$elm$html$Html$Attributes$type_(inputType),
+								$elm$html$Html$Attributes$type_(
+								((inputType === 'password') && reveal) ? 'text' : inputType),
 								$elm$html$Html$Attributes$placeholder(' '),
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(toMsg),
@@ -42000,30 +42715,65 @@ var $author$project$View$Settings$settingsTextField = F7(
 								$elm$html$Html$text(labelText)
 							]))
 					]),
-				function () {
-					if (!err.$) {
-						var msg = err.a;
-						return _List_fromArray(
+				_Utils_ap(
+					((inputType === 'password') && (labelText === 'New password')) ? _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$p,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('settings-password-hint')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Use at least 12 characters. Passwords are case-sensitive.')
+								]))
+						]) : _List_Nil,
+					_Utils_ap(
+						(inputType === 'password') ? _List_fromArray(
 							[
 								A2(
-								$elm$html$Html$p,
+								$elm$html$Html$button,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('ecc-field__message')
+										$elm$html$Html$Attributes$type_('button'),
+										$elm$html$Html$Attributes$class('ecc-field__toggle'),
+										A2(
+										$elm$html$Html$Attributes$attribute,
+										'aria-label',
+										reveal ? 'Hide password' : 'Show password'),
+										$elm$html$Html$Events$onClick($author$project$Types$ToggledShowPassword)
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(msg)
+										$elm$html$Html$text(
+										reveal ? 'Hide' : 'Show')
 									]))
-							]);
-					} else {
-						return _List_Nil;
-					}
-				}()));
+							]) : _List_Nil,
+						function () {
+							if (!err.$) {
+								var msg = err.a;
+								return _List_fromArray(
+									[
+										A2(
+										$elm$html$Html$p,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('ecc-field__message')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(msg)
+											]))
+									]);
+							} else {
+								return _List_Nil;
+							}
+						}()))));
 	});
 var $author$project$View$Settings$settingsPasswordCard = function (model) {
-	var pf = model.d5;
-	var submitLabel = pf.eN ? 'Updating…' : 'Change password';
+	var pf = model.d9;
+	var submitLabel = pf.eP ? 'Updating…' : 'Change password';
 	return A3(
 		$author$project$View$Helpers$detailCard,
 		'Password',
@@ -42036,34 +42786,37 @@ var $author$project$View$Settings$settingsPasswordCard = function (model) {
 				]),
 			_List_fromArray(
 				[
-					A7(
+					A8(
 					$author$project$View$Settings$settingsTextField,
 					'pw-current',
 					'Current password',
 					'password',
-					pf.aU,
-					pf.eN,
+					pf.aW,
+					pf.eP,
+					model.eC,
 					$author$project$Types$UpdatedPasswordField('current'),
-					A2($author$project$View$Settings$settingsFieldError, 'current', pf.dj)),
-					A7(
+					A2($author$project$View$Settings$settingsFieldError, 'current', pf.dl)),
+					A8(
 					$author$project$View$Settings$settingsTextField,
 					'pw-next',
 					'New password',
 					'password',
-					pf.bt,
-					pf.eN,
+					pf.bv,
+					pf.eP,
+					model.eC,
 					$author$project$Types$UpdatedPasswordField('next'),
-					A2($author$project$View$Settings$settingsFieldError, 'next', pf.dj)),
-					A7(
+					A2($author$project$View$Settings$settingsFieldError, 'next', pf.dl)),
+					A8(
 					$author$project$View$Settings$settingsTextField,
 					'pw-confirm',
 					'Confirm new password',
 					'password',
-					pf.aP,
-					pf.eN,
+					pf.aR,
+					pf.eP,
+					model.eC,
 					$author$project$Types$UpdatedPasswordField('confirm'),
-					A2($author$project$View$Settings$settingsFieldError, 'confirm', pf.dj)),
-					A2($author$project$View$Settings$settingsStatus, pf.aa, pf.dj),
+					A2($author$project$View$Settings$settingsFieldError, 'confirm', pf.dl)),
+					A2($author$project$View$Settings$settingsStatus, pf.ac, pf.dl),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -42079,7 +42832,7 @@ var $author$project$View$Settings$settingsPasswordCard = function (model) {
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$SubmittedPassword),
-									$elm$html$Html$Attributes$disabled(pf.eN)
+									$elm$html$Html$Attributes$disabled(pf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -42088,25 +42841,25 @@ var $author$project$View$Settings$settingsPasswordCard = function (model) {
 						]))
 				])));
 };
-var $author$project$Types$SubmittedProfile = {$: 93};
+var $author$project$Types$SubmittedProfile = {$: 94};
 var $author$project$Types$UpdatedProfileField = F2(
 	function (a, b) {
-		return {$: 92, a: a, b: b};
+		return {$: 93, a: a, b: b};
 	});
 var $author$project$View$Settings$settingsProfileCard = function (model) {
-	var pf = model.ee;
-	var submitLabel = pf.eN ? 'Saving…' : 'Save changes';
-	var nameErr = A2($author$project$View$Settings$settingsFieldError, 'name', pf.dj);
-	var emailErr = A2($author$project$View$Settings$settingsFieldError, 'email', pf.dj);
-	var canSubmit = (!pf.eN) && function () {
-		var _v0 = model.b3;
+	var pf = model.ei;
+	var submitLabel = pf.eP ? 'Saving…' : 'Save changes';
+	var nameErr = A2($author$project$View$Settings$settingsFieldError, 'name', pf.dl);
+	var emailErr = A2($author$project$View$Settings$settingsFieldError, 'email', pf.dl);
+	var canSubmit = (!pf.eP) && function () {
+		var _v0 = model.b5;
 		if (!_v0.$) {
 			var u = _v0.a;
 			return (!_Utils_eq(
 				$elm$core$String$trim(pf.M),
 				u.M)) || (!_Utils_eq(
-				$elm$core$String$trim(pf.ag),
-				u.ag));
+				$elm$core$String$trim(pf.ai),
+				u.ai));
 		} else {
 			return false;
 		}
@@ -42123,25 +42876,27 @@ var $author$project$View$Settings$settingsProfileCard = function (model) {
 				]),
 			_List_fromArray(
 				[
-					A7(
+					A8(
 					$author$project$View$Settings$settingsTextField,
 					'pf-name',
 					'Full name',
 					'text',
 					pf.M,
-					pf.eN,
+					pf.eP,
+					false,
 					$author$project$Types$UpdatedProfileField('name'),
 					nameErr),
-					A7(
+					A8(
 					$author$project$View$Settings$settingsTextField,
 					'pf-email',
 					'Email address',
 					'email',
-					pf.ag,
-					pf.eN,
+					pf.ai,
+					pf.eP,
+					false,
 					$author$project$Types$UpdatedProfileField('email'),
 					emailErr),
-					A2($author$project$View$Settings$settingsStatus, pf.aa, pf.dj),
+					A2($author$project$View$Settings$settingsStatus, pf.ac, pf.dl),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -42166,7 +42921,7 @@ var $author$project$View$Settings$settingsProfileCard = function (model) {
 						]))
 				])));
 };
-var $author$project$Types$RequestedLogoutAll = {$: 98};
+var $author$project$Types$RequestedLogoutAll = {$: 99};
 var $author$project$View$Settings$settingsSessionsCard = function (_v0) {
 	return A3(
 		$author$project$View$Helpers$detailCard,
@@ -42276,13 +43031,7 @@ var $author$project$View$Settings$settingsView = function (model) {
 			]));
 };
 var $author$project$Types$OpenedAddCaseForStudent = function (a) {
-	return {$: 196, a: a};
-};
-var $author$project$Types$OpenedEditStudent = function (a) {
-	return {$: 144, a: a};
-};
-var $author$project$Types$RequestedDeleteStudent = function (a) {
-	return {$: 152, a: a};
+	return {$: 201, a: a};
 };
 var $author$project$View$Students$caseStageBadge = function (s) {
 	var cls = function () {
@@ -42355,9 +43104,9 @@ var $author$project$View$Students$caseDossierRow = function (c) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(c.cE)
+										$elm$html$Html$text(c.cG)
 									])),
-								$author$project$View$Students$caseStageBadge(c.cV)
+								$author$project$View$Students$caseStageBadge(c.cX)
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -42375,7 +43124,7 @@ var $author$project$View$Students$caseDossierRow = function (c) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(c.c1 + (' · ' + c.fa))
+										$elm$html$Html$text(c.c3 + (' · ' + c.fc))
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -42386,7 +43135,7 @@ var $author$project$View$Students$caseDossierRow = function (c) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$isEmpty(c.dU) ? 'No deadline' : ('Deadline ' + c.dU))
+										$elm$core$String$isEmpty(c.dX) ? 'No deadline' : ('Deadline ' + c.dX))
 									]))
 							]))
 					]))
@@ -42463,9 +43212,9 @@ var $author$project$View$Students$documentDossierRow = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(d.a9)
+										$elm$html$Html$text(d.bb)
 									])),
-								$author$project$View$Students$docStatusBadge(d.aj)
+								$author$project$View$Students$docStatusBadge(d.al)
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -42475,7 +43224,7 @@ var $author$project$View$Students$documentDossierRow = function (d) {
 							]),
 						_List_fromArray(
 							[
-								$elm$core$String$isEmpty(d.cE) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(d.cG) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -42483,9 +43232,9 @@ var $author$project$View$Students$documentDossierRow = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(d.cE)
+										$elm$html$Html$text(d.cG)
 									])),
-								$elm$core$String$isEmpty(d.aW) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(d.aY) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -42493,7 +43242,7 @@ var $author$project$View$Students$documentDossierRow = function (d) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Requested ' + d.aW)
+										$elm$html$Html$text('Requested ' + d.aY)
 									]))
 							]))
 					]))
@@ -42516,6 +43265,25 @@ var $author$project$View$Icons$iconSchool = A2(
 		[
 			$author$project$View$Helpers$svgPath('M22 10v6M2 10l10-5 10 5-10 5z'),
 			$author$project$View$Helpers$svgPath('M6 12v5c3 3 9 3 12 0v-5')
+		]));
+var $author$project$View$Icons$iconStudent = A2(
+	$author$project$View$Helpers$svgIcon,
+	_List_fromArray(
+		[
+			A2($elm$html$Html$Attributes$attribute, 'viewBox', '0 0 24 24'),
+			A2($elm$html$Html$Attributes$attribute, 'width', '18'),
+			A2($elm$html$Html$Attributes$attribute, 'height', '18'),
+			A2($elm$html$Html$Attributes$attribute, 'fill', 'none'),
+			A2($elm$html$Html$Attributes$attribute, 'stroke', 'currentColor'),
+			A2($elm$html$Html$Attributes$attribute, 'stroke-width', '1.8'),
+			A2($elm$html$Html$Attributes$attribute, 'stroke-linecap', 'round'),
+			A2($elm$html$Html$Attributes$attribute, 'stroke-linejoin', 'round')
+		]),
+	_List_fromArray(
+		[
+			$author$project$View$Helpers$svgPath('M12 14l9-5-9-5-9 5 9 5z'),
+			$author$project$View$Helpers$svgPath('M12 14l6.16-3.42a12 12 0 0 1-12.32 0z'),
+			$author$project$View$Helpers$svgPath('M12 14v7')
 		]));
 var $author$project$View$Students$milestoneBadge = function (m) {
 	var cls = function () {
@@ -42588,9 +43356,9 @@ var $author$project$View$Students$invoiceDossierRow = function (inv) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(inv.dB)
+										$elm$html$Html$text(inv.dD)
 									])),
-								$author$project$View$Students$milestoneBadge(inv.d8)
+								$author$project$View$Students$milestoneBadge(inv.ec)
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -42609,9 +43377,9 @@ var $author$project$View$Students$invoiceDossierRow = function (inv) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										'Balance ' + A2($author$project$View$Format$formatCurrencyWith, inv.ap, inv.cz))
+										'Balance ' + A2($author$project$View$Format$formatCurrencyWith, inv.ar, inv.cB))
 									])),
-								$elm$core$String$isEmpty(inv.cE) ? $elm$html$Html$text('') : A2(
+								$elm$core$String$isEmpty(inv.cG) ? $elm$html$Html$text('') : A2(
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
@@ -42619,7 +43387,7 @@ var $author$project$View$Students$invoiceDossierRow = function (inv) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(inv.cE)
+										$elm$html$Html$text(inv.cG)
 									]))
 							]))
 					]))
@@ -42627,33 +43395,33 @@ var $author$project$View$Students$invoiceDossierRow = function (inv) {
 };
 var $author$project$View$Dashboard$invoiceEntry = function (inv) {
 	return {
-		af: inv.af,
-		e$: A5(
+		ah: inv.ah,
+		e1: A5(
 			$author$project$View$Dashboard$activityRow,
 			'Invoice',
 			$author$project$Types$OpenedInvoiceDetail(inv),
 			_Utils_ap(
-				inv.d8,
-				$elm$core$String$isEmpty(inv.aM) ? '' : (' · ' + inv.aM)),
-			A2($elm$core$String$left, 10, inv.af),
-			inv.dB)
+				inv.ec,
+				$elm$core$String$isEmpty(inv.aO) ? '' : (' · ' + inv.aO)),
+			A2($elm$core$String$left, 10, inv.ah),
+			inv.dD)
 	};
 };
 var $author$project$View$Students$studentActivity = function (model) {
-	var _v0 = model.eH;
+	var _v0 = model.eL;
 	if (_v0.$ === 2) {
 		var dossier = _v0.a;
 		return _Utils_ap(
-			A2($elm$core$List$map, $author$project$View$Dashboard$caseEntry, dossier.cF),
+			A2($elm$core$List$map, $author$project$View$Dashboard$caseEntry, dossier.cH),
 			_Utils_ap(
-				A2($elm$core$List$map, $author$project$View$Dashboard$documentEntry, dossier.c2),
-				A2($elm$core$List$map, $author$project$View$Dashboard$invoiceEntry, dossier.dE)));
+				A2($elm$core$List$map, $author$project$View$Dashboard$documentEntry, dossier.c4),
+				A2($elm$core$List$map, $author$project$View$Dashboard$invoiceEntry, dossier.dG)));
 	} else {
 		return _List_Nil;
 	}
 };
 var $author$project$View$Students$studentAlerts = function (model) {
-	var _v0 = model.eH;
+	var _v0 = model.eL;
 	if (_v0.$ === 2) {
 		var dossier = _v0.a;
 		var unpaid = A2(
@@ -42662,27 +43430,27 @@ var $author$project$View$Students$studentAlerts = function (model) {
 			A2(
 				$elm$core$List$filter,
 				function (inv) {
-					return inv.cz > 0;
+					return inv.cB > 0;
 				},
-				dossier.dE));
+				dossier.dG));
 		var expired = A2(
 			$elm$core$List$map,
 			$author$project$View$Dashboard$expiredDocumentAlert,
 			A2(
 				$elm$core$List$filter,
 				function (d) {
-					return d.aj === 'Expired';
+					return d.al === 'Expired';
 				},
-				dossier.c2));
+				dossier.c4));
 		var corrections = A2(
 			$elm$core$List$map,
 			$author$project$View$Dashboard$documentCorrectionAlert,
 			A2(
 				$elm$core$List$filter,
 				function (d) {
-					return d.aj === 'Correction Required';
+					return d.al === 'Correction Required';
 				},
-				dossier.c2));
+				dossier.c4));
 		return _Utils_ap(
 			corrections,
 			_Utils_ap(expired, unpaid));
@@ -42690,86 +43458,31 @@ var $author$project$View$Students$studentAlerts = function (model) {
 		return _List_Nil;
 	}
 };
-var $author$project$View$Students$studentStatusBadge = F2(
-	function (category, status) {
-		var cls = function () {
-			var _v0 = _Utils_Tuple2(
-				category,
-				$elm$core$String$toLower(status));
-			switch (_v0.a) {
-				case 'acceptance':
-					switch (_v0.b) {
-						case 'accepted':
-							return 'badge badge--success';
-						case 'rejected':
-							return 'badge badge--lost';
-						case 'waitlisted':
-							return 'badge badge--info';
-						default:
-							return 'badge badge--muted';
-					}
-				case 'visa':
-					switch (_v0.b) {
-						case 'approved':
-							return 'badge badge--success';
-						case 'denied':
-							return 'badge badge--lost';
-						case 'pending':
-							return 'badge badge--info';
-						default:
-							return 'badge badge--muted';
-					}
-				case 'invoice':
-					switch (_v0.b) {
-						case 'paid':
-							return 'badge badge--success';
-						case 'overdue':
-							return 'badge badge--lost';
-						case 'issued':
-							return 'badge badge--info';
-						default:
-							return 'badge badge--muted';
-					}
-				default:
-					return 'badge';
-			}
-		}();
-		return A2(
-			$elm$html$Html$span,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class(cls)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(status)
-				]));
-	});
 var $author$project$View$Students$studentDetailView = F2(
 	function (model, s) {
 		var dossierData = function () {
-			var _v1 = model.eH;
+			var _v1 = model.eL;
 			switch (_v1.$) {
 				case 2:
 					var dossier = _v1.a;
-					return {cF: dossier.cF, c2: dossier.c2, dE: dossier.dE, aj: 'loaded'};
+					return {cH: dossier.cH, c4: dossier.c4, dG: dossier.dG, al: 'loaded'};
 				case 1:
-					return {cF: _List_Nil, c2: _List_Nil, dE: _List_Nil, aj: 'loading'};
+					return {cH: _List_Nil, c4: _List_Nil, dG: _List_Nil, al: 'loading'};
 				case 3:
-					return {cF: _List_Nil, c2: _List_Nil, dE: _List_Nil, aj: 'error'};
+					return {cH: _List_Nil, c4: _List_Nil, dG: _List_Nil, al: 'error'};
 				default:
-					return {cF: _List_Nil, c2: _List_Nil, dE: _List_Nil, aj: 'notasked'};
+					return {cH: _List_Nil, c4: _List_Nil, dG: _List_Nil, al: 'notasked'};
 			}
 		}();
 		var display = function (v) {
 			return $elm$core$String$isEmpty(v) ? '—' : v;
 		};
-		var ownerDisplay = display(s.z);
-		var programDisplay = display(s.ef);
-		var schoolDisplay = display(s.eq);
-		var createdDisplay = display(s.af);
-		var countryDisplay = display(s.ao);
-		var codeDisplay = display(s.eG);
+		var ownerDisplay = display(s.A);
+		var programDisplay = display(s.ej);
+		var schoolDisplay = display(s.eu);
+		var createdDisplay = display(s.ah);
+		var countryDisplay = display(s.aq);
+		var codeDisplay = display(s.eK);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -42818,17 +43531,32 @@ var $author$project$View$Students$studentDetailView = F2(
 						]),
 					_List_fromArray(
 						[
-							A2(
-							$elm$html$Html$div,
+							A3(
+							$elm$html$Html$node,
+							'crm-record-photo',
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('detail-hero__avatar')
+									$elm$html$Html$Attributes$class('detail-hero__avatar'),
+									A2($elm$html$Html$Attributes$attribute, 'entity', 'students'),
+									A2($elm$html$Html$Attributes$attribute, 'record-id', s.aj),
+									A2(
+									$elm$html$Html$Attributes$attribute,
+									'initials',
+									$author$project$View$Helpers$initials(s.M)),
+									A2(
+									$elm$html$Html$Attributes$attribute,
+									'editable',
+									A2(
+										$elm$core$Maybe$withDefault,
+										false,
+										A2(
+											$elm$core$Maybe$map,
+											function (u) {
+												return u.es !== 'viewer';
+											},
+											model.b5)) ? 'true' : 'false')
 								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(
-									$author$project$View$Helpers$initials(s.M))
-								])),
+							_List_Nil),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -42855,7 +43583,7 @@ var $author$project$View$Students$studentDetailView = F2(
 												[
 													$elm$html$Html$text(s.M)
 												])),
-											A2($author$project$View$Students$studentStatusBadge, 'acceptance', s.cb)
+											A2($author$project$View$Students$studentStatusBadge, 'acceptance', s.cd)
 										])),
 									A2(
 									$elm$html$Html$p,
@@ -42930,21 +43658,21 @@ var $author$project$View$Students$studentDetailView = F2(
 							$author$project$View$Helpers$detailStat,
 							'Cases',
 							$elm$core$String$fromInt(
-								$elm$core$List$length(dossierData.cF)),
+								$elm$core$List$length(dossierData.cH)),
 							'Total'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Documents',
 							$elm$core$String$fromInt(
-								$elm$core$List$length(dossierData.c2)),
+								$elm$core$List$length(dossierData.c4)),
 							'On file'),
 							A3(
 							$author$project$View$Helpers$detailStat,
 							'Invoices',
 							$elm$core$String$fromInt(
-								$elm$core$List$length(dossierData.dE)),
+								$elm$core$List$length(dossierData.dG)),
 							'Issued'),
-							A3($author$project$View$Helpers$detailStat, 'Visa', s.e9, 'Immigration')
+							A3($author$project$View$Helpers$detailStat, 'Visa', s.fb, 'Immigration')
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -42980,7 +43708,7 @@ var $author$project$View$Students$studentDetailView = F2(
 												$author$project$View$Helpers$infoRow,
 												$author$project$View$Icons$iconUserTiny,
 												'Agent',
-												display(s.cj)),
+												display(s.cl)),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Program', programDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconPin, 'Country', countryDisplay),
 												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconCalendar, 'Created', createdDisplay),
@@ -42998,9 +43726,9 @@ var $author$project$View$Students$studentDetailView = F2(
 											]),
 										_List_fromArray(
 											[
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Acceptance', s.cb),
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconMail, 'Visa', s.e9),
-												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Invoice', s.dD)
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconTasks, 'Acceptance', s.cd),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconMail, 'Visa', s.fb),
+												A3($author$project$View$Helpers$infoRow, $author$project$View$Icons$iconDeals, 'Invoice', s.dF)
 											]))),
 									A3(
 									$author$project$View$Helpers$detailCard,
@@ -43052,7 +43780,7 @@ var $author$project$View$Students$studentDetailView = F2(
 													$elm$html$Html$text('New case')
 												]))),
 									function () {
-										var _v0 = dossierData.aj;
+										var _v0 = dossierData.al;
 										switch (_v0) {
 											case 'loading':
 												return A2(
@@ -43077,37 +43805,37 @@ var $author$project$View$Students$studentDetailView = F2(
 															$elm$html$Html$text('Could not load dossier.')
 														]));
 											default:
-												return $elm$core$List$isEmpty(dossierData.cF) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconTasks, 'No cases yet', 'Open a case to start tracking submissions and visa progress.') : A2(
+												return $elm$core$List$isEmpty(dossierData.cH) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconTasks, 'No cases yet', 'Open a case to start tracking submissions and visa progress.') : A2(
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$class('activity-list')
 														]),
-													A2($elm$core$List$map, $author$project$View$Students$caseDossierRow, dossierData.cF));
+													A2($elm$core$List$map, $author$project$View$Students$caseDossierRow, dossierData.cH));
 										}
 									}()),
 									A3(
 									$author$project$View$Helpers$detailCard,
 									'Documents',
 									$elm$core$Maybe$Nothing,
-									$elm$core$List$isEmpty(dossierData.c2) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconContacts, 'No documents yet', 'Documents attached to this student\u0027s cases will appear here.') : A2(
+									$elm$core$List$isEmpty(dossierData.c4) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconContacts, 'No documents yet', 'Documents attached to this student\u0027s cases will appear here.') : A2(
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$class('activity-list')
 											]),
-										A2($elm$core$List$map, $author$project$View$Students$documentDossierRow, dossierData.c2))),
+										A2($elm$core$List$map, $author$project$View$Students$documentDossierRow, dossierData.c4))),
 									A3(
 									$author$project$View$Helpers$detailCard,
 									'Invoices',
 									$elm$core$Maybe$Nothing,
-									$elm$core$List$isEmpty(dossierData.dE) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconDeals, 'No invoices yet', 'Invoices tied to this student\u0027s cases will appear here.') : A2(
+									$elm$core$List$isEmpty(dossierData.dG) ? A3($author$project$View$Helpers$detailEmpty, $author$project$View$Icons$iconDeals, 'No invoices yet', 'Invoices tied to this student\u0027s cases will appear here.') : A2(
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$class('activity-list')
 											]),
-										A2($elm$core$List$map, $author$project$View$Students$invoiceDossierRow, dossierData.dE)))
+										A2($elm$core$List$map, $author$project$View$Students$invoiceDossierRow, dossierData.dG)))
 								]))
 						])),
 					A2(
@@ -43125,12 +43853,12 @@ var $author$project$View$Students$studentDetailView = F2(
 						]))
 				]));
 	});
-var $author$project$Types$CancelledCloseStudentForm = {$: 148};
-var $author$project$Types$ConfirmedCloseStudentForm = {$: 147};
-var $author$project$Types$SubmittedStudentForm = {$: 150};
+var $author$project$Types$CancelledCloseStudentForm = {$: 153};
+var $author$project$Types$ConfirmedCloseStudentForm = {$: 152};
+var $author$project$Types$SubmittedStudentForm = {$: 155};
 var $author$project$Types$UpdatedStudentFormField = F2(
 	function (a, b) {
-		return {$: 149, a: a, b: b};
+		return {$: 154, a: a, b: b};
 	});
 var $author$project$View$Students$studentFormFieldError = F2(
 	function (field, sf) {
@@ -43144,23 +43872,41 @@ var $author$project$View$Students$studentFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					sf.dj)));
+					sf.dl)));
 	});
 var $author$project$View$Students$studentAgentSelect = F2(
 	function (model, sf) {
 		var options = function () {
-			var _v2 = model.cl;
-			if (_v2.$ === 2) {
-				var data = _v2.a;
-				return A2(
-					$elm$core$List$sortBy,
-					function ($) {
-						return $.M;
-					},
-					data.A);
-			} else {
-				return _List_Nil;
-			}
+			var loaded = function () {
+				var _v3 = model.cn;
+				if (_v3.$ === 2) {
+					var data = _v3.a;
+					return data.x;
+				} else {
+					return _List_Nil;
+				}
+			}();
+			var current = function () {
+				var _v2 = model.e2;
+				if (!_v2.$) {
+					var agent = _v2.a;
+					return A2(
+						$elm$core$List$any,
+						function (item) {
+							return _Utils_eq(item.aj, agent.aj);
+						},
+						loaded) ? _List_Nil : _List_fromArray(
+						[agent]);
+				} else {
+					return _List_Nil;
+				}
+			}();
+			return A2(
+				$elm$core$List$sortBy,
+				function ($) {
+					return $.M;
+				},
+				_Utils_ap(loaded, current));
 		}();
 		var err = A2($author$project$View$Students$studentFormFieldError, 'agentId', sf);
 		var cls = function () {
@@ -43186,7 +43932,7 @@ var $author$project$View$Students$studentAgentSelect = F2(
 								$elm$html$Html$Attributes$id('stf-agentId'),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedStudentFormField('agentId')),
-								$elm$html$Html$Attributes$disabled(sf.eN)
+								$elm$html$Html$Attributes$disabled(sf.eP)
 							]),
 						A2(
 							$elm$core$List$cons,
@@ -43195,7 +43941,7 @@ var $author$project$View$Students$studentAgentSelect = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(''),
-										$elm$html$Html$Attributes$selected(sf.ci === '')
+										$elm$html$Html$Attributes$selected(sf.ck === '')
 									]),
 								_List_fromArray(
 									[
@@ -43208,9 +43954,9 @@ var $author$project$View$Students$studentAgentSelect = F2(
 										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value(a.ah),
+												$elm$html$Html$Attributes$value(a.aj),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(sf.ci, a.ah))
+												_Utils_eq(sf.ck, a.aj))
 											]),
 										_List_fromArray(
 											[
@@ -43258,11 +44004,11 @@ var $author$project$View$Students$studentRichField = F4(
 				case 'name':
 					return sf.M;
 				case 'studentCode':
-					return sf.eG;
+					return sf.eK;
 				case 'countryCode':
-					return sf.ao;
+					return sf.aq;
 				case 'program':
-					return sf.ef;
+					return sf.ej;
 				default:
 					return '';
 			}
@@ -43293,7 +44039,7 @@ var $author$project$View$Students$studentRichField = F4(
 								$elm$html$Html$Attributes$value(currentValue),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedStudentFormField(fieldId)),
-								$elm$html$Html$Attributes$disabled(sf.eN)
+								$elm$html$Html$Attributes$disabled(sf.eP)
 							]),
 						_List_Nil),
 						A2(
@@ -43331,18 +44077,36 @@ var $author$project$View$Students$studentRichField = F4(
 var $author$project$View$Students$studentSchoolSelect = F2(
 	function (model, sf) {
 		var options = function () {
-			var _v2 = model.et;
-			if (_v2.$ === 2) {
-				var data = _v2.a;
-				return A2(
-					$elm$core$List$sortBy,
-					function ($) {
-						return $.M;
-					},
-					data.A);
-			} else {
-				return _List_Nil;
-			}
+			var loaded = function () {
+				var _v3 = model.ex;
+				if (_v3.$ === 2) {
+					var data = _v3.a;
+					return data.x;
+				} else {
+					return _List_Nil;
+				}
+			}();
+			var current = function () {
+				var _v2 = model.e9;
+				if (!_v2.$) {
+					var school = _v2.a;
+					return A2(
+						$elm$core$List$any,
+						function (item) {
+							return _Utils_eq(item.aj, school.aj);
+						},
+						loaded) ? _List_Nil : _List_fromArray(
+						[school]);
+				} else {
+					return _List_Nil;
+				}
+			}();
+			return A2(
+				$elm$core$List$sortBy,
+				function ($) {
+					return $.M;
+				},
+				_Utils_ap(loaded, current));
 		}();
 		var err = A2($author$project$View$Students$studentFormFieldError, 'schoolId', sf);
 		var cls = function () {
@@ -43368,7 +44132,7 @@ var $author$project$View$Students$studentSchoolSelect = F2(
 								$elm$html$Html$Attributes$id('stf-schoolId'),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedStudentFormField('schoolId')),
-								$elm$html$Html$Attributes$disabled(sf.eN)
+								$elm$html$Html$Attributes$disabled(sf.eP)
 							]),
 						A2(
 							$elm$core$List$cons,
@@ -43377,7 +44141,7 @@ var $author$project$View$Students$studentSchoolSelect = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(''),
-										$elm$html$Html$Attributes$selected(sf.ep === '')
+										$elm$html$Html$Attributes$selected(sf.et === '')
 									]),
 								_List_fromArray(
 									[
@@ -43390,9 +44154,9 @@ var $author$project$View$Students$studentSchoolSelect = F2(
 										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value(s.ah),
+												$elm$html$Html$Attributes$value(s.aj),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(sf.ep, s.ah))
+												_Utils_eq(sf.et, s.aj))
 											]),
 										_List_fromArray(
 											[
@@ -43482,7 +44246,7 @@ var $author$project$View$Students$studentStatusPills = F5(
 	});
 var $author$project$View$Students$studentFormView = F3(
 	function (model, sf, isEdit) {
-		var submitLabel = sf.eN ? 'Saving…' : (isEdit ? 'Save changes' : 'Save student');
+		var submitLabel = sf.eP ? 'Saving…' : (isEdit ? 'Save changes' : 'Save student');
 		var formError = A2($author$project$View$Students$studentFormFieldError, 'form', sf);
 		return A2(
 			$elm$html$Html$form,
@@ -43528,24 +44292,24 @@ var $author$project$View$Students$studentFormView = F3(
 					A5(
 					$author$project$View$Students$studentStatusPills,
 					'Acceptance status',
-					sf.cb,
+					sf.cd,
 					$author$project$Types$acceptanceStatuses,
 					$author$project$Types$UpdatedStudentFormField('acceptanceStatus'),
-					sf.eN),
+					sf.eP),
 					A5(
 					$author$project$View$Students$studentStatusPills,
 					'Visa status',
-					sf.e9,
+					sf.fb,
 					$author$project$Types$visaStatuses,
 					$author$project$Types$UpdatedStudentFormField('visaStatus'),
-					sf.eN),
+					sf.eP),
 					A5(
 					$author$project$View$Students$studentStatusPills,
 					'Invoice status',
-					sf.dD,
+					sf.dF,
 					$author$project$Types$invoiceStatuses,
 					$author$project$Types$UpdatedStudentFormField('invoiceStatus'),
-					sf.eN),
+					sf.eP),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -43573,7 +44337,7 @@ var $author$project$View$Students$studentFormView = F3(
 									$elm$html$Html$Attributes$value(sf.n),
 									$elm$html$Html$Events$onInput(
 									$author$project$Types$UpdatedStudentFormField('notes')),
-									$elm$html$Html$Attributes$disabled(sf.eN),
+									$elm$html$Html$Attributes$disabled(sf.eP),
 									$elm$html$Html$Attributes$rows(4)
 								]),
 							_List_Nil)
@@ -43593,7 +44357,7 @@ var $author$project$View$Students$studentFormView = F3(
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 									$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseStudentForm),
-									$elm$html$Html$Attributes$disabled(sf.eN)
+									$elm$html$Html$Attributes$disabled(sf.eP)
 								]),
 							_List_fromArray(
 								[
@@ -43605,7 +44369,7 @@ var $author$project$View$Students$studentFormView = F3(
 								[
 									$elm$html$Html$Attributes$type_('submit'),
 									$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-									$elm$html$Html$Attributes$disabled(sf.eN || (!sf.i))
+									$elm$html$Html$Attributes$disabled(sf.eP || (!sf.i))
 								]),
 							_List_fromArray(
 								[
@@ -43616,7 +44380,7 @@ var $author$project$View$Students$studentFormView = F3(
 	});
 var $author$project$View$Students$studentFormModal = F2(
 	function (model, sf) {
-		var isEdit = !_Utils_eq(model.dg, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.di, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit student' : 'Add student';
 		return A2(
 			$elm$html$Html$div,
@@ -43747,162 +44511,12 @@ var $author$project$View$Students$studentFormModal = F2(
 						]))
 				]));
 	});
-var $author$project$Types$OpenedAddStudent = {$: 143};
+var $author$project$Types$OpenedAddStudent = {$: 146};
 var $author$project$Types$StudentsPageChanged = function (a) {
-	return {$: 156, a: a};
+	return {$: 161, a: a};
 };
 var $author$project$Types$UpdatedStudentsQuery = function (a) {
-	return {$: 142, a: a};
-};
-var $author$project$View$Students$studentRow = function (s) {
-	return A2(
-		$elm$html$Html$tr,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('contact-row'),
-				$elm$html$Html$Events$onClick(
-				$author$project$Types$OpenedStudentDetail(s))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('contact-name-cell')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('contact-avatar')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(
-										$author$project$View$Helpers$initials(s.M))
-									])),
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('contact-name-info')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$span,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('contact-name')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(s.M)
-											])),
-										A2(
-										$elm$html$Html$span,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('contact-email')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(
-												$elm$core$String$isEmpty(s.eG) ? s.ef : s.eG)
-											]))
-									]))
-							]))
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(s.eq)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$elm$core$String$isEmpty(s.cj) ? '—' : s.cj)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(s.ef)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2($author$project$View$Students$studentStatusBadge, 'acceptance', s.cb)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2($author$project$View$Students$studentStatusBadge, 'visa', s.e9)
-					])),
-				A2(
-				$elm$html$Html$td,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('contact-actions-cell')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('row-action'),
-								$elm$html$Html$Attributes$type_('button'),
-								$elm$html$Html$Attributes$title('Edit'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Edit ' + s.M),
-								A2(
-								$elm$html$Html$Events$stopPropagationOn,
-								'click',
-								$elm$json$Json$Decode$succeed(
-									_Utils_Tuple2(
-										$author$project$Types$OpenedEditStudent(s),
-										true)))
-							]),
-						_List_fromArray(
-							[$author$project$View$Icons$iconEdit])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('row-action row-action--danger'),
-								$elm$html$Html$Attributes$type_('button'),
-								$elm$html$Html$Attributes$title('Delete'),
-								A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Delete ' + s.M),
-								A2(
-								$elm$html$Html$Events$stopPropagationOn,
-								'click',
-								$elm$json$Json$Decode$succeed(
-									_Utils_Tuple2(
-										$author$project$Types$RequestedDeleteStudent(s),
-										true)))
-							]),
-						_List_fromArray(
-							[$author$project$View$Icons$iconTrash]))
-					]))
-			]));
+	return {$: 145, a: a};
 };
 var $author$project$View$Students$studentsSkeleton = A2(
 	$elm$html$Html$div,
@@ -43970,7 +44584,7 @@ var $author$project$View$Students$studentsSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Students$studentsView = function (model) {
-	var _v0 = model.eK;
+	var _v0 = model.eO;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Students$studentsSkeleton;
@@ -44004,7 +44618,7 @@ var $author$project$View$Students$studentsView = function (model) {
 			var data = _v0.a;
 			var isQueryEmpty = $elm$core$String$isEmpty(
 				$elm$core$String$trim(data.D));
-			var filtered = data.A;
+			var filtered = data.x;
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -44057,7 +44671,8 @@ var $author$project$View$Students$studentsView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search students'),
 												$elm$html$Html$Attributes$placeholder('Search students…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedStudentsQuery)
@@ -44214,16 +44829,16 @@ var $author$project$View$Students$studentsView = function (model) {
 										A2($elm$core$List$map, $author$project$View$Students$studentRow, filtered))
 									]))
 							])),
-						A4($author$project$View$Helpers$paginationBar, data.y, data.G, data.E, $author$project$Types$StudentsPageChanged)
+						A4($author$project$View$Helpers$paginationBar, data.t, data.G, data.E, $author$project$Types$StudentsPageChanged)
 					]));
 	}
 };
-var $author$project$Types$CancelledCloseTaskForm = {$: 110};
-var $author$project$Types$ConfirmedCloseTaskForm = {$: 109};
-var $author$project$Types$SubmittedTaskForm = {$: 112};
+var $author$project$Types$CancelledCloseTaskForm = {$: 112};
+var $author$project$Types$ConfirmedCloseTaskForm = {$: 111};
+var $author$project$Types$SubmittedTaskForm = {$: 114};
 var $author$project$Types$UpdatedTaskFormField = F2(
 	function (a, b) {
-		return {$: 111, a: a, b: b};
+		return {$: 113, a: a, b: b};
 	});
 var $author$project$View$Tasks$taskFormFieldError = F2(
 	function (field, tf) {
@@ -44237,7 +44852,7 @@ var $author$project$View$Tasks$taskFormFieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					tf.dj)));
+					tf.dl)));
 	});
 var $author$project$View$Tasks$taskStatusLabel = function (s) {
 	switch (s) {
@@ -44255,7 +44870,7 @@ var $author$project$Types$taskStatuses = _List_fromArray(
 	['todo', 'in_progress', 'done']);
 var $author$project$View$Tasks$taskFormModal = F2(
 	function (model, tf) {
-		var isEdit = !_Utils_eq(model.dh, $elm$core$Maybe$Nothing);
+		var isEdit = !_Utils_eq(model.dj, $elm$core$Maybe$Nothing);
 		var titleText = isEdit ? 'Edit task' : 'Add task';
 		var allContacts = $author$project$View$DealForm$contactsForSelect(model);
 		return A2(
@@ -44419,7 +45034,7 @@ var $author$project$View$Tasks$taskFormModal = F2(
 															$elm$html$Html$Attributes$value(tf.J),
 															$elm$html$Html$Events$onInput(
 															$author$project$Types$UpdatedTaskFormField('title')),
-															$elm$html$Html$Attributes$disabled(tf.eN),
+															$elm$html$Html$Attributes$disabled(tf.eP),
 															$elm$html$Html$Attributes$autofocus(true)
 														]),
 													_List_Nil),
@@ -44449,10 +45064,10 @@ var $author$project$View$Tasks$taskFormModal = F2(
 															$elm$html$Html$Attributes$id('tf-due'),
 															$elm$html$Html$Attributes$type_('date'),
 															$elm$html$Html$Attributes$placeholder(' '),
-															$elm$html$Html$Attributes$value(tf.c6),
+															$elm$html$Html$Attributes$value(tf.c8),
 															$elm$html$Html$Events$onInput(
 															$author$project$Types$UpdatedTaskFormField('dueDate')),
-															$elm$html$Html$Attributes$disabled(tf.eN)
+															$elm$html$Html$Attributes$disabled(tf.eP)
 														]),
 													_List_Nil),
 													A2(
@@ -44492,7 +45107,7 @@ var $author$project$View$Tasks$taskFormModal = F2(
 													$elm$html$Html$Attributes$id('tf-contact'),
 													$elm$html$Html$Events$onInput(
 													$author$project$Types$UpdatedTaskFormField('contactId')),
-													$elm$html$Html$Attributes$disabled(tf.eN)
+													$elm$html$Html$Attributes$disabled(tf.eP)
 												]),
 											A2(
 												$elm$core$List$cons,
@@ -44501,7 +45116,7 @@ var $author$project$View$Tasks$taskFormModal = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value(''),
-															$elm$html$Html$Attributes$selected(tf.ae === '')
+															$elm$html$Html$Attributes$selected(tf.ag === '')
 														]),
 													_List_fromArray(
 														[
@@ -44514,9 +45129,9 @@ var $author$project$View$Tasks$taskFormModal = F2(
 															$elm$html$Html$option,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$value(c.ah),
+																	$elm$html$Html$Attributes$value(c.aj),
 																	$elm$html$Html$Attributes$selected(
-																	_Utils_eq(tf.ae, c.ah))
+																	_Utils_eq(tf.ag, c.aj))
 																]),
 															_List_fromArray(
 																[
@@ -44558,10 +45173,10 @@ var $author$project$View$Tasks$taskFormModal = F2(
 															[
 																$elm$html$Html$Attributes$type_('button'),
 																$elm$html$Html$Attributes$class(
-																_Utils_eq(tf.aj, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
+																_Utils_eq(tf.al, s) ? 'stage-pill stage-pill--active' : 'stage-pill'),
 																$elm$html$Html$Events$onClick(
 																A2($author$project$Types$UpdatedTaskFormField, 'status', s)),
-																$elm$html$Html$Attributes$disabled(tf.eN)
+																$elm$html$Html$Attributes$disabled(tf.eP)
 															]),
 														_List_fromArray(
 															[
@@ -44593,10 +45208,10 @@ var $author$project$View$Tasks$taskFormModal = F2(
 											$elm$html$Html$textarea,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$value(tf.c0),
+													$elm$html$Html$Attributes$value(tf.c2),
 													$elm$html$Html$Events$onInput(
 													$author$project$Types$UpdatedTaskFormField('description')),
-													$elm$html$Html$Attributes$disabled(tf.eN),
+													$elm$html$Html$Attributes$disabled(tf.eP),
 													$elm$html$Html$Attributes$rows(3),
 													$elm$html$Html$Attributes$placeholder('What needs to be done?')
 												]),
@@ -44617,7 +45232,7 @@ var $author$project$View$Tasks$taskFormModal = F2(
 													$elm$html$Html$Attributes$type_('button'),
 													$elm$html$Html$Attributes$class('ecc-btn ecc-btn--ghost ecc-btn--inline'),
 													$elm$html$Html$Events$onClick($author$project$Types$RequestedCloseTaskForm),
-													$elm$html$Html$Attributes$disabled(tf.eN)
+													$elm$html$Html$Attributes$disabled(tf.eP)
 												]),
 											_List_fromArray(
 												[
@@ -44629,12 +45244,12 @@ var $author$project$View$Tasks$taskFormModal = F2(
 												[
 													$elm$html$Html$Attributes$type_('submit'),
 													$elm$html$Html$Attributes$class('ecc-btn ecc-btn--inline'),
-													$elm$html$Html$Attributes$disabled(tf.eN || (!tf.i))
+													$elm$html$Html$Attributes$disabled(tf.eP || (!tf.i))
 												]),
 											_List_fromArray(
 												[
 													$elm$html$Html$text(
-													tf.eN ? 'Saving…' : 'Save task')
+													tf.eP ? 'Saving…' : 'Save task')
 												]))
 										]))
 								]))
@@ -44642,41 +45257,41 @@ var $author$project$View$Tasks$taskFormModal = F2(
 				]));
 	});
 var $author$project$Types$ChangedTasksPage = function (a) {
-	return {$: 102, a: a};
+	return {$: 103, a: a};
 };
-var $author$project$Types$OpenedAddTask = {$: 106};
+var $author$project$Types$OpenedAddTask = {$: 107};
 var $author$project$Types$UpdatedTasksQuery = function (a) {
-	return {$: 104, a: a};
-};
-var $author$project$Types$UpdatedTasksStatusFilter = function (a) {
 	return {$: 105, a: a};
 };
+var $author$project$Types$UpdatedTasksStatusFilter = function (a) {
+	return {$: 106, a: a};
+};
 var $author$project$Types$OpenedEditTask = function (a) {
-	return {$: 107, a: a};
+	return {$: 109, a: a};
 };
 var $author$project$Types$RequestedDeleteTask = function (a) {
-	return {$: 116, a: a};
+	return {$: 118, a: a};
 };
 var $author$project$Types$ToggledTaskStatus = F2(
 	function (a, b) {
-		return {$: 114, a: a, b: b};
+		return {$: 116, a: a, b: b};
 	});
 var $author$project$View$Tasks$contactLinkForTask = F2(
 	function (model, task) {
-		if ($elm$core$String$isEmpty(task.ae)) {
+		if ($elm$core$String$isEmpty(task.ag)) {
 			return $elm$html$Html$text('—');
 		} else {
 			var found = function () {
-				var _v1 = model.cP;
+				var _v1 = model.cR;
 				if (_v1.$ === 2) {
 					var d = _v1.a;
 					return $elm$core$List$head(
 						A2(
 							$elm$core$List$filter,
 							function (c) {
-								return _Utils_eq(c.ah, task.ae);
+								return _Utils_eq(c.aj, task.ag);
 							},
-							d.A));
+							d.x));
 				} else {
 					return $elm$core$Maybe$Nothing;
 				}
@@ -44695,11 +45310,11 @@ var $author$project$View$Tasks$contactLinkForTask = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							$elm$core$String$isEmpty(task.aR) ? c.M : task.aR)
+							$elm$core$String$isEmpty(task.aT) ? c.M : task.aT)
 						]));
 			} else {
 				return $elm$html$Html$text(
-					$elm$core$String$isEmpty(task.aR) ? '—' : task.aR);
+					$elm$core$String$isEmpty(task.aT) ? '—' : task.aT);
 			}
 		}
 	});
@@ -44742,7 +45357,7 @@ var $author$project$View$Tasks$taskRow = F2(
 										[
 											$elm$html$Html$text(task.J)
 										])),
-									$elm$core$String$isEmpty(task.c0) ? $elm$html$Html$text('') : A2(
+									$elm$core$String$isEmpty(task.c2) ? $elm$html$Html$text('') : A2(
 									$elm$html$Html$span,
 									_List_fromArray(
 										[
@@ -44750,7 +45365,7 @@ var $author$project$View$Tasks$taskRow = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(task.c0)
+											$elm$html$Html$text(task.c2)
 										]))
 								]))
 						])),
@@ -44765,13 +45380,13 @@ var $author$project$View$Tasks$taskRow = F2(
 								[
 									$elm$html$Html$Attributes$type_('button'),
 									$elm$html$Html$Attributes$class(
-									$author$project$View$Tasks$taskStatusClass(task.aj)),
+									$author$project$View$Tasks$taskStatusClass(task.al)),
 									$elm$html$Html$Events$onClick(
 									A2(
 										$author$project$Types$ToggledTaskStatus,
 										task,
 										function () {
-											var _v0 = task.aj;
+											var _v0 = task.al;
 											switch (_v0) {
 												case 'todo':
 													return 'in_progress';
@@ -44786,7 +45401,7 @@ var $author$project$View$Tasks$taskRow = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									$author$project$View$Tasks$taskStatusLabel(task.aj))
+									$author$project$View$Tasks$taskStatusLabel(task.al))
 								]))
 						])),
 					A2(
@@ -44795,7 +45410,7 @@ var $author$project$View$Tasks$taskRow = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							$elm$core$String$isEmpty(task.c6) ? '—' : task.c6)
+							$elm$core$String$isEmpty(task.c8) ? '—' : task.c8)
 						])),
 					A2(
 					$elm$html$Html$td,
@@ -44905,7 +45520,7 @@ var $author$project$View$Tasks$tasksSkeleton = A2(
 						]))))
 		]));
 var $author$project$View$Tasks$tasksView = function (model) {
-	var _v0 = model.eS;
+	var _v0 = model.eU;
 	switch (_v0.$) {
 		case 0:
 			return $author$project$View$Tasks$tasksSkeleton;
@@ -44962,7 +45577,8 @@ var $author$project$View$Tasks$tasksView = function (model) {
 										$elm$html$Html$input,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$type_('text'),
+												$elm$html$Html$Attributes$type_('search'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Search tasks'),
 												$elm$html$Html$Attributes$placeholder('Search tasks…'),
 												$elm$html$Html$Attributes$value(data.D),
 												$elm$html$Html$Events$onInput($author$project$Types$UpdatedTasksQuery)
@@ -44979,7 +45595,7 @@ var $author$project$View$Tasks$tasksView = function (model) {
 									$elm$core$List$map,
 									function (s) {
 										var label = (s === '') ? 'All' : $author$project$View$Tasks$taskStatusLabel(s);
-										var cls = _Utils_eq(data.eD, s) ? 'stage-pill stage-pill--active' : 'stage-pill';
+										var cls = _Utils_eq(data.eH, s) ? 'stage-pill stage-pill--active' : 'stage-pill';
 										return A2(
 											$elm$html$Html$button,
 											_List_fromArray(
@@ -45009,7 +45625,7 @@ var $author$project$View$Tasks$tasksView = function (model) {
 										$elm$html$Html$text('Add task')
 									]))
 							])),
-						$elm$core$List$isEmpty(data.A) ? A2(
+						$elm$core$List$isEmpty(data.x) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -45087,7 +45703,7 @@ var $author$project$View$Tasks$tasksView = function (model) {
 										A2(
 											$elm$core$List$map,
 											$author$project$View$Tasks$taskRow(model),
-											data.A))
+											data.x))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -45102,9 +45718,9 @@ var $author$project$View$Tasks$tasksView = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$type_('button'),
-												$elm$html$Html$Attributes$disabled(!model.eR),
+												$elm$html$Html$Attributes$disabled(!model.eT),
 												$elm$html$Html$Events$onClick(
-												$author$project$Types$ChangedTasksPage(model.eR - 25))
+												$author$project$Types$ChangedTasksPage(model.eT - 25))
 											]),
 										_List_fromArray(
 											[
@@ -45116,7 +45732,7 @@ var $author$project$View$Tasks$tasksView = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$text(
-												'Page ' + $elm$core$String$fromInt(((model.eR / 25) | 0) + 1))
+												'Page ' + $elm$core$String$fromInt(((model.eT / 25) | 0) + 1))
 											])),
 										A2(
 										$elm$html$Html$button,
@@ -45124,9 +45740,9 @@ var $author$project$View$Tasks$tasksView = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('button'),
 												$elm$html$Html$Attributes$disabled(
-												_Utils_cmp(model.eR + 25, data.y) > -1),
+												_Utils_cmp(model.eT + 25, data.t) > -1),
 												$elm$html$Html$Events$onClick(
-												$author$project$Types$ChangedTasksPage(model.eR + 25))
+												$author$project$Types$ChangedTasksPage(model.eT + 25))
 											]),
 										_List_fromArray(
 											[
@@ -45142,7 +45758,7 @@ var $author$project$View$Tasks$tasksView = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromInt(data.y) + (' task' + ((data.y === 1) ? '' : 's')))
+										$elm$core$String$fromInt(data.t) + (' task' + ((data.t === 1) ? '' : 's')))
 									]))
 							]))
 					]));
@@ -45202,7 +45818,7 @@ var $author$project$Views$pageContent = F2(
 						case 1:
 							return $author$project$View$Contacts$contactsView(model);
 						case 2:
-							var _v1 = model.e2;
+							var _v1 = model.e4;
 							if (!_v1.$) {
 								var c = _v1.a;
 								return A2($author$project$View$ContactDetail$contactDetailView, model, c);
@@ -45221,7 +45837,7 @@ var $author$project$Views$pageContent = F2(
 						case 3:
 							return $author$project$View$Deals$dealsView(model);
 						case 4:
-							var _v2 = model.e3;
+							var _v2 = model.e5;
 							if (!_v2.$) {
 								var d = _v2.a;
 								return A2($author$project$View$DealDetail$dealDetailView, model, d);
@@ -45249,7 +45865,7 @@ var $author$project$Views$pageContent = F2(
 									]),
 								_List_Nil);
 						case 8:
-							return (user.eo === 'admin') ? A3($elm$html$Html$node, 'crm-administration', _List_Nil, _List_Nil) : A2(
+							return (user.es === 'admin') ? A3($elm$html$Html$node, 'crm-administration', _List_Nil, _List_Nil) : A2(
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
@@ -45266,7 +45882,7 @@ var $author$project$Views$pageContent = F2(
 						case 10:
 							return $author$project$View$Schools$schoolsView(model);
 						case 11:
-							var _v3 = model.e7;
+							var _v3 = model.e9;
 							if (!_v3.$) {
 								var s = _v3.a;
 								return A2($author$project$View$Schools$schoolDetailView, model, s);
@@ -45285,7 +45901,7 @@ var $author$project$Views$pageContent = F2(
 						case 12:
 							return $author$project$View$Students$studentsView(model);
 						case 13:
-							var _v4 = model.e8;
+							var _v4 = model.fa;
 							if (!_v4.$) {
 								var s = _v4.a;
 								return A2($author$project$View$Students$studentDetailView, model, s);
@@ -45304,7 +45920,7 @@ var $author$project$Views$pageContent = F2(
 						case 14:
 							return $author$project$View$Agents$agentsView(model);
 						case 15:
-							var _v5 = model.e0;
+							var _v5 = model.e2;
 							if (!_v5.$) {
 								var a = _v5.a;
 								return A2($author$project$View$Agents$agentDetailView, model, a);
@@ -45323,7 +45939,7 @@ var $author$project$Views$pageContent = F2(
 						case 16:
 							return $author$project$View$Leads$leadsView(model);
 						case 17:
-							var _v6 = model.e5;
+							var _v6 = model.e7;
 							if (!_v6.$) {
 								var l = _v6.a;
 								return A2($author$project$View$Leads$leadDetailView, model, l);
@@ -45342,7 +45958,7 @@ var $author$project$Views$pageContent = F2(
 						case 18:
 							return $author$project$View$Cases$casesView(model);
 						case 19:
-							var _v7 = model.e1;
+							var _v7 = model.e3;
 							if (!_v7.$) {
 								var c = _v7.a;
 								return A2($author$project$View$Cases$caseDetailView, model, c);
@@ -45361,7 +45977,7 @@ var $author$project$Views$pageContent = F2(
 						case 20:
 							return $author$project$View$Invoices$invoicesView(model);
 						case 21:
-							var _v8 = model.e4;
+							var _v8 = model.e6;
 							if (!_v8.$) {
 								var inv = _v8.a;
 								return A2($author$project$View$Invoices$invoiceDetailView, model, inv);
@@ -45380,7 +45996,7 @@ var $author$project$Views$pageContent = F2(
 						case 22:
 							return $author$project$View$Partners$partnersView(model);
 						default:
-							var _v9 = model.e6;
+							var _v9 = model.e8;
 							if (!_v9.$) {
 								var p = _v9.a;
 								return A2($author$project$View$Partners$partnerDetailView, model, p);
@@ -45399,7 +46015,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v10 = model.aQ;
+					var _v10 = model.aS;
 					if (!_v10.$) {
 						var cf = _v10.a;
 						return A2($author$project$View$ContactForm$contactFormModal, model, cf);
@@ -45408,7 +46024,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v11 = model.a0;
+					var _v11 = model.a2;
 					if (!_v11.$) {
 						var contact = _v11.a;
 						return $author$project$View$ContactForm$deleteConfirmModal(contact);
@@ -45417,7 +46033,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v12 = model.aY;
+					var _v12 = model.a_;
 					if (!_v12.$) {
 						var df = _v12.a;
 						return A2($author$project$View$DealForm$dealFormModal, model, df);
@@ -45426,7 +46042,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v13 = model.a1;
+					var _v13 = model.a3;
 					if (!_v13.$) {
 						var deal = _v13.a;
 						return $author$project$View$DealForm$deleteDealConfirmModal(deal);
@@ -45434,22 +46050,22 @@ var $author$project$Views$pageContent = F2(
 						return $elm$html$Html$text('');
 					}
 				}(),
-					model.al ? $author$project$View$DealForm$bulkDeleteConfirmModal(
-					$elm$core$Set$size(model.eu)) : $elm$html$Html$text(''),
+					model.an ? $author$project$View$DealForm$bulkDeleteConfirmModal(
+					$elm$core$Set$size(model.ey)) : $elm$html$Html$text(''),
 					function () {
-					var _v14 = model.aI;
+					var _v14 = model.aK;
 					if (!_v14.$) {
 						var stageName = _v14.a;
 						return A2(
 							$author$project$View$DealForm$bulkMoveConfirmModal,
 							stageName,
-							$elm$core$Set$size(model.eu));
+							$elm$core$Set$size(model.ey));
 					} else {
 						return $elm$html$Html$text('');
 					}
 				}(),
 					function () {
-					var _v15 = model.aE;
+					var _v15 = model.aG;
 					if (!_v15.$) {
 						var af = _v15.a;
 						return $author$project$View$Activity$activityFormModal(af);
@@ -45458,7 +46074,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v16 = model.aZ;
+					var _v16 = model.a$;
 					if (!_v16.$) {
 						var a = _v16.a;
 						return $author$project$View$Activity$deleteActivityConfirmModal(a);
@@ -45467,7 +46083,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v17 = model.b1;
+					var _v17 = model.b3;
 					if (!_v17.$) {
 						var tf = _v17.a;
 						return A2($author$project$View$Tasks$taskFormModal, model, tf);
@@ -45476,7 +46092,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v18 = model.a8;
+					var _v18 = model.ba;
 					if (!_v18.$) {
 						var task = _v18.a;
 						return $author$project$View$Tasks$deleteTaskConfirmModal(task);
@@ -45485,7 +46101,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v19 = model.bY;
+					var _v19 = model.b_;
 					if (!_v19.$) {
 						var sf = _v19.a;
 						return A2($author$project$View$Schools$schoolFormModal, model, sf);
@@ -45494,7 +46110,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v20 = model.a6;
+					var _v20 = model.a8;
 					if (!_v20.$) {
 						var school = _v20.a;
 						return $author$project$View$Schools$deleteSchoolConfirmModal(school);
@@ -45503,7 +46119,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v21 = model.b_;
+					var _v21 = model.b0;
 					if (!_v21.$) {
 						var sf = _v21.a;
 						return A2($author$project$View$Students$studentFormModal, model, sf);
@@ -45512,7 +46128,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v22 = model.a7;
+					var _v22 = model.a9;
 					if (!_v22.$) {
 						var student = _v22.a;
 						return $author$project$View$Students$deleteStudentConfirmModal(student);
@@ -45521,7 +46137,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v23 = model.aG;
+					var _v23 = model.aI;
 					if (!_v23.$) {
 						var af = _v23.a;
 						return A2($author$project$View$Agents$agentFormModal, model, af);
@@ -45530,7 +46146,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v24 = model.a_;
+					var _v24 = model.a0;
 					if (!_v24.$) {
 						var agent = _v24.a;
 						return $author$project$View$Agents$deleteAgentConfirmModal(agent);
@@ -45539,7 +46155,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v25 = model.bp;
+					var _v25 = model.br;
 					if (!_v25.$) {
 						var lf = _v25.a;
 						return A2($author$project$View$Leads$leadFormModal, model, lf);
@@ -45548,7 +46164,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v26 = model.a4;
+					var _v26 = model.a6;
 					if (!_v26.$) {
 						var lead = _v26.a;
 						return $author$project$View$Leads$deleteLeadConfirmModal(lead);
@@ -45557,7 +46173,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v27 = model.aJ;
+					var _v27 = model.aL;
 					if (!_v27.$) {
 						var cf = _v27.a;
 						return A2($author$project$View$Cases$caseFormModal, model, cf);
@@ -45566,7 +46182,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v28 = model.a$;
+					var _v28 = model.a1;
 					if (!_v28.$) {
 						var c = _v28.a;
 						return $author$project$View$Cases$deleteCaseConfirmModal(c);
@@ -45575,7 +46191,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v29 = model.ba;
+					var _v29 = model.bc;
 					if (!_v29.$) {
 						var df = _v29.a;
 						return A2($author$project$View$Cases$documentFormModal, model, df);
@@ -45584,7 +46200,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v30 = model.a2;
+					var _v30 = model.a4;
 					if (!_v30.$) {
 						var d = _v30.a;
 						return $author$project$View$Cases$deleteDocumentConfirmModal(d);
@@ -45593,7 +46209,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v31 = model.bl;
+					var _v31 = model.bn;
 					if (!_v31.$) {
 						var inv = _v31.a;
 						return A2($author$project$View$Invoices$invoiceFormModal, model, inv);
@@ -45602,7 +46218,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v32 = model.a3;
+					var _v32 = model.a5;
 					if (!_v32.$) {
 						var inv = _v32.a;
 						return $author$project$View$Invoices$deleteInvoiceConfirmModal(inv);
@@ -45611,7 +46227,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v33 = model.by;
+					var _v33 = model.bA;
 					if (!_v33.$) {
 						var pf = _v33.a;
 						return $author$project$View$Invoices$paymentFormModal(pf);
@@ -45620,7 +46236,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v34 = model.c$;
+					var _v34 = model.c1;
 					if (!_v34.$) {
 						var p = _v34.a;
 						return $author$project$View$Invoices$deletePaymentConfirmModal(p);
@@ -45629,7 +46245,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v35 = model.bO;
+					var _v35 = model.bQ;
 					if (!_v35.$) {
 						var inv = _v35.a;
 						return $author$project$View$Invoices$refundConfirmModal(inv);
@@ -45638,7 +46254,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v36 = model.bv;
+					var _v36 = model.bx;
 					if (!_v36.$) {
 						var pf = _v36.a;
 						return A2($author$project$View$Partners$partnerFormModal, model, pf);
@@ -45647,7 +46263,7 @@ var $author$project$Views$pageContent = F2(
 					}
 				}(),
 					function () {
-					var _v37 = model.a5;
+					var _v37 = model.a7;
 					if (!_v37.$) {
 						var p = _v37.a;
 						return $author$project$View$Partners$deletePartnerConfirmModal(p);
@@ -45655,9 +46271,9 @@ var $author$project$Views$pageContent = F2(
 						return $elm$html$Html$text('');
 					}
 				}(),
-					model.ar ? $author$project$View$Settings$logoutAllConfirmModal : $elm$html$Html$text(''),
+					model.at ? $author$project$View$Settings$logoutAllConfirmModal : $elm$html$Html$text(''),
 					function () {
-					var _v38 = model.aC;
+					var _v38 = model.aE;
 					if (!_v38.$) {
 						var msg = _v38.a;
 						return $author$project$View$Helpers$toastView(msg);
@@ -45758,6 +46374,7 @@ var $author$project$View$Layout$pageTitle = function (model) {
 			return 'Partner';
 	}
 };
+var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $author$project$View$Icons$iconAgent = A2(
 	$author$project$View$Helpers$svgIcon,
 	_List_fromArray(
@@ -45866,6 +46483,13 @@ var $author$project$View$Icons$iconSignOut = A2(
 			$author$project$View$Helpers$svgPath('M16 17l5-5-5-5'),
 			$author$project$View$Helpers$svgPath('M21 12H9')
 		]));
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
 var $author$project$View$Layout$sidebar = F2(
 	function (model, user) {
 		var effectiveRoute = function () {
@@ -45894,7 +46518,7 @@ var $author$project$View$Layout$sidebar = F2(
 					return other;
 			}
 		}();
-		var cls = model.ax ? 'sidebar is-open' : 'sidebar';
+		var cls = model.az ? 'sidebar is-open' : 'sidebar';
 		return A2(
 			$elm$html$Html$aside,
 			_List_fromArray(
@@ -45914,15 +46538,14 @@ var $author$project$View$Layout$sidebar = F2(
 					_List_fromArray(
 						[
 							A2(
-							$elm$html$Html$div,
+							$elm$html$Html$img,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('sidebar-brand-mark')
+									$elm$html$Html$Attributes$class('sidebar-brand-logo'),
+									$elm$html$Html$Attributes$src('/public/icons/ecc-192.png'),
+									$elm$html$Html$Attributes$alt('ECC Consulting Global emblem')
 								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text('E')
-								])),
+							_List_Nil),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -46027,7 +46650,7 @@ var $author$project$View$Layout$sidebar = F2(
 					_List_fromArray(
 						[
 							A4($author$project$View$Layout$navItem, effectiveRoute, $author$project$Types$Workspace, 'Workspace tools', $author$project$View$Icons$iconSettings),
-							(user.eo === 'admin') ? A4($author$project$View$Layout$navItem, effectiveRoute, $author$project$Types$Administration, 'System administration', $author$project$View$Icons$iconSettings) : $elm$html$Html$text(''),
+							(user.es === 'admin') ? A4($author$project$View$Layout$navItem, effectiveRoute, $author$project$Types$Administration, 'System administration', $author$project$View$Icons$iconSettings) : $elm$html$Html$text(''),
 							A4($author$project$View$Layout$navItem, effectiveRoute, $author$project$Types$Settings, 'Settings', $author$project$View$Icons$iconSettings)
 						])),
 					A2(
@@ -46075,7 +46698,7 @@ var $author$project$View$Layout$sidebar = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(user.ag)
+											$elm$html$Html$text(user.ai)
 										]))
 								]))
 						])),
@@ -46109,7 +46732,7 @@ var $author$project$View$Layout$isLoading = function (rd) {
 	}
 };
 var $author$project$View$Layout$anyLoading = function (model) {
-	return $author$project$View$Layout$isLoading(model.cP) || ($author$project$View$Layout$isLoading(model.c_) || ($author$project$View$Layout$isLoading(model.ce) || ($author$project$View$Layout$isLoading(model.eS) || ($author$project$View$Layout$isLoading(model.et) || ($author$project$View$Layout$isLoading(model.eK) || ($author$project$View$Layout$isLoading(model.cl) || ($author$project$View$Layout$isLoading(model.dJ) || ($author$project$View$Layout$isLoading(model.cF) || ($author$project$View$Layout$isLoading(model.dE) || ($author$project$View$Layout$isLoading(model.d4) || ($author$project$View$Layout$isLoading(model.eH) || ($author$project$View$Layout$isLoading(model.cC) || $author$project$View$Layout$isLoading(model.dC)))))))))))));
+	return $author$project$View$Layout$isLoading(model.cR) || ($author$project$View$Layout$isLoading(model.c0) || ($author$project$View$Layout$isLoading(model.cg) || ($author$project$View$Layout$isLoading(model.eU) || ($author$project$View$Layout$isLoading(model.ex) || ($author$project$View$Layout$isLoading(model.eO) || ($author$project$View$Layout$isLoading(model.cn) || ($author$project$View$Layout$isLoading(model.dL) || ($author$project$View$Layout$isLoading(model.cH) || ($author$project$View$Layout$isLoading(model.dG) || ($author$project$View$Layout$isLoading(model.d8) || ($author$project$View$Layout$isLoading(model.eL) || ($author$project$View$Layout$isLoading(model.cE) || $author$project$View$Layout$isLoading(model.dE)))))))))))));
 };
 var $author$project$View$Icons$iconMoon = $author$project$View$Icons$outlineIcon(
 	_List_fromArray(
@@ -46130,7 +46753,7 @@ var $elm$html$Html$Attributes$maxlength = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $author$project$View$Search$resultPath = function (result) {
-	return (result.bc === 'tasks') ? '/tasks' : ('/' + (result.bc + ('/' + $elm$url$Url$percentEncode(result.ah))));
+	return (result.be === 'tasks') ? '/tasks' : ('/' + (result.be + ('/' + $elm$url$Url$percentEncode(result.aj))));
 };
 var $author$project$View$Search$searchView = function (model) {
 	return A2(
@@ -46156,7 +46779,7 @@ var $author$project$View$Search$searchView = function (model) {
 					[
 						$elm$html$Html$Attributes$id('workspace-search'),
 						$elm$html$Html$Attributes$type_('search'),
-						$elm$html$Html$Attributes$value(model.bi),
+						$elm$html$Html$Attributes$value(model.bk),
 						$elm$html$Html$Events$onInput($author$project$Types$UpdatedGlobalQuery),
 						$elm$html$Html$Attributes$placeholder('Search workspace…'),
 						$elm$html$Html$Attributes$maxlength(200),
@@ -46165,10 +46788,10 @@ var $author$project$View$Search$searchView = function (model) {
 						A2(
 						$elm$html$Html$Attributes$attribute,
 						'aria-expanded',
-						(model.bi === '') ? 'false' : 'true')
+						(model.bk === '') ? 'false' : 'true')
 					]),
 				_List_Nil),
-				(model.bi === '') ? $elm$html$Html$text('') : A2(
+				(model.bk === '') ? $elm$html$Html$text('') : A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -46206,7 +46829,7 @@ var $author$project$View$Search$searchView = function (model) {
 									]))
 							])),
 						function () {
-						var _v0 = model.ds;
+						var _v0 = model.du;
 						switch (_v0.$) {
 							case 2:
 								var data = _v0.a;
@@ -46239,14 +46862,14 @@ var $author$project$View$Search$searchView = function (model) {
 															_List_Nil,
 															_List_fromArray(
 																[
-																	$elm$html$Html$text(result.bc + (' · ' + result.eP))
+																	$elm$html$Html$text(result.be + (' · ' + result.eR))
 																]))
 														]));
 											},
-											data.em),
+											data.eq),
 										_List_fromArray(
 											[
-												$elm$core$List$isEmpty(data.em) ? A2(
+												$elm$core$List$isEmpty(data.eq) ? A2(
 												$elm$html$Html$p,
 												_List_fromArray(
 													[
@@ -46255,7 +46878,7 @@ var $author$project$View$Search$searchView = function (model) {
 												_List_fromArray(
 													[
 														$elm$html$Html$text('No matching records.')
-													])) : (data.eV ? A2(
+													])) : (data.eX ? A2(
 												$elm$html$Html$p,
 												_List_fromArray(
 													[
@@ -46309,7 +46932,7 @@ var $author$project$View$Search$searchView = function (model) {
 };
 var $author$project$View$Layout$topbar = F2(
 	function (model, user) {
-		var alerts = model.eY;
+		var alerts = model.e_;
 		return A2(
 			$elm$html$Html$header,
 			_List_fromArray(
@@ -46338,7 +46961,7 @@ var $author$project$View$Layout$topbar = F2(
 									A2(
 									$elm$html$Html$Attributes$attribute,
 									'aria-expanded',
-									model.ax ? 'true' : 'false')
+									model.az ? 'true' : 'false')
 								]),
 							_List_fromArray(
 								[$author$project$View$Layout$hamburgerIcon])),
@@ -46499,11 +47122,11 @@ var $author$project$Views$appShell = F2(
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class(
-					'app-shell' + (((user.eo === 'viewer') ? ' app-shell--viewer' : '') + ((model.U === 1) ? ' app-shell--dark' : '')))
+					'app-shell' + (((user.es === 'viewer') ? ' app-shell--viewer' : '') + ((model.U === 1) ? ' app-shell--dark' : '')))
 				]),
 			_List_fromArray(
 				[
-					model.ax ? A2(
+					model.az ? A2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
@@ -46568,98 +47191,6 @@ var $author$project$Views$appShell = F2(
 					A3($elm$html$Html$node, 'crm-connection-status', _List_Nil, _List_Nil)
 				]));
 	});
-var $author$project$View$Icons$eccMark = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('ecc-mark')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$author$project$View$Helpers$svgIcon,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$attribute, 'viewBox', '0 0 40 40'),
-					A2($elm$html$Html$Attributes$attribute, 'width', '40'),
-					A2($elm$html$Html$Attributes$attribute, 'height', '40'),
-					A2($elm$html$Html$Attributes$attribute, 'fill', 'none')
-				]),
-			_List_fromArray(
-				[
-					A3(
-					$elm$svg$Svg$node,
-					'rect',
-					_List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$attribute, 'x', '0'),
-							A2($elm$html$Html$Attributes$attribute, 'y', '0'),
-							A2($elm$html$Html$Attributes$attribute, 'width', '40'),
-							A2($elm$html$Html$Attributes$attribute, 'height', '40'),
-							A2($elm$html$Html$Attributes$attribute, 'rx', '12'),
-							A2($elm$html$Html$Attributes$attribute, 'fill', 'url(#eccGrad)')
-						]),
-					_List_Nil),
-					A3(
-					$elm$svg$Svg$node,
-					'text',
-					_List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$attribute, 'x', '20'),
-							A2($elm$html$Html$Attributes$attribute, 'y', '26'),
-							A2($elm$html$Html$Attributes$attribute, 'text-anchor', 'middle'),
-							A2($elm$html$Html$Attributes$attribute, 'font-family', 'Inter, sans-serif'),
-							A2($elm$html$Html$Attributes$attribute, 'font-size', '16'),
-							A2($elm$html$Html$Attributes$attribute, 'font-weight', '700'),
-							A2($elm$html$Html$Attributes$attribute, 'fill', 'white'),
-							A2($elm$html$Html$Attributes$attribute, 'letter-spacing', '0.5')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('ECC')
-						])),
-					A3(
-					$elm$svg$Svg$node,
-					'defs',
-					_List_Nil,
-					_List_fromArray(
-						[
-							A3(
-							$elm$svg$Svg$node,
-							'linearGradient',
-							_List_fromArray(
-								[
-									A2($elm$html$Html$Attributes$attribute, 'id', 'eccGrad'),
-									A2($elm$html$Html$Attributes$attribute, 'x1', '0'),
-									A2($elm$html$Html$Attributes$attribute, 'y1', '0'),
-									A2($elm$html$Html$Attributes$attribute, 'x2', '40'),
-									A2($elm$html$Html$Attributes$attribute, 'y2', '40'),
-									A2($elm$html$Html$Attributes$attribute, 'gradientUnits', 'userSpaceOnUse')
-								]),
-							_List_fromArray(
-								[
-									A3(
-									$elm$svg$Svg$node,
-									'stop',
-									_List_fromArray(
-										[
-											A2($elm$html$Html$Attributes$attribute, 'offset', '0'),
-											A2($elm$html$Html$Attributes$attribute, 'stop-color', '#6366F1')
-										]),
-									_List_Nil),
-									A3(
-									$elm$svg$Svg$node,
-									'stop',
-									_List_fromArray(
-										[
-											A2($elm$html$Html$Attributes$attribute, 'offset', '1'),
-											A2($elm$html$Html$Attributes$attribute, 'stop-color', '#06B6D4')
-										]),
-									_List_Nil)
-								]))
-						]))
-				]))
-		]));
 var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $author$project$View$Login$trustItem = function (label) {
@@ -46739,7 +47270,15 @@ var $author$project$View$Login$brandPanel = A2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$View$Icons$eccMark,
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('brand-panel__logo'),
+									$elm$html$Html$Attributes$src('/public/icons/ecc-192.png'),
+									$elm$html$Html$Attributes$alt('ECC Consulting Global emblem')
+								]),
+							_List_Nil),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -46884,7 +47423,7 @@ var $author$project$View$Helpers$alertView = function (maybeAlert) {
 	} else {
 		var alert = maybeAlert.a;
 		var cls = function () {
-			var _v1 = alert.dF;
+			var _v1 = alert.dH;
 			if (!_v1) {
 				return 'ecc-alert ecc-alert--error';
 			} else {
@@ -46900,11 +47439,10 @@ var $author$project$View$Helpers$alertView = function (maybeAlert) {
 				]),
 			_List_fromArray(
 				[
-					$elm$html$Html$text(alert.dN)
+					$elm$html$Html$text(alert.dQ)
 				]));
 	}
 };
-var $author$project$Types$ToggledShowPassword = {$: 3};
 var $author$project$Types$UpdatedField = F2(
 	function (a, b) {
 		return {$: 0, a: a, b: b};
@@ -46921,7 +47459,7 @@ var $author$project$View$Helpers$fieldError = F2(
 						var f = _v0.a;
 						return _Utils_eq(f, field);
 					},
-					model.dj)));
+					model.dl)));
 	});
 var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
 var $author$project$View$Helpers$formField = F2(
@@ -46930,15 +47468,15 @@ var $author$project$View$Helpers$formField = F2(
 			var _v2 = cfg.Y;
 			switch (_v2) {
 				case 0:
-					return model.dr.M;
+					return model.dt.M;
 				case 1:
-					return model.dr.ag;
+					return model.dt.ai;
 				default:
-					return model.dr.bw;
+					return model.dt.by;
 			}
 		}();
 		var isPassword = cfg.Y === 2;
-		var inputType = (isPassword && model.ey) ? 'text' : cfg.bf;
+		var inputType = (isPassword && model.eC) ? 'text' : cfg.bh;
 		var err = A2($author$project$View$Helpers$fieldError, cfg.Y, model);
 		var containerClass = function () {
 			if (!err.$) {
@@ -46960,11 +47498,11 @@ var $author$project$View$Helpers$formField = F2(
 						$elm$html$Html$input,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$id(cfg.ah),
-								$elm$html$Html$Attributes$name(cfg.ah),
+								$elm$html$Html$Attributes$id(cfg.aj),
+								$elm$html$Html$Attributes$name(cfg.aj),
 								$elm$html$Html$Attributes$type_(inputType),
 								$elm$html$Html$Attributes$placeholder(' '),
-								A2($elm$html$Html$Attributes$attribute, 'autocomplete', cfg.aH),
+								A2($elm$html$Html$Attributes$attribute, 'autocomplete', cfg.aJ),
 								$elm$html$Html$Attributes$value(val),
 								$elm$html$Html$Events$onInput(
 								$author$project$Types$UpdatedField(cfg.Y))
@@ -46974,11 +47512,11 @@ var $author$project$View$Helpers$formField = F2(
 						$elm$html$Html$label,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$for(cfg.ah)
+								$elm$html$Html$Attributes$for(cfg.aj)
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(cfg.bn)
+								$elm$html$Html$text(cfg.bp)
 							]))
 					]),
 				_Utils_ap(
@@ -46993,12 +47531,12 @@ var $author$project$View$Helpers$formField = F2(
 									A2(
 									$elm$html$Html$Attributes$attribute,
 									'aria-label',
-									model.ey ? 'Hide password' : 'Show password'),
+									model.eC ? 'Hide password' : 'Show password'),
 									$elm$html$Html$Events$onClick($author$project$Types$ToggledShowPassword)
 								]),
 							_List_fromArray(
 								[
-									model.ey ? A2(
+									model.eC ? A2(
 									$author$project$View$Helpers$svgIcon,
 									_List_fromArray(
 										[
@@ -47066,11 +47604,11 @@ var $author$project$View$Helpers$formField = F2(
 					}())));
 	});
 var $author$project$View$Login$loginCard = function (model) {
-	var titleText = (!model.dP) ? 'Sign in to ECC-CRM' : 'Create your ECC account';
-	var switchLabel = (!model.dP) ? 'Request access' : 'Sign in instead';
-	var subtitleText = (!model.dP) ? 'Enter your credentials to access your workspace.' : 'Set up your account in under a minute.';
+	var titleText = (!model.dS) ? 'Sign in to ECC-CRM' : 'Create your ECC account';
+	var switchLabel = (!model.dS) ? 'Request access' : 'Sign in instead';
+	var subtitleText = (!model.dS) ? 'Enter your credentials to access your workspace.' : 'Set up your account in under a minute.';
 	var submitLabel = function () {
-		var _v0 = _Utils_Tuple2(model.dP, model.eN);
+		var _v0 = _Utils_Tuple2(model.dS, model.eP);
 		if (!_v0.a) {
 			if (_v0.b) {
 				var _v1 = _v0.a;
@@ -47089,7 +47627,7 @@ var $author$project$View$Login$loginCard = function (model) {
 			}
 		}
 	}();
-	var nextMode = (!model.dP) ? 1 : 0;
+	var nextMode = (!model.dS) ? 1 : 0;
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -47135,7 +47673,7 @@ var $author$project$View$Login$loginCard = function (model) {
 										$elm$html$Html$text(subtitleText)
 									]))
 							])),
-						$author$project$View$Helpers$alertView(model.co),
+						$author$project$View$Helpers$alertView(model.cq),
 						A2(
 						$elm$html$Html$form,
 						_List_fromArray(
@@ -47144,30 +47682,30 @@ var $author$project$View$Login$loginCard = function (model) {
 								$elm$html$Html$Attributes$novalidate(true)
 							]),
 						_Utils_ap(
-							(model.dP === 1) ? _List_fromArray(
+							(model.dS === 1) ? _List_fromArray(
 								[
 									A2(
 									$author$project$View$Helpers$formField,
 									model,
-									{aH: 'name', Y: 0, bf: 'text', ah: 'name', bn: 'Full name'})
+									{aJ: 'name', Y: 0, bh: 'text', aj: 'name', bp: 'Full name'})
 								]) : _List_Nil,
 							_List_fromArray(
 								[
 									A2(
 									$author$project$View$Helpers$formField,
 									model,
-									{aH: 'email', Y: 1, bf: 'email', ah: 'email', bn: 'Work email'}),
+									{aJ: 'email', Y: 1, bh: 'email', aj: 'email', bp: 'Work email'}),
 									A2(
 									$author$project$View$Helpers$formField,
 									model,
 									{
-										aH: (!model.dP) ? 'current-password' : 'new-password',
+										aJ: (!model.dS) ? 'current-password' : 'new-password',
 										Y: 2,
-										bf: 'password',
-										ah: 'password',
-										bn: 'Password'
+										bh: 'password',
+										aj: 'password',
+										bp: 'Password'
 									}),
-									(!model.dP) ? A2(
+									(!model.dS) ? A2(
 									$elm$html$Html$label,
 									_List_fromArray(
 										[
@@ -47187,7 +47725,7 @@ var $author$project$View$Login$loginCard = function (model) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$value(model.dr.bu),
+													$elm$html$Html$Attributes$value(model.dt.bw),
 													$elm$html$Html$Events$onInput($author$project$Types$UpdatedOTP),
 													A2($elm$html$Html$Attributes$attribute, 'autocomplete', 'one-time-code'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Authenticator or recovery code')
@@ -47224,7 +47762,7 @@ var $author$project$View$Login$loginCard = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											($elm$core$String$length(model.dr.bw) >= 12) ? 'Length requirement met' : 'Use at least 12 characters')
+											($elm$core$String$length(model.dt.by) >= 12) ? 'Length requirement met' : 'Use at least 12 characters')
 										])),
 									A2(
 									$elm$html$Html$div,
@@ -47247,7 +47785,7 @@ var $author$project$View$Login$loginCard = function (model) {
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$type_('checkbox'),
-															$elm$html$Html$Attributes$checked(model.dr.bQ),
+															$elm$html$Html$Attributes$checked(model.dt.bS),
 															$author$project$View$Helpers$onCheck($author$project$Types$ToggledRemember)
 														]),
 													_List_Nil),
@@ -47266,7 +47804,7 @@ var $author$project$View$Login$loginCard = function (model) {
 										[
 											$elm$html$Html$Attributes$class('ecc-btn'),
 											$elm$html$Html$Attributes$type_('submit'),
-											$elm$html$Html$Attributes$disabled(model.eN)
+											$elm$html$Html$Attributes$disabled(model.eP)
 										]),
 									_List_fromArray(
 										[
@@ -47285,7 +47823,7 @@ var $author$project$View$Login$loginCard = function (model) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class(
-													'ecc-spinner' + (model.eN ? ' ecc-spinner--on' : '')),
+													'ecc-spinner' + (model.eP ? ' ecc-spinner--on' : '')),
 													A2($elm$html$Html$Attributes$attribute, 'aria-hidden', 'true')
 												]),
 											_List_Nil)
@@ -47300,7 +47838,7 @@ var $author$project$View$Login$loginCard = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								(!model.dP) ? 'Need an account? ' : 'Already have one? '),
+								(!model.dS) ? 'Need an account? ' : 'Already have one? '),
 								A2(
 								$elm$html$Html$button,
 								_List_fromArray(
@@ -47401,14 +47939,14 @@ var $author$project$Views$view = function (model) {
 				$elm$html$Html$Attributes$class('ecc-shell')
 			]),
 		_Utils_ap(
-			_Utils_eq(model.b3, $elm$core$Maybe$Nothing) ? $author$project$Views$motifs : _List_Nil,
+			_Utils_eq(model.b5, $elm$core$Maybe$Nothing) ? $author$project$Views$motifs : _List_Nil,
 			_List_fromArray(
 				[
 					function () {
-					if (model.cB) {
+					if (model.cD) {
 						return $author$project$Views$loadingView;
 					} else {
-						var _v0 = model.b3;
+						var _v0 = model.b5;
 						if (!_v0.$) {
 							var user = _v0.a;
 							return A2($author$project$Views$appShell, model, user);
@@ -47431,12 +47969,12 @@ var $author$project$Views$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{
-		dx: $author$project$Main$init,
-		dX: $author$project$Types$UrlChanged,
-		dY: $author$project$Types$LinkClicked,
-		eO: $author$project$Main$subscriptions,
-		eZ: $author$project$Main$update,
-		e$: function (model) {
+		dz: $author$project$Main$init,
+		d_: $author$project$Types$UrlChanged,
+		d$: $author$project$Types$LinkClicked,
+		eQ: $author$project$Main$subscriptions,
+		e$: $author$project$Main$update,
+		e1: function (model) {
 			return {
 				a: _List_fromArray(
 					[
@@ -47468,7 +48006,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 						$elm$json$Json$Decode$andThen,
 						function (theme) {
 							return $elm$json$Json$Decode$succeed(
-								{U: theme, ak: today, V: token});
+								{U: theme, am: today, V: token});
 						},
 						A2(
 							$elm$json$Json$Decode$field,

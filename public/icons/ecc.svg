@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#182131"/>
+  <circle cx="256" cy="256" r="194" fill="none" stroke="#e2b957" stroke-width="12"/>
+  <path d="M130 196h252M130 316h252" stroke="#e2b957" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+  <text x="256" y="284" text-anchor="middle" fill="#f3d681" font-family="Arial, sans-serif" font-size="122" font-weight="700" letter-spacing="-7">ECC</text>
+  <text x="256" y="365" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="9">CRM</text>
+</svg>

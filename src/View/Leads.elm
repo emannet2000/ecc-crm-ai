@@ -187,7 +187,8 @@ leadsView model =
                             , svgPath "M21 21l-4.35-4.35"
                             ]
                         , input
-                            [ type_ "text"
+                            [ type_ "search"
+                            , Attr.attribute "aria-label" "Search leads"
                             , placeholder "Search leads…"
                             , value data.query
                             , onInput UpdatedLeadsQuery

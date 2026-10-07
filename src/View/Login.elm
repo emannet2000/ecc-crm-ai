@@ -9,7 +9,6 @@ import Html.Events exposing (onClick, onSubmit)
 import Svg
 import Types exposing (..)
 import View.Helpers exposing (alertView, formField, onCheck, svgIcon, svgPath)
-import View.Icons exposing (eccMark)
 
 
 brandPanel : Html msg
@@ -19,7 +18,12 @@ brandPanel =
         , div [ class "brand-panel__glow brand-panel__glow--2" ] []
         , div [ class "brand-panel__inner" ]
             [ header [ class "brand-panel__header" ]
-                [ eccMark
+                [ img
+                    [ class "brand-panel__logo"
+                    , Attr.src "/public/icons/ecc-192.png"
+                    , Attr.alt "ECC Consulting Global emblem"
+                    ]
+                    []
                 , div [ class "brand-panel__wordmark" ]
                     [ span [ class "brand-panel__name" ] [ text "ECC" ]
                     , span [ class "brand-panel__product" ] [ text "CRM" ]

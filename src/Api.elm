@@ -1534,9 +1534,6 @@ schoolFormPayload sf =
         , ( "countryCode", E.string sf.countryCode )
         , ( "commissionRate", E.string sf.commissionRate )
         , ( "contractStatus", E.string sf.contractStatus )
-        , ( "studentsEnrolled"
-          , E.int (Maybe.withDefault 0 (String.toInt sf.studentsEnrolled))
-          )
         , ( "contactPerson", E.string sf.contactPerson )
         , ( "website", E.string sf.website )
         , ( "notes", E.string sf.notes )
@@ -1567,9 +1564,6 @@ agentFormPayload af =
         , ( "countryCode", E.string af.countryCode )
         , ( "contractStatus", E.string af.contractStatus )
         , ( "agentStatus", E.string af.agentStatus )
-        , ( "studentsReferred"
-          , E.int (Maybe.withDefault 0 (String.toInt af.studentsReferred))
-          )
         , ( "notes", E.string af.notes )
         ]
 
@@ -3256,6 +3250,23 @@ fetchStudents token query limit offset toMsg =
                 , "limit=" ++ String.fromInt limit
                 , "offset=" ++ String.fromInt offset
                 ]
+    in
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("Bearer " ++ token) ]
+        , url = "/api/students?" ++ qs
+        , body = Http.emptyBody
+        , expect = studentsPageExpect toMsg
+        , timeout = Just 20000
+        , tracker = Nothing
+        }
+
+
+fetchLinkedStudents : String -> String -> String -> (Result String ( List Student, Int ) -> msg) -> Cmd msg
+fetchLinkedStudents token relation recordId toMsg =
+    let
+        qs =
+            relation ++ "Id=" ++ Url.percentEncode recordId ++ "&limit=200&offset=0"
     in
     Http.request
         { method = "GET"

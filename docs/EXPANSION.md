@@ -19,6 +19,19 @@ the backend by enabling a browser button. Configure AI activation under Workspac
 → Integrations. Portal invitations, recovery and unmatched messages are workspace
 tabs. Advanced workflows remain available globally as well as on records.
 
+## Record photos and QR links
+
+Contact and student detail pages support private PNG/JPEG profile photos. Uploads
+are stored in SQLite with the CRM data, limited to 5 MB and 20 megapixels, and
+checked against the record's read/edit permissions. A record's QR tab generates a
+PNG link for that record; scanning it still requires a staff session and record
+access. The global **Scan QR** tool uses the device camera or an image and accepts
+only same-origin ECC record links. Camera scanning needs a secure browser context
+and a browser that implements `BarcodeDetector`; image scanning also has a server
+fallback for browsers without it. The runtime image installs `qrencode` and
+`zbar-tools`; deployments outside Docker must install those executables for QR
+generation and fallback decoding.
+
 ## Client portal
 
 Managers invite a student or contact from its record's **Client portal** tab.
@@ -129,6 +142,17 @@ results are displayed for staff to review, edit and copy. AI never sends a messa
 marks a document verified or changes a CRM record. Drafts can be inaccurate and must
 be checked against the source document. This is not a legal decision engine.
 
+The dashboard also includes **AI work brief**. It builds a deterministic worklist
+from the signed-in staff member's accessible open tasks, active applications with
+an imminent deadline, missing required documents or no next action, and leads due
+for follow-up. Staff can open each linked record directly. The AI receives only
+the selected work item's name, type, priority, deadline, reason and action text;
+names may identify people, while email addresses, phone numbers and record IDs
+are excluded. The brief is advisory: it does not
+send communications or update records, and staff should verify each item in its
+source record. The request uses the same queue, provider settings and organization
+AI enablement as other assistant actions.
+
 The input format follows OpenAI's [Responses text guide](https://developers.openai.com/api/docs/guides/text)
 and [file inputs guide](https://developers.openai.com/api/docs/guides/file-inputs).
 
@@ -179,6 +203,47 @@ request bodies or credentials. `/api/admin/metrics` requires an administrator an
 reports process totals, errors, average latency, uptime and database pool statistics.
 Shutdown stops accepting requests, drains in-flight requests and cancels workers
 before closing the database.
+
+## Application journey, follow-up rules and data quality
+
+The student portal shows an application progress summary based on required
+documents, the current application stage, and the next requested action. Students
+can respond to case messages, upload requested documents, and see correction
+reasons. Staff can use the linked case checklist and document statuses to review
+the same journey.
+
+Managers can create automatic follow-up rules in Workspace tools → Workflows.
+Choose cases, leads, or students, an optional stage, an inactivity period, and a
+task title. `{{record}}` in the title is replaced with the matching record name.
+Preview shows the current matches and sample record names. Its signed preview
+expires after five minutes and enabling is rejected if the match set changed.
+Saving leaves the rule disabled; confirm the preview before enabling it. Disabled
+rules can be previewed again before re-enabling. Every 15 seconds the worker checks enabled rules and
+creates one task per matching rule and record. The latest record change, logged
+activity, or case conversation is used as its activity date; if none exist, the
+creation date is used. Unreferenced conversations count for a case only when the
+contact has exactly one active case. Execution markers prevent duplicate tasks.
+Disable a rule to stop new tasks; already created tasks remain in the normal task
+list. Managers can edit and retire rules; retired rules preserve their history.
+The workflow view also shows generated task history with its source rule and
+record, the application action queue, and case/student stage history with current
+ownership.
+
+Workspace tools → Data & views → Run data quality scan reports incomplete
+applications, possible duplicate students, missing student contact details,
+missing lead follow-up dates, overdue case deadlines, expired or incomplete
+required documents, and broken student-school/agent links. Possible duplicates
+are warnings for human review, not automatic merge suggestions. Findings are
+filtered to records the current user can read and can be filtered by severity,
+record type, or text, then paged. Each finding links to its affected record.
+Review and correct records through the usual edit workflow; the scan never
+changes CRM data.
+
+Administrators can inspect worker heartbeats, failed/waiting mail, and follow-up
+automation failures under Workspace tools → Integrations. Successful or failed
+backup commands write `/app/data/backup-status.json`. Status remains unknown
+until the first backup run, so schedule and monitor `scripts/backup-compose.sh`
+rather than assuming backups are running.
 
 ## Verification and scaling limits
 

@@ -152,6 +152,23 @@ func TestStaticRoutesDoNotExposeStore(t *testing.T) {
 			t.Fatalf("exposed %s", path)
 		}
 	}
+	manifest := httptest.NewRecorder()
+	mux.ServeHTTP(manifest, httptest.NewRequest("GET", "/manifest.webmanifest", nil))
+	if manifest.Code != http.StatusOK || !strings.Contains(manifest.Header().Get("Content-Type"), "manifest+json") || !json.Valid(manifest.Body.Bytes()) {
+		t.Fatalf("PWA manifest route failed: status=%d type=%q", manifest.Code, manifest.Header().Get("Content-Type"))
+	}
+	worker := httptest.NewRecorder()
+	mux.ServeHTTP(worker, httptest.NewRequest("GET", "/sw.js", nil))
+	if worker.Code != http.StatusOK || !strings.Contains(worker.Header().Get("Content-Type"), "javascript") || !strings.Contains(worker.Body.String(), "url.pathname.startsWith('/api/')") {
+		t.Fatalf("root-scoped PWA worker route failed or does not bypass API responses: status=%d", worker.Code)
+	}
+	for _, path := range []string{"/elm.js", "/public/styles.css", "/public/mobile.js", "/public/pwa-sw.js", "/public/icons/ecc-192.png", "/public/icons/ecc-512.png"} {
+		asset := httptest.NewRecorder()
+		mux.ServeHTTP(asset, httptest.NewRequest("GET", path, nil))
+		if asset.Code != http.StatusOK {
+			t.Fatalf("PWA shell asset %s returned %d", path, asset.Code)
+		}
+	}
 	response := httptest.NewRecorder()
 	mux.ServeHTTP(response, httptest.NewRequest("GET", "/contacts/c_1", nil))
 	if response.Code != 200 {

@@ -158,8 +158,8 @@ update msg model =
 
                                   else
                                     Nothing
-                                , if String.length pf.next < 8 then
-                                    Just ( "next", "New password must be at least 8 characters." )
+                                , if String.length pf.next < 12 then
+                                    Just ( "next", "New password must be at least 12 characters." )
 
                                   else
                                     Nothing

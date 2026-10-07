@@ -59,8 +59,10 @@ func listSchoolsHandler(w http.ResponseWriter, r *http.Request) {
 	limit, offset := parseLimitOffset(r, 50, 0)
 
 	all := listSchools()
+	_, schoolCounts := linkedStudentCounts()
 	filtered := make([]School, 0, len(all))
 	for _, s := range all {
+		s.StudentsEnrolled = schoolCounts[s.ID]
 		if q == "" ||
 			strings.Contains(strings.ToLower(s.Name), q) ||
 			strings.Contains(strings.ToLower(s.CountryCode), q) ||
@@ -85,6 +87,8 @@ func getSchoolHandler(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "School not found")
 		return
 	}
+	_, schoolCounts := linkedStudentCounts()
+	s.StudentsEnrolled = schoolCounts[s.ID]
 	writeJSON(w, http.StatusOK, map[string]any{"school": s})
 }
 

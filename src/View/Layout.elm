@@ -159,7 +159,12 @@ sidebar model user =
     in
     aside [ class cls, Attr.id "workspace-navigation", Attr.attribute "aria-label" "Workspace navigation" ]
         [ div [ class "sidebar__brand" ]
-            [ div [ class "sidebar-brand-mark" ] [ text "E" ]
+            [ img
+                [ class "sidebar-brand-logo"
+                , Attr.src "/public/icons/ecc-192.png"
+                , Attr.alt "ECC Consulting Global emblem"
+                ]
+                []
             , div [ class "sidebar__wordmark" ]
                 [ strong [ class "sidebar__name" ] [ text "ECC" ]
                 , span [ class "sidebar__product" ] [ text "Client workspace" ]
