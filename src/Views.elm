@@ -413,6 +413,7 @@ appShell model user =
             ]
         , mobileNavigation model
         , Html.node "crm-connection-status" [] []
+        , Html.node "crm-ai-chat" [] []
         ]
 
 

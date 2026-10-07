@@ -35903,6 +35903,7 @@ var $author$project$View$Home$homeView = F2(
 							$elm$html$Html$text(
 							$elm$core$String$isEmpty(model.am) ? 'Here\u0027s what\u0027s happening across your workspace today.' : (model.am + ' · Here\u0027s what\u0027s happening across your workspace today.'))
 						])),
+					A3($elm$html$Html$node, 'crm-ai-productivity', _List_Nil, _List_Nil),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -47188,7 +47189,8 @@ var $author$project$Views$appShell = F2(
 								]))
 						])),
 					$author$project$View$Layout$mobileNavigation(model),
-					A3($elm$html$Html$node, 'crm-connection-status', _List_Nil, _List_Nil)
+					A3($elm$html$Html$node, 'crm-connection-status', _List_Nil, _List_Nil),
+					A3($elm$html$Html$node, 'crm-ai-chat', _List_Nil, _List_Nil)
 				]));
 	});
 var $elm$html$Html$footer = _VirtualDom_node('footer');

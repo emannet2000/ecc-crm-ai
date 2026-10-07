@@ -13,7 +13,7 @@ COPY golang-backend ./
 RUN CGO_ENABLED=1 go build -trimpath -o /app/ecc-crm .
 
 FROM debian:bookworm-slim
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates sqlite3 python3 qrencode zbar-tools && rm -rf /var/lib/apt/lists/* && useradd --uid 10001 --create-home crm
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates sqlite3 python3 qrencode zbar-tools poppler-utils && rm -rf /var/lib/apt/lists/* && useradd --uid 10001 --create-home crm
 WORKDIR /app
 COPY --from=backend /app/ecc-crm /app/build/ecc-crm
 COPY --from=frontend /app/elm.js /app/elm.js

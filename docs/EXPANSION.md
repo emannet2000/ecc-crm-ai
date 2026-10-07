@@ -291,3 +291,26 @@ so these figures demonstrate reduced copying overhead, not a production capacity
 promise. Chromium launches and live HTTP smoke checks were blocked by sandbox socket
 restrictions. Docker is unavailable in this environment, so the container build has
 not been run. No live AI, Microsoft Graph, SMTP or WhatsApp credentials were used.
+
+## Conversational AI adviser
+
+**Ask ECC AI** is available on every signed-in workspace page. Ask follow-up
+questions, request advice on the record being viewed, plan the day or draft a
+client response. The dashboard places the daily AI work brief ahead of statistics.
+
+Configure `OPENAI_API_KEY` and `OPENAI_MODEL`, restart the backend, then enable
+AI in **Workspace tools → Integrations** as an administrator. Chat uses the
+existing Responses API integration with `store: false`. Each turn includes the
+current permitted record (if selected) and up to 30 priority work items assigned
+to the user or unassigned. This is a limited context, not a workspace-wide search.
+Conversation history stays in component memory and is cleared by New chat,
+changing record context, or leaving the authenticated application. The last nine
+exchanges are supplied on follow-up turns; messages have bounded sizes.
+
+Microphone input appears when the browser supports speech recognition; users
+review the transcription before sending. Browser speech services may process
+audio. Read replies aloud uses browser speech synthesis when available. This is
+turn-based voice assistance, not a realtime audio session. The adviser offers
+recommendations and drafts; it has no record-editing or message-sending tools.
+Provider failures leave the question available to retry. Chat does not store
+transcripts in the database or AI job history.

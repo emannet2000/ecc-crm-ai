@@ -16,7 +16,7 @@ import (
 
 // These routes read committed SQL data without replacing the shared CRM cache.
 func independentRead(r *http.Request) bool {
-	return r.Method == "GET" && (strings.HasPrefix(r.URL.Path, "/api/records/") || r.URL.Path == "/api/insights" || r.URL.Path == "/api/health")
+	return independentAI(r) || r.Method == "GET" && (strings.HasPrefix(r.URL.Path, "/api/records/") || r.URL.Path == "/api/insights" || r.URL.Path == "/api/health")
 }
 func registerExpansionRoutes(m *http.ServeMux) {
 	m.HandleFunc("GET /api/records/{entity}/{id}", authMiddleware(handleSQLRecord))
@@ -49,7 +49,7 @@ func migrateExpansion(tx *sql.Tx) error {
 			return err
 		}
 	}
-	return nil
+	return migrateAI(tx)
 }
 func validEntity(entity string) bool {
 	for _, e := range entityTables {

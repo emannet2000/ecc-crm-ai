@@ -5,6 +5,11 @@ students, agents, leads, cases, document tracking, invoices, payments, and partn
 
 ## Features
 
+- Conversational **Ask ECC AI** adviser throughout the workspace: ask follow-up
+  questions, get advice on the current record, and plan your day. Optional browser
+  microphone input and spoken replies. Requires AI provider configuration and
+  workspace activation; see [the AI guide](docs/EXPANSION.md#conversational-ai-adviser).
+
 - Light and dark workspace themes, saved in the browser; grouped navigation,
   accessible contact links, readable tables, and consistent form labels.
 

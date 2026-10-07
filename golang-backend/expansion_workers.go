@@ -15,7 +15,7 @@ func httpRequestForWorker(ctx context.Context, tx *sql.Tx) *http.Request {
 }
 func startExpansionWorkers(ctx context.Context) func() {
 	var workers sync.WaitGroup
-	workers.Add(3)
+	workers.Add(4)
 	go func() {
 		defer workers.Done()
 		tick := time.NewTicker(2 * time.Second)
@@ -53,6 +53,20 @@ func startExpansionWorkers(ctx context.Context) func() {
 				return
 			case <-tick.C:
 				syncMailbox(ctx)
+			}
+		}
+	}()
+	go func() {
+		defer workers.Done()
+		tick := time.NewTicker(30 * time.Second)
+		defer tick.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-tick.C:
+				expireAIVoice(ctx)
+				processAIAdvice(ctx)
 			}
 		}
 	}()

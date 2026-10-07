@@ -202,7 +202,7 @@
   customElements.define('crm-ai-productivity', AIProductivity);
   const updateTheme = () => {
     const theme=localStorage.getItem('theme') || 'light';
-    for (const element of document.querySelectorAll('crm-workspace,crm-record-tools,crm-insights,crm-ai-productivity,crm-administration')) { if(element.dataset.theme!==theme)element.dataset.theme=theme; }
+    for (const element of document.querySelectorAll('crm-workspace,crm-record-tools,crm-insights,crm-ai-productivity,crm-ai-chat,crm-administration')) { if(element.dataset.theme!==theme)element.dataset.theme=theme; }
   };
   new MutationObserver(updateTheme).observe(document.getElementById('app'), {childList:true, subtree:true});
   window.addEventListener('crm:theme-changed', updateTheme);

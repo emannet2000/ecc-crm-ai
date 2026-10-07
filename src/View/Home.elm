@@ -273,6 +273,7 @@ homeView model user =
                     model.today ++ " · Here's what's happening across your workspace today."
                 )
             ]
+        , Html.node "crm-ai-productivity" [] []
         , div [ class "stats" ]
             [ statCard "Deals"
                 (summaryText model (\report -> String.fromInt (List.sum (Dict.values report.stageCounts))))
@@ -290,7 +291,6 @@ homeView model user =
                 (summaryText model (\report -> String.fromInt report.totalCases))
                 (summaryText model (\report -> String.fromInt report.activeCases ++ " open"))
             ]
-        , Html.node "crm-ai-productivity" [] []
         , div [ class "chart-row" ]
             [ div [ class "chart-card" ]
                 [ h3 [ class "chart-card__title" ] [ text "Pipeline distribution" ]
